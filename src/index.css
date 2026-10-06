@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-sage-50: #F4F7F5;
   --color-sage-100: #E8EFEA;
@@ -66,4 +68,16 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(122, 154, 139, 0.6);
+}
+
+/* Global Font Accessibility Scaling (A+ / A-) */
+html.font-large {
+  font-size: 118%;
+}
+
+html.font-large button,
+html.font-large input,
+html.font-large select,
+html.font-large textarea {
+  font-size: inherit;
 }

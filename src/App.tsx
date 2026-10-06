@@ -21,7 +21,6 @@ export function App() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     return localStorage.getItem('navimed_dark') === 'true';
   });
-  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
   
   // Modals state
   const [isRedFlagsOpen, setIsRedFlagsOpen] = useState<boolean>(false);
@@ -42,6 +41,11 @@ export function App() {
   const [milestones] = useState<ClinicalMilestone[]>(() => storageService.getMilestones());
   const [documents, setDocuments] = useState<MedicalDocument[]>(() => storageService.getDocuments());
 
+  // Font size state with localStorage persistence
+  const [fontSize, setFontSize] = useState<'normal' | 'large'>(() => {
+    return (localStorage.getItem('oncosentinel_fontsize') as 'normal' | 'large') || 'normal';
+  });
+
   // Dark mode effect
   useEffect(() => {
     if (darkMode) {
@@ -52,6 +56,17 @@ export function App() {
       localStorage.setItem('navimed_dark', 'false');
     }
   }, [darkMode]);
+
+  // Font size effect
+  useEffect(() => {
+    if (fontSize === 'large') {
+      document.documentElement.classList.add('font-large');
+      localStorage.setItem('oncosentinel_fontsize', 'large');
+    } else {
+      document.documentElement.classList.remove('font-large');
+      localStorage.setItem('oncosentinel_fontsize', 'normal');
+    }
+  }, [fontSize]);
 
   // Attempt async sync with Supabase if table is ready
   useEffect(() => {
