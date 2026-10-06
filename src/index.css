@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sage-50: #F4F7F5;
+  --color-sage-100: #E8EFEA;
+  --color-sage-200: #D2DFD6;
+  --color-sage-300: #B4C9BC;
+  --color-sage-400: #94B2A1;
+  --color-sage-500: #7A9A8B;
+  --color-sage-600: #628072;
+  --color-sage-700: #4D665B;
+  --color-sage-800: #3D5248;
+  --color-sage-900: #2A3A32;
+  --color-sage-950: #1B2621;
+
+  --color-petal-50: #FDF7F8;
+  --color-petal-100: #FAF0F1;
+  --color-petal-200: #F4DEE1;
+  --color-petal-300: #E8C5C8;
+  --color-petal-400: #DBA8AC;
+  --color-petal-500: #CA868C;
+  --color-petal-600: #B0666C;
+  --color-petal-700: #934B51;
+  --color-petal-800: #7A3C41;
+  --color-petal-900: #5C2D31;
+  --color-petal-950: #3D191D;
+
+  --color-peach-50: #FFF7F3;
+  --color-peach-100: #FEEDDE;
+  --color-peach-200: #FDDBC3;
+  --color-peach-300: #FCC4A2;
+  --color-peach-400: #F8A87C;
+  --color-peach-500: #F3A683;
+  --color-peach-600: #D97746;
+  --color-peach-700: #B55829;
+  --color-peach-800: #8C401B;
+  --color-peach-900: #59250D;
+  --color-peach-950: #381506;
+
+  --color-darkbg: #161E1A;
+  --color-darkbg-surface: #202B25;
+  --color-darkbg-card: #293730;
+  --color-darkbg-border: #374940;
+}
+
+/* Animations & smooth feel */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(122, 154, 139, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 154, 139, 0.6);
+}
