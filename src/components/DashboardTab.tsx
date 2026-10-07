@@ -35,9 +35,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenSupporter,
   onNavigateToRecipes
 }) => {
-  // Check if today's dose was taken
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const todayDose = doses.find(d => (d.taken_at || d.scheduled_for).slice(0, 10) === todayStr);
+  // Check if today's dose was taken (normalized to local browser date)
+  const now = new Date();
+  const getLocalDateString = (d: Date) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const todayStr = getLocalDateString(now);
+  const todayDose = doses.find(d => {
+    const dDate = d.taken_at ? new Date(d.taken_at) : new Date(d.scheduled_for);
+    return getLocalDateString(dDate) === todayStr;
+  });
   const isTakenToday = todayDose?.status === 'taken';
 
   // Quick symptom state
@@ -111,23 +122,50 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   // Stock status
   const isLowStock = profile.pill_stock_count <= 7;
 
-  // Generate 28-day adherence history calendar data
-  const calendarDays = Array.from({ length: 28 }, (_, i) => {
-    const daysAgo = 27 - i;
-    const date = new Date(Date.now() - daysAgo * 86400000);
-    const dateStr = date.toISOString().slice(0, 10);
-    const isToday = daysAgo === 0;
-    const isTaken = isToday ? isTakenToday : (i !== 7);
+  // Generate Current Month Adherence Calendar Data
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  const currentDay = now.getDate();
+
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  // Monday is 0, Sunday is 6
+  const firstDayWeekday = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
+
+  const rawMonthName = now.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' });
+  const formattedMonthName = rawMonthName.charAt(0).toUpperCase() + rawMonthName.slice(1);
+
+  const isDoseTakenOnDate = (dateStr: string) => {
+    if (dateStr === todayStr) {
+      return isTakenToday;
+    }
+    return doses.some(d => {
+      if (d.status !== 'taken') return false;
+      const dDate = d.taken_at ? new Date(d.taken_at) : new Date(d.scheduled_for);
+      return getLocalDateString(dDate) === dateStr;
+    });
+  };
+
+  const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
+    const dayNum = i + 1;
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+    const isToday = dayNum === currentDay;
+    const isPast = dayNum < currentDay;
+    const isFuture = dayNum > currentDay;
+    const isTaken = isDoseTakenOnDate(dateStr);
+
     return {
-      dayNum: date.getDate(),
+      dayNum,
+      dateStr,
       isToday,
-      isTaken,
-      dateStr
+      isPast,
+      isFuture,
+      isTaken
     };
   });
 
-  const takenCount = calendarDays.filter(d => d.isTaken).length;
-  const adherencePercent = Math.round((takenCount / 28) * 100);
+  const elapsedDaysThisMonth = currentDay;
+  const takenCount = calendarDays.filter(d => (d.isPast || d.isToday) && d.isTaken).length;
+  const adherencePercent = Math.round((takenCount / elapsedDaysThisMonth) * 100);
 
   return (
     <div className="space-y-4 pb-20 animate-fade-in">
@@ -169,7 +207,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 Tamoxifen 20 mg
               </h2>
               <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                <Clock className="w-3 h-3 text-sage-600" /> Ora programată: {profile.daily_reminder_time}
+                <Clock className="w-3 h-3 text-sage-600" /> Ora: {profile.daily_reminder_time}
+                <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">• Azi, {now.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' })}</span>
               </p>
             </div>
           </div>
@@ -215,34 +254,97 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
         )}
 
-        {/* 28-Day Visual Adherence Mini-Calendar */}
+        {/* Calendar Lunar de Aderență Sincronizat */}
         <div className="mt-4 pt-3.5 border-t border-gray-100 dark:border-darkbg-border">
-          <div className="flex items-center justify-between text-xs mb-2">
-            <span className="font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-sage-600" />
-              <span>Calendar lunar de aderență</span>
-            </span>
-            <span className="text-[11px] font-bold text-sage-700 dark:text-sage-300 bg-sage-50 dark:bg-sage-900/50 px-2 py-0.5 rounded-md">
-              {adherencePercent}% rată ({takenCount}/28 zile)
+          <div className="flex items-center justify-between text-xs mb-2.5">
+            <div>
+              <span className="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-sage-600" />
+                <span>{formattedMonthName}</span>
+              </span>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 capitalize">
+                Azi: {now.toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </p>
+            </div>
+            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+              isTakenToday
+                ? 'text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/60'
+                : 'text-rose-800 dark:text-rose-200 bg-rose-50 dark:bg-rose-950/60'
+            }`}>
+              {adherencePercent}% rată ({takenCount}/{elapsedDaysThisMonth} zile)
             </span>
           </div>
 
-          <div className="grid grid-cols-7 gap-1.5 p-2.5 bg-gray-50/80 dark:bg-darkbg-card rounded-2xl border border-gray-100 dark:border-darkbg-border text-center">
-            {calendarDays.map((day, idx) => (
-              <div
-                key={idx}
-                className={`py-1 rounded-lg text-[10px] font-bold flex flex-col items-center justify-center transition-all ${
-                  day.isToday && !day.isTaken
-                    ? 'ring-2 ring-amber-500 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200'
-                    : day.isTaken
-                    ? 'bg-sage-500 text-white shadow-2xs'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-400'
-                }`}
-                title={`${day.dateStr}: ${day.isTaken ? 'Luat' : 'Neluat'}`}
-              >
-                <span>{day.dayNum}</span>
-              </div>
-            ))}
+          <div className="p-2.5 bg-gray-50/80 dark:bg-darkbg-card rounded-2xl border border-gray-100 dark:border-darkbg-border">
+            {/* Antet Zilele Săptămânii */}
+            <div className="grid grid-cols-7 gap-1 text-center mb-1.5 border-b border-gray-200/60 dark:border-darkbg-border pb-1">
+              {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((dayInitial, idx) => (
+                <div key={idx} className="text-[10px] font-bold text-gray-400 dark:text-gray-500">
+                  {dayInitial}
+                </div>
+              ))}
+            </div>
+
+            {/* Grila Zilelor Lunii */}
+            <div className="grid grid-cols-7 gap-1 text-center">
+              {/* Celule goale pentru aliniere la începutul lunii */}
+              {Array.from({ length: firstDayWeekday }, (_, idx) => (
+                <div key={`empty-${idx}`} className="h-8" />
+              ))}
+
+              {calendarDays.map((day) => {
+                let cellStyle = '';
+                if (day.isToday) {
+                  if (day.isTaken) {
+                    // Verde când am bifat că am luat azi
+                    cellStyle = 'bg-emerald-500 text-white font-extrabold ring-2 ring-emerald-300 shadow-sm scale-105';
+                  } else {
+                    // Culoare de alertă când nu am luat pastila azi
+                    cellStyle = 'bg-rose-500 text-white font-extrabold ring-2 ring-rose-300 shadow-md animate-pulse scale-105';
+                  }
+                } else if (day.isPast) {
+                  if (day.isTaken) {
+                    cellStyle = 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 font-semibold';
+                  } else {
+                    cellStyle = 'bg-gray-100 dark:bg-gray-800 text-gray-400 font-normal';
+                  }
+                } else {
+                  // Zile viitoare
+                  cellStyle = 'text-gray-300 dark:text-gray-600 font-normal bg-transparent';
+                }
+
+                return (
+                  <div
+                    key={day.dayNum}
+                    className={`h-8 rounded-xl text-[11px] flex flex-col items-center justify-center relative transition-all ${cellStyle}`}
+                    title={`${day.dateStr}: ${day.isToday ? (day.isTaken ? 'Azi - Luat' : 'Azi - În așteptare (Alertează)') : day.isTaken ? 'Luat' : day.isPast ? 'Neluat' : 'Viitor'}`}
+                  >
+                    <span>{day.dayNum}</span>
+                    {day.isToday && (
+                      <span className="text-[7px] font-black uppercase tracking-tighter leading-none -mt-0.5">
+                        {day.isTaken ? '✓' : 'AZI'}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Legendă intuitivă */}
+            <div className="mt-2.5 pt-2 border-t border-gray-200/50 dark:border-darkbg-border flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400 px-1">
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                <span>Luat</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                <span>Azi (În așteptare)</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 inline-block"></span>
+                <span>Neluat / Viitor</span>
+              </span>
+            </div>
           </div>
         </div>
 

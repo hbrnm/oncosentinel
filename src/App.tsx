@@ -189,8 +189,12 @@ export function App() {
   };
 
   const handleCompleteOnboarding = (configuredProfile: PatientProfile, nextControlDate: string) => {
-    setProfile(configuredProfile);
-    storageService.saveProfile(configuredProfile);
+    const updated = {
+      ...profile,
+      ...configuredProfile
+    };
+    setProfile(updated);
+    storageService.saveProfile(updated);
     if (nextControlDate) {
       localStorage.setItem('navimed_next_control_date', nextControlDate);
     }
@@ -316,6 +320,7 @@ export function App() {
         {/* First Install Onboarding Configuration Wizard */}
         <OnboardingModal
           isOpen={isOnboardingOpen}
+          profile={profile}
           onComplete={handleCompleteOnboarding}
         />
 

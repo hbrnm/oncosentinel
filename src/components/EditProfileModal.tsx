@@ -17,7 +17,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 }) => {
   const [fullName, setFullName] = useState(profile.full_name);
   const [reminderTime, setReminderTime] = useState(profile.daily_reminder_time);
-  const [stock, setStock] = useState(profile.pill_stock_count);
+  const [stock, setStock] = useState<number | ''>(profile.pill_stock_count ?? 30);
   const [startDate, setStartDate] = useState(profile.tamoxifen_start_date);
   const [oncologistEmail, setOncologistEmail] = useState(profile.oncologist_email || '');
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -40,7 +40,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
       ...profile,
       full_name: fullName,
       daily_reminder_time: reminderTime,
-      pill_stock_count: Number(stock),
+      pill_stock_count: stock === '' ? 0 : Number(stock),
       tamoxifen_start_date: startDate,
       oncologist_email: oncologistEmail
     });
@@ -116,9 +116,12 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 <input
                   type="number"
                   min="0"
-                  max="365"
                   value={stock}
-                  onChange={(e) => setStock(parseInt(e.target.value) || 0)}
+                  placeholder="Număr pastile"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setStock(val === '' ? '' : Math.max(0, parseInt(val, 10) || 0));
+                  }}
                   className="w-full pl-9 pr-2 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                   required
                 />

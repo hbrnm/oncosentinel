@@ -8,17 +8,31 @@ import { notificationsService } from '../lib/notifications';
 
 interface OnboardingModalProps {
   isOpen: boolean;
+  profile?: PatientProfile;
   onComplete: (configuredProfile: PatientProfile, nextControlDate: string) => void;
 }
 
-export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClose: _, onComplete }: any) => {
+export const OnboardingModal: React.FC<OnboardingModalProps> = ({ 
+  isOpen, 
+  profile, 
+  onComplete 
+}) => {
   const [step, setStep] = useState<number>(1);
-  const [name, setName] = useState<string>('Elena Popescu');
-  const [reminderTime, setReminderTime] = useState<string>('08:30');
-  const [pillStock, setPillStock] = useState<number>(30);
-  const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>('2026-09-01');
-  const [controlDate, setControlDate] = useState<string>('2027-03-15');
+  const [name, setName] = useState<string>(profile?.full_name || 'Elena Popescu');
+  const [reminderTime, setReminderTime] = useState<string>(profile?.daily_reminder_time || '08:30');
+  const [pillStock, setPillStock] = useState<number | ''>(profile?.pill_stock_count ?? 30);
+  const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || '2026-09-01');
+  const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '2027-03-15');
   const [notificationsAllowed, setNotificationsAllowed] = useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (isOpen && profile) {
+      if (profile.full_name) setName(profile.full_name);
+      if (profile.daily_reminder_time) setReminderTime(profile.daily_reminder_time);
+      if (profile.pill_stock_count !== undefined) setPillStock(profile.pill_stock_count);
+      if (profile.tamoxifen_start_date) setTamoxifenStartDate(profile.tamoxifen_start_date);
+    }
+  }, [isOpen, profile]);
 
   if (!isOpen) return null;
 
@@ -34,20 +48,26 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
   };
 
   const handleFinish = () => {
-    const defaultProfile: PatientProfile = {
-      full_name: name.trim() || 'Elena Popescu',
-      histology: 'Carcinom Ductal In Situ (DCIS)',
-      stage: 'Grad 0 (TisN0M0, G2)',
-      er_status: 'Pozitiv (>90%)',
-      pr_status: 'Pozitiv (>80%)',
-      her2_status: 'Negativ',
+    const configuredProfile: PatientProfile = {
+      ...(profile || {
+        full_name: 'Elena Popescu',
+        histology: 'Carcinom Ductal In Situ (DCIS)',
+        stage: 'Grad 0 (TisN0M0, G2)',
+        er_status: 'Pozitiv (>90%)',
+        pr_status: 'Pozitiv (>80%)',
+        her2_status: 'Negativ',
+        tamoxifen_start_date: '2026-09-01',
+        pill_stock_count: 30,
+        daily_reminder_time: '08:30',
+        oncologist_email: 'dr.oncologie@spital.ro'
+      }),
+      full_name: name.trim() || profile?.full_name || 'Elena Popescu',
       tamoxifen_start_date: tamoxifenStartDate,
-      pill_stock_count: Number(pillStock) || 30,
-      daily_reminder_time: reminderTime,
-      oncologist_email: 'dr.oncologie@spital.ro'
+      pill_stock_count: pillStock === '' ? 0 : Number(pillStock),
+      daily_reminder_time: reminderTime
     };
 
-    onComplete(defaultProfile, controlDate);
+    onComplete(configuredProfile, controlDate);
   };
 
   return (
@@ -193,10 +213,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onClos
                 </label>
                 <input
                   type="number"
-                  min="1"
-                  max="300"
+                  min="0"
                   value={pillStock}
-                  onChange={(e) => setPillStock(parseInt(e.target.value) || 30)}
+                  placeholder="Număr pastile"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setPillStock(val === '' ? '' : Math.max(0, parseInt(val, 10) || 0));
+                  }}
                   className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
