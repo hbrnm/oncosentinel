@@ -85,32 +85,31 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     // Use a default mood level of 3 (Echilibrată) if none selected
     const effectiveMood = mood ?? 3;
     
-    setTimeout(() => {
-      const moodLabels: Record<number, string> = {
-        1: 'Foarte rău', 2: 'Rău', 3: 'Echilibrată', 4: 'Bine', 5: 'Foarte bine'
-      };
-      
-      const newLogData = {
-        logged_at: new Date().toISOString(),
-        mood_state: moodLabels[effectiveMood] || 'Echilibrată',
-        notes: note.trim() ? note.trim() : undefined,
-        hot_flashes_count: hotFlashesCount,
-        hot_flashes_intensity: hotFlashesIntensity,
-        night_sweats: nightSweats,
-        fatigue_level: fatigueLevel,
-        sleep_quality: sleepQuality,
-        joint_pain_level: jointPainLevel,
-        joint_pain_areas: selectedJointAreas,
-        mucosal_dryness: mucosalDryness,
-        bone_pain_level: bonePainLevel,
-        nausea_level: nauseaLevel,
-        brain_fog: brainFog,
-        headache: headache,
-        water_intake_ml: waterIntake
-      };
-      onAddSymptomLog(newLogData);
-      setSaving(false);
-      setShowDetailedForm(false);
+    const moodLabels: Record<number, string> = {
+      1: 'Foarte rău', 2: 'Rău', 3: 'Echilibrată', 4: 'Bine', 5: 'Foarte bine'
+    };
+    
+    const newLogData = {
+      logged_at: new Date().toISOString(),
+      mood_state: moodLabels[effectiveMood] || 'Echilibrată',
+      notes: note.trim() ? note.trim() : undefined,
+      hot_flashes_count: hotFlashesCount,
+      hot_flashes_intensity: hotFlashesIntensity,
+      night_sweats: nightSweats,
+      fatigue_level: fatigueLevel,
+      sleep_quality: sleepQuality,
+      joint_pain_level: jointPainLevel,
+      joint_pain_areas: selectedJointAreas,
+      mucosal_dryness: mucosalDryness,
+      bone_pain_level: bonePainLevel,
+      nausea_level: nauseaLevel,
+      brain_fog: brainFog,
+      headache: headache,
+      water_intake_ml: waterIntake
+    };
+    onAddSymptomLog(newLogData);
+    setSaving(false);
+    setShowDetailedForm(false);
       
       const hasSevere = 
         hotFlashesIntensity >= 4 || 
@@ -125,7 +124,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         // Auto-dismiss toast after 5 seconds
         setTimeout(() => setSevereSymptomsAlert(null), 5000);
       }
-    }, 400);
   };
 
   const jointAreasList = ['genunchi', 'articulații mâini', 'șolduri', 'umeri', 'coloană'];
@@ -199,7 +197,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Notează un gând, un simptom, sau o bucurie de azi..."
-              disabled={savedToday}
               className="w-full min-h-[120px] p-4 rounded-3xl bg-white/70 dark:bg-darkbg/50 border border-petal-200/60 dark:border-petal-900/40 text-[14px] resize-none text-gray-800 dark:text-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-petal-300 transition-all disabled:opacity-70 shadow-sm" 
             />
           </div>

@@ -95,8 +95,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     // Navigăm la Ghiduri
     const guideTabBtn = screen.getByText('Ghiduri');
     fireEvent.click(guideTabBtn);
-    expect(screen.getByText(/Ghiduri medicale/i)).toBeInTheDocument();
-    expect(screen.getByText(/Noutăți & protocoale/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ghiduri Clinice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Noutăți/i)).toBeInTheDocument();
   });
 
   it('4. Flux Jurnal Simptome: Deschidere Formular -> Notiță -> Salvare -> Afișare în Istoric', async () => {
@@ -108,7 +108,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     fireEvent.click(symptomsTabBtn);
 
     // Notăm o notă în jurnal
-    const notesInput = screen.getByPlaceholderText(/Vrei să adaugi câteva cuvinte/i);
+    const notesInput = screen.getByPlaceholderText(/Notează un gând, un simptom/i);
     fireEvent.change(notesInput, { target: { value: 'M-am simțit foarte energică azi după plimbare.' } });
 
     // Alegem o dispoziție
@@ -119,8 +119,9 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     const saveBtn = screen.getByText(/Salvează în jurnal/i);
     fireEvent.click(saveBtn);
 
-    // Verificăm salvarea în localStorage
-    await screen.findByText(/Înregistrat azi ✓/i);
+    // Verificăm salvarea în localStorage și afișarea în istoric
+    const matchingElements = await screen.findAllByText(/M-am simțit foarte energică azi după plimbare./i);
+    expect(matchingElements.length).toBeGreaterThan(0);
     const savedSymptoms = storageService.getSymptomLogs();
     expect(savedSymptoms.length).toBeGreaterThan(0);
     expect(savedSymptoms[0].notes).toBe('M-am simțit foarte energică azi după plimbare.');
@@ -149,8 +150,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     fireEvent.click(recipeCard!);
 
     // Suntem redirecționați automat în modulul Ghiduri
-    expect(screen.getByText(/Ghiduri medicale/i)).toBeInTheDocument();
-    expect(screen.getByText(/Noutăți & protocoale/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ghiduri Clinice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Noutăți/i)).toBeInTheDocument();
   });
 
   it('6. Flux Modale Clinice & Suport: Deschiderea și Închiderea Modalelor', async () => {
@@ -178,8 +179,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     localStorage.setItem('oncosentinel_onboarded', 'true');
     render(<App />);
 
-    // Găsim butonul "Foarte bine"
-    const greatMoodBtn = screen.getByText('Foarte bine').closest('button');
+    // Găsim butonul "Foarte bun" (nivel 5)
+    const greatMoodBtn = screen.getByText('Foarte bun').closest('button');
     expect(greatMoodBtn).toBeTruthy();
     fireEvent.click(greatMoodBtn!);
 
@@ -197,8 +198,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     localStorage.setItem('oncosentinel_onboarded', 'true');
     render(<App />);
 
-    // Selectăm starea "Foarte rău"
-    const veryBadMoodBtn = screen.getByText('Foarte rău').closest('button');
+    // Selectăm starea "Dificil" (nivel 1)
+    const veryBadMoodBtn = screen.getByText('Dificil').closest('button');
     expect(veryBadMoodBtn).toBeTruthy();
     fireEvent.click(veryBadMoodBtn!);
 

@@ -22,7 +22,7 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     expect(botanicalBranch).toBeInTheDocument();
 
     // 2. Notification Bell in top right
-    expect(screen.getByTitle(/Notificări & Memento/i)).toBeInTheDocument();
+    expect(screen.getByTitle(/Memento/i)).toBeInTheDocument();
 
     // 3. Medication Hero Card (Tamoxifen 20 mg)
     expect(screen.getByText(/Tamoxifen 20 mg/i)).toBeInTheDocument();
@@ -43,17 +43,17 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     const leafSprig = container.querySelector('svg[viewBox="0 0 80 80"]');
     expect(leafSprig).toBeInTheDocument();
 
-    // 6. Emotional Mood Journal (5 faces)
+    // 6. Emotional Mood Journal (5 Clinical Levels)
     expect(screen.getByText(/Cum te-ai simțit în ultima săptămână\?/i)).toBeInTheDocument();
-    expect(screen.getByText('Foarte bine')).toBeInTheDocument();
-    expect(screen.getByText('Bine')).toBeInTheDocument();
-    expect(screen.getByText('Neutru')).toBeInTheDocument();
-    expect(screen.getByText('Rău')).toBeInTheDocument();
-    expect(screen.getByText('Foarte rău')).toBeInTheDocument();
+    expect(screen.getByText('Dificil')).toBeInTheDocument();
+    expect(screen.getByText('Scăzut')).toBeInTheDocument();
+    expect(screen.getByText('Echilibrat')).toBeInTheDocument();
+    expect(screen.getByText('Bun')).toBeInTheDocument();
+    expect(screen.getByText('Foarte bun')).toBeInTheDocument();
 
     // 7. Clinical Guide & News Cards
     expect(screen.getByText(/Tamoxifen și efectele secundare/i)).toBeInTheDocument();
-    expect(screen.getByText(/Recomandări actualizate pentru monitorizarea pe termen lung/i)).toBeInTheDocument();
+    expect(screen.getByText(/ASCO 2026: Tamoxifen în doze mici/i)).toBeInTheDocument();
 
     // 8. Inspiration Banner
     expect(screen.getByText(/Nu ești doar un pacient/i)).toBeInTheDocument();

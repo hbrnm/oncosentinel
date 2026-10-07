@@ -58,8 +58,8 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     // Titlu dinamic de zi
     expect(screen.getByText(/Cum te simți azi\?/i)).toBeInTheDocument();
 
-    // Pacienta se simte bine și selectează starea "Bine"
-    const goodMoodBtn = screen.getByText('Bine').closest('button');
+    // Pacienta se simte bine și selectează starea "Bun" (nivel 4 clinic)
+    const goodMoodBtn = screen.getByText('Bun').closest('button');
     expect(goodMoodBtn).toBeTruthy();
     fireEvent.click(goodMoodBtn!);
 
@@ -119,8 +119,8 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     const guideNavBtn = screen.getByText('Ghiduri');
     fireEvent.click(guideNavBtn);
 
-    expect(screen.getByText(/Ghiduri medicale/i)).toBeInTheDocument();
-    expect(screen.getByText(/Noutăți & protocoale/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ghiduri Clinice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Noutăți/i)).toBeInTheDocument();
 
     // -------------------------------------------------------------
     // ETAPA 8: Revenire pe „Astăzi” - Datele și starea sunt perfect conservate

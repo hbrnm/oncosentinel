@@ -53,6 +53,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [stageVal, setStageVal] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
   const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
   const [prVal, setPrVal] = useState(profile.pr_status || 'Pozitiv (>80%)');
+  const [her2Val, setHer2Val] = useState(profile.her2_status || 'Negativ');
   const [emailVal, setEmailVal] = useState(profile.email || '');
   const [oncologistEmailVal, setOncologistEmailVal] = useState(profile.oncologist_email || '');
   const [avatarVal, setAvatarVal] = useState(profile.avatar_url || '');
