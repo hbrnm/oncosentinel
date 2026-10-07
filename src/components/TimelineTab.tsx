@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   CheckCircle2, FileText, Upload, Plus, ChevronDown, 
   ChevronUp, ShieldCheck, Download, Calendar, Activity, Sparkles,
-  Stethoscope, Clock, Check, Edit3
+  Stethoscope, Clock, Check, Edit3, Trash2
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';
@@ -12,13 +12,15 @@ interface TimelineTabProps {
   milestones: ClinicalMilestone[];
   documents: MedicalDocument[];
   onAddDocument: (doc: Partial<MedicalDocument>) => void;
+  onDeleteDocument?: (id: string) => void;
 }
 
 export const TimelineTab: React.FC<TimelineTabProps> = ({
   profile,
   milestones,
   documents,
-  onAddDocument
+  onAddDocument,
+  onDeleteDocument
 }) => {
   const [expandedMilestone, setExpandedMilestone] = useState<string | null>('m4');
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
@@ -332,24 +334,39 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                 </div>
               </div>
 
-              <button
-                onClick={() => {
-                  if (doc.file_data) {
-                    const link = document.createElement('a');
-                    link.href = doc.file_data;
-                    link.download = doc.file_name;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  } else {
-                    alert(`Descărcare document: ${doc.file_name} (${doc.is_demo ? 'Document demonstrativ' : 'Document salvat'})`);
-                  }
-                }}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500 hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
-                title="Descarcă documentul"
-              >
-                <Download className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => {
+                    if (doc.file_data) {
+                      const link = document.createElement('a');
+                      link.href = doc.file_data;
+                      link.download = doc.file_name;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    } else {
+                      alert(`Descărcare document: ${doc.file_name} (${doc.is_demo ? 'Document demonstrativ' : 'Document salvat'})`);
+                    }
+                  }}
+                  className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500 hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
+                  title="Descarcă documentul"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+                {onDeleteDocument && (
+                  <button
+                    onClick={() => {
+                      if (confirm(`Sigur dorești să ștergi documentul "${doc.file_name}" din dosar?`)) {
+                        onDeleteDocument(doc.id);
+                      }
+                    }}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                    title="Șterge documentul din dosar"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -177,6 +177,12 @@ export function App() {
     storageService.saveDocuments(updated);
   };
 
+  const handleDeleteDocument = (docId: string) => {
+    const updated = documents.filter(d => d.id !== docId);
+    setDocuments(updated);
+    storageService.saveDocuments(updated);
+  };
+
   const handleSaveProfile = (updated: PatientProfile) => {
     setProfile(updated);
     storageService.saveProfile(updated);
@@ -238,6 +244,7 @@ export function App() {
               milestones={milestones}
               documents={documents}
               onAddDocument={handleAddDocument}
+              onDeleteDocument={handleDeleteDocument}
             />
           )}
 
