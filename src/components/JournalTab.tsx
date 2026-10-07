@@ -188,7 +188,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </div>
           <button 
             onClick={handleSave}
-            disabled={!mood || saving || savedToday}
+            disabled={saving || savedToday}
             className="w-full mt-3 h-12 rounded-2xl bg-[#C99A9D] hover:bg-[#B88A8D] dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
             {savedToday ? "Înregistrat azi ✓" : saving ? "Salvez..." : "Salvează în jurnal"}
