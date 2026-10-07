@@ -6,6 +6,7 @@ import { TreatmentTab } from './components/TreatmentTab';
 import { TimelineTab } from './components/TimelineTab';
 import { SymptomsTab } from './components/SymptomsTab';
 import { GuideTab } from './components/GuideTab';
+import { ProfileTab } from './components/ProfileTab';
 import { RedFlagsModal } from './components/RedFlagsModal';
 import { EditProfileModal } from './components/EditProfileModal';
 import { BreathingModal } from './components/BreathingModal';
@@ -283,6 +284,16 @@ export function App() {
           {activeTab === 'guide' && (
             <GuideTab
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
+            />
+          )}
+
+          {activeTab === 'profile' && (
+            <ProfileTab
+              profile={profile}
+              doses={doses}
+              onUpdateProfile={handleSaveProfile}
+              onNavigateToTab={(tab) => setActiveTab(tab)}
+              onOpenAuth={() => setIsAuthOpen(true)}
             />
           )}
         </main>

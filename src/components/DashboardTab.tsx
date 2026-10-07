@@ -10,6 +10,7 @@ import { PatientProfile, DoseLog } from '../types';
 import { notificationsService } from '../lib/notifications';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
+import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 
 interface DashboardTabProps {
@@ -24,7 +25,7 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onNavigateToRecipes?: (query?: string) => void;
-  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide') => void;
+  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide' | 'profile') => void;
 }
 
 export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau';
@@ -99,6 +100,29 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     const sosUntil = localStorage.getItem('navimed_sos_visible_until');
     return Boolean(sosUntil && Number(sosUntil) > Date.now());
   });
+
+  const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
+  const nextUpcomingAppointment = React.useMemo(() => {
+    try {
+      const saved = localStorage.getItem('navimed_appointments_list');
+      if (saved) {
+        const list = JSON.parse(saved);
+        const upcomingList = list.filter((a: any) => a.status === 'upcoming');
+        if (upcomingList.length > 0) {
+          return upcomingList.sort((a: any, b: any) => a.date.localeCompare(b.date))[0];
+        }
+      }
+    } catch (e) {}
+    return {
+      id: 'default_appt',
+      date: nextControlDate,
+      time: '10:00',
+      specialty: 'Oncologie',
+      doctor: localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu',
+      center: 'Institutul Oncologic',
+      status: 'upcoming'
+    };
+  }, [nextControlDate]);
 
   // 5. Mindful Quote manual offset (cycles through quotes on tap)
   const [quoteOffset, setQuoteOffset] = useState<number>(0);
@@ -245,6 +269,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Appointment Banner (Base44 style for Today/Tomorrow appointment) */}
+      {!apptBannerDismissed && nextUpcomingAppointment && (
+        <AppointmentBanner
+          appointment={nextUpcomingAppointment}
+          onDismiss={() => setApptBannerDismissed(true)}
+          onClick={onOpenDoctorVisit}
+        />
+      )}
 
       {/* Hero Card Tratament (Tamoxifen 20mg - Base44 sage-card) */}
       <div className="sage-card rounded-[28px] p-5 relative overflow-hidden">

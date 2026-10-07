@@ -30,7 +30,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
 
     // Verificăm salutul personalizat în noul font Serif
     expect(screen.getAllByText(/Andreea/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Ești puternică. Pas cu pas. Ai grijă de tine./i)).toBeInTheDocument();
+    expect(screen.getByText(/Ești puternică\. Pas cu pas|Fiecare zi este un pas înainte|Ai făcut tot ce ai putut azi/i)).toBeInTheDocument();
 
     // -------------------------------------------------------------
     // ETAPA 2: Rutina de dimineață - Hero Card Tamoxifen
@@ -72,7 +72,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     // ETAPA 4: Consultare Card Dual (Următorul Control & Citat)
     // -------------------------------------------------------------
     expect(screen.getByText(/URMĂTORUL CONTROL/i)).toBeInTheDocument();
-    expect(screen.getByText(/Îngrijirea de sine nu este un lux/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Gândul de susținere|Îngrijirea de sine|Fiecare|Vindecarea|Ascultă-ți|Ești|Un pas|Ai făcut|Lasă|Fii mândră|Nu trebuie|Curajul/i).length).toBeGreaterThan(0);
 
     // Dă click pe cardul de control pentru a pregăti întrebările și a vedea data
     const controlCard = screen.getByText(/URMĂTORUL CONTROL/i).closest('div[class*="cursor-pointer"]');

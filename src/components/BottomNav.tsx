@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, Pill, FolderHeart, Activity, BookOpen } from 'lucide-react';
+import { Home, Pill, FolderHeart, Activity, BookOpen, User } from 'lucide-react';
 
-export type TabType = 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide';
+export type TabType = 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide' | 'profile';
 
 interface BottomNavProps {
   activeTab: TabType;
@@ -15,11 +15,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
     { id: 'timeline' as TabType, label: 'Dosar', icon: FolderHeart },
     { id: 'symptoms' as TabType, label: 'Jurnal & PDF', icon: Activity },
     { id: 'guide' as TabType, label: 'Ghid & Rețete', icon: BookOpen },
+    { id: 'profile' as TabType, label: 'Profil', icon: User },
   ];
 
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-50 pointer-events-none pb-safe">
-      <div className="mx-3 mb-3 organic-card rounded-[28px] px-2 py-1.5 grid grid-cols-5 shadow-lg pointer-events-auto bg-white/95 dark:bg-darkbg-surface/95 backdrop-blur-md">
+      <div className="mx-2 mb-3 organic-card rounded-[28px] px-1 py-1.5 grid grid-cols-6 shadow-lg pointer-events-auto bg-white/95 dark:bg-darkbg-surface/95 backdrop-blur-md">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;

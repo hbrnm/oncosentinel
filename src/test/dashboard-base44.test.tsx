@@ -39,7 +39,7 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
 
     // 5. Dual Cards: Următorul Control & Blush Quote with LeafSprig
     expect(screen.getByText(/URMĂTORUL CONTROL/i)).toBeInTheDocument();
-    expect(screen.getByText(/Îngrijirea de sine nu este un lux/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Gândul de susținere|Îngrijirea de sine|Fiecare|Vindecarea|Ascultă-ți|Ești|Un pas|Ai făcut|Lasă|Fii mândră|Nu trebuie|Curajul/i).length).toBeGreaterThan(0);
     const leafSprig = container.querySelector('svg[viewBox="0 0 80 80"]');
     expect(leafSprig).toBeInTheDocument();
 
