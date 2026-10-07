@@ -43,7 +43,7 @@ describe('TreatmentTab Component (Base44 Design)', () => {
     expect(screen.getByText(/Planul tău zilnic și istoricul dozelor\./i)).toBeInTheDocument();
     expect(screen.getByText('Tamoxifen')).toBeInTheDocument();
     expect(screen.getByText(/20 mg • 1 comprimat\/zi/i)).toBeInTheDocument();
-    expect(screen.getByText(/Aderență · ultimele 4 săptămâni/i)).toBeInTheDocument();
+    expect(screen.getByText(/Aderență/i)).toBeInTheDocument();
     expect(screen.getByText(/Calendar doze/i)).toBeInTheDocument();
     expect(screen.getByText(/Istoric recent/i)).toBeInTheDocument();
   });

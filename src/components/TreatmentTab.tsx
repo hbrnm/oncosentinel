@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PillIcon } from './Botanical';
-import { Check, Pencil, CalendarDays, Clock, X, Pill, Bell } from 'lucide-react';
+import { Check, Pencil, CalendarDays, Clock, X, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 
 interface TreatmentTabProps {
@@ -34,7 +34,6 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   const [medFrequency, setMedFrequency] = useState(profile.medication_frequency || '1 comprimat/zi');
   const [medTime, setMedTime] = useState(profile.daily_reminder_time || '08:00');
 
-  // Compute 28 days
   const now = new Date();
   const getLocalDateString = (d: Date) => {
     const year = d.getFullYear();
@@ -45,35 +44,105 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
   const todayStr = getLocalDateString(now);
 
-  // Taken dates set
-  const takenDates = new Set(
-    doses
-      .filter(d => d.status === 'taken')
-      .map(d => {
-        const dDate = d.taken_at ? new Date(d.taken_at) : new Date(d.scheduled_for);
-        return getLocalDateString(dDate);
-      })
-  );
+  // Month navigation state: defaults to current month
+  const [viewDate, setViewDate] = useState<Date>(() => new Date(now.getFullYear(), now.getMonth(), 1));
+
+  // Map of taken and skipped/missed dates
+  const takenDates = new Set<string>();
+  const missedDates = new Set<string>();
+
+  doses.forEach((d) => {
+    const dDate = d.taken_at ? new Date(d.taken_at) : new Date(d.scheduled_for);
+    const iso = getLocalDateString(dDate);
+    if (d.status === 'taken') {
+      takenDates.add(iso);
+    } else if (d.status === 'missed' || d.status === 'skipped') {
+      missedDates.add(iso);
+    }
+  });
 
   const isTodayTaken = takenDates.has(todayStr);
 
-  const days: { iso: string; taken: boolean; isToday: boolean; day: number; dow: number }[] = [];
-  for (let i = 27; i >= 0; i--) {
-    const d = new Date(now);
-    d.setDate(now.getDate() - i);
+  // Calendar month calculation: standard monthly calendar from 1 to last day of month
+  const viewYear = viewDate.getFullYear();
+  const viewMonth = viewDate.getMonth();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const firstDayOfMonth = new Date(viewYear, viewMonth, 1);
+  // In Romania week starts on Monday: Monday = 0, Sunday = 6
+  // JS getDay(): Sunday = 0, Monday = 1 ... Saturday = 6
+  const startDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7;
+
+  // Previous and next month handlers
+  const handlePrevMonth = () => {
+    setViewDate(new Date(viewYear, viewMonth - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setViewDate(new Date(viewYear, viewMonth + 1, 1));
+  };
+
+  // Build grid of days
+  interface CalendarDay {
+    dayNumber: number;
+    iso: string;
+    status: 'taken' | 'missed' | 'future' | 'empty';
+    isToday: boolean;
+  }
+
+  const calendarDays: (CalendarDay | null)[] = [];
+
+  // Padding cells before the 1st day of the month
+  for (let i = 0; i < startDayOfWeek; i++) {
+    calendarDays.push(null);
+  }
+
+  // Days 1 .. daysInMonth in ascending natural order
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(viewYear, viewMonth, day);
     const iso = getLocalDateString(d);
-    days.push({
+    const isToday = iso === todayStr;
+
+    let status: 'taken' | 'missed' | 'future' | 'empty' = 'future';
+
+    if (takenDates.has(iso)) {
+      status = 'taken';
+    } else if (missedDates.has(iso)) {
+      status = 'missed';
+    } else if (iso < todayStr) {
+      // Past day in which no dose was taken: marked as missed / sarita
+      status = 'missed';
+    } else if (iso === todayStr) {
+      status = isTodayTaken ? 'taken' : 'future';
+    } else {
+      status = 'future';
+    }
+
+    calendarDays.push({
+      dayNumber: day,
       iso,
-      taken: takenDates.has(iso),
-      isToday: iso === todayStr,
-      day: d.getDate(),
-      dow: d.getDay() // 0 = Sun, 1 = Mon ...
+      status,
+      isToday
     });
   }
 
-  // Count taken days that fall in the 28-day window
-  const takenInWindowCount = days.filter(d => d.taken).length;
-  const adherence = Math.min(100, Math.round((takenInWindowCount / Math.max(days.length, 1)) * 100));
+  // Monthly stats: count taken, missed, total elapsed days in month up to today
+  const totalElapsedDaysInViewMonth = Math.min(
+    daysInMonth,
+    viewYear === now.getFullYear() && viewMonth === now.getMonth()
+      ? now.getDate()
+      : viewDate < now
+      ? daysInMonth
+      : 0
+  );
+
+  const takenInViewMonth = Array.from(takenDates).filter((iso) => {
+    const [y, m] = iso.split('-').map(Number);
+    return y === viewYear && m === viewMonth + 1;
+  }).length;
+
+  const adherenceMonth = totalElapsedDaysInViewMonth > 0
+    ? Math.min(100, Math.round((takenInViewMonth / totalElapsedDaysInViewMonth) * 100))
+    : 100;
 
   const handleSaveEdit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +162,8 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   const recentTakenDoses = doses
     .filter(d => d.status === 'taken')
     .slice(0, 8);
+
+  const monthLabelRo = `${RO_MONTHS[viewMonth]} ${viewYear}`;
 
   return (
     <div className="space-y-5 animate-fade-in pb-12">
@@ -154,53 +225,120 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         </div>
       </div>
 
-      {/* Card Aderență matching Base44 */}
+      {/* Card Aderență pe Luna Curentă */}
       <div className="organic-card rounded-3xl p-5">
         <div className="flex items-center justify-between mb-1">
-          <p className="micro-label">Aderență · ultimele 4 săptămâni</p>
+          <p className="micro-label">Aderență · {monthLabelRo}</p>
           <span className="font-serif text-2xl text-[#4A6354] dark:text-sage-300">
-            {adherence}%
+            {adherenceMonth}%
           </span>
         </div>
         <div className="h-2 rounded-full bg-[#F5F2EB] dark:bg-darkbg-card mt-2 overflow-hidden">
           <div
             className="h-full rounded-full bg-[#5E7A68] dark:bg-sage-400 transition-all duration-700"
-            style={{ width: `${adherence}%` }}
+            style={{ width: `${adherenceMonth}%` }}
           />
         </div>
         <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-2 font-medium">
-          {takenInWindowCount} doze luate din {days.length} zile.
+          {takenInViewMonth} doze luate din {totalElapsedDaysInViewMonth > 0 ? totalElapsedDaysInViewMonth : daysInMonth} zile.
         </p>
       </div>
 
-      {/* Card Calendar Doze matching Base44 */}
+      {/* Card Calendar Doze Lunar Normal (Zilele lunii de la 1 la ultima zi) */}
       <div className="organic-card rounded-3xl p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <CalendarDays className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
-          <p className="micro-label">Calendar doze</p>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <CalendarDays className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <p className="micro-label">Calendar doze</p>
+          </div>
+
+          {/* Month Navigator */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={handlePrevMonth}
+              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-[#6B6259] dark:text-gray-300 transition-colors"
+              title="Luna precedentă"
+              aria-label="Luna precedentă"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200 capitalize min-w-[110px] text-center">
+              {monthLabelRo}
+            </span>
+            <button
+              onClick={handleNextMonth}
+              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-[#6B6259] dark:text-gray-300 transition-colors"
+              title="Luna următoare"
+              aria-label="Luna următoare"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-1.5">
-          {days.map((d) => (
-            <div key={d.iso} className="flex flex-col items-center gap-1">
-              <span className="text-[9px] text-[#6B6259]/60 dark:text-gray-400 font-medium">
-                {['D', 'L', 'M', 'M', 'J', 'V', 'S'][d.dow]}
-              </span>
-              <div
-                className={`w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
-                  d.isToday ? 'ring-2 ring-[#5E7A68] dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface' : ''
-                } ${
-                  d.taken
-                    ? 'bg-[#5E7A68] text-white shadow-xs'
-                    : d.iso < todayStr
-                    ? 'bg-[#F5F2EB]/80 dark:bg-darkbg-card text-[#6B6259]/40 dark:text-gray-500'
-                    : 'bg-[#F5F2EB]/40 dark:bg-darkbg-card/40 text-[#6B6259] dark:text-gray-400'
-                }`}
-              >
-                {d.taken ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : d.day}
-              </div>
-            </div>
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-4 py-1.5 mb-3 bg-[#FAF8F5] dark:bg-darkbg-card/50 rounded-xl text-[11px] text-[#6B6259] dark:text-gray-300">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#5E7A68]" />
+            <span>Luat (verde)</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#DC2626]" />
+            <span>Sărit (roșu)</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#EAE5DE] dark:bg-gray-600" />
+            <span>Programat</span>
+          </div>
+        </div>
+
+        {/* Day of Week Header: L, M, M, J, V, S, D */}
+        <div className="grid grid-cols-7 gap-1.5 text-center mb-1">
+          {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, idx) => (
+            <span key={idx} className="text-[10px] text-[#6B6259]/70 dark:text-gray-400 font-semibold py-0.5">
+              {d}
+            </span>
           ))}
+        </div>
+
+        {/* 7-column Calendar Grid (Days 1 to N in ascending natural order) */}
+        <div className="grid grid-cols-7 gap-1.5">
+          {calendarDays.map((cell, idx) => {
+            if (!cell) {
+              return <div key={`empty-${idx}`} className="w-8 h-8 mx-auto" />;
+            }
+
+            const { dayNumber, status, isToday } = cell;
+
+            return (
+              <div key={cell.iso} className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
+                    isToday
+                      ? 'ring-2 ring-[#5E7A68] dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
+                      : ''
+                  } ${
+                    status === 'taken'
+                      ? 'bg-[#5E7A68] text-white shadow-xs'
+                      : status === 'missed'
+                      ? 'bg-[#DC2626] text-white shadow-xs'
+                      : 'bg-[#F5F2EB]/60 dark:bg-darkbg-card text-[#3A332E] dark:text-gray-300'
+                  }`}
+                  title={`${dayNumber} ${monthLabelRo} - ${
+                    status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză sărită' : 'Viitoare / De luat'
+                  }`}
+                >
+                  {status === 'taken' ? (
+                    <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                  ) : status === 'missed' ? (
+                    <X className="w-3.5 h-3.5" strokeWidth={3} />
+                  ) : (
+                    dayNumber
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
