@@ -170,8 +170,7 @@ export function App() {
       is_demo: false
     };
 
-    // Rule: When user uploads real documents, all demo documents are replaced
-    const nonDemoDocs = documents.filter(d => !d.is_demo && d.id !== 'doc1' && d.id !== 'doc2' && d.id !== 'doc3');
+    const nonDemoDocs = documents.filter(d => !d.is_demo);
     const updated = [newDoc, ...nonDemoDocs];
     setDocuments(updated);
     storageService.saveDocuments(updated);

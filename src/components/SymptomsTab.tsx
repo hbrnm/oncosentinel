@@ -22,15 +22,15 @@ export const SymptomsTab: React.FC<SymptomsTabProps> = ({
   onAddSymptomLog
 }) => {
   // Form State
-  const [hotFlashesCount, setHotFlashesCount] = useState<number>(2);
-  const [hotFlashesIntensity, setHotFlashesIntensity] = useState<number>(2);
+  const [hotFlashesCount, setHotFlashesCount] = useState<number>(0);
+  const [hotFlashesIntensity, setHotFlashesIntensity] = useState<number>(1);
   const [nightSweats, setNightSweats] = useState<boolean>(false);
-  const [fatigueLevel, setFatigueLevel] = useState<number>(2);
+  const [fatigueLevel, setFatigueLevel] = useState<number>(1);
   const [sleepQuality, setSleepQuality] = useState<number>(3);
   const [moodState, setMoodState] = useState<string>('Echilibrată');
-  const [jointPainLevel, setJointPainLevel] = useState<number>(1);
-  const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>(['genunchi']);
-  const [mucosalDryness, setMucosalDryness] = useState<number>(1);
+  const [jointPainLevel, setJointPainLevel] = useState<number>(0);
+  const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>([]);
+  const [mucosalDryness, setMucosalDryness] = useState<number>(0);
   const [waterIntake, setWaterIntake] = useState<number>(2000);
   const [notes, setNotes] = useState<string>('');
   const [isSaved, setIsSaved] = useState<boolean>(false);
@@ -399,25 +399,31 @@ export const SymptomsTab: React.FC<SymptomsTabProps> = ({
         </h4>
 
         <div className="space-y-2.5">
-          {symptoms.slice(0, 5).map((log) => (
-            <div
-              key={log.id}
-              className="p-3 rounded-2xl bg-gray-50/70 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border text-xs space-y-1"
-            >
-              <div className="flex items-center justify-between font-semibold text-gray-800 dark:text-gray-200">
-                <span>{new Date(log.logged_at).toLocaleDateString('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                <span className="text-[11px] text-sage-600 dark:text-sage-400 font-normal">
-                  {log.mood_state} • Somn {log.sleep_quality}/5
-                </span>
+          {symptoms.length === 0 ? (
+            <p className="text-xs text-gray-500 dark:text-gray-400 italic text-center py-4">
+              Nu există înregistrări anterioare. Completează formularul de mai sus pentru a nota prima stare.
+            </p>
+          ) : (
+            symptoms.slice(0, 5).map((log) => (
+              <div
+                key={log.id}
+                className="p-3 rounded-2xl bg-gray-50/70 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border text-xs space-y-1"
+              >
+                <div className="flex items-center justify-between font-semibold text-gray-800 dark:text-gray-200">
+                  <span>{new Date(log.logged_at).toLocaleDateString('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
+                  <span className="text-[11px] text-sage-600 dark:text-sage-400 font-normal">
+                    {log.mood_state} • Somn {log.sleep_quality}/5
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 text-[11px]">
+                  Bufeuri: {log.hot_flashes_count} ep. (intensitate {log.hot_flashes_intensity}/5) • Dureri: {log.joint_pain_level}/5 ({log.joint_pain_areas.join(', ') || 'fără'})
+                </p>
+                {log.notes && (
+                  <p className="text-[11px] text-gray-500 italic mt-0.5">"{log.notes}"</p>
+                )}
               </div>
-              <p className="text-gray-600 dark:text-gray-400 text-[11px]">
-                Bufeuri: {log.hot_flashes_count} ep. (intensitate {log.hot_flashes_intensity}/5) • Dureri: {log.joint_pain_level}/5 ({log.joint_pain_areas.join(', ') || 'fără'})
-              </p>
-              {log.notes && (
-                <p className="text-[11px] text-gray-500 italic mt-0.5">"{log.notes}"</p>
-              )}
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 

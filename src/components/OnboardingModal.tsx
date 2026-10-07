@@ -18,10 +18,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   onComplete 
 }) => {
   const [step, setStep] = useState<number>(1);
-  const [name, setName] = useState<string>(profile?.full_name || 'Elena Popescu');
+  const [name, setName] = useState<string>(profile?.full_name || '');
   const [reminderTime, setReminderTime] = useState<string>(profile?.daily_reminder_time || '08:30');
   const [pillStock, setPillStock] = useState<number | ''>(profile?.pill_stock_count ?? 30);
-  const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || '2026-09-01');
+  const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || new Date().toISOString().slice(0, 10));
   const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '2027-03-15');
   const [notificationsAllowed, setNotificationsAllowed] = useState<boolean>(false);
 
@@ -50,18 +50,18 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   const handleFinish = () => {
     const configuredProfile: PatientProfile = {
       ...(profile || {
-        full_name: 'Elena Popescu',
+        full_name: '',
         histology: 'Carcinom Ductal In Situ (DCIS)',
         stage: 'Grad 0 (TisN0M0, G2)',
         er_status: 'Pozitiv (>90%)',
         pr_status: 'Pozitiv (>80%)',
         her2_status: 'Negativ',
-        tamoxifen_start_date: '2026-09-01',
+        tamoxifen_start_date: new Date().toISOString().slice(0, 10),
         pill_stock_count: 30,
         daily_reminder_time: '08:30',
-        oncologist_email: 'dr.oncologie@spital.ro'
+        oncologist_email: ''
       }),
-      full_name: name.trim() || profile?.full_name || 'Elena Popescu',
+      full_name: name.trim() || profile?.full_name || '',
       tamoxifen_start_date: tamoxifenStartDate,
       pill_stock_count: pillStock === '' ? 0 : Number(pillStock),
       daily_reminder_time: reminderTime

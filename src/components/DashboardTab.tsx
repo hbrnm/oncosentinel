@@ -52,7 +52,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const isTakenToday = todayDose?.status === 'taken';
 
   // Quick symptom state
-  const [quickHotFlashes, setQuickHotFlashes] = useState<number>(1);
+  const [quickHotFlashes, setQuickHotFlashes] = useState<number>(0);
   const [quickEnergy, setQuickEnergy] = useState<number>(3);
   const [quickJoints, setQuickJoints] = useState<number>(0);
   const [symptomSavedNotice, setSymptomSavedNotice] = useState<boolean>(false);
@@ -60,7 +60,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   // Exercise tracking state (weekly target: 150 mins)
   const [exerciseMinutes, setExerciseMinutes] = useState<number>(() => {
     const saved = localStorage.getItem('navimed_exercise_minutes');
-    return saved ? parseInt(saved, 10) : 45;
+    return saved ? parseInt(saved, 10) : 0;
   });
   const [exerciseNotice, setExerciseNotice] = useState<string | null>(null);
 

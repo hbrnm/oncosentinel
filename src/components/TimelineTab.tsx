@@ -304,71 +304,81 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
         {/* Documents list */}
         <div className="space-y-2">
-          {documents.map((doc) => (
-            <div
-              key={doc.id}
-              className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border hover:bg-sage-50/40 transition-colors"
-            >
-              <div className="flex items-center space-x-2.5 min-w-0">
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-                  doc.is_demo 
-                    ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' 
-                    : 'bg-petal-100 dark:bg-petal-900/40 text-petal-700 dark:text-petal-300'
-                }`}>
-                  <FileText className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <p className="text-xs font-semibold text-gray-900 dark:text-white truncate">
-                      {doc.file_name}
-                    </p>
-                    {doc.is_demo && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
-                        Demo
-                      </span>
-                    )}
+          {documents.length === 0 ? (
+            <div className="text-center py-6 px-4 bg-gray-50/50 dark:bg-darkbg-card/50 rounded-2xl border border-dashed border-gray-200 dark:border-darkbg-border">
+              <FileText className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
+              <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Nu ai încărcat niciun document</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                Apasă butonul „Încarcă PDF” de mai sus pentru a salva primul bilet de ieșire, mamografie sau raport histopatologic.
+              </p>
+            </div>
+          ) : (
+            documents.map((doc) => (
+              <div
+                key={doc.id}
+                className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border hover:bg-sage-50/40 transition-colors"
+              >
+                <div className="flex items-center space-x-2.5 min-w-0">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                    doc.is_demo 
+                      ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' 
+                      : 'bg-petal-100 dark:bg-petal-900/40 text-petal-700 dark:text-petal-300'
+                  }`}>
+                    <FileText className="w-4 h-4" />
                   </div>
-                  <p className="text-[10px] text-gray-500">
-                    {new Date(doc.uploaded_at).toLocaleDateString('ro-RO')} • {Math.round((doc.file_size_bytes || 200000) / 1024)} KB
-                  </p>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-xs font-semibold text-gray-900 dark:text-white truncate">
+                        {doc.file_name}
+                      </p>
+                      {doc.is_demo && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
+                          Demo
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[10px] text-gray-500">
+                      {new Date(doc.uploaded_at).toLocaleDateString('ro-RO')} • {Math.round((doc.file_size_bytes || 200000) / 1024)} KB
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-1 shrink-0">
-                <button
-                  onClick={() => {
-                    if (doc.file_data) {
-                      const link = document.createElement('a');
-                      link.href = doc.file_data;
-                      link.download = doc.file_name;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    } else {
-                      alert(`Descărcare document: ${doc.file_name} (${doc.is_demo ? 'Document demonstrativ' : 'Document salvat'})`);
-                    }
-                  }}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500 hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
-                  title="Descarcă documentul"
-                >
-                  <Download className="w-4 h-4" />
-                </button>
-                {onDeleteDocument && (
+                <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => {
-                      if (confirm(`Sigur dorești să ștergi documentul "${doc.file_name}" din dosar?`)) {
-                        onDeleteDocument(doc.id);
+                      if (doc.file_data) {
+                        const link = document.createElement('a');
+                        link.href = doc.file_data;
+                        link.download = doc.file_name;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      } else {
+                        alert(`Descărcare document: ${doc.file_name}`);
                       }
                     }}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
-                    title="Șterge documentul din dosar"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500 hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
+                    title="Descarcă documentul"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Download className="w-4 h-4" />
                   </button>
-                )}
+                  {onDeleteDocument && (
+                    <button
+                      onClick={() => {
+                        if (confirm(`Sigur dorești să ștergi documentul "${doc.file_name}" din dosar?`)) {
+                          onDeleteDocument(doc.id);
+                        }
+                      }}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                      title="Șterge documentul din dosar"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
@@ -423,7 +433,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               Încarcă Document Medical Propriu
             </h3>
             <p className="text-[11px] text-gray-500 mb-3">
-              Notă: Când adaugi primul tău document real, fișierele demonstrative vor fi înlocuite automat.
+              Documentele sunt stocate în siguranță pe dispozitivul tău și pot fi sincronizate în Cloud.
             </p>
             <form onSubmit={handleUploadFile} className="space-y-3">
               <div>

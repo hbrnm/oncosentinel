@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-normal flex items-center gap-1">
-              <span>Bună, {profile.full_name.split(' ')[0]}</span>
+              <span>{profile.full_name?.trim() ? `Bună, ${profile.full_name.trim().split(' ')[0]}` : 'Bună!'}</span>
               <Settings className="w-3 h-3 text-gray-400 group-hover:text-sage-500" />
             </p>
           </div>

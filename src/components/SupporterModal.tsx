@@ -23,8 +23,8 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
   const [supporter, setSupporter] = useState<SupporterData>(() => {
     const saved = localStorage.getItem('navimed_supporter');
     return saved ? JSON.parse(saved) : {
-      name: 'Andrei',
-      relationship: 'Soț',
+      name: '',
+      relationship: 'Partener/ă',
       phone: '',
       notifyOnMissedDose: true
     };
@@ -39,15 +39,16 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
   if (!isOpen) return null;
 
   // Calculate days on Tamoxifen
-  const startDate = new Date(profile.tamoxifen_start_date || '2026-09-01');
+  const startDate = profile.tamoxifen_start_date ? new Date(profile.tamoxifen_start_date) : new Date();
   const now = new Date();
   const diffDays = Math.max(1, Math.floor((now.getTime() - startDate.getTime()) / (1000 * 3600 * 24)));
 
-  const patientFirstName = profile.full_name.split(' ')[0] || 'Eu';
+  const patientFirstName = profile.full_name?.trim() ? profile.full_name.trim().split(' ')[0] : 'Eu';
+  const supporterSalutation = supporter.name.trim() ? `Bună, ${supporter.name.trim()}!` : 'Bună!';
 
   const currentMessage = messageType === 'stare_buna'
-    ? `Bună, ${supporter.name || 'dragă'}! Sunt în ziua ${diffDays} de tratament și azi am o stare bună. Îți mulțumesc din suflet că îmi ești aproape! 🌸 - ${patientFirstName}`
-    : `Bună, ${supporter.name || 'dragă'}! Te rog să-mi amintești să iau doza de Tamoxifen (20mg) de astăzi dacă nu am luat-o încă. Mulțumesc că ai grijă de mine! 💊🌸 - ${patientFirstName}`;
+    ? `${supporterSalutation} Sunt în ziua ${diffDays} de tratament și azi am o stare bună. Îți mulțumesc din suflet că îmi ești aproape! 🌸 - ${patientFirstName}`
+    : `${supporterSalutation} Te rog să-mi amintești să iau doza de Tamoxifen (20mg) de astăzi dacă nu am luat-o încă. Mulțumesc că ai grijă de mine! 💊🌸 - ${patientFirstName}`;
 
   const handleOpenWhatsApp = () => {
     const cleanPhone = supporter.phone.replace(/[^0-9]/g, '');
