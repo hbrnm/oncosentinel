@@ -71,15 +71,19 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   }, [symptoms, todayStr]);
 
   const handleSave = () => {
-    if (!mood) return;
     setSaving(true);
     
-    // Simulating API call/save
+    // Use a default mood level of 3 (Echilibrată) if none selected
+    const effectiveMood = mood ?? 3;
+    
     setTimeout(() => {
+      const moodLabels: Record<number, string> = {
+        1: 'Foarte rău', 2: 'Rău', 3: 'Echilibrată', 4: 'Bine', 5: 'Foarte bine'
+      };
       
       const newLogData = {
         logged_at: new Date().toISOString(),
-        mood_state: getMood(mood).label,
+        mood_state: moodLabels[effectiveMood] || 'Echilibrată',
         notes: note.trim() ? note.trim() : undefined,
         hot_flashes_count: hotFlashesCount,
         hot_flashes_intensity: hotFlashesIntensity,
