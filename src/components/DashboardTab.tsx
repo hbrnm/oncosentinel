@@ -122,15 +122,24 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       const saved = localStorage.getItem('navimed_appointments_list');
       if (saved) {
         const list = JSON.parse(saved);
-        const upcomingList = list.filter((a: any) => a.status === 'upcoming');
-        if (upcomingList.length > 0) {
-          return upcomingList.sort((a: any, b: any) => a.date.localeCompare(b.date))[0];
+        if (Array.isArray(list)) {
+          const upcomingList = list.filter((a: any) => a.status === 'upcoming');
+          if (upcomingList.length > 0) {
+            return upcomingList.sort((a: any, b: any) => a.date.localeCompare(b.date))[0];
+          }
+          // The list exists and has 0 upcoming appointments -> return null so banner is NOT shown!
+          return null;
         }
       }
     } catch (e) {}
+
+    // Fallback only if navimed_appointments_list was NEVER initialized at all AND navimed_next_control_date exists
+    const hasNextControl = localStorage.getItem('navimed_next_control_date');
+    if (!hasNextControl) return null;
+
     return {
       id: 'default_appt',
-      date: nextControlDate,
+      date: hasNextControl,
       time: '10:00',
       specialty: 'Oncologie',
       doctor: localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu',

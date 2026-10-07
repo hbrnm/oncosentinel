@@ -83,21 +83,12 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
     const saved = localStorage.getItem('navimed_appointments_list');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) {}
+      try { 
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
     }
-    const legacyDate = localStorage.getItem('navimed_next_control_date') || '2026-11-18';
-    const legacyDoctor = localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu';
-    return [
-      {
-        id: 'appt_1',
-        date: legacyDate,
-        time: '10:00',
-        specialty: 'Oncologie',
-        doctor: legacyDoctor,
-        center: 'Institutul Oncologic',
-        status: 'upcoming'
-      }
-    ];
+    return [];
   });
 
   // Add Appointment Dialog
