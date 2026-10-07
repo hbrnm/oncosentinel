@@ -3,7 +3,7 @@ import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, Clock, Pill, Sparkles, BatteryCharging, 
   Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
-  Stethoscope, Heart, Bell, BellRing, Check, Activity, Dumbbell,
+  Stethoscope, Heart, Bell, BellOff, BellRing, Check, Activity, Dumbbell,
   ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
@@ -287,13 +287,24 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         
         <div className="flex items-center gap-2 shrink-0">
           
-          <button
+                    <button
             type="button"
-            title="Notificări & Memento"
-            className="tap-scale relative w-11 h-11 rounded-full bg-white/80 dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border flex items-center justify-center shadow-xs"
+            title={bellActive ? "Dezactivează Memento" : "Activează Memento"}
+            onClick={handleToggleBell}
+            className={`tap-scale relative w-11 h-11 rounded-full border flex items-center justify-center shadow-xs transition-colors ${
+              bellActive 
+                ? 'bg-sage-50 dark:bg-sage-900/40 border-sage-200 dark:border-sage-800' 
+                : 'bg-white/80 dark:bg-darkbg-card border-[#EAE5DE] dark:border-darkbg-border opacity-70'
+            }`}
           >
-            <Bell className="w-5 h-5 text-sage-700 dark:text-sage-300" strokeWidth={1.8} />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DFB2B5]" />
+            {bellActive ? (
+              <>
+                <Bell className="w-5 h-5 text-sage-700 dark:text-sage-300" strokeWidth={1.8} />
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DFB2B5]" />
+              </>
+            ) : (
+              <BellOff className="w-5 h-5 text-gray-400 dark:text-gray-500" strokeWidth={1.8} />
+            )}
           </button>
         </div>
       </div>
