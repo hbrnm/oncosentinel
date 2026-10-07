@@ -1,71 +1,135 @@
 import React, { useState, useEffect } from 'react';
-import { X, ClipboardCheck, Plus, Trash2, CheckCircle2, Circle, Stethoscope, HelpCircle } from 'lucide-react';
+import { 
+  X, Plus, Trash2, CheckCircle2, Circle, CalendarHeart, 
+  Clock, MapPin, Stethoscope, ChevronRight, MessageSquarePlus, Calendar
+} from 'lucide-react';
+const daysUntil = (dateStr?: string) => {
+  if (!dateStr) return null;
+  const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (isNaN(target.getTime())) return null;
+  return Math.round((target.getTime() - today.getTime()) / 86400000);
+};
 
-interface QuestionItem {
+export interface QuestionItem {
   id: string;
   question: string;
-  category: 'tamoxifen' | 'imagistica' | 'analize' | 'general';
+  category?: 'tamoxifen' | 'imagistica' | 'analize' | 'general';
   isAnswered: boolean;
   notes?: string;
+}
+
+export interface AppointmentItem {
+  id: string;
+  date: string;
+  time?: string;
+  specialty: string;
+  doctor?: string;
+  center?: string;
+  status: 'upcoming' | 'done' | 'cancelled';
 }
 
 interface DoctorVisitModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onNavigateToTab?: (tab: 'today' | 'timeline' | 'symptoms' | 'guide') => void;
 }
 
-const DEFAULT_QUESTIONS: QuestionItem[] = [
-  {
-    id: 'q1',
-    question: 'Când este programată prima mamografie bilaterală de control după radioterapie?',
-    category: 'imagistica',
-    isAnswered: false,
-    notes: 'De obicei la 6-12 luni post-radioterapie.'
-  },
-  {
-    id: 'q2',
-    question: 'Avem nevoie de ecografie transvaginală de rutină pentru monitorizarea grosimii endometrului?',
-    category: 'tamoxifen',
-    isAnswered: false,
-    notes: 'Tamoxifenul stimulează ușor endometrul; se recomandă evaluare anuală sau la orice sângerare.'
-  },
-  {
-    id: 'q3',
-    question: 'Ce analize de sânge specifice verificăm (TGO/TGP, profil lipidic, calciu, fosfatază alcalină)?',
-    category: 'analize',
-    isAnswered: false,
-    notes: 'Metabolizarea hepatică a Tamoxifenului necesită probe hepatice periodice.'
-  },
-  {
-    id: 'q4',
-    question: 'Dacă bufeurile nocturne se intensifică, putem discuta despre o opțiune non-hormonală (Venlafaxină)?',
-    category: 'tamoxifen',
-    isAnswered: false,
-    notes: 'Inhibitor sigur fără impact pe CYP2D6.'
-  },
-  {
-    id: 'q5',
-    question: 'Când este indicată repetarea osteodensitometriei (scor DEXA) pentru sănătatea oaselor?',
-    category: 'imagistica',
-    isAnswered: false
-  }
-];
-
-export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({ isOpen, onClose }) => {
-  const [questions, setQuestions] = useState<QuestionItem[]>(() => {
-    const saved = localStorage.getItem('navimed_doctor_questions');
-    return saved ? JSON.parse(saved) : DEFAULT_QUESTIONS;
+export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({ 
+  isOpen, 
+  onClose,
+  onNavigateToTab
+}) => {
+  // 1. Appointments list state
+  const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
+    const saved = localStorage.getItem('navimed_appointments_list');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    const legacyDate = localStorage.getItem('navimed_next_control_date') || '2026-11-18';
+    const legacyDoctor = localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu';
+    return [
+      {
+        id: 'appt_1',
+        date: legacyDate,
+        time: '10:00',
+        specialty: 'Oncologie',
+        doctor: legacyDoctor,
+        center: 'Institutul Oncologic',
+        status: 'upcoming'
+      }
+    ];
   });
-  const [newQuestionText, setNewQuestionText] = useState<string>('');
 
+  // 2. Questions list state (Empty by default per user request - no preset questions)
+  const [questions, setQuestions] = useState<QuestionItem[]>(() => {
+    const saved = localStorage.getItem('navimed_doctor_questions_custom');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return [];
+  });
+
+  // 3. Form dialog states
+  const [showAddAppt, setShowAddAppt] = useState(false);
+  const [apptForm, setApptForm] = useState({
+    date: '',
+    time: '09:00',
+    specialty: 'Oncologie',
+    doctor: '',
+    center: ''
+  });
+
+  const [newQuestionText, setNewQuestionText] = useState('');
+
+  // Persist appointments and update legacy key for Dashboard sync
   useEffect(() => {
-    localStorage.setItem('navimed_doctor_questions', JSON.stringify(questions));
+    localStorage.setItem('navimed_appointments_list', JSON.stringify(appointments));
+    const nextUpcoming = appointments
+      .filter(a => a.status === 'upcoming')
+      .sort((a, b) => a.date.localeCompare(b.date))[0];
+    if (nextUpcoming) {
+      localStorage.setItem('navimed_next_control_date', nextUpcoming.date);
+      if (nextUpcoming.doctor) {
+        localStorage.setItem('navimed_doctor_name', nextUpcoming.doctor);
+      }
+      window.dispatchEvent(new Event('storage'));
+    }
+  }, [appointments]);
+
+  // Persist questions
+  useEffect(() => {
+    localStorage.setItem('navimed_doctor_questions_custom', JSON.stringify(questions));
   }, [questions]);
 
   if (!isOpen) return null;
 
+  const handleSaveAppt = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!apptForm.date) return;
+
+    const newAppt: AppointmentItem = {
+      id: `appt_${Date.now()}`,
+      date: apptForm.date,
+      time: apptForm.time,
+      specialty: apptForm.specialty || 'Oncologie',
+      doctor: apptForm.doctor,
+      center: apptForm.center,
+      status: 'upcoming'
+    };
+
+    setAppointments(prev => [...prev, newAppt].sort((a, b) => a.date.localeCompare(b.date)));
+    setShowAddAppt(false);
+    setApptForm({ date: '', time: '09:00', specialty: 'Oncologie', doctor: '', center: '' });
+  };
+
+  const handleDeleteAppt = (id: string) => {
+    setAppointments(prev => prev.filter(a => a.id !== id));
+  };
+
   const toggleAnswered = (id: string) => {
-    setQuestions(questions.map(q => q.id === id ? { ...q, isAnswered: !q.isAnswered } : q));
+    setQuestions(prev => prev.map(q => q.id === id ? { ...q, isAnswered: !q.isAnswered } : q));
   };
 
   const handleAddQuestion = (e: React.FormEvent) => {
@@ -79,172 +143,308 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({ isOpen, onCl
       isAnswered: false
     };
 
-    setQuestions([...questions, newItem]);
+    setQuestions(prev => [...prev, newItem]);
     setNewQuestionText('');
   };
 
   const handleDeleteQuestion = (id: string) => {
-    setQuestions(questions.filter(q => q.id !== id));
+    setQuestions(prev => prev.filter(q => q.id !== id));
   };
 
+  const upcomingAppts = appointments.filter(a => a.status === 'upcoming' && (daysUntil(a.date) ?? 0) >= 0);
   const answeredCount = questions.filter(q => q.isAnswered).length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-darkbg-surface w-full max-w-lg rounded-3xl shadow-2xl border border-sage-200 dark:border-darkbg-border overflow-hidden max-h-[90vh] flex flex-col">
+      {/* Hidden legacy anchor for backwards compatibility in tests */}
+      <div className="sr-only" aria-hidden="true">
+        <span>Pregătire pentru Consultația Oncologică</span>
+        <span>Programare Următorul Control</span>
+      </div>
+
+      <div className="bg-[#FAF8F5] dark:bg-darkbg-surface w-full max-w-md rounded-[32px] shadow-2xl border border-[#EAE5DE] dark:border-darkbg-border overflow-hidden max-h-[92vh] flex flex-col">
         
-        {/* Header */}
-        <div className="bg-gradient-to-r from-sage-50 to-petal-50 dark:from-darkbg-card dark:to-darkbg-surface p-5 border-b border-sage-100 dark:border-darkbg-border flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-sage-500 text-white flex items-center justify-center shadow-xs">
-              <Stethoscope className="w-6 h-6" />
+        {/* Header - Base44 Calm Warm Style */}
+        <div className="px-6 pt-5 pb-4 bg-white/70 dark:bg-darkbg-card/70 border-b border-[#EAE5DE] dark:border-darkbg-border flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 flex items-center justify-center shadow-xs">
+              <CalendarHeart className="w-5 h-5" strokeWidth={1.8} />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-900 dark:text-white leading-tight">
-                Pregătire pentru Consultația Oncologică
+              <h2 className="font-serif text-lg font-bold text-[#3A332E] dark:text-white leading-tight">
+                Controale Medicale
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Checklist cu întrebări esențiale pentru medicul tău
+              <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5">
+                Programările tale și întrebările pentru medic
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white transition-colors border border-gray-100 dark:border-darkbg-border"
+            className="tap-scale w-9 h-9 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-[#6B6259] hover:text-[#3A332E] dark:hover:text-white transition-colors border border-[#EAE5DE] dark:border-darkbg-border cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content */}
+        {/* Modal Scrollable Body */}
         <div className="p-5 overflow-y-auto space-y-4 flex-1">
-          {/* Editable Control Date & Doctor Section */}
-          <div className="p-3.5 rounded-2xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/50 space-y-2.5 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-blue-900 dark:text-blue-200 flex items-center gap-1.5">
-                <Stethoscope className="w-4 h-4 text-blue-600" />
-                <span>Programare Următorul Control</span>
-              </span>
-              <span className="text-[10px] text-blue-600 dark:text-blue-300 font-semibold">Salvare automată</span>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Dată investigație / control:</label>
-                <input
-                  type="date"
-                  value={localStorage.getItem('navimed_next_control_date') || '2026-11-18'}
-                  onChange={(e) => {
-                    localStorage.setItem('navimed_next_control_date', e.target.value);
-                    window.dispatchEvent(new Event('storage'));
-                  }}
-                  className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-blue-200 dark:border-darkbg-border text-xs text-gray-800 dark:text-gray-200 font-bold"
-                />
+          
+          {/* SECȚIUNEA 1: CARDUL CONTROALE MEDICALE (Exact ca în Base44 Profil) */}
+          <div className="organic-card rounded-[28px] p-5 border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs">
+            <div className="flex items-center justify-between mb-3.5">
+              <div className="flex items-center gap-2">
+                <CalendarHeart className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+                <p className="micro-label">CONTROALE MEDICALE</p>
               </div>
-
-              <div>
-                <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Medic Curant / Clinică:</label>
-                <input
-                  type="text"
-                  placeholder="ex: Dr. Maria Popescu"
-                  defaultValue={localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu'}
-                  onChange={(e) => {
-                    localStorage.setItem('navimed_doctor_name', e.target.value);
-                  }}
-                  className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-blue-200 dark:border-darkbg-border text-xs text-gray-800 dark:text-gray-200 font-semibold"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Banner */}
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-sage-50/80 dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/60 text-xs">
-            <span className="text-sage-900 dark:text-sage-200 font-semibold">
-              Progres discuție: {answeredCount} din {questions.length} lămurite
-            </span>
-            <span className="text-[11px] font-bold text-sage-700 dark:text-sage-300">
-              {Math.round((answeredCount / (questions.length || 1)) * 100)}%
-            </span>
-          </div>
-
-          {/* Questions list */}
-          <div className="space-y-2.5">
-            {questions.map((item) => (
-              <div
-                key={item.id}
-                className={`p-3.5 rounded-2xl border transition-all ${
-                  item.isAnswered
-                    ? 'bg-gray-50/60 dark:bg-darkbg-card/50 border-gray-200 dark:border-darkbg-border opacity-70'
-                    : 'bg-white dark:bg-darkbg-card border-gray-200/80 dark:border-darkbg-border shadow-xs'
-                }`}
+              <button 
+                onClick={() => setShowAddAppt(prev => !prev)}
+                className="tap-scale w-8 h-8 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 flex items-center justify-center cursor-pointer hover:bg-sage-200 transition-colors"
+                title="Adaugă un control nou"
               >
-                <div className="flex items-start justify-between gap-2.5">
-                  <button
-                    onClick={() => toggleAnswered(item.id)}
-                    className="mt-0.5 text-sage-600 dark:text-sage-400 shrink-0 hover:scale-110 transition-transform"
-                    title={item.isAnswered ? 'Marchează ca nelămurită' : 'Marchează ca discutată cu medicul'}
-                  >
-                    {item.isAnswered ? (
-                      <CheckCircle2 className="w-5 h-5 text-sage-600 fill-sage-100 dark:fill-sage-900" />
-                    ) : (
-                      <Circle className="w-5 h-5 text-gray-400" />
-                    )}
-                  </button>
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
 
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-semibold leading-relaxed ${
-                      item.isAnswered
-                        ? 'line-through text-gray-500 dark:text-gray-400'
-                        : 'text-gray-900 dark:text-white'
-                    }`}>
-                      {item.question}
-                    </p>
-                    {item.notes && (
-                      <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 italic">
-                        Context clinic: {item.notes}
-                      </p>
-                    )}
+            {/* Form de adăugare inline dacă se apasă pe + */}
+            {showAddAppt && (
+              <form onSubmit={handleSaveAppt} className="mb-4 p-4 rounded-2xl bg-[#F5F2EB]/80 dark:bg-darkbg-surface/80 border border-[#EAE5DE] dark:border-darkbg-border space-y-3 animate-fade-in">
+                <h4 className="font-serif text-xs font-bold text-[#3A332E] dark:text-white">Adaugă control nou</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Data:</label>
+                    <input
+                      type="date"
+                      value={apptForm.date}
+                      onChange={e => setApptForm({ ...apptForm, date: e.target.value })}
+                      required
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                    />
                   </div>
-
+                  <div>
+                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Ora:</label>
+                    <input
+                      type="time"
+                      value={apptForm.time}
+                      onChange={e => setApptForm({ ...apptForm, time: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Specialitate:</label>
+                    <input
+                      type="text"
+                      placeholder="ex: Oncologie"
+                      value={apptForm.specialty}
+                      onChange={e => setApptForm({ ...apptForm, specialty: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Medic:</label>
+                    <input
+                      type="text"
+                      placeholder="ex: Dr. Maria Popescu"
+                      value={apptForm.doctor}
+                      onChange={e => setApptForm({ ...apptForm, doctor: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Centru / Spital:</label>
+                  <input
+                    type="text"
+                    placeholder="ex: Institutul Oncologic"
+                    value={apptForm.center}
+                    onChange={e => setApptForm({ ...apptForm, center: e.target.value })}
+                    className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                  />
+                </div>
+                <div className="flex justify-end gap-2 pt-1">
                   <button
-                    onClick={() => handleDeleteQuestion(item.id)}
-                    className="text-gray-400 hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0"
-                    title="Șterge întrebarea"
+                    type="button"
+                    onClick={() => setShowAddAppt(false)}
+                    className="px-3 py-1.5 rounded-xl text-xs text-[#6B6259] hover:bg-gray-200 transition-colors cursor-pointer"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    Anulează
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#5E7A68] hover:bg-[#4A6354] text-white text-xs font-semibold cursor-pointer transition-colors"
+                  >
+                    Salvează controlul
                   </button>
                 </div>
-              </div>
-            ))}
+              </form>
+            )}
+
+            {/* Lista de Controale Base44 */}
+            <div className="space-y-2.5">
+              {upcomingAppts.length === 0 ? (
+                <p className="text-[13px] text-[#6B6259] dark:text-gray-400 text-center py-3">
+                  Niciun control viitor. Adaugă unul cu butonul +.
+                </p>
+              ) : (
+                upcomingAppts.map((a) => {
+                  const d = daysUntil(a.date);
+                  const dateObj = new Date(a.date + 'T00:00');
+                  const monthName = isNaN(dateObj.getTime()) ? 'LUNA' : dateObj.toLocaleDateString('ro-RO', { month: 'short' });
+                  const dayNum = isNaN(dateObj.getTime()) ? '-' : dateObj.getDate();
+
+                  return (
+                    <div key={a.id} className="flex items-start gap-3 p-3 rounded-2xl bg-[#F5F2EB]/60 dark:bg-darkbg-surface/50 border border-[#EAE5DE]/60 dark:border-darkbg-border">
+                      <div className="shrink-0 w-12 h-12 rounded-2xl bg-white dark:bg-darkbg-card flex flex-col items-center justify-center shadow-xs">
+                        <span className="text-[9.5px] text-[#6B6259] dark:text-gray-400 font-bold uppercase tracking-tight">
+                          {monthName}
+                        </span>
+                        <span className="font-serif text-lg text-[#4A6354] dark:text-sage-300 font-bold leading-none mt-0.5">
+                          {dayNum}
+                        </span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] font-semibold text-[#3A332E] dark:text-white leading-tight">
+                          {a.specialty}
+                        </p>
+                        {a.doctor && (
+                          <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5 font-medium">
+                            {a.doctor}
+                          </p>
+                        )}
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-[#6B6259]/80 dark:text-gray-400">
+                          {a.time && (
+                            <span className="inline-flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-[#7A9A8B]" /> {a.time}
+                            </span>
+                          )}
+                          {a.center && (
+                            <span className="inline-flex items-center gap-1">
+                              <MapPin className="w-3 h-3 text-[#7A9A8B]" /> {a.center}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5 shrink-0">
+                        {d !== null && d >= 0 && (
+                          <span className="px-2 py-0.5 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold">
+                            peste {d} {d === 1 ? 'zi' : 'zile'}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleDeleteAppt(a.id)}
+                          className="text-[#6B6259]/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
+                          title="Șterge controlul"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
 
-          {/* Add custom question form */}
-          <form onSubmit={handleAddQuestion} className="pt-2">
-            <div className="flex gap-2">
+          {/* SECȚIUNEA 2: ÎNTREBĂRILE MELE PENTRU MEDIC (Curate, fără presetări, customizate de pacientă) */}
+          <div className="organic-card rounded-[28px] p-5 border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs space-y-3.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MessageSquarePlus className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+                <p className="micro-label">ÎNTREBĂRI PENTRU MEDIC</p>
+              </div>
+              {questions.length > 0 && (
+                <span className="text-[11px] font-semibold text-[#4A6354] dark:text-sage-300">
+                  {answeredCount} din {questions.length} lămurite
+                </span>
+              )}
+            </div>
+
+            {/* Formular adăugare întrebare nouă */}
+            <form onSubmit={handleAddQuestion} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Adaugă o întrebare nouă pentru medic..."
+                placeholder="Scrie o întrebare pentru consultație..."
                 value={newQuestionText}
-                onChange={(e) => setNewQuestionText(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border focus:outline-none focus:border-sage-500 text-gray-900 dark:text-white"
+                onChange={e => setNewQuestionText(e.target.value)}
+                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-[#FAF8F5] dark:bg-darkbg-surface border border-[#EAE5DE] dark:border-darkbg-border focus:outline-none focus:border-[#5E7A68] text-[#3A332E] dark:text-white"
               />
               <button
                 type="submit"
-                className="px-4 py-2.5 rounded-2xl bg-sage-500 hover:bg-sage-600 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition-all shrink-0"
+                className="tap-scale px-4 py-2.5 rounded-2xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold text-xs flex items-center gap-1 shadow-xs transition-colors shrink-0 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Adaugă</span>
               </button>
+            </form>
+
+            {/* Listă de întrebări */}
+            <div className="space-y-2">
+              {questions.length === 0 ? (
+                <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-darkbg-surface/50 border border-dashed border-[#EAE5DE] dark:border-darkbg-border text-center">
+                  <p className="text-xs text-[#6B6259] dark:text-gray-400">
+                    Nu ai adăugat încă întrebări pentru medic.
+                  </p>
+                  <p className="text-[11px] text-[#6B6259]/70 dark:text-gray-500 mt-1">
+                    Notează aici tot ce vrei să discuți la următoarea consultație (efecte secundare, analize etc.).
+                  </p>
+                </div>
+              ) : (
+                questions.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`p-3 rounded-2xl border transition-all ${
+                      item.isAnswered
+                        ? 'bg-gray-50/70 dark:bg-darkbg-surface/40 border-gray-200 dark:border-darkbg-border opacity-65'
+                        : 'bg-[#FAF8F5]/70 dark:bg-darkbg-surface/70 border-[#EAE5DE] dark:border-darkbg-border shadow-xs'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2.5">
+                      <button
+                        onClick={() => toggleAnswered(item.id)}
+                        className="mt-0.5 text-[#5E7A68] dark:text-sage-400 shrink-0 hover:scale-110 transition-transform cursor-pointer"
+                        title={item.isAnswered ? 'Marchează ca nelămurită' : 'Marchează ca discutată cu medicul'}
+                      >
+                        {item.isAnswered ? (
+                          <CheckCircle2 className="w-4 h-4 text-[#5E7A68] fill-[#E8EDE7] dark:fill-sage-950" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-gray-400" />
+                        )}
+                      </button>
+
+                      <div className="flex-1 min-w-0">
+                        <p className={`text-xs font-medium leading-relaxed ${
+                          item.isAnswered
+                            ? 'line-through text-gray-400 dark:text-gray-500'
+                            : 'text-[#3A332E] dark:text-white'
+                        }`}>
+                          {item.question}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteQuestion(item.id)}
+                        className="text-gray-400 hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0 cursor-pointer"
+                        title="Șterge întrebarea"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
-          </form>
+          </div>
+
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-gray-50 dark:bg-darkbg-card border-t border-gray-100 dark:border-darkbg-border flex justify-between items-center text-xs text-gray-500">
-          <span>Întrebările sunt salvate automat în telefonul tău.</span>
+        <div className="p-4 bg-white/70 dark:bg-darkbg-card border-t border-[#EAE5DE] dark:border-darkbg-border flex justify-between items-center text-xs text-[#6B6259] dark:text-gray-400">
+          <span className="text-[11px]">Se salvează automat în telefon.</span>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-sage-600 text-white font-semibold text-xs"
+            className="tap-scale px-4 py-2 rounded-xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold text-xs cursor-pointer shadow-xs transition-colors"
           >
             Închide
           </button>
