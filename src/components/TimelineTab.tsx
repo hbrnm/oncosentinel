@@ -126,7 +126,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                     <button
                       onClick={() => handleAnalyzeDocument(doc)}
                       className="w-7 h-7 rounded-lg flex items-center justify-center text-indigo-600 hover:text-white hover:bg-indigo-500 transition-colors bg-indigo-50 dark:bg-indigo-900/30 mr-1"
-                      title="Analizează cu AI pentru Timeline"
+                      title="Adaugă rapid pe Cronologie"
                     >
                       {analyzingDoc === doc.id ? (
                         <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
