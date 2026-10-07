@@ -212,19 +212,21 @@ export function App() {
     }`}>
       <div className="w-full max-w-md min-h-screen flex flex-col bg-[#FAF8F5]/90 dark:bg-darkbg/90 shadow-xl shadow-sage-900/5 relative border-x border-[#EAE5DE] dark:border-darkbg-border">
         
-        {/* Top App Header */}
-        <Navbar
-          profile={profile}
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-          fontSize={fontSize}
-          setFontSize={setFontSize}
-          onOpenRedFlags={() => setIsRedFlagsOpen(true)}
-          onOpenProfile={() => setIsProfileOpen(true)}
-          onOpenBreathing={() => setIsBreathingOpen(true)}
-          onOpenAuth={() => setIsAuthOpen(true)}
-          onOpenDoctorVisit={() => setIsDoctorVisitOpen(true)}
-        />
+        {/* Top App Header (Displayed on secondary tabs to keep Astăzi clean like Base44) */}
+        {activeTab !== 'today' && (
+          <Navbar
+            profile={profile}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            onOpenRedFlags={() => setIsRedFlagsOpen(true)}
+            onOpenProfile={() => setIsProfileOpen(true)}
+            onOpenBreathing={() => setIsBreathingOpen(true)}
+            onOpenAuth={() => setIsAuthOpen(true)}
+            onOpenDoctorVisit={() => setIsDoctorVisitOpen(true)}
+          />
+        )}
 
         {/* Tab View Container */}
         <main className="flex-1 px-4 pt-3 pb-8">
