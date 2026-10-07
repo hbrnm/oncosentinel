@@ -18,7 +18,7 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     const { container } = render(<App />);
 
     // 1. Botanical branch in top header background
-    const botanicalBranch = container.querySelector('svg.test-branch, svg[viewBox="0 0 120 160"]');
+    const botanicalBranch = container.querySelector('svg.overflow-visible, svg[viewBox="0 0 120 180"], svg[viewBox="0 0 120 160"]');
     expect(botanicalBranch).toBeInTheDocument();
 
     // 2. Notification Bell in top right

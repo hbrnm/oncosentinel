@@ -195,11 +195,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {/* Top Empathetic Header Banner (Style faithfully inspired by mockup & Base44) */}
       <div className="pt-2 pb-1 flex items-start justify-between relative z-10">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-snug">
-            {greetingTime}, <span className="text-sage-700 dark:text-sage-300">{patientFirstName}</span>
+          <p className="text-[12px] text-[#6B6259] dark:text-gray-400 font-medium">
+            {greetingTime},
+          </p>
+          <h1 className="text-2xl sm:text-[26px] font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-tight mt-0.5 capitalize">
+            {patientFirstName.toLowerCase()}
           </h1>
           <span className="sr-only">Bună, {patientFirstName}</span>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-normal leading-relaxed">
+          <p className="text-xs sm:text-[13px] text-[#6B6259] dark:text-gray-400 mt-1 font-normal leading-relaxed">
             Ești puternică. Pas cu pas. Ai grijă de tine.
           </p>
         </div>

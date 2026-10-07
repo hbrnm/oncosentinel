@@ -10,15 +10,21 @@ export interface BotanicalProps {
  */
 export const BotanicalBranch: React.FC<BotanicalProps> = ({ className = '', style }) => {
   return (
-    <svg viewBox="0 0 120 160" className={className} style={style} fill="none" aria-hidden="true">
-      <path d="M60 158 C60 120 60 90 60 50" stroke="#7A9A8B" strokeWidth="1.4" strokeLinecap="round" opacity="0.55" />
-      <path d="M60 130 C48 126 40 118 36 106 C48 108 56 116 60 128" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
-      <path d="M60 110 C72 106 80 98 84 86 C72 88 64 96 60 108" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
-      <path d="M60 88 C48 84 40 76 36 64 C48 66 56 74 60 86" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
-      <path d="M60 66 C72 62 80 54 84 42 C72 44 64 52 60 64" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
-      <circle cx="60" cy="40" r="5" fill="#DFB2B5" opacity="0.45" />
-      <circle cx="52" cy="48" r="3.5" fill="#DFB2B5" opacity="0.35" />
-      <circle cx="68" cy="48" r="3.5" fill="#DFB2B5" opacity="0.35" />
+    <svg viewBox="0 0 120 180" className={`overflow-visible ${className}`} style={style} fill="none" aria-hidden="true">
+      {/* Central Stem reaching gracefully to top */}
+      <path d="M60 178 C60 120 60 70 60 18" stroke="#7A9A8B" strokeWidth="1.4" strokeLinecap="round" opacity="0.55" />
+      {/* Lower leaves */}
+      <path d="M60 145 C48 141 40 133 36 121 C48 123 56 131 60 143" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
+      <path d="M60 125 C72 121 80 113 84 101 C72 103 64 111 60 123" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
+      {/* Mid leaves */}
+      <path d="M60 100 C48 96 40 88 36 76 C48 78 56 86 60 98" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
+      <path d="M60 78 C72 74 80 66 84 54 C72 56 64 64 60 76" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
+      {/* Upper leaf pair near top */}
+      <path d="M60 54 C50 50 44 42 40 32 C50 34 56 42 60 52" stroke="#7A9A8B" strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
+      {/* Delicate blush berries at top tip */}
+      <circle cx="60" cy="14" r="5" fill="#DFB2B5" opacity="0.45" />
+      <circle cx="51" cy="22" r="3.5" fill="#DFB2B5" opacity="0.35" />
+      <circle cx="69" cy="22" r="3.5" fill="#DFB2B5" opacity="0.35" />
     </svg>
   );
 };
