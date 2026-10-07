@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarDays, FileText, Stethoscope, HeartHandshake } from 'lucide-react';
+import { CalendarDays, FileText, Stethoscope, FolderHeart } from 'lucide-react';
 
 export interface QuickActionsProps {
   onNavigateToTab?: (tab: string) => void;
@@ -38,13 +38,12 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       },
     },
     {
-      label1: 'Resurse',
-      label2: 'utile',
-      icon: HeartHandshake,
+      label1: 'Dosar',
+      label2: 'medical',
+      icon: FolderHeart,
       tint: 'bg-[#F6ECEC] text-[#C99A9D] dark:bg-petal-950/60 dark:text-petal-300',
       onClick: () => {
-        if (onOpenResources) onOpenResources();
-        else onNavigateToTab?.('guide');
+        onNavigateToTab?.('timeline');
       },
     },
   ];

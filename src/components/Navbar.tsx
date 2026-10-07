@@ -76,14 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {fontSize === 'normal' ? 'A+' : 'A-'}
           </button>
 
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-border transition-colors border border-transparent dark:border-darkbg-border"
-            title="Mod Zi / Noapte"
-          >
-            {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-sage-700" />}
-          </button>
+          {/* Dark Mode Toggle Removed */}
         </div>
 
       </div>

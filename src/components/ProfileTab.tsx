@@ -21,7 +21,7 @@ interface ProfileTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
   onUpdateProfile: (updated: PatientProfile) => void;
-  onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide' | 'profile') => void;
+  onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenAuth?: () => void;
 }
 
@@ -42,6 +42,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   onOpenAuth
 }) => {
   // 1. Display name & profile edit modal state
+  const [activeTab, setActiveTab] = useState<'settings' | 'dossier'>('settings');
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [nameVal, setNameVal] = useState(profile.full_name || '');
   const [histologyVal, setHistologyVal] = useState(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
@@ -151,10 +152,28 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         <h1 className="font-serif text-3xl font-normal text-[#3A332E] dark:text-white tracking-tight">
           Profil
         </h1>
+        {/* Horizontal Navigation Tabs */}
+        <div className="flex items-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'settings' ? 'bg-[#4A6354] text-white shadow-md' : 'bg-white text-[#6B6259] border border-[#EAE5DE] dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
+          >
+            Setări & Tratament
+          </button>
+          <button 
+            onClick={() => setActiveTab('dossier')}
+            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'dossier' ? 'bg-[#4A6354] text-white shadow-md' : 'bg-white text-[#6B6259] border border-[#EAE5DE] dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
+          >
+            Dosar Medical
+          </button>
+        </div>
         <p className="text-[13px] text-[#6B6259] dark:text-gray-300 mt-1 font-sans">
           Informațiile tale, tratamentul și preferințele de notificare.
         </p>
       </header>
+
+      {activeTab === 'settings' && (
+        <div className="space-y-5">
 
       {/* 1. User Header Card matching Base44 Profil.jsx */}
       <div className="organic-card rounded-[28px] p-5 flex items-center gap-4">
@@ -404,6 +423,49 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           <ShieldCheck className="w-4 h-4" />
           <span>Sincronizare Cloud & Siguranță Date</span>
         </button>
+      )}
+      </div>
+      )}
+
+      {/* Dossier Mock UI */}
+      {activeTab === 'dossier' && (
+        <div className="space-y-4 animate-fade-in">
+          <div className="organic-card p-5 rounded-3xl flex items-center justify-between">
+            <div>
+              <h3 className="font-serif text-xl text-[#3A332E] dark:text-white">Dosar Medical</h3>
+              <p className="text-[13px] text-[#6B6259] dark:text-gray-400 mt-1">Documentele tale sigure.</p>
+            </div>
+            <button className="tap-scale px-4 py-2 rounded-2xl bg-[#4A6354] text-white text-xs font-semibold shadow-md flex items-center gap-1.5">
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">Încarcă document</span>
+              <span className="sm:hidden">Încarcă</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
+              <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 flex items-center justify-center mb-1">
+                <Heart className="w-6 h-6" />
+              </div>
+              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Analize Sânge</span>
+              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">12 documente</span>
+            </div>
+            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
+              <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-1">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Imagistică</span>
+              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">3 documente</span>
+            </div>
+            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale col-span-2">
+              <div className="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-500 dark:text-purple-400 flex items-center justify-center mb-1">
+                <FileText className="w-6 h-6" />
+              </div>
+              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Scrisori & Rețete</span>
+              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">5 documente</span>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Dialog Modificare Date Profil & Situație Medicală */}

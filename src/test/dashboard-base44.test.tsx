@@ -34,8 +34,8 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     expect(screen.getByText(/medicale/i)).toBeInTheDocument();
     expect(screen.getByText(/Medici și/i)).toBeInTheDocument();
     expect(screen.getByText(/centre/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Resurse/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/utile/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Dosar/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/medical/i).length).toBeGreaterThan(0);
 
     // 5. Dual Cards: Următorul Control & Blush Quote with LeafSprig
     expect(screen.getByText(/URMĂTORUL CONTROL/i)).toBeInTheDocument();

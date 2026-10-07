@@ -7,6 +7,7 @@ import {
   ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
+import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
 import { notificationsService } from '../lib/notifications';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
@@ -25,7 +26,7 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onNavigateToRecipes?: (query?: string) => void;
-  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide' | 'profile') => void;
+  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
 }
 
 export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau';
@@ -312,10 +313,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </div>
             <div className="min-w-0">
               <h3 className="font-serif text-xl text-[#4A6354] dark:text-sage-200 leading-tight truncate">
-                Tamoxifen 20 mg
+                {profile.medication_name || 'Tamoxifen'} {profile.medication_dose || '20 mg'}
               </h3>
               <p className="text-[13px] text-[#6B6259] dark:text-gray-400 mt-0.5">
-                20 mg • 1 comprimat / zi
+                {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat / zi'}
               </p>
             </div>
           </div>
@@ -444,13 +445,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           <div className="flex items-center gap-1.5">
             {selectedMood && (
-              <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/50">
+              <span className="text-[10px] font-semibold text-sage-700 dark:text-sage-300 bg-sage-50 dark:bg-sage-950/60 px-2 py-0.5 rounded-full border border-sage-200 dark:border-sage-800/50">
                 Înregistrat azi
               </span>
             )}
             <button 
               type="button" 
-              onClick={() => onNavigateToTab?.('symptoms')}
+              onClick={() => onNavigateToTab?.('journal')}
               className="text-sage-700 dark:text-sage-300 p-1 hover:scale-105 transition-transform"
               title="Deschide jurnalul complet"
             >
@@ -527,7 +528,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </button>
         </div>
 
-        {/* Card 1 Ghid: Tamoxifen și efectele secundare (Base44 style) */}
+        {/* Card 1 Ghid: from CLINICAL_GUIDES */}
         <div
           onClick={() => onNavigateToTab?.('guide')}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
@@ -537,21 +538,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
-              <span>GHIDURI & INFORMAȚII</span>
+              <span>{CLINICAL_GUIDES[0].tag}</span>
               <span>•</span>
-              <span className="text-gray-400">Sursă: ASCO</span>
+              <span className="text-gray-400">Recomandare</span>
             </div>
             <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
-              Tamoxifen și efectele secundare
+              {CLINICAL_GUIDES[0].title}
             </h4>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-              Tot ce trebuie să știi despre tratament, monitorizare și stil de viață.
+              {CLINICAL_GUIDES[0].summary}
             </p>
           </div>
           <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />
         </div>
 
-        {/* Card 2 Noutăți: Supraveghere DCIS (Base44 style) */}
+        {/* Card 2 Noutăți: from NEWS_PROTOCOLS */}
         <div
           onClick={() => onNavigateToTab?.('guide')}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
@@ -561,15 +562,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
-              <span className="micro-label text-sage-deep">Noutăți</span>
+              <span className="micro-label text-sage-deep">NOUTĂȚI</span>
               <span className="text-gray-400">•</span>
-              <span className="text-gray-400">12 octombrie 2026</span>
+              <span className="text-gray-400">{NEWS_PROTOCOLS[0].date}</span>
             </div>
             <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5 leading-snug">
-              Recomandări actualizate pentru monitorizarea pe termen lung după tratamentul pentru DCIS
+              {NEWS_PROTOCOLS[0].title}
             </h4>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-              Protocolul de imagistică bilaterală și supraveghere clinică.
+              {NEWS_PROTOCOLS[0].summary}
             </p>
           </div>
           <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />

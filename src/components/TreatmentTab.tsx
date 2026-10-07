@@ -104,10 +104,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
     let status: 'taken' | 'missed' | 'future' | 'empty' = 'future';
 
+    const startDate = profile.tamoxifen_start_date || '2000-01-01';
+
     if (takenDates.has(iso)) {
       status = 'taken';
     } else if (missedDates.has(iso)) {
       status = 'missed';
+    } else if (iso < startDate) {
+      status = 'future';
     } else if (iso < todayStr) {
       // Past day in which no dose was taken: marked as missed / sarita
       status = 'missed';
@@ -125,23 +129,22 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
     });
   }
 
-  // Monthly stats: count taken, missed, total elapsed days in month up to today
-  const totalElapsedDaysInViewMonth = Math.min(
-    daysInMonth,
-    viewYear === now.getFullYear() && viewMonth === now.getMonth()
-      ? now.getDate()
-      : viewDate < now
-      ? daysInMonth
-      : 0
-  );
+  let applicableDaysInMonth = 0;
+  let takenInMonth = 0;
+  
+  calendarDays.forEach(day => {
+    if (day) {
+      if (day.status === 'taken') {
+        applicableDaysInMonth++;
+        takenInMonth++;
+      } else if (day.status === 'missed') {
+        applicableDaysInMonth++;
+      }
+    }
+  });
 
-  const takenInViewMonth = Array.from(takenDates).filter((iso) => {
-    const [y, m] = iso.split('-').map(Number);
-    return y === viewYear && m === viewMonth + 1;
-  }).length;
-
-  const adherenceMonth = totalElapsedDaysInViewMonth > 0
-    ? Math.min(100, Math.round((takenInViewMonth / totalElapsedDaysInViewMonth) * 100))
+  const adherenceMonth = applicableDaysInMonth > 0
+    ? Math.min(100, Math.round((takenInMonth / applicableDaysInMonth) * 100))
     : 100;
 
   const handleSaveEdit = (e: React.FormEvent) => {
@@ -240,7 +243,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           />
         </div>
         <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-2 font-medium">
-          {takenInViewMonth} doze luate din {totalElapsedDaysInViewMonth > 0 ? totalElapsedDaysInViewMonth : daysInMonth} zile.
+          {takenInMonth} doze luate din {applicableDaysInMonth > 0 ? applicableDaysInMonth : daysInMonth} zile.
         </p>
       </div>
 

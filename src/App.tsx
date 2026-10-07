@@ -4,7 +4,7 @@ import { BottomNav, TabType } from './components/BottomNav';
 import { DashboardTab } from './components/DashboardTab';
 import { TreatmentTab } from './components/TreatmentTab';
 import { TimelineTab } from './components/TimelineTab';
-import { SymptomsTab } from './components/SymptomsTab';
+import { JournalTab } from './components/JournalTab';
 import { GuideTab } from './components/GuideTab';
 import { ProfileTab } from './components/ProfileTab';
 import { RedFlagsModal } from './components/RedFlagsModal';
@@ -20,9 +20,7 @@ import { PatientProfile, DoseLog, SymptomLog, MedicalDocument, ClinicalMilestone
 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabType>('today');
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_dark') === 'true';
-  });
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   
   // Modals state
   const [isRedFlagsOpen, setIsRedFlagsOpen] = useState<boolean>(false);
@@ -48,16 +46,11 @@ export function App() {
     return (localStorage.getItem('oncosentinel_fontsize') as 'normal' | 'large') || 'normal';
   });
 
-  // Dark mode effect
+  // Dark mode effect disabled
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('navimed_dark', 'true');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('navimed_dark', 'false');
-    }
-  }, [darkMode]);
+    document.documentElement.classList.remove('dark');
+    localStorage.removeItem('navimed_dark');
+  }, []);
 
   // Font size effect
   useEffect(() => {
@@ -95,9 +88,10 @@ export function App() {
   }, []);
   const handleTakeDose = async () => {
     const todayStr = new Date().toISOString();
+    const medName = `${profile.medication_name || 'Tamoxifen'} ${profile.medication_dose || '20 mg'}`;
     const newLog: DoseLog = {
       id: `dose_${Date.now()}`,
-      medication_name: 'Tamoxifen 20mg',
+      medication_name: medName,
       scheduled_for: todayStr,
       taken_at: todayStr,
       status: 'taken'
@@ -119,7 +113,7 @@ export function App() {
     if (supabase) {
       try {
         await supabase.from('dose_logs').insert([{
-          medication_name: 'Tamoxifen 20mg',
+          medication_name: medName,
           scheduled_for: todayStr,
           taken_at: todayStr,
           status: 'taken'
@@ -272,8 +266,8 @@ export function App() {
             />
           )}
 
-          {activeTab === 'symptoms' && (
-            <SymptomsTab
+          {activeTab === 'journal' && (
+            <JournalTab
               profile={profile}
               symptoms={symptoms}
               doses={doses}

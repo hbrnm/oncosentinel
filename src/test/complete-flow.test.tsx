@@ -106,7 +106,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     // -------------------------------------------------------------
     // ETAPA 6: Navigare lină la Dosar Medical & Verificare Seif
     // -------------------------------------------------------------
-    const timelineNavBtn = screen.getByText('Dosar');
+    const timelineNavBtn = screen.getAllByText(/Dosar/i)[0];
     fireEvent.click(timelineNavBtn);
 
     expect(screen.getByText(/Supraveghere Oncologică & Imagistică/i)).toBeInTheDocument();
@@ -114,13 +114,13 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     expect(screen.getByText(/Nu ai încărcat niciun document/i)).toBeInTheDocument();
 
     // -------------------------------------------------------------
-    // ETAPA 7: Navigare la Ghid & Rețete
+    // ETAPA 7: Navigare la Ghiduri
     // -------------------------------------------------------------
-    const guideNavBtn = screen.getByText('Ghid & Rețete');
+    const guideNavBtn = screen.getByText('Ghiduri');
     fireEvent.click(guideNavBtn);
 
-    expect(screen.getByText(/Rețete & Meniu/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sport & Mobilitate/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ghiduri medicale/i)).toBeInTheDocument();
+    expect(screen.getByText(/Noutăți & protocoale/i)).toBeInTheDocument();
 
     // -------------------------------------------------------------
     // ETAPA 8: Revenire pe „Astăzi” - Datele și starea sunt perfect conservate
