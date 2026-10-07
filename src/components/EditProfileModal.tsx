@@ -23,13 +23,14 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const [her2Status, setHer2Status] = useState(profile.her2_status || 'Negativ');
   const [reminderTime, setReminderTime] = useState(profile.daily_reminder_time);
   const [stock, setStock] = useState<number | ''>(profile.pill_stock_count ?? 30);
-  const [startDate, setStartDate] = useState(profile.tamoxifen_start_date);
+  const [email, setEmail] = useState(profile.email || '');
   const [oncologistEmail, setOncologistEmail] = useState(profile.oncologist_email || '');
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   React.useEffect(() => {
     if (isOpen) {
       setFullName(profile.full_name || '');
+      setEmail(profile.email || '');
       setHistology(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
       setStage(profile.stage || 'Grad 0 (TisN0M0, G2)');
       setErStatus(profile.er_status || 'Pozitiv (>90%)');
@@ -49,6 +50,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
     onSave({
       ...profile,
       full_name: fullName.trim(),
+      email: email.trim() || undefined,
       histology: histology.trim() || profile.histology,
       stage: stage.trim() || profile.stage,
       er_status: erStatus.trim() || profile.er_status,
@@ -106,6 +108,23 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Introdu numele tău..."
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+              />
+            </div>
+          </div>
+
+          {/* Adresa ta de E-mail */}
+          <div className="space-y-1">
+            <label className="text-[11px] font-semibold text-gray-700 dark:text-gray-300 block">
+              Adresa ta de e-mail:
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="ex: pacient@exemplu.ro"
                 className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>

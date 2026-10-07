@@ -53,12 +53,16 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [stageVal, setStageVal] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
   const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
   const [prVal, setPrVal] = useState(profile.pr_status || 'Pozitiv (>80%)');
-  const [her2Val, setHer2Val] = useState(profile.her2_status || 'Negativ');
+  const [emailVal, setEmailVal] = useState(profile.email || '');
+  const [oncologistEmailVal, setOncologistEmailVal] = useState(profile.oncologist_email || '');
   const [avatarVal, setAvatarVal] = useState(profile.avatar_url || '');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setNameVal(profile.full_name || '');
+    setEmailVal(profile.email || '');
+    setOncologistEmailVal(profile.oncologist_email || '');
+    setReminderTimeVal(profile.daily_reminder_time || '08:00');
     setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
     setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
     setErVal(profile.er_status || 'Pozitiv (>90%)');
@@ -200,6 +204,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     onUpdateProfile({
       ...profile,
       full_name: nameVal.trim(),
+      email: emailVal.trim() || undefined,
+      oncologist_email: oncologistEmailVal.trim() || undefined,
       histology: histologyVal.trim() || profile.histology,
       stage: stageVal.trim() || profile.stage,
       er_status: erVal.trim() || profile.er_status,
@@ -314,12 +320,15 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             </span>
           </div>
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400 truncate mt-0.5">
-            {profile.oncologist_email || 'Profil pacient securizat'}
+            {profile.email || (profile.oncologist_email ? `Medic: ${profile.oncologist_email}` : 'Profil pacient securizat')}
           </p>
         </div>
         <button
           onClick={() => {
             setNameVal(profile.full_name || '');
+            setEmailVal(profile.email || '');
+            setOncologistEmailVal(profile.oncologist_email || '');
+            setReminderTimeVal(profile.daily_reminder_time || '08:00');
             setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
             setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
             setErVal(profile.er_status || 'Pozitiv (>90%)');
@@ -620,6 +629,32 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                   className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
                   placeholder="Introdu numele tău..."
                   autoFocus
+                />
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  Adresa ta de E-mail
+                </label>
+                <input
+                  type="email"
+                  value={emailVal}
+                  onChange={(e) => setEmailVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  placeholder="ex: pacient@exemplu.ro"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  E-mail Medic Oncolog (opțional)
+                </label>
+                <input
+                  type="email"
+                  value={oncologistEmailVal}
+                  onChange={(e) => setOncologistEmailVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  placeholder="ex: medic.oncolog@spital.ro"
                 />
               </div>
 

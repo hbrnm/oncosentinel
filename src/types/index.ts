@@ -72,6 +72,7 @@ export interface PatientProfile {
   medication_name?: string;
   medication_dose?: string;
   medication_frequency?: string;
+  email?: string;
   oncologist_email?: string;
   avatar_url?: string;
 }
