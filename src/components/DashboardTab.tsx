@@ -104,6 +104,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
   const [apptVersion, setApptVersion] = useState<number>(0);
+  const [bellActive, setBellActive] = useState<boolean>(() => {
+    return localStorage.getItem('navimed_dose_reminder_enabled') === 'true';
+  });
+
+  const handleToggleBell = () => {
+    const nextVal = !bellActive;
+    setBellActive(nextVal);
+    localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
+    
+    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  };
+
 
   useEffect(() => {
     const handleStorageChange = () => {
