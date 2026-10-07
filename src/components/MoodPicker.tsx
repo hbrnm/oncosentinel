@@ -33,14 +33,14 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ value, onChange, compact
               aria-label={m.label}
               className="tap-scale flex flex-col items-center gap-2 group cursor-pointer"
             >
-              <span className={`flex items-center justify-center rounded-full transition-all duration-300 ${
-                compact ? "w-12 h-12 text-2xl" : "w-14 h-14 text-3xl"
+              <span className={`flex items-center justify-center rounded-full transition-all duration-300 font-semibold text-sm ${
+                compact ? "w-11 h-11" : "w-12 h-12"
               } ${
                 active
-                  ? "bg-sage-600 text-white scale-110 shadow-md ring-4 ring-sage-100 dark:ring-sage-900"
-                  : "bg-stone-100 dark:bg-stone-800 group-hover:bg-stone-200 dark:group-hover:bg-stone-700"
+                  ? "bg-sage-600 text-white scale-105 shadow-md ring-4 ring-sage-100 dark:ring-sage-900"
+                  : "bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 group-hover:bg-stone-50"
               }`}>
-                <span className={active ? "grayscale-0" : "opacity-90"}>{m.emoji}</span>
+                {m.level}
               </span>
               <span className={`text-[10px] font-semibold tracking-wide transition-colors ${
                 active ? "text-sage-700 dark:text-sage-300" : "text-gray-500"

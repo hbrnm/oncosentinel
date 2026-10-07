@@ -409,7 +409,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                     const m = getMood(getMoodLevelFromState(e.mood_state));
                     return (
                       <div key={e.id} className="flex items-start gap-3">
-                        <span className="flex-shrink-0 w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-lg">{m.emoji}</span>
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-sage-50 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300 flex items-center justify-center font-semibold text-xs border border-sage-200/60 dark:border-sage-800">
+                          {getMoodLevelFromState(e.mood_state)}/5
+                        </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-[12px] font-semibold text-gray-900 dark:text-gray-100">{m.label}</p>
                           {e.notes && <p className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 leading-relaxed">{e.notes}</p>}
@@ -417,48 +419,48 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                           {/* Show additional symptoms if logged */}
                           <div className="mt-1.5 flex flex-wrap gap-1">
                             {(e.hot_flashes_count || 0) > 0 && (
-                              <span className="text-[9px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded-md">
-                                🔥 {e.hot_flashes_count} bufeuri (Scor: {e.hot_flashes_intensity})
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Bufeuri: {e.hot_flashes_count} (Intensitate {e.hot_flashes_intensity}/5)
                               </span>
                             )}
                             {(e.joint_pain_level || 0) > 0 && (
-                              <span className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md">
-                                🦴 Articulații: {e.joint_pain_level}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Articulații: {e.joint_pain_level}/5
                               </span>
                             )}
                             {(e.bone_pain_level || 0) > 0 && (
-                              <span className="text-[9px] bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded-md">
-                                💪 Oase: {e.bone_pain_level}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Oase: {e.bone_pain_level}/5
                               </span>
                             )}
                             {(e.fatigue_level || 0) > 0 && (
-                              <span className="text-[9px] bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded-md">
-                                ⚡ Oboseală: {e.fatigue_level}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Oboseală: {e.fatigue_level}/5
                               </span>
                             )}
                             {(e.nausea_level || 0) > 0 && (
-                              <span className="text-[9px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded-md">
-                                🤢 Greață: {e.nausea_level}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Greață: {e.nausea_level}/5
                               </span>
                             )}
                             {(e.brain_fog || 0) > 0 && (
-                              <span className="text-[9px] bg-purple-50 text-purple-700 px-1.5 py-0.5 rounded-md">
-                                🧠 Ceață: {e.brain_fog}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Ceață mentală: {e.brain_fog}/5
                               </span>
                             )}
                             {(e.mucosal_dryness || 0) > 0 && (
-                              <span className="text-[9px] bg-pink-50 text-pink-700 px-1.5 py-0.5 rounded-md">
-                                💧 Mucoase: {e.mucosal_dryness}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Uscăciune mucoase: {e.mucosal_dryness}/5
                               </span>
                             )}
                             {(e.headache || 0) > 0 && (
-                              <span className="text-[9px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded-md">
-                                🤕 Cefalee: {e.headache}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Cefalee: {e.headache}/5
                               </span>
                             )}
                             {e.sleep_quality !== undefined && e.sleep_quality !== 3 && (
-                              <span className="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded-md">
-                                🌙 Somn: {e.sleep_quality}/5
+                              <span className="text-[9px] font-medium bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-stone-200 dark:border-stone-700">
+                                Somn: {e.sleep_quality}/5
                               </span>
                             )}
                           </div>

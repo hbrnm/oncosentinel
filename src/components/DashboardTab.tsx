@@ -488,14 +488,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
         </div>
 
-        {/* 5 Emojis Selector (48px touch targets) */}
+        {/* 5 Levels Selector (48px touch targets) */}
         <div className="grid grid-cols-5 gap-1.5 pt-1">
           {[
-            { id: 'foarte_bine' as MoodLevel, emoji: '😊', label: 'Foarte bine' },
-            { id: 'bine' as MoodLevel, emoji: '🙂', label: 'Bine' },
-            { id: 'neutru' as MoodLevel, emoji: '😐', label: 'Neutru' },
-            { id: 'rau' as MoodLevel, emoji: '🙁', label: 'Rău' },
-            { id: 'foarte_rau' as MoodLevel, emoji: '😞', label: 'Foarte rău' },
+            { id: 'foarte_rau' as MoodLevel, level: 1, label: 'Dificil' },
+            { id: 'rau' as MoodLevel, level: 2, label: 'Scăzut' },
+            { id: 'neutru' as MoodLevel, level: 3, label: 'Echilibrat' },
+            { id: 'bine' as MoodLevel, level: 4, label: 'Bun' },
+            { id: 'foarte_bine' as MoodLevel, level: 5, label: 'Foarte bun' },
           ].map((item) => {
             const isSelected = selectedMood === item.id;
             return (
@@ -509,7 +509,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                     : 'bg-[#F9FAF8] dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
                 }`}
               >
-                <span className="text-xl leading-none">{item.emoji}</span>
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center font-semibold text-xs ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
+                }`}>
+                  {item.level}
+                </span>
                 <span className={`text-[10px] mt-1 text-center font-medium leading-tight ${
                   isSelected ? 'text-white font-bold' : 'text-gray-500 dark:text-gray-400'
                 }`}>
