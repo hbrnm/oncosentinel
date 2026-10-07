@@ -279,8 +279,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   return (
     <div className="space-y-4 pb-24 animate-fade-in relative">
-      {/* Botanical branch background accent in top right */}
-      <div className="absolute -top-3 -right-4 w-44 h-56 pointer-events-none opacity-80 z-0 overflow-visible">
+      {/* Botanical branch background accent in top right (shifted slightly left/down to frame the avatar gracefully) */}
+      <div className="absolute top-6 right-1 w-36 h-48 pointer-events-none opacity-60 z-0 overflow-visible text-[#7A9A8B]">
         <BotanicalBranch className="w-full h-full" />
       </div>
 
