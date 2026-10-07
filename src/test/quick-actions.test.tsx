@@ -30,11 +30,11 @@ describe('Base44 QuickActions Component', () => {
       />
     );
 
-    // 1. Calendar tratament -> navigates to timeline/treatment tab
+    // 1. Calendar tratament -> navigates to treatment tab
     const calendarBtn = screen.getByText(/Calendar/i).closest('button');
     expect(calendarBtn).toBeTruthy();
     fireEvent.click(calendarBtn!);
-    expect(handleNavigate).toHaveBeenCalledWith('timeline');
+    expect(handleNavigate).toHaveBeenCalledWith('treatment');
 
     // 2. Ghiduri medicale -> navigates to guide tab
     const guidesBtn = screen.getByText(/Ghiduri/i).closest('button');

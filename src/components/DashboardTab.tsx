@@ -24,7 +24,7 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onNavigateToRecipes?: (query?: string) => void;
-  onNavigateToTab?: (tab: 'today' | 'timeline' | 'symptoms' | 'guide') => void;
+  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'symptoms' | 'guide') => void;
 }
 
 export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau';
@@ -300,7 +300,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </button>
           ) : (
             <button
-              onClick={() => onNavigateToTab?.('timeline')}
+              onClick={() => onNavigateToTab?.('treatment')}
               className="tap-scale inline-flex items-center gap-0.5 text-[#4A6354] dark:text-sage-300 text-[12px] font-semibold hover:underline"
             >
               <span>Vezi detalii</span>

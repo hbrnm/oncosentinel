@@ -65,6 +65,9 @@ export interface PatientProfile {
   tamoxifen_start_date: string;
   pill_stock_count: number;
   daily_reminder_time: string;
+  medication_name?: string;
+  medication_dose?: string;
+  medication_frequency?: string;
   oncologist_email?: string;
 }
 

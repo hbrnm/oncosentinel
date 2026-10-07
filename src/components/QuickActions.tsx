@@ -18,7 +18,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       label2: 'tratament',
       icon: CalendarDays,
       tint: 'bg-[#E8EDE7] text-[#4A6354] dark:bg-sage-950/60 dark:text-sage-300',
-      onClick: () => onNavigateToTab?.('timeline'),
+      onClick: () => onNavigateToTab?.('treatment'),
     },
     {
       label1: 'Ghiduri',

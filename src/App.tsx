@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { BottomNav, TabType } from './components/BottomNav';
 import { DashboardTab } from './components/DashboardTab';
+import { TreatmentTab } from './components/TreatmentTab';
 import { TimelineTab } from './components/TimelineTab';
 import { SymptomsTab } from './components/SymptomsTab';
 import { GuideTab } from './components/GuideTab';
@@ -248,6 +249,15 @@ export function App() {
               onNavigateToTab={(tab) => {
                 setActiveTab(tab);
               }}
+            />
+          )}
+
+          {activeTab === 'treatment' && (
+            <TreatmentTab
+              profile={profile}
+              doses={doses}
+              onTakeDose={handleTakeDose}
+              onUpdateProfile={handleSaveProfile}
             />
           )}
 
