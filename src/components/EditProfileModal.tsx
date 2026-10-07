@@ -22,6 +22,16 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const [oncologistEmail, setOncologistEmail] = useState(profile.oncologist_email || '');
   const [savedSuccess, setSavedSuccess] = useState(false);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setFullName(profile.full_name || '');
+      setReminderTime(profile.daily_reminder_time || '08:30');
+      setStock(profile.pill_stock_count ?? 30);
+      setStartDate(profile.tamoxifen_start_date || '');
+      setOncologistEmail(profile.oncologist_email || '');
+    }
+  }, [isOpen, profile]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
