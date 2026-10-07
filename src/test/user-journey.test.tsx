@@ -184,4 +184,72 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     expect(screen.getByText(/Ghid de Semnale de Alarmă/i)).toBeInTheDocument();
     expect(screen.getByText(/Tromboză Venoasă Profundă/i)).toBeInTheDocument();
   });
+
+  it('7. Flux Jurnal Emoțional: Selecție Stare -> Mesaj Empatic Contextual -> Salvare Locală', async () => {
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+
+    // Găsim butonul "Foarte bine"
+    const greatMoodBtn = screen.getByText('Foarte bine').closest('button');
+    expect(greatMoodBtn).toBeTruthy();
+    fireEvent.click(greatMoodBtn!);
+
+    // Verificăm apariția mesajului empatic contextual
+    expect(screen.getByText(/Mă bucur că te simți bine/i)).toBeInTheDocument();
+
+    // Verificăm apariția etichetei "Înregistrat azi"
+    expect(screen.getByText(/Înregistrat azi/i)).toBeInTheDocument();
+
+    // Verificăm persistența în localStorage
+    expect(localStorage.getItem('navimed_today_mood')).toBe('foarte_bine');
+  });
+
+  it('8. Flux Stare Vulnerabilă: Rău / Foarte Rău -> Apariție Buton Cercul de Sprijin & SOS FAB', async () => {
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+
+    // Selectăm starea "Foarte rău"
+    const veryBadMoodBtn = screen.getByText('Foarte rău').closest('button');
+    expect(veryBadMoodBtn).toBeTruthy();
+    fireEvent.click(veryBadMoodBtn!);
+
+    // Verificăm mesajul empatic de susținere
+    expect(screen.getByText(/Nu trebuie să treci prin asta singură/i)).toBeInTheDocument();
+
+    // Verificăm apariția butonului discret spre Cercul de Sprijin
+    const talkSupportBtn = screen.getByText(/Vreau să vorbesc cu cineva/i);
+    expect(talkSupportBtn).toBeInTheDocument();
+
+    // Verificăm apariția butonului Floating SOS Urgențe
+    const sosFab = screen.getByText(/SOS Urgențe/i);
+    expect(sosFab).toBeInTheDocument();
+  });
+
+  it('9. Flux Card Control & Dismiss Banner de Inspirație pe 7 zile', async () => {
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    // Setăm data următorului control la 10 zile în viitor
+    const futureDate = new Date(Date.now() + 10 * 86400000).toISOString().slice(0, 10);
+    localStorage.setItem('navimed_next_control_date', futureDate);
+
+    render(<App />);
+
+    // Verificăm calculul dinamic al zilelor (peste 10 zile)
+    expect(screen.getByText(/peste 10 zile/i)).toBeInTheDocument();
+
+    // Verificăm prezența inițială a bannerului de inspirație
+    const bannerQuote = screen.getByText(/Nu ești doar un pacient/i);
+    expect(bannerQuote).toBeInTheDocument();
+
+    // Închidem bannerul folosind butonul X
+    const dismissBannerBtn = screen.getByTitle(/Închide pentru 7 zile/i);
+    fireEvent.click(dismissBannerBtn);
+
+    // Bannerul trebuie să dispară din DOM
+    expect(screen.queryByText(/Nu ești doar un pacient/i)).not.toBeInTheDocument();
+
+    // Verificăm salvarea timestamp-ului de dismiss în localStorage
+    const dismissedUntil = localStorage.getItem('navimed_banner_dismissed_until');
+    expect(dismissedUntil).toBeTruthy();
+    expect(Number(dismissedUntil)).toBeGreaterThan(Date.now());
+  });
 });
