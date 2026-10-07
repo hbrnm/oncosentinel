@@ -15,6 +15,7 @@ interface JournalTabProps {
   symptoms: SymptomLog[];
   doses: DoseLog[];
   onAddSymptomLog: (log: Omit<SymptomLog, 'id'>) => void;
+  onNavigateToTab?: (tab: 'guide') => void;
 }
 
 export const JournalTab: React.FC<JournalTabProps> = ({
@@ -38,6 +39,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>([]);
   const [mucosalDryness, setMucosalDryness] = useState<number>(0);
   const [waterIntake, setWaterIntake] = useState<number>(2000);
+  const [severeSymptomsAlert, setSevereSymptomsAlert] = useState<Partial<SymptomLog> | null>(null);
   const [bonePainLevel, setBonePainLevel] = useState<number>(0);
   const [nauseaLevel, setNauseaLevel] = useState<number>(0);
   const [brainFog, setBrainFog] = useState<number>(0);
@@ -74,7 +76,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     
     // Simulating API call/save
     setTimeout(() => {
-      onAddSymptomLog({
+      
+      const newLogData = {
         logged_at: new Date().toISOString(),
         mood_state: getMood(mood).label,
         notes: note.trim() ? note.trim() : undefined,
@@ -82,20 +85,33 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         hot_flashes_intensity: hotFlashesIntensity,
         night_sweats: nightSweats,
         fatigue_level: fatigueLevel,
-        sleep_quality: 3,
+        sleep_quality: sleepQuality,
         joint_pain_level: jointPainLevel,
         joint_pain_areas: selectedJointAreas,
         mucosal_dryness: mucosalDryness,
-      bone_pain_level: bonePainLevel,
-      nausea_level: nauseaLevel,
-      brain_fog: brainFog,
-      headache: headache,
-      sleep_quality: sleepQuality,
+        bone_pain_level: bonePainLevel,
+        nausea_level: nauseaLevel,
+        brain_fog: brainFog,
+        headache: headache,
         water_intake_ml: waterIntake
-      });
+      };
+      onAddSymptomLog(newLogData);
       setSavedToday(true);
       setSaving(false);
-      setShowDetailedForm(false);
+      
+      const hasSevere = 
+        hotFlashesIntensity >= 4 || 
+        jointPainLevel >= 4 || 
+        bonePainLevel >= 4 || 
+        nauseaLevel >= 4 || 
+        fatigueLevel >= 4 || 
+        brainFog >= 4;
+
+      if (hasSevere) {
+        setSevereSymptomsAlert(newLogData);
+      } else {
+        setShowDetailedForm(false);
+      }
     }, 600);
   };
 
@@ -130,6 +146,14 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   };
 
   return (
+    <React.Fragment>
+      {severeSymptomsAlert && (
+        <SevereSymptomModal 
+          symptoms={severeSymptomsAlert}
+          onClose={() => { setSevereSymptomsAlert(null); setShowDetailedForm(false); }}
+          onNavigateToGuide={() => onNavigateToTab?.('guide')}
+        />
+      )}
     <div className="min-h-screen pb-24 animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <LeafSprig className="absolute top-0 right-0 w-14 h-14 text-sage-200 dark:text-sage-900/50 opacity-50" />
@@ -400,5 +424,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         </div>
       </div>
     </div>
+    </React.Fragment>
   );
 };

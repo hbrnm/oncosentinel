@@ -28,6 +28,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [docName, setDocName] = useState<string>('');
   const [docCategory, setDocCategory] = useState<any>('buletin_histopatologic');
+  const [analyzingDoc, setAnalyzingDoc] = useState<string | null>(null);
   const [selectedRealFile, setSelectedRealFile] = useState<File | null>(null);
 
   // 6-Month Oncology & Imaging Surveillance Tracker
@@ -121,7 +122,20 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                 <span className="text-[10px] font-bold uppercase tracking-wider text-blue-800 dark:text-blue-300 bg-blue-100 dark:bg-blue-950/60 px-2 py-0.5 rounded-md">
                   Supraveghere Oncologică & Imagistică
                 </span>
-                <button
+                
+                    <button
+                      onClick={() => handleAnalyzeDocument(doc)}
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-indigo-600 hover:text-white hover:bg-indigo-500 transition-colors bg-indigo-50 dark:bg-indigo-900/30 mr-1"
+                      title="Analizează cu AI pentru Timeline"
+                    >
+                      {analyzingDoc === doc.id ? (
+                        <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Sparkles className="w-3.5 h-3.5" />
+                      )}
+                    </button>
+
+                    <button
                   onClick={() => setIsEditingControlDate(!isEditingControlDate)}
                   className="text-gray-400 hover:text-blue-600 transition-colors"
                   title="Schimbă data controlului"

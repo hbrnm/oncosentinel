@@ -70,20 +70,33 @@ export function generateOncologyReport(
   doc.text('3. JURNAL DE SIMPTOME RECENTE', 14, 93);
   doc.line(14, 95, 196, 95);
 
-  const symptomRows = symptoms.slice(0, 10).map(s => [
-    new Date(s.logged_at).toLocaleDateString('ro-RO'),
-    `${s.hot_flashes_count} ep. (Scor ${s.hot_flashes_intensity}/5)`,
-    s.night_sweats ? 'Da' : 'Nu',
-    `Grad ${s.joint_pain_level}/5 (${s.joint_pain_areas.join(', ') || 'Niciuna'})`,
-    `Grad ${s.fatigue_level}/5`,
-    `${s.sleep_quality}/5`,
-    s.notes ? s.notes.substring(0, 35) + (s.notes.length > 35 ? '...' : '') : '-'
-  ]);
+    const symptomRows = symptoms.slice(0, 15).map(s => {
+    const dureri = [
+      s.joint_pain_level > 0 ? `Art:${s.joint_pain_level}` : '',
+      (s.bone_pain_level || 0) > 0 ? `Os:${s.bone_pain_level}` : ''
+    ].filter(Boolean).join(', ') || '-';
+
+    const altele = [
+      (s.brain_fog || 0) > 0 ? `Ceață:${s.brain_fog}` : '',
+      (s.nausea_level || 0) > 0 ? `Greață:${s.nausea_level}` : '',
+      (s.headache || 0) > 0 ? `Cef:${s.headache}` : '',
+      (s.mucosal_dryness || 0) > 0 ? `Mucoase:${s.mucosal_dryness}` : ''
+    ].filter(Boolean).join(', ') || '-';
+
+    return [
+      new Date(s.logged_at).toLocaleDateString('ro-RO'),
+      `${s.hot_flashes_count} (Scor ${s.hot_flashes_intensity})`,
+      dureri,
+      `Ob:${s.fatigue_level} Smn:${s.sleep_quality}`,
+      altele,
+      s.notes ? s.notes.substring(0, 40) + (s.notes.length > 40 ? '...' : '') : '-'
+    ];
+  });
 
   autoTable(doc, {
     startY: 99,
-    head: [['Data', 'Bufeuri (Intensitate)', 'Transp. Nopte', 'Dureri Articulare', 'Oboseală', 'Somn', 'Observații']],
-    body: symptomRows.length > 0 ? symptomRows : [['-', 'Fără date recente', '-', '-', '-', '-', '-']],
+    head: [['Data', 'Bufeuri', 'Dureri(Art/Os)', 'Obos/Somn', 'Altele (Ceață, Greață, etc)', 'Observații']],
+    body: symptomRows.length > 0 ? symptomRows : [['-', 'Fără date recente', '-', '-', '-', '-']],
     theme: 'striped',
     headStyles: {
       fillColor: primaryColor,
@@ -96,13 +109,12 @@ export function generateOncologyReport(
       cellPadding: 2.5
     },
     columnStyles: {
-      0: { cellWidth: 20 },
-      1: { cellWidth: 32 },
-      2: { cellWidth: 22 },
-      3: { cellWidth: 35 },
-      4: { cellWidth: 18 },
-      5: { cellWidth: 16 },
-      6: { cellWidth: 47 }
+      0: { cellWidth: 18 },
+      1: { cellWidth: 27 },
+      2: { cellWidth: 30 },
+      3: { cellWidth: 25 },
+      4: { cellWidth: 45 },
+      5: { cellWidth: 40 }
     }
   });
 

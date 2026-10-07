@@ -4,7 +4,9 @@ import {
   ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
-import { PatientProfile, DoseLog } from '../types';
+import { PatientProfile, DoseLog, SymptomLog } from '../types';
+import { generateOncologyReport } from '../lib/pdfGenerator';
+import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
 
 interface AppointmentItem {
@@ -20,6 +22,7 @@ interface AppointmentItem {
 interface ProfileTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
+  symptoms: SymptomLog[];
   onUpdateProfile: (updated: PatientProfile) => void;
   onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenAuth?: () => void;
@@ -45,6 +48,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [activeTab, setActiveTab] = useState<'settings' | 'dossier'>('settings');
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [nameVal, setNameVal] = useState(profile.full_name || '');
+  const [reminderTimeVal, setReminderTimeVal] = useState(profile.daily_reminder_time || '08:00');
   const [histologyVal, setHistologyVal] = useState(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
   const [stageVal, setStageVal] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
   const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
@@ -72,6 +76,9 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     const nextVal = !doseReminderEnabled;
     setDoseReminderEnabled(nextVal);
     localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
+    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
   };
 
   const handleToggleApptReminder = () => {
@@ -133,7 +140,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       stage: stageVal.trim() || profile.stage,
       er_status: erVal.trim() || profile.er_status,
       pr_status: prVal.trim() || profile.pr_status,
-      her2_status: her2Val.trim() || profile.her2_status
+      her2_status: her2Val.trim() || profile.her2_status,
+      daily_reminder_time: reminderTimeVal
     });
     setEditProfileOpen(false);
   };
@@ -562,6 +570,19 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                     placeholder="Negativ"
                   />
                 </div>
+              </div>
+
+              
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  Ora Memento Tratament
+                </label>
+                <input
+                  type="time"
+                  value={reminderTimeVal}
+                  onChange={(e) => setReminderTimeVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                />
               </div>
 
               <div className="flex justify-end gap-2 pt-2">

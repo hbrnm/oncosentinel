@@ -247,6 +247,54 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     };
   };
 
+
+  // Streak Calculator
+  const calculateStreak = () => {
+    if (!doses || doses.length === 0) return 0;
+    
+    const takenDates = doses
+      .filter(d => d.status === 'taken')
+      .map(d => d.scheduled_for.split('T')[0])
+      .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+    if (takenDates.length === 0) return 0;
+
+    let streak = 0;
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    
+    let currentDate = new Date(today);
+    
+    const dStr = (d) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    if (takenDates.includes(dStr(currentDate))) {
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    } else {
+      currentDate.setDate(currentDate.getDate() - 1);
+      if (!takenDates.includes(dStr(currentDate))) return 0;
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
+
+    while (true) {
+      if (takenDates.includes(dStr(currentDate))) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    return streak;
+  };
+
+  const streakCount = calculateStreak();
+
   const greeting = getGreetingData(currentHour);
 
   const moodSectionTitle = selectedMood
@@ -283,7 +331,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             {greeting.sub}
           </p>
         </div>
+        
         <div className="flex items-center gap-2 shrink-0">
+          {streakCount > 0 && (
+            <div 
+              title={`Ai luat pastila ${streakCount} zile la rând!`}
+              className="tap-scale flex items-center gap-1 bg-orange-50 dark:bg-orange-900/30 border border-orange-100 dark:border-orange-800/50 px-2.5 py-1.5 rounded-full shadow-xs cursor-pointer group"
+            >
+              <Flame className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
+              <span className="text-xs font-bold text-orange-700 dark:text-orange-400">{streakCount}</span>
+            </div>
+          )}
           <button
             type="button"
             title="Notificări & Memento"
