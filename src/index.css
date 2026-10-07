@@ -43,6 +43,17 @@
   --color-darkbg-surface: #202B25;
   --color-darkbg-card: #293730;
   --color-darkbg-border: #374940;
+
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
 }
 
 /* Animations & smooth feel */

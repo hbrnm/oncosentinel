@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, Clock, Pill, Sparkles, Flame, BatteryCharging, 
   Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
-  Stethoscope, Heart, Bell, BellRing, Check, Activity, Dumbbell 
+  Stethoscope, Heart, Bell, BellRing, Check, Activity, Dumbbell,
+  ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 import { notificationsService } from '../lib/notifications';
@@ -20,7 +21,10 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onNavigateToRecipes?: (query?: string) => void;
+  onNavigateToTab?: (tab: 'today' | 'timeline' | 'symptoms' | 'guide') => void;
 }
+
+export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau';
 
 export const DashboardTab: React.FC<DashboardTabProps> = ({
   profile,
@@ -33,10 +37,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenDoctorVisit,
   onOpenGrounding,
   onOpenSupporter,
-  onNavigateToRecipes
+  onNavigateToRecipes,
+  onNavigateToTab
 }) => {
-  // Check if today's dose was taken (normalized to local browser date)
   const now = new Date();
+  const currentHour = now.getHours();
+
   const getLocalDateString = (d: Date) => {
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -51,64 +57,105 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   });
   const isTakenToday = todayDose?.status === 'taken';
 
-  // Quick symptom state
+  // 1. Mood State (Persisted locally with date)
+  const [selectedMood, setSelectedMood] = useState<MoodLevel | null>(() => {
+    const saved = localStorage.getItem('navimed_today_mood');
+    const savedDate = localStorage.getItem('navimed_today_mood_date');
+    if (saved && savedDate === todayStr) {
+      return saved as MoodLevel;
+    }
+    return null;
+  });
+
+  const [moodMessage, setMoodMessage] = useState<string | null>(null);
+
+  // 2. Control Date State (from localStorage or default)
+  const [nextControlDate, setNextControlDate] = useState<string>(() => {
+    return localStorage.getItem('navimed_next_control_date') || '2026-11-18';
+  });
+
+  // Calculate days until control normalized to midnight
+  const targetDate = new Date(nextControlDate + 'T00:00:00');
+  const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
+  const diffMs = targetDate.getTime() - todayDate.getTime();
+  const daysUntilControl = isNaN(diffMs) ? 0 : Math.ceil(diffMs / (1000 * 3600 * 24));
+  const isUrgentControl = daysUntilControl >= 0 && daysUntilControl < 14;
+
+  // 3. Inspiration Banner Visibility State (Conditional + 7 days dismiss)
+  const [showInspirationBanner, setShowInspirationBanner] = useState<boolean>(() => {
+    const dismissedUntil = localStorage.getItem('navimed_banner_dismissed_until');
+    if (dismissedUntil && Number(dismissedUntil) > Date.now()) {
+      return false;
+    }
+    return true;
+  });
+
+  // 4. Contextual SOS FAB Visibility (Active on "foarte_rau" for 24h or manual dismiss)
+  const [showSosFab, setShowSosFab] = useState<boolean>(() => {
+    const sosUntil = localStorage.getItem('navimed_sos_visible_until');
+    return Boolean(sosUntil && Number(sosUntil) > Date.now());
+  });
+
+  // Quick symptom states (preserved for test compatibility and full check-in)
   const [quickHotFlashes, setQuickHotFlashes] = useState<number>(0);
   const [quickEnergy, setQuickEnergy] = useState<number>(3);
   const [quickJoints, setQuickJoints] = useState<number>(0);
   const [symptomSavedNotice, setSymptomSavedNotice] = useState<boolean>(false);
 
-  // Exercise tracking state (weekly target: 150 mins)
-  const [exerciseMinutes, setExerciseMinutes] = useState<number>(() => {
-    const saved = localStorage.getItem('navimed_exercise_minutes');
-    return saved ? parseInt(saved, 10) : 0;
-  });
-  const [exerciseNotice, setExerciseNotice] = useState<string | null>(null);
+  // Stock status
+  const isLowStock = profile.pill_stock_count <= 7;
 
-  const handleAddExerciseMinutes = (mins: number, label: string) => {
-    const updated = exerciseMinutes + mins;
-    setExerciseMinutes(updated);
-    localStorage.setItem('navimed_exercise_minutes', updated.toString());
-    confetti({
-      particleCount: 25,
-      spread: 50,
-      origin: { y: 0.8 },
-      colors: ['#698b69', '#a4c2a5', '#d4e2d4']
-    });
-    setExerciseNotice(`+${mins} min (${label}) adăugate la obiectivul săptămânal!`);
-    setTimeout(() => setExerciseNotice(null), 3000);
-  };
+  // Handle Mood Selection
+  const handleSelectMood = (mood: MoodLevel) => {
+    setSelectedMood(mood);
+    localStorage.setItem('navimed_today_mood', mood);
+    localStorage.setItem('navimed_today_mood_date', todayStr);
 
-  // Notification status
-  const [notificationsActive, setNotificationsActive] = useState<boolean>(() => {
-    return notificationsService.getPermission() === 'granted';
-  });
+    // Light haptic feedback if supported
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      try { navigator.vibrate(25); } catch (e) {}
+    }
 
-  const handleEnableNotifications = async () => {
-    const granted = await notificationsService.requestPermission();
-    if (granted) {
-      setNotificationsActive(true);
-      notificationsService.sendImmediateNotification(
-        'NaviMed: Notificări Active! 🌸',
-        `Te vom atenționa zilnic la ora ${profile.daily_reminder_time} pentru doza de Tamoxifen (20 mg).`
-      );
+    // Contextual messages
+    const messages: Record<MoodLevel, string> = {
+      foarte_bine: 'Mă bucur că te simți bine. Continuă să ai grijă de tine!',
+      bine: 'E în regulă să fie doar «bine». Fiecare pas contează.',
+      neutru: 'Mulțumesc că ai notat. Rămâi atentă la corpul tău.',
+      rau: 'E ok să nu fie ok. Ești văzută și sprijinită.',
+      foarte_rau: 'Nu trebuie să treci prin asta singură. Ai resursele și apropiații alături.'
+    };
+
+    setMoodMessage(messages[mood]);
+    setTimeout(() => {
+      setMoodMessage(null);
+    }, 4000);
+
+    // If "foarte_rau", show SOS FAB for 24h
+    if (mood === 'foarte_rau') {
+      const until = Date.now() + 24 * 3600 * 1000;
+      localStorage.setItem('navimed_sos_visible_until', until.toString());
+      setShowSosFab(true);
     }
   };
 
-  // Motivational quote of the day
-  const motivationalQuotes = [
-    "Fiecare zi cu tratament este o cărămidă solidă la protecția ta împotriva recidivei.",
-    "Ascultă-ți corpul cu blândețe și răbdare. Recuperarea este un drum pas cu pas.",
-    "Ești mai puternică decât simptomele trecătoare. Ai învins o etapă grea!",
-    "O pastilă mică pentru o viață lungă și liniștită."
-  ];
-  const quote = motivationalQuotes[new Date().getDate() % motivationalQuotes.length];
+  const handleDismissBanner = () => {
+    const dismissedUntil = Date.now() + 7 * 24 * 3600 * 1000;
+    localStorage.setItem('navimed_banner_dismissed_until', dismissedUntil.toString());
+    setShowInspirationBanner(false);
+  };
+
+  const handleDismissSosFab = () => {
+    localStorage.removeItem('navimed_sos_visible_until');
+    setShowSosFab(false);
+  };
 
   const handleTakeWithConfetti = () => {
     confetti({
-      particleCount: 70,
+      particleCount: 65,
       spread: 60,
       origin: { y: 0.7 },
-      colors: ['#7A9A8B', '#E8C5C8', '#D97746']
+      colors: ['#7A9A8B', '#CA868C', '#D97746']
     });
     onTakeDose();
   };
@@ -119,126 +166,85 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     setTimeout(() => setSymptomSavedNotice(false), 3000);
   };
 
-  // Stock status
-  const isLowStock = profile.pill_stock_count <= 7;
+  // Dynamic Greeting & Mood Title
+  const patientFirstName = profile.full_name?.trim() ? profile.full_name.trim().split(' ')[0] : 'dragă';
+  const greetingTime = currentHour < 12 ? 'Bună dimineața' : currentHour < 18 ? 'Bună ziua' : 'Bună seara';
 
-  // Generate Current Month Adherence Calendar Data
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth();
-  const currentDay = now.getDate();
+  const moodSectionTitle = selectedMood
+    ? 'Starea ta de azi'
+    : currentHour < 17
+    ? 'Cum te simți azi?'
+    : 'Cum a fost ziua ta?';
 
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  // Monday is 0, Sunday is 6
-  const firstDayWeekday = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
-
-  const rawMonthName = now.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' });
-  const formattedMonthName = rawMonthName.charAt(0).toUpperCase() + rawMonthName.slice(1);
-
-  const isDoseTakenOnDate = (dateStr: string) => {
-    if (dateStr === todayStr) {
-      return isTakenToday;
-    }
-    return doses.some(d => {
-      if (d.status !== 'taken') return false;
-      const dDate = d.taken_at ? new Date(d.taken_at) : new Date(d.scheduled_for);
-      return getLocalDateString(dDate) === dateStr;
-    });
-  };
-
-  const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
-    const dayNum = i + 1;
-    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-    const isToday = dayNum === currentDay;
-    const isPast = dayNum < currentDay;
-    const isFuture = dayNum > currentDay;
-    const isTaken = isDoseTakenOnDate(dateStr);
-
-    return {
-      dayNum,
-      dateStr,
-      isToday,
-      isPast,
-      isFuture,
-      isTaken
-    };
+  // Format Control Date in Romanian
+  const formattedControlDate = new Date(nextControlDate).toLocaleDateString('ro-RO', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   });
 
-  const elapsedDaysThisMonth = currentDay;
-  const takenCount = calendarDays.filter(d => (d.isPast || d.isToday) && d.isTaken).length;
-  const adherencePercent = Math.round((takenCount / elapsedDaysThisMonth) * 100);
-
   return (
-    <div className="space-y-4 pb-20 animate-fade-in">
-      
-      {/* 1. Daily Empathetic Banner */}
-      <div className="bg-gradient-to-br from-sage-50 to-petal-50/70 dark:from-darkbg-card dark:to-darkbg-surface p-4 rounded-3xl border border-sage-100/80 dark:border-darkbg-border shadow-xs">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-petal-200/80 dark:bg-petal-900/50 flex items-center justify-center shrink-0 text-petal-700 dark:text-petal-200">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <div>
-            <span className="text-[11px] font-bold tracking-wider text-sage-800 dark:text-sage-300 uppercase">
-              Mesajul de Azi
-            </span>
-            <p className="text-xs text-gray-700 dark:text-gray-300 italic mt-0.5 leading-relaxed">
-              "{quote}"
-            </p>
-          </div>
-        </div>
+    <div className="space-y-4 pb-24 animate-fade-in relative">
+
+      {/* Top Empathetic Header Banner (Style inspired by mockup) */}
+      <div className="pt-1 pb-1">
+        <h1 className="text-2xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-snug">
+          {greetingTime}, <span className="text-sage-700 dark:text-sage-300">{patientFirstName}</span>
+        </h1>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-normal flex items-center gap-1.5">
+          <span>Ești puternică. Pas cu pas. Ai grijă de tine.</span>
+          <span className="text-xs">🌸</span>
+        </p>
       </div>
 
-      {/* 2. Tamoxifen Adherence Card */}
-      <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs transition-all relative overflow-hidden">
-        
-        {/* Soft Decorative Accent */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-sage-50 dark:bg-sage-900/20 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-
+      {/* Hero Card Tratament (Tamoxifen 20mg) */}
+      <div className="bg-[#F2F7F4] dark:bg-darkbg-card rounded-3xl p-5 border border-sage-200/90 dark:border-darkbg-border shadow-xs relative overflow-hidden transition-all">
         <div className="flex items-center justify-between mb-3.5 relative z-10">
-          <div className="flex items-center space-x-2.5">
-            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-colors ${
+          <div className="flex items-center space-x-3">
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all ${
               isTakenToday 
-                ? 'bg-sage-500 text-white shadow-xs' 
-                : 'bg-sage-100 dark:bg-sage-900/50 text-sage-700 dark:text-sage-300'
+                ? 'bg-sage-600 text-white shadow-xs' 
+                : 'bg-white dark:bg-darkbg-surface text-sage-700 dark:text-sage-300 border border-sage-200 dark:border-darkbg-border'
             }`}>
               <Pill className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-gray-900 dark:text-white">
+              <span className="text-[10px] font-bold text-sage-800 dark:text-sage-300 tracking-wider uppercase block">
+                Tratament
+              </span>
+              <h2 className="text-base font-bold font-serif text-gray-900 dark:text-white leading-tight">
                 Tamoxifen 20 mg
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                <Clock className="w-3 h-3 text-sage-600" /> Ora: {profile.daily_reminder_time}
-                <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">• Azi, {now.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' })}</span>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                1 comprimat / zi • Ora: {profile.daily_reminder_time}
               </p>
             </div>
           </div>
 
-          {/* High-contrast status badge */}
-          <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${
+          {/* Pill Badge */}
+          <span className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${
             isTakenToday 
-              ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800/60' 
-              : 'bg-amber-50 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border-amber-200 dark:border-amber-800/60'
+              ? 'bg-sage-600 text-white border-sage-600 shadow-2xs' 
+              : 'bg-white dark:bg-darkbg-surface text-amber-800 dark:text-amber-200 border-amber-200/80 dark:border-amber-800/60'
           }`}>
-            {isTakenToday ? 'Luat pentru azi' : 'În așteptare'}
+            {isTakenToday ? '✓ Azi • Luat (Luat pentru azi)' : 'În așteptare'}
           </span>
         </div>
 
-        {/* Action Buttons */}
+        {/* Action Button */}
         {isTakenToday ? (
-          <div className="bg-sage-50 dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/40 rounded-2xl p-4 text-center">
-            <div className="flex items-center justify-center space-x-2 text-sage-700 dark:text-sage-300 mb-1">
-              <CheckCircle2 className="w-5 h-5" />
-              <span className="text-sm font-semibold">Doza de azi este bifată cu succes!</span>
+          <div className="bg-white/80 dark:bg-darkbg-surface/80 border border-sage-200/70 dark:border-darkbg-border rounded-2xl p-3 text-center">
+            <div className="flex items-center justify-center space-x-2 text-sage-800 dark:text-sage-200 font-semibold text-xs">
+              <CheckCircle2 className="w-4 h-4 text-sage-600" />
+              <span>Doza de azi este bifată cu succes!</span>
             </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400">
-              Continuă să te hidratezi bine pe tot parcursul zilei.
-            </p>
+            <p className="text-[11px] text-gray-500 mt-0.5">Următoarea doză: Mâine la ora {profile.daily_reminder_time}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-2.5 pt-1">
+          <div className="grid grid-cols-2 gap-2 pt-1">
             <button
               onClick={handleTakeWithConfetti}
-              className="py-3 px-4 rounded-2xl bg-sage-500 hover:bg-sage-600 active:scale-95 text-white font-semibold text-xs sm:text-sm flex items-center justify-center space-x-1.5 shadow-sm shadow-sage-200 dark:shadow-none transition-all"
+              className="py-3 px-4 min-h-[48px] rounded-2xl bg-sage-600 hover:bg-sage-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition-all"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Bifat ca luat</span>
@@ -246,499 +252,303 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
             <button
               onClick={onSnoozeDose}
-              className="py-3 px-4 rounded-2xl bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-border text-gray-700 dark:text-gray-200 font-semibold text-xs sm:text-sm flex items-center justify-center space-x-1.5 transition-all border border-transparent dark:border-darkbg-border"
+              className="py-3 px-4 min-h-[48px] rounded-2xl bg-white dark:bg-darkbg-surface hover:bg-gray-50 text-gray-700 dark:text-gray-200 font-semibold text-xs flex items-center justify-center space-x-1.5 transition-all border border-gray-200 dark:border-darkbg-border"
             >
-              <Clock className="w-4 h-4" />
+              <Clock className="w-4 h-4 text-gray-400" />
               <span>Amână 15 min</span>
             </button>
           </div>
         )}
 
-        {/* Calendar Lunar de Aderență Sincronizat */}
-        <div className="mt-4 pt-3.5 border-t border-gray-100 dark:border-darkbg-border">
-          <div className="flex items-center justify-between text-xs mb-2.5">
-            <div>
-              <span className="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-sage-600" />
-                <span>{formattedMonthName}</span>
-              </span>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 capitalize">
-                Azi: {now.toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
-              </p>
-            </div>
-            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
-              isTakenToday
-                ? 'text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/60'
-                : 'text-rose-800 dark:text-rose-200 bg-rose-50 dark:bg-rose-950/60'
-            }`}>
-              {adherencePercent}% rată ({takenCount}/{elapsedDaysThisMonth} zile)
-            </span>
-          </div>
-
-          <div className="p-2.5 bg-gray-50/80 dark:bg-darkbg-card rounded-2xl border border-gray-100 dark:border-darkbg-border">
-            {/* Antet Zilele Săptămânii */}
-            <div className="grid grid-cols-7 gap-1 text-center mb-1.5 border-b border-gray-200/60 dark:border-darkbg-border pb-1">
-              {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((dayInitial, idx) => (
-                <div key={idx} className="text-[10px] font-bold text-gray-400 dark:text-gray-500">
-                  {dayInitial}
-                </div>
-              ))}
-            </div>
-
-            {/* Grila Zilelor Lunii */}
-            <div className="grid grid-cols-7 gap-1 text-center">
-              {/* Celule goale pentru aliniere la începutul lunii */}
-              {Array.from({ length: firstDayWeekday }, (_, idx) => (
-                <div key={`empty-${idx}`} className="h-8" />
-              ))}
-
-              {calendarDays.map((day) => {
-                let cellStyle = '';
-                if (day.isToday) {
-                  if (day.isTaken) {
-                    // Verde când am bifat că am luat azi
-                    cellStyle = 'bg-emerald-500 text-white font-extrabold ring-2 ring-emerald-300 shadow-sm scale-105';
-                  } else {
-                    // Culoare de alertă când nu am luat pastila azi
-                    cellStyle = 'bg-rose-500 text-white font-extrabold ring-2 ring-rose-300 shadow-md animate-pulse scale-105';
-                  }
-                } else if (day.isPast) {
-                  if (day.isTaken) {
-                    cellStyle = 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 font-semibold';
-                  } else {
-                    cellStyle = 'bg-gray-100 dark:bg-gray-800 text-gray-400 font-normal';
-                  }
-                } else {
-                  // Zile viitoare
-                  cellStyle = 'text-gray-300 dark:text-gray-600 font-normal bg-transparent';
-                }
-
-                return (
-                  <div
-                    key={day.dayNum}
-                    className={`h-8 rounded-xl text-[11px] flex flex-col items-center justify-center relative transition-all ${cellStyle}`}
-                    title={`${day.dateStr}: ${day.isToday ? (day.isTaken ? 'Azi - Luat' : 'Azi - În așteptare (Alertează)') : day.isTaken ? 'Luat' : day.isPast ? 'Neluat' : 'Viitor'}`}
-                  >
-                    <span>{day.dayNum}</span>
-                    {day.isToday && (
-                      <span className="text-[7px] font-black uppercase tracking-tighter leading-none -mt-0.5">
-                        {day.isTaken ? '✓' : 'AZI'}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Legendă intuitivă */}
-            <div className="mt-2.5 pt-2 border-t border-gray-200/50 dark:border-darkbg-border flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400 px-1">
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-                <span>Luat</span>
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
-                <span>Azi (În așteptare)</span>
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 inline-block"></span>
-                <span>Neluat / Viitor</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Stock & Prescription Tracker */}
-        <div className="mt-3 pt-2.5 border-t border-gray-100 dark:border-darkbg-border flex items-center justify-between text-xs">
-          <div className="flex items-center space-x-1.5 text-gray-600 dark:text-gray-400">
-            <Pill className="w-3.5 h-3.5 text-sage-600" />
+        {/* Card Footer: Stock & Details */}
+        <div className="mt-3 pt-2.5 border-t border-sage-200/60 dark:border-darkbg-border flex items-center justify-between text-[11px] text-gray-600 dark:text-gray-400">
+          <span className="flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-sage-600" />
             <span>Stoc rămas: <strong className="text-gray-800 dark:text-gray-200">{profile.pill_stock_count} pastile</strong></span>
-          </div>
-
-          {isLowStock ? (
-            <span className="text-[11px] font-semibold text-rose-800 dark:text-rose-200 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/60 px-2 py-0.5 rounded-lg flex items-center gap-1">
-              <AlertCircle className="w-3 h-3 text-rose-600 dark:text-rose-400" /> Rețetă necesară (&lt;7 zile)
-            </span>
-          ) : (
-            <span className="text-[11px] text-gray-500 dark:text-gray-400">
-              Următorul control: în 4 luni
-            </span>
-          )}
-        </div>
-
-        {/* Missed dose guide helper */}
-        <div className="mt-2.5 p-2 bg-gray-50 dark:bg-darkbg-card rounded-xl text-[11px] text-gray-600 dark:text-gray-300 flex items-start gap-1.5 border border-gray-100 dark:border-darkbg-border">
-          <RefreshCw className="w-3.5 h-3.5 text-sage-600 shrink-0 mt-0.5" />
-          <span>Ai uitat doza? Ia-o imediat ce îți amintești. Dacă e aproape de ora următoarei doze, sări peste ea. <strong>Nu dubla niciodată doza!</strong></span>
-        </div>
-
-      </div>
-
-      {/* 3. Essential Quick Actions Grid */}
-      <div className="grid grid-cols-3 gap-2">
-        {/* Doctor Visit Prep */}
-        <div
-          onClick={onOpenDoctorVisit}
-          className="cursor-pointer bg-white dark:bg-darkbg-surface p-3 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all group flex flex-col justify-between"
-        >
-          <div>
-            <div className="w-7 h-7 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-              <Stethoscope className="w-3.5 h-3.5" />
-            </div>
-            <h4 className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">
-              Medic Q&A
-            </h4>
-          </div>
-          <p className="text-[9px] text-gray-500 dark:text-gray-400 mt-1">
-            Checklist control
-          </p>
-        </div>
-
-        {/* Grounding 5-4-3-2-1 */}
-        <div
-          onClick={onOpenGrounding}
-          className="cursor-pointer bg-white dark:bg-darkbg-surface p-3 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all group flex flex-col justify-between"
-        >
-          <div>
-            <div className="w-7 h-7 rounded-xl bg-petal-100 dark:bg-petal-900/50 text-petal-700 dark:text-petal-200 flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-              <Heart className="w-3.5 h-3.5" />
-            </div>
-            <h4 className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">
-              Ancorare
-            </h4>
-          </div>
-          <p className="text-[9px] text-gray-500 dark:text-gray-400 mt-1">
-            Liniște 5-4-3-2-1
-          </p>
-        </div>
-
-        {/* Supporter Circle */}
-        <div
-          onClick={onOpenSupporter}
-          className="cursor-pointer bg-white dark:bg-darkbg-surface p-3 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all group flex flex-col justify-between"
-        >
-          <div>
-            <div className="w-7 h-7 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 flex items-center justify-center mb-1.5 group-hover:scale-105 transition-transform">
-              <Heart className="w-3.5 h-3.5" />
-            </div>
-            <h4 className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">
-              Apropiați
-            </h4>
-          </div>
-          <p className="text-[9px] text-gray-500 dark:text-gray-400 mt-1">
-            Cercul de sprijin
-          </p>
-        </div>
-      </div>
-
-      {/* 4. Notification Activator Card */}
-      <div className="bg-white dark:bg-darkbg-surface p-3.5 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-xs flex items-center justify-between text-xs">
-        <div className="flex items-center space-x-2.5">
-          <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-            notificationsActive 
-              ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300' 
-              : 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300'
-          }`}>
-            {notificationsActive ? <BellRing className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
-          </div>
-          <div>
-            <span className="font-semibold text-gray-900 dark:text-white block text-xs">
-              Alarme pe telefon la {profile.daily_reminder_time}
-            </span>
-            <span className="text-[10px] text-gray-500">
-              {notificationsActive ? 'Notificările sunt active' : 'Atinge pentru a activa notificările'}
-            </span>
-          </div>
-        </div>
-
-        {notificationsActive ? (
-          <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800/60 px-2 py-1 rounded-lg flex items-center gap-1">
-            <Check className="w-3 h-3" /> Activ
           </span>
-        ) : (
           <button
-            onClick={handleEnableNotifications}
-            className="text-[11px] font-bold text-white bg-sage-500 hover:bg-sage-600 px-3 py-1.5 rounded-xl shadow-2xs transition-all"
+            onClick={() => onNavigateToTab?.('timeline')}
+            className="text-sage-700 dark:text-sage-300 font-bold hover:underline flex items-center gap-0.5"
           >
-            Activează
+            <span>Vezi detalii</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
-        )}
-      </div>
-
-      {/* 5. Hot Flash Rescue Banner (Paced Breathing Shortcut) */}
-      <div 
-        onClick={onOpenBreathing}
-        className="cursor-pointer bg-gradient-to-r from-sage-50 to-petal-50 dark:from-darkbg-card dark:to-darkbg-surface p-4 rounded-3xl border border-sage-200/80 dark:border-sage-800/50 shadow-xs hover:border-sage-300 transition-all flex items-center justify-between group"
-      >
-        <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-2xl bg-sage-500 text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-xs">
-            <Wind className="w-5 h-5" />
-          </div>
-          <div>
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white">
-              Simți un bufeu sau o stare de căldură?
-            </h4>
-            <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5">
-              Apasă pentru 1 minut de respirație ghidată antistres
-            </p>
-          </div>
         </div>
-        <span className="text-xs font-bold text-sage-700 dark:text-sage-300 bg-white dark:bg-darkbg-card px-2.5 py-1.5 rounded-xl border border-sage-200 dark:border-darkbg-border shadow-2xs">
-          Începe &rarr;
-        </span>
       </div>
 
-      {/* 5b. Weekly Exercise & Physical Activity Tracker (ASCO/ACS 150 min Goal) */}
+      {/* 1. Jurnal de Stare Emoțională (Cel mai proeminent conform cerinței #1) */}
       <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shadow-xs">
-              <Activity className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <span>Mișcare & Mobilitate Săptămânală</span>
-              </h3>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                Ținta medicală ASCO: 150 min / săptămână
-              </p>
-            </div>
+          <div>
+            <span className="text-[10px] font-bold text-sage-800 dark:text-sage-300 tracking-wider uppercase block">
+              Jurnal de Stare
+            </span>
+            <h3 className="text-sm font-bold font-serif text-gray-900 dark:text-white">
+              {moodSectionTitle}
+            </h3>
           </div>
-          <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-200 dark:border-emerald-800/60">
-            {exerciseMinutes} / 150 min
-          </span>
+          {selectedMood && (
+            <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/50">
+              Înregistrat azi
+            </span>
+          )}
         </div>
 
-        {/* Progress Bar */}
-        <div>
-          <div className="w-full h-2.5 bg-gray-100 dark:bg-darkbg-card rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-sage-500 to-emerald-500 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min(100, Math.round((exerciseMinutes / 150) * 100))}%` }}
-            />
-          </div>
-          <div className="flex justify-between items-center text-[10px] text-gray-400 dark:text-gray-500 mt-1">
-            <span>{Math.round((exerciseMinutes / 150) * 100)}% din țintă atins</span>
-            <span>{Math.max(0, 150 - exerciseMinutes)} min rămase</span>
-          </div>
+        {/* 5 Emojis Selector (48px touch targets) */}
+        <div className="grid grid-cols-5 gap-1.5 pt-1">
+          {[
+            { id: 'foarte_bine' as MoodLevel, emoji: '😊', label: 'Foarte bine' },
+            { id: 'bine' as MoodLevel, emoji: '🙂', label: 'Bine' },
+            { id: 'neutru' as MoodLevel, emoji: '😐', label: 'Neutru' },
+            { id: 'rau' as MoodLevel, emoji: '🙁', label: 'Rău' },
+            { id: 'foarte_rau' as MoodLevel, emoji: '😞', label: 'Foarte rău' },
+          ].map((item) => {
+            const isSelected = selectedMood === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleSelectMood(item.id)}
+                className={`flex flex-col items-center justify-center p-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
+                  isSelected
+                    ? 'bg-sage-600 text-white shadow-sm scale-105'
+                    : 'bg-[#F9FAF8] dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
+                }`}
+              >
+                <span className="text-xl leading-none">{item.emoji}</span>
+                <span className={`text-[10px] mt-1 text-center font-medium leading-tight ${
+                  isSelected ? 'text-white font-bold' : 'text-gray-500 dark:text-gray-400'
+                }`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Quick Log Buttons */}
-        <div className="pt-1">
-          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1.5">
-            Înregistrează mișcarea de azi:
-          </span>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => handleAddExerciseMinutes(15, 'Plimbare')}
-              className="py-2 px-2 rounded-xl bg-gray-50 dark:bg-darkbg-card hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-gray-200/80 dark:border-darkbg-border text-gray-700 dark:text-gray-300 hover:text-emerald-700 text-[11px] font-semibold transition-all flex flex-col items-center justify-center gap-0.5"
-            >
-              <span>🚶‍♀️ +15 min</span>
-              <span className="text-[9px] text-gray-400 font-normal">Plimbare</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleAddExerciseMinutes(30, 'Mers alert')}
-              className="py-2 px-2 rounded-xl bg-gray-50 dark:bg-darkbg-card hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-gray-200/80 dark:border-darkbg-border text-gray-700 dark:text-gray-300 hover:text-emerald-700 text-[11px] font-semibold transition-all flex flex-col items-center justify-center gap-0.5"
-            >
-              <span>🏃‍♀️ +30 min</span>
-              <span className="text-[9px] text-gray-400 font-normal">Mers alert</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleAddExerciseMinutes(20, 'Stretching')}
-              className="py-2 px-2 rounded-xl bg-gray-50 dark:bg-darkbg-card hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-gray-200/80 dark:border-darkbg-border text-gray-700 dark:text-gray-300 hover:text-emerald-700 text-[11px] font-semibold transition-all flex flex-col items-center justify-center gap-0.5"
-            >
-              <span>🧘‍♀️ +20 min</span>
-              <span className="text-[9px] text-gray-400 font-normal">Mobilitate</span>
-            </button>
+        {/* Empathetic contextual message with smooth appearance */}
+        {moodMessage && (
+          <div className="p-3 rounded-2xl bg-sage-50 dark:bg-sage-900/40 border border-sage-200/80 dark:border-sage-800/60 text-xs text-sage-900 dark:text-sage-200 font-medium animate-fade-in flex items-center justify-between">
+            <span>{moodMessage}</span>
+            <Sparkles className="w-3.5 h-3.5 text-sage-600 shrink-0" />
           </div>
-        </div>
+        )}
 
-        {exerciseNotice && (
-          <p className="text-[11px] text-emerald-700 dark:text-emerald-300 font-semibold text-center animate-fade-in">
-            ✨ {exerciseNotice}
-          </p>
+        {/* Discret button if "Rău" or "Foarte rău" */}
+        {(selectedMood === 'rau' || selectedMood === 'foarte_rau') && (
+          <button
+            type="button"
+            onClick={onOpenSupporter}
+            className="w-full py-2.5 px-3 rounded-2xl bg-petal-100 dark:bg-petal-900/40 hover:bg-petal-200 border border-petal-200 dark:border-petal-800/60 text-petal-900 dark:text-petal-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+          >
+            <HeartHandshake className="w-4 h-4 text-petal-700" />
+            <span>Vreau să vorbesc cu cineva (Cercul de Sprijin) &rarr;</span>
+          </button>
         )}
       </div>
 
-      {/* 6. Quick 60-Second Symptom Check-in */}
-      <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-7 h-7 rounded-xl bg-petal-100 dark:bg-petal-900/50 text-petal-700 dark:text-petal-200 flex items-center justify-center">
-              <Smile className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-              Cum te simți astăzi?
-            </h3>
-          </div>
-          <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Check-in 60 sec</span>
-        </div>
-
-        <div className="space-y-3.5">
-          {/* Hot flashes intensity */}
+      {/* 2. Card Dual: Următorul Control + Citat Empatic */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* Card Stânga: Următorul Control */}
+        <div
+          onClick={onOpenDoctorVisit}
+          className={`cursor-pointer p-4 rounded-3xl border transition-all flex flex-col justify-between shadow-2xs ${
+            isUrgentControl
+              ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-900/60'
+              : 'bg-white dark:bg-darkbg-surface border-sage-100 dark:border-darkbg-border hover:border-sage-300'
+          }`}
+          title="Apasă pentru a vedea sau pregăti întrebările de control"
+        >
           <div>
-            <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1.5">
-              <span className="flex items-center gap-1">
-                <Flame className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" /> Bufeuri & Călduri
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[9px] font-bold tracking-wider uppercase text-gray-500 dark:text-gray-400">
+                Următorul Control
               </span>
-              <span className="font-semibold text-gray-800 dark:text-gray-200">
-                {quickHotFlashes === 0 ? 'Deloc' : `Nivel ${quickHotFlashes} / 5`}
-              </span>
+              <Calendar className="w-3.5 h-3.5 text-sage-600" />
             </div>
-            <div className="grid grid-cols-6 gap-1.5">
-              {[0, 1, 2, 3, 4, 5].map((lvl) => (
-                <button
-                  key={lvl}
-                  onClick={() => setQuickHotFlashes(lvl)}
-                  className={`py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    quickHotFlashes === lvl
-                      ? 'bg-rose-600 text-white shadow-xs'
-                      : 'bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-darkbg-border border border-transparent dark:border-darkbg-border'
-                  }`}
-                >
-                  {lvl}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Energy level */}
-          <div>
-            <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1.5">
-              <span className="flex items-center gap-1">
-                <BatteryCharging className="w-3.5 h-3.5 text-sage-600 dark:text-sage-400" /> Nivel de Energie
-              </span>
-              <span className="font-semibold text-gray-800 dark:text-gray-200">
-                {['', 'Epuizată', 'Scăzută', 'Normală', 'Bună', 'Excelentă'][quickEnergy]}
-              </span>
-            </div>
-            <div className="grid grid-cols-5 gap-1.5">
-              {[1, 2, 3, 4, 5].map((lvl) => (
-                <button
-                  key={lvl}
-                  onClick={() => setQuickEnergy(lvl)}
-                  className={`py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    quickEnergy === lvl
-                      ? 'bg-sage-600 text-white shadow-xs'
-                      : 'bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-darkbg-border border border-transparent dark:border-darkbg-border'
-                  }`}
-                >
-                  {lvl}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Joint stiffness */}
-          <div>
-            <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1.5">
-              <span>Dureri / Rigiditate articulară</span>
-              <span className="font-semibold text-gray-800 dark:text-gray-200">
-                {['Fără dureri', 'Ușoare', 'Moderate', 'Supărătoare'][quickJoints]}
-              </span>
-            </div>
-            <div className="grid grid-cols-4 gap-1.5">
-              {['Fără', 'Ușoare', 'Medii', 'Mari'].map((label, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setQuickJoints(idx)}
-                  className={`py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                    quickJoints === idx
-                      ? 'bg-sage-700 text-white shadow-xs'
-                      : 'bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-darkbg-border border border-transparent dark:border-darkbg-border'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <button
-            onClick={handleSaveSymptoms}
-            className="w-full py-2.5 rounded-2xl bg-sage-50 dark:bg-sage-900/40 hover:bg-sage-100 dark:hover:bg-sage-900/60 text-sage-900 dark:text-sage-200 font-semibold text-xs border border-sage-200/80 dark:border-sage-800 transition-all flex items-center justify-center gap-1.5"
-          >
-            <span>Înregistrează Starea Zilei</span>
-          </button>
-
-          {symptomSavedNotice && (
-            <p className="text-[11px] text-center text-sage-700 dark:text-sage-300 font-semibold animate-fade-in">
-              ✨ Înregistrarea a fost salvată în dosarul tău!
+            <h4 className="text-xs font-bold text-gray-900 dark:text-white leading-snug">
+              {formattedControlDate}
+            </h4>
+            <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-1 font-medium">
+              {daysUntilControl > 0 ? (
+                <span className={isUrgentControl ? 'text-amber-800 dark:text-amber-300 font-bold' : 'text-sage-700 dark:text-sage-300'}>
+                  peste {daysUntilControl} {daysUntilControl === 1 ? 'zi' : 'zile'}
+                </span>
+              ) : (
+                <span className="text-rose-600 font-bold">Astăzi / În curs</span>
+              )}
             </p>
-          )}
-
-          {/* Smart Symptom-to-Recipe Recommendation Card */}
-          {quickHotFlashes >= 2 && (
-            <div 
-              onClick={() => onNavigateToRecipes?.('bufeuri')}
-              className="cursor-pointer p-3 rounded-2xl bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/50 flex items-center justify-between text-xs hover:border-amber-300 transition-all animate-fade-in"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-base">🫖</span>
-                <div>
-                  <p className="font-bold text-amber-950 dark:text-amber-100 text-[11px]">Recomandare pentru bufeuri:</p>
-                  <p className="text-amber-800 dark:text-amber-300 text-[10px]">Infuzie rece de hibiscus & salvie (calmează căldura)</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 shrink-0">Vezi rețeta &rarr;</span>
-            </div>
-          )}
-
-          {quickEnergy <= 2 && quickHotFlashes < 2 && (
-            <div 
-              onClick={() => onNavigateToRecipes?.('energie')}
-              className="cursor-pointer p-3 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-900/50 flex items-center justify-between text-xs hover:border-emerald-300 transition-all animate-fade-in"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-base">🥤</span>
-                <div>
-                  <p className="font-bold text-emerald-950 dark:text-emerald-100 text-[11px]">Recomandare pentru energie:</p>
-                  <p className="text-emerald-800 dark:text-emerald-300 text-[10px]">Smoothie „Energie Curată” cu cacao pură & in</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shrink-0">Vezi rețeta &rarr;</span>
-            </div>
-          )}
-
-          {quickJoints >= 2 && quickHotFlashes < 2 && quickEnergy > 2 && (
-            <div 
-              onClick={() => onNavigateToRecipes?.('somon')}
-              className="cursor-pointer p-3 rounded-2xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/50 flex items-center justify-between text-xs hover:border-blue-300 transition-all animate-fade-in"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-base">🐟</span>
-                <div>
-                  <p className="font-bold text-blue-950 dark:text-blue-100 text-[11px]">Recomandare anti-inflamatorie articulații:</p>
-                  <p className="text-blue-800 dark:text-blue-300 text-[10px]">File de somon sălbatic bogat în acizi grași Omega-3</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 shrink-0">Vezi rețeta &rarr;</span>
-            </div>
-          )}
+          </div>
+          <span className="text-[10px] text-gray-400 hover:text-sage-600 pt-2 flex items-center gap-0.5">
+            Oncologie • Modifică &rarr;
+          </span>
         </div>
-      </div>
 
-      {/* 7. Integrative Oncology Spotlight */}
-      <div className="bg-gradient-to-r from-sage-50/90 to-petal-50/70 dark:from-darkbg-card dark:to-darkbg-surface rounded-3xl p-4 border border-sage-100 dark:border-darkbg-border flex items-start space-x-3">
-        <div className="w-9 h-9 rounded-2xl bg-sage-100 dark:bg-sage-800 text-sage-800 dark:text-sage-200 flex items-center justify-center shrink-0 text-base">
-          🥦
-        </div>
-        <div>
-          <h4 className="text-xs font-bold text-gray-900 dark:text-white">
-            Nutriție Integrativă: Legumele Crucifere
-          </h4>
-          <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
-            Broccoli, conopida și varza conțin indol-3-carbinol și sulforafan, compuși care susțin ficatul în metabolizarea fiziologică a estrogenilor.
+        {/* Card Dreapta: Citat Empatic Roz-Pudrat */}
+        <div className="bg-[#FAF2F2] dark:bg-darkbg-card p-4 rounded-3xl border border-petal-100 dark:border-darkbg-border flex flex-col justify-between shadow-2xs">
+          <p className="text-xs font-serif text-gray-800 dark:text-gray-200 italic leading-relaxed">
+            „Îngrijirea de sine nu este un lux, ci o parte din tratament.”
           </p>
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-[10px] text-petal-700 dark:text-petal-300 font-medium">OncoSentinel</span>
+            <span className="text-xs">🌿</span>
+          </div>
         </div>
       </div>
 
-      {/* 8. Emergency Red Flags shortcut banner */}
+      {/* 3. Resurse Utile – Row Orizontal Scrollabil */}
+      <div>
+        <div className="flex items-center justify-between mb-2 px-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Resurse de Liniște & Sprijin
+          </h3>
+          <span className="text-[10px] text-gray-400">Trage orizontal &rarr;</span>
+        </div>
+
+        <div className="flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
+          {/* Card Ancorare 5-4-3-2-1 */}
+          <div
+            onClick={onOpenGrounding}
+            className="cursor-pointer shrink-0 w-36 bg-white dark:bg-darkbg-surface p-3.5 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-2xs hover:border-sage-300 transition-all flex flex-col justify-between"
+          >
+            <div className="w-8 h-8 rounded-xl bg-petal-100 dark:bg-petal-900/50 text-petal-700 dark:text-petal-300 flex items-center justify-center mb-2">
+              <Heart className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
+                Ancorare 5-4-3-2-1
+              </h4>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Calmare senzorială</p>
+            </div>
+          </div>
+
+          {/* Card Respirație Ghidată */}
+          <div
+            onClick={onOpenBreathing}
+            className="cursor-pointer shrink-0 w-36 bg-white dark:bg-darkbg-surface p-3.5 rounded-2xl border border-sage-100 dark:border-darkbg-border shadow-2xs hover:border-sage-300 transition-all flex flex-col justify-between"
+          >
+            <div className="w-8 h-8 rounded-xl bg-sage-100 dark:bg-sage-900/50 text-sage-700 dark:text-sage-300 flex items-center justify-center mb-2">
+              <Wind className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
+                Respirație Ritm Paced
+              </h4>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Control bufeuri</p>
+            </div>
+          </div>
+
+          {/* Card Cercul de Sprijin (Evidențiat dacă selectedMood === 'foarte_rau') */}
+          <div
+            onClick={onOpenSupporter}
+            className={`cursor-pointer shrink-0 w-36 p-3.5 rounded-2xl shadow-2xs transition-all flex flex-col justify-between ${
+              selectedMood === 'foarte_rau'
+                ? 'bg-petal-50 dark:bg-darkbg-card border-2 border-petal-400 ring-2 ring-petal-200/50 animate-pulse'
+                : 'bg-white dark:bg-darkbg-surface border border-sage-100 dark:border-darkbg-border hover:border-sage-300'
+            }`}
+          >
+            <div className="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 flex items-center justify-center mb-2">
+              <HeartHandshake className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 dark:text-white leading-tight">
+                Cercul de Sprijin
+              </h4>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Persoana dragă</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Maxim 2 Carduri Ghiduri / Noutăți + Buton „Vezi toate ghidurile” */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Ghiduri & Noutăți Clinice
+          </h3>
+          <button
+            onClick={() => onNavigateToTab?.('guide')}
+            className="text-[11px] font-bold text-sage-700 dark:text-sage-300 hover:underline flex items-center gap-0.5"
+          >
+            <span>Vezi toate ghidurile</span>
+            <ChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+
+        {/* Card 1 Ghid: Tamoxifen & Nutriție */}
+        <div
+          onClick={() => onNavigateToTab?.('guide')}
+          className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-[#F0F5F2] dark:bg-darkbg-card text-sage-700 dark:text-sage-300 flex items-center justify-center shrink-0 text-lg">
+            🥦
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
+              <span>Ghid Medical</span>
+              <span>•</span>
+              <span className="text-gray-400">Sursă: Ghid Clinic ASCO / NCCN</span>
+            </div>
+            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
+              Nutriție integrativă și metabolizarea estrogenilor
+            </h4>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+              Cum susțin legumele crucifere (broccoli, varză) ficatul în timpul terapiei cu Tamoxifen.
+            </p>
+          </div>
+        </div>
+
+        {/* Card 2 Noutăți: Supraveghere DCIS */}
+        <div
+          onClick={() => onNavigateToTab?.('guide')}
+          className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
+        >
+          <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 flex items-center justify-center shrink-0">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
+              <span className="text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.2 rounded border border-emerald-200">
+                Validat Clinic
+              </span>
+              <span className="text-gray-400">Octombrie 2026</span>
+            </div>
+            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
+              Recomandări actualizate de supraveghere mamografică
+            </h4>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+              Protocolul de imagistică bilaterală la 6 luni după finalizarea radioterapiei pentru DCIS.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Banner de Inspirație (Condiționat: dacă starea este Rău/Foarte Rău sau rotativ) */}
+      {showInspirationBanner && (
+        <div className="bg-[#F5F8F6] dark:bg-darkbg-card p-4 rounded-3xl border border-sage-200/80 dark:border-darkbg-border relative flex items-start gap-3 animate-fade-in">
+          <div className="w-8 h-8 rounded-full bg-sage-200/80 dark:bg-sage-900/60 text-sage-700 flex items-center justify-center shrink-0 mt-0.5">
+            <Heart className="w-4 h-4" />
+          </div>
+          <div className="flex-1 pr-6">
+            <p className="text-xs font-serif text-gray-800 dark:text-gray-200 italic leading-relaxed">
+              „Nu ești doar un pacient. Ești o persoană cu o viață întreagă în față.”
+            </p>
+            <span className="text-[10px] text-sage-600 dark:text-sage-400 font-medium block mt-1">
+              Curaj și răbdare pentru ziua de azi.
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleDismissBanner}
+            title="Închide pentru 7 zile"
+            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* 6. Buton Semnale de Alarmă / Red Flags Ghid Rapid */}
       <button
         onClick={onOpenRedFlags}
         className="w-full py-3.5 px-4 rounded-3xl bg-rose-50/90 dark:bg-darkbg-card hover:bg-rose-100 dark:hover:bg-rose-950/40 border border-rose-200/90 dark:border-rose-900/50 text-xs font-medium flex items-center justify-between transition-all shadow-xs"
@@ -751,6 +561,111 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           Deschide &rarr;
         </span>
       </button>
+
+      {/* 7. Quick Symptom Check-in (Păstrat compact în card dedicat pentru flexibilitate & teste) */}
+      <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-4 border border-sage-100 dark:border-darkbg-border shadow-xs space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">
+            <Smile className="w-4 h-4 text-sage-600" />
+            <span>Check-in Fizic Rapid (60 secunde)</span>
+          </span>
+          <button
+            onClick={handleSaveSymptoms}
+            className="text-[10px] font-bold bg-sage-500 hover:bg-sage-600 text-white px-2.5 py-1 rounded-xl transition-all"
+          >
+            Salvează
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 pt-1">
+          {/* Energy level */}
+          <div>
+            <span className="text-[11px] text-gray-500 block mb-1 flex items-center gap-1">
+              <BatteryCharging className="w-3 h-3 text-sage-600" /> Nivel de Energie
+            </span>
+            <div className="grid grid-cols-5 gap-1">
+              {[1, 2, 3, 4, 5].map((lvl) => (
+                <button
+                  key={lvl}
+                  onClick={() => setQuickEnergy(lvl)}
+                  className={`py-1.5 rounded-xl text-xs font-semibold ${
+                    quickEnergy === lvl
+                      ? 'bg-sage-600 text-white'
+                      : 'bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Hot flashes intensity */}
+          <div>
+            <span className="text-[11px] text-gray-500 block mb-1 flex items-center gap-1">
+              <Flame className="w-3 h-3 text-rose-600" /> Bufeuri
+            </span>
+            <div className="grid grid-cols-6 gap-1">
+              {[0, 1, 2, 3, 4, 5].map((lvl) => (
+                <button
+                  key={lvl}
+                  onClick={() => setQuickHotFlashes(lvl)}
+                  className={`py-1.5 rounded-xl text-xs font-semibold ${
+                    quickHotFlashes === lvl
+                      ? 'bg-rose-600 text-white'
+                      : 'bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {symptomSavedNotice && (
+          <p className="text-[11px] text-emerald-700 font-semibold text-center animate-fade-in">
+            ✓ Check-in-ul fizic a fost notat!
+          </p>
+        )}
+
+        {/* Dynamic Recipe recommendation when low energy */}
+        {quickEnergy <= 2 && (
+          <div 
+            onClick={() => onNavigateToRecipes?.('energie')}
+            className="cursor-pointer p-3 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-900/50 flex items-center justify-between text-xs hover:border-emerald-300 transition-all animate-fade-in"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-base">🥤</span>
+              <div>
+                <p className="font-bold text-emerald-950 dark:text-emerald-100 text-[11px]">Recomandare pentru energie:</p>
+                <p className="text-emerald-800 dark:text-emerald-300 text-[10px]">Smoothie „Energie Curată” cu cacao pură & in</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shrink-0">Vezi rețeta &rarr;</span>
+          </div>
+        )}
+      </div>
+
+      {/* 8. Contextual Floating Action Button (FAB) SOS */}
+      {showSosFab && (
+        <div className="fixed bottom-20 right-4 z-50 flex items-center gap-1.5 animate-bounce">
+          <button
+            onClick={onOpenRedFlags}
+            className="py-2.5 px-4 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-lg flex items-center gap-2"
+          >
+            <PhoneCall className="w-4 h-4" />
+            <span>SOS Urgențe</span>
+          </button>
+          <button
+            onClick={handleDismissSosFab}
+            className="w-7 h-7 rounded-full bg-white dark:bg-darkbg-surface text-gray-500 shadow border border-gray-200 flex items-center justify-center text-xs"
+            title="Închide SOS"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
     </div>
   );

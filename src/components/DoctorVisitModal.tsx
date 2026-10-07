@@ -118,6 +118,45 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({ isOpen, onCl
 
         {/* Content */}
         <div className="p-5 overflow-y-auto space-y-4 flex-1">
+          {/* Editable Control Date & Doctor Section */}
+          <div className="p-3.5 rounded-2xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/50 space-y-2.5 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-blue-900 dark:text-blue-200 flex items-center gap-1.5">
+                <Stethoscope className="w-4 h-4 text-blue-600" />
+                <span>Programare Următorul Control</span>
+              </span>
+              <span className="text-[10px] text-blue-600 dark:text-blue-300 font-semibold">Salvare automată</span>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Dată investigație / control:</label>
+                <input
+                  type="date"
+                  value={localStorage.getItem('navimed_next_control_date') || '2026-11-18'}
+                  onChange={(e) => {
+                    localStorage.setItem('navimed_next_control_date', e.target.value);
+                    window.dispatchEvent(new Event('storage'));
+                  }}
+                  className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-blue-200 dark:border-darkbg-border text-xs text-gray-800 dark:text-gray-200 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">Medic Curant / Clinică:</label>
+                <input
+                  type="text"
+                  placeholder="ex: Dr. Maria Popescu"
+                  defaultValue={localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu'}
+                  onChange={(e) => {
+                    localStorage.setItem('navimed_doctor_name', e.target.value);
+                  }}
+                  className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-blue-200 dark:border-darkbg-border text-xs text-gray-800 dark:text-gray-200 font-semibold"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Progress Banner */}
           <div className="flex items-center justify-between p-3 rounded-2xl bg-sage-50/80 dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/60 text-xs">
             <span className="text-sage-900 dark:text-sage-200 font-semibold">

@@ -181,6 +181,20 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
         </form>
 
+        {/* SOS Emergency Guide prominent button in Profile Modal */}
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-darkbg-border">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              window.dispatchEvent(new CustomEvent('navimed_open_red_flags'));
+            }}
+            className="w-full py-2.5 px-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-800 dark:text-rose-200 text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 transition-colors"
+          >
+            <span>🚨 Ghid Semnale de Alarmă & Urgențe (SOS)</span>
+          </button>
+        </div>
+
       </div>
     </div>
   );

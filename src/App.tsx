@@ -85,7 +85,12 @@ export function App() {
     testSync();
   }, []);
 
-  // Handlers
+  // Listen for global SOS / Red Flags opening event
+  useEffect(() => {
+    const handleOpenSos = () => setIsRedFlagsOpen(true);
+    window.addEventListener('navimed_open_red_flags', handleOpenSos);
+    return () => window.removeEventListener('navimed_open_red_flags', handleOpenSos);
+  }, []);
   const handleTakeDose = async () => {
     const todayStr = new Date().toISOString();
     const newLog: DoseLog = {
@@ -237,6 +242,9 @@ export function App() {
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onNavigateToRecipes={(query) => {
                 setActiveTab('guide');
+              }}
+              onNavigateToTab={(tab) => {
+                setActiveTab(tab);
               }}
             />
           )}
