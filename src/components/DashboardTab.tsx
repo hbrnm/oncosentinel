@@ -217,7 +217,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400 font-medium">
             {greeting.hello},
           </p>
-          <h1 className="text-2xl sm:text-[26px] font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-tight mt-0.5 capitalize">
+          <h1 className="text-2xl sm:text-[26px] font-normal font-serif text-[#3A332E] dark:text-[#F5F2EB] tracking-tight leading-tight mt-0.5 capitalize">
             {patientFirstName.toLowerCase()}
           </h1>
           <span className="sr-only">Bună, {patientFirstName}</span>
