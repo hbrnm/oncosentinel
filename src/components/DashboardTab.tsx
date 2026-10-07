@@ -102,6 +102,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   });
 
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
+  const [apptVersion, setApptVersion] = useState<number>(0);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedDate = localStorage.getItem('navimed_next_control_date');
+      if (savedDate) {
+        setNextControlDate(savedDate);
+      }
+      setApptVersion(v => v + 1);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const nextUpcomingAppointment = React.useMemo(() => {
     try {
       const saved = localStorage.getItem('navimed_appointments_list');
@@ -122,7 +137,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       center: 'Institutul Oncologic',
       status: 'upcoming'
     };
-  }, [nextControlDate]);
+  }, [nextControlDate, apptVersion]);
 
   // 5. Mindful Quote manual offset (cycles through quotes on tap)
   const [quoteOffset, setQuoteOffset] = useState<number>(0);

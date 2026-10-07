@@ -83,11 +83,48 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
   const [newQuestionText, setNewQuestionText] = useState('');
 
+  // Re-sync appointments from localStorage whenever the modal is opened
+  useEffect(() => {
+    if (!isOpen) return;
+    const saved = localStorage.getItem('navimed_appointments_list');
+    const legacyDate = localStorage.getItem('navimed_next_control_date') || '2026-11-18';
+    const legacyDoctor = localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu';
+
+    let currentList: AppointmentItem[] = [];
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) currentList = parsed;
+      } catch (e) {}
+    }
+
+    // Check if there is any upcoming appointment
+    const hasUpcoming = currentList.some(a => a.status === 'upcoming' && (daysUntil(a.date) ?? 0) >= 0);
+    
+    // If no upcoming appointment exists but legacyDate is set, ensure an appointment is present
+    if (!hasUpcoming && legacyDate) {
+      const defaultAppt: AppointmentItem = {
+        id: `appt_${Date.now()}`,
+        date: legacyDate,
+        time: '10:00',
+        specialty: 'Oncologie',
+        doctor: legacyDoctor,
+        center: 'Institutul Oncologic',
+        status: 'upcoming'
+      };
+      const updated = [...currentList, defaultAppt].sort((a, b) => a.date.localeCompare(b.date));
+      setAppointments(updated);
+      localStorage.setItem('navimed_appointments_list', JSON.stringify(updated));
+    } else if (currentList.length > 0) {
+      setAppointments(currentList);
+    }
+  }, [isOpen]);
+
   // Persist appointments and update legacy key for Dashboard sync
   useEffect(() => {
     localStorage.setItem('navimed_appointments_list', JSON.stringify(appointments));
     const nextUpcoming = appointments
-      .filter(a => a.status === 'upcoming')
+      .filter(a => a.status === 'upcoming' && (daysUntil(a.date) ?? 0) >= 0)
       .sort((a, b) => a.date.localeCompare(b.date))[0];
     if (nextUpcoming) {
       localStorage.setItem('navimed_next_control_date', nextUpcoming.date);
@@ -328,8 +365,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                       </div>
                       <div className="flex flex-col items-end gap-1.5 shrink-0">
                         {d !== null && d >= 0 && (
-                          <span className="px-2 py-0.5 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold">
-                            peste {d} {d === 1 ? 'zi' : 'zile'}
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                            d === 0
+                              ? 'bg-[#F2DFE1] text-[#9E5D64] dark:bg-rose-950/60 dark:text-rose-300 font-bold'
+                              : d === 1
+                              ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300'
+                              : 'bg-[#E8EDE7] text-[#4A6354] dark:bg-sage-900/60 dark:text-sage-300'
+                          }`}>
+                            {d === 0 ? 'Azi' : d === 1 ? 'Mâine' : `peste ${d} zile`}
                           </span>
                         )}
                         <button
