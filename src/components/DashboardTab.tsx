@@ -10,6 +10,7 @@ import { PatientProfile, DoseLog } from '../types';
 import { notificationsService } from '../lib/notifications';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
+import { getMindfulQuoteForHour } from '../data/quotes';
 
 interface DashboardTabProps {
   profile: PatientProfile;
@@ -98,6 +99,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     const sosUntil = localStorage.getItem('navimed_sos_visible_until');
     return Boolean(sosUntil && Number(sosUntil) > Date.now());
   });
+
+  // 5. Mindful Quote manual offset (cycles through quotes on tap)
+  const [quoteOffset, setQuoteOffset] = useState<number>(0);
+  const currentQuote = getMindfulQuoteForHour(currentHour, quoteOffset);
+
+  const handleNextQuote = () => {
+    setQuoteOffset(prev => prev + 1);
+  };
 
   // Quick symptom states (preserved for test compatibility and full check-in)
   const [quickHotFlashes, setQuickHotFlashes] = useState<number>(0);
@@ -345,15 +354,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </span>
         </div>
 
-        {/* Card Dreapta: Citat Empatic Roz-Pudrat (Base44 blush-card with LeafSprig) */}
-        <div className="blush-card rounded-3xl p-4 flex flex-col justify-between min-h-[145px] relative overflow-hidden">
-          <LeafSprig className="absolute -bottom-2 -right-2 w-16 h-16 opacity-50 pointer-events-none" />
-          <p className="font-serif italic text-xs leading-relaxed text-[#C99A9D] dark:text-petal-300 pr-4 z-10">
-            „Îngrijirea de sine nu este un lux, ci o parte din tratament.”
+        {/* Card Dreapta: Citat Empatic Roz-Pudrat (Base44 blush-card with LeafSprig & Dynamic rotation) */}
+        <div 
+          onClick={handleNextQuote}
+          title="Apasă pentru alt gând de susținere"
+          className="tap-scale blush-card rounded-3xl p-4 flex flex-col justify-between min-h-[145px] relative overflow-hidden cursor-pointer select-none group"
+        >
+          <LeafSprig className="absolute -bottom-2 -right-2 w-16 h-16 opacity-50 pointer-events-none group-hover:scale-110 transition-transform duration-300" />
+          <p className="font-serif italic text-xs leading-relaxed text-[#C99A9D] dark:text-petal-300 pr-3 z-10 transition-opacity">
+            {currentQuote.text}
           </p>
           <div className="flex items-center justify-between pt-2 z-10">
-            <span className="text-[10px] text-[#C99A9D] dark:text-petal-300 font-semibold tracking-wide">OncoSentinel</span>
-            <span className="text-xs">🌿</span>
+            <span className="text-[10px] text-[#C99A9D] dark:text-petal-300 font-semibold tracking-wide">
+              {currentQuote.author}
+            </span>
+            <span className="text-xs group-hover:rotate-12 transition-transform">🌿</span>
           </div>
         </div>
       </div>
