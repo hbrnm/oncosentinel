@@ -17,8 +17,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-darkbg-surface/95 backdrop-blur-lg border-t border-sage-100 dark:border-darkbg-border pb-safe">
-      <div className="max-w-md mx-auto grid grid-cols-4 h-16">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] z-50 pointer-events-none pb-safe">
+      <div className="mx-3 mb-3 organic-card rounded-[28px] px-2 py-1.5 grid grid-cols-4 shadow-lg pointer-events-auto bg-white/95 dark:bg-darkbg-surface/95 backdrop-blur-md">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -26,16 +26,18 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center justify-center transition-all ${
+              className={`tap-scale flex flex-col items-center justify-center gap-0.5 rounded-2xl px-2 py-1.5 transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? 'text-sage-600 dark:text-sage-300 font-medium'
-                  : 'text-gray-400 dark:text-gray-500 hover:text-gray-600'
+                  ? 'text-[#4A6354] dark:text-sage-300 font-semibold'
+                  : 'text-[#6B6259]/70 dark:text-gray-400 hover:text-gray-700'
               }`}
             >
-              <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-sage-50 dark:bg-sage-900/40 scale-105' : ''}`}>
-                <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.2px]' : 'stroke-[1.8px]'}`} />
-              </div>
-              <span className="text-[11px] mt-0.5 tracking-tight">{tab.label}</span>
+              <span className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ${
+                isActive ? 'bg-[#E8EDE7] dark:bg-sage-900/60 scale-105' : 'bg-transparent'
+              }`}>
+                <Icon className={`w-[18px] h-[18px] ${isActive ? 'stroke-[2.4px]' : 'stroke-[1.8px]'}`} />
+              </span>
+              <span className="text-[10px] font-semibold tracking-tight">{tab.label}</span>
             </button>
           );
         })}
