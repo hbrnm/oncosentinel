@@ -18,7 +18,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     expect(screen.getByText(/Bine ai venit în OncoSentinel/i)).toBeInTheDocument();
 
     // Pasul 1: Numele pacientei
-    const nameInput = screen.getByPlaceholderText(/ex: Elena Popescu/i);
+    const nameInput = screen.getByPlaceholderText(/Introdu numele|Elena Popescu/i);
     fireEvent.change(nameInput, { target: { value: 'Andreea Ionescu' } });
     fireEvent.click(screen.getByText(/Continuă spre Alerte & Orar/i));
 

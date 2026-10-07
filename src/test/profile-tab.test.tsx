@@ -34,7 +34,7 @@ describe('ProfileTab Component (Base44 Design)', () => {
 
     expect(screen.getByRole('heading', { name: /^Profil$/i })).toBeInTheDocument();
     expect(screen.getByText('Andreea Popescu')).toBeInTheDocument();
-    expect(screen.getByText('DCIS')).toBeInTheDocument();
+    expect(screen.getAllByText('DCIS').length).toBeGreaterThan(0);
     expect(screen.getByText('Tratament curent')).toBeInTheDocument();
     expect(screen.getByText('Controale medicale')).toBeInTheDocument();
     expect(screen.getByText('Notificări')).toBeInTheDocument();
@@ -69,15 +69,17 @@ describe('ProfileTab Component (Base44 Design)', () => {
       />
     );
 
-    const editNameBtn = screen.getByTitle('Modifică numele');
-    fireEvent.click(editNameBtn);
+    const editProfileBtn = screen.getByTitle('Modifică profilul');
+    fireEvent.click(editProfileBtn);
 
-    expect(screen.getByText('Numele tău')).toBeInTheDocument();
+    expect(screen.getByText('Date Profil & Situație')).toBeInTheDocument();
     const saveBtn = screen.getByText('Salvează');
     fireEvent.click(saveBtn);
 
     expect(handleUpdate).toHaveBeenCalledWith(expect.objectContaining({
-      full_name: 'Andreea Popescu'
+      full_name: 'Andreea Popescu',
+      histology: 'DCIS',
+      stage: 'Grad 0'
     }));
   });
 });

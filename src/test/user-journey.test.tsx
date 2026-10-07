@@ -15,7 +15,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     expect(screen.getByText(/Bine ai venit în OncoSentinel/i)).toBeInTheDocument();
 
     // Pasul 1: Nume
-    const nameInput = screen.getByPlaceholderText(/ex: Elena Popescu/i);
+    const nameInput = screen.getByPlaceholderText(/Introdu numele|Elena Popescu/i);
     fireEvent.change(nameInput, { target: { value: 'Ioana Dumitrescu' } });
 
     // Mergem la Pasul 2

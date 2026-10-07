@@ -115,7 +115,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="ex: Elena Popescu"
+                  placeholder="Introdu numele tău..."
                   className="w-full pl-9 pr-3.5 py-2.5 rounded-2xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                   required
                 />

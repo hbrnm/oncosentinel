@@ -41,9 +41,23 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   onNavigateToTab,
   onOpenAuth
 }) => {
-  // 1. Display name state & edit modal
-  const [editName, setEditName] = useState(false);
-  const [nameVal, setNameVal] = useState(profile.full_name || 'Andreea');
+  // 1. Display name & profile edit modal state
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [nameVal, setNameVal] = useState(profile.full_name || '');
+  const [histologyVal, setHistologyVal] = useState(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
+  const [stageVal, setStageVal] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
+  const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
+  const [prVal, setPrVal] = useState(profile.pr_status || 'Pozitiv (>80%)');
+  const [her2Val, setHer2Val] = useState(profile.her2_status || 'Negativ');
+
+  useEffect(() => {
+    setNameVal(profile.full_name || '');
+    setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
+    setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
+    setErVal(profile.er_status || 'Pozitiv (>90%)');
+    setPrVal(profile.pr_status || 'Pozitiv (>80%)');
+    setHer2Val(profile.her2_status || 'Negativ');
+  }, [profile]);
 
   // 2. Reminders settings state
   const [doseReminderEnabled, setDoseReminderEnabled] = useState<boolean>(() => {
@@ -118,13 +132,18 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     setApptForm({ date: '', specialty: 'Oncologie', doctor: '', center: '' });
   };
 
-  const handleSaveName = (e: React.FormEvent) => {
+  const handleSaveProfileForm = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateProfile({
       ...profile,
-      full_name: nameVal.trim() || 'Andreea'
+      full_name: nameVal.trim(),
+      histology: histologyVal.trim() || profile.histology,
+      stage: stageVal.trim() || profile.stage,
+      er_status: erVal.trim() || profile.er_status,
+      pr_status: prVal.trim() || profile.pr_status,
+      her2_status: her2Val.trim() || profile.her2_status
     });
-    setEditName(false);
+    setEditProfileOpen(false);
   };
 
   const upcoming = appointments.filter((a) => {
@@ -132,7 +151,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     return a.status === 'upcoming' && d !== null && d >= 0;
   });
 
-  const displayName = profile.full_name?.trim() || 'Andreea';
+  const displayName = profile.full_name?.trim() || 'Pacientă';
 
   return (
     <div className="space-y-5 animate-fade-in pb-16">
@@ -157,24 +176,77 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               {displayName}
             </h2>
             <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#E8EDE7] dark:bg-sage-900/70 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold border border-sage-200/50">
-              DCIS
+              {profile.histology?.includes('DCIS') ? 'DCIS' : (profile.stage || 'Grad 0')}
             </span>
           </div>
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400 truncate mt-0.5">
-            {profile.oncologist_email || 'Profil pacient protejat'}
+            {profile.oncologist_email || 'Profil pacient securizat'}
           </p>
         </div>
         <button
           onClick={() => {
-            setNameVal(displayName);
-            setEditName(true);
+            setNameVal(profile.full_name || '');
+            setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
+            setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
+            setErVal(profile.er_status || 'Pozitiv (>90%)');
+            setPrVal(profile.pr_status || 'Pozitiv (>80%)');
+            setHer2Val(profile.her2_status || 'Negativ');
+            setEditProfileOpen(true);
           }}
           className="tap-scale w-10 h-10 rounded-full bg-[#F5F2EB] dark:bg-darkbg-card flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer"
-          title="Modifică numele"
-          aria-label="Modifică numele"
+          title="Modifică profilul"
+          aria-label="Modifică profilul"
         >
           <Pencil className="w-4 h-4 text-[#6B6259] dark:text-gray-300" />
         </button>
+      </div>
+
+      {/* 1.5. Card Situație Medicală & Diagnostic */}
+      <div className="organic-card rounded-[28px] p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <p className="micro-label">Diagnostic & Receptori</p>
+          </div>
+          <button
+            onClick={() => {
+              setNameVal(profile.full_name || '');
+              setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
+              setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
+              setErVal(profile.er_status || 'Pozitiv (>90%)');
+              setPrVal(profile.pr_status || 'Pozitiv (>80%)');
+              setHer2Val(profile.her2_status || 'Negativ');
+              setEditProfileOpen(true);
+            }}
+            className="text-[11px] font-semibold text-[#4A6354] dark:text-sage-300 hover:underline"
+          >
+            Modifică
+          </button>
+        </div>
+
+        <div className="space-y-1">
+          <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
+            {profile.histology || 'Carcinom Ductal In Situ (DCIS)'}
+          </p>
+          <p className="text-[12px] text-[#6B6259] dark:text-gray-400">
+            {profile.stage || 'Grad 0 (TisN0M0, G2)'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#EAE5DE]/60 dark:border-darkbg-border text-center">
+          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor ER</span>
+            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.er_status || 'Pozitiv'}</span>
+          </div>
+          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor PR</span>
+            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.pr_status || 'Pozitiv'}</span>
+          </div>
+          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Status HER2</span>
+            <span className="text-[11px] font-bold text-[#3A332E] dark:text-gray-200 truncate block">{profile.her2_status || 'Negativ'}</span>
+          </div>
+        </div>
       </div>
 
       {/* 2. Tratament Curent Card (sage-card) matching Base44 */}
@@ -343,36 +415,106 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         </button>
       )}
 
-      {/* Dialog Modificare Nume */}
-      {editName && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
+      {/* Dialog Modificare Date Profil & Situație Medicală */}
+      {editProfileOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in overflow-y-auto">
+          <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl my-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#EAE5DE] dark:border-darkbg-border mb-4">
               <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
-                Numele tău
+                Date Profil & Situație
               </h3>
               <button
                 type="button"
-                onClick={() => setEditName(false)}
+                onClick={() => setEditProfileOpen(false)}
                 className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSaveName} className="space-y-4">
-              <input
-                type="text"
-                value={nameVal}
-                onChange={(e) => setNameVal(e.target.value)}
-                className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
-                placeholder="ex: Andreea"
-                autoFocus
-                required
-              />
-              <div className="flex justify-end gap-2">
+            <form onSubmit={handleSaveProfileForm} className="space-y-3.5">
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  Nume și prenume
+                </label>
+                <input
+                  type="text"
+                  value={nameVal}
+                  onChange={(e) => setNameVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  placeholder="Introdu numele tău..."
+                  autoFocus
+                />
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  Diagnostic / Histopatologie
+                </label>
+                <input
+                  type="text"
+                  value={histologyVal}
+                  onChange={(e) => setHistologyVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  placeholder="ex: Carcinom Ductal In Situ (DCIS)"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  Stadiu clinic
+                </label>
+                <input
+                  type="text"
+                  value={stageVal}
+                  onChange={(e) => setStageVal(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  placeholder="ex: Grad 0 (TisN0M0, G2)"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                    Receptor ER
+                  </label>
+                  <input
+                    type="text"
+                    value={erVal}
+                    onChange={(e) => setErVal(e.target.value)}
+                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    placeholder="Pozitiv"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                    Receptor PR
+                  </label>
+                  <input
+                    type="text"
+                    value={prVal}
+                    onChange={(e) => setPrVal(e.target.value)}
+                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    placeholder="Pozitiv"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                    Status HER2
+                  </label>
+                  <input
+                    type="text"
+                    value={her2Val}
+                    onChange={(e) => setHer2Val(e.target.value)}
+                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    placeholder="Negativ"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setEditName(false)}
+                  onClick={() => setEditProfileOpen(false)}
                   className="px-4 py-2 rounded-xl text-[13px] text-[#6B6259] hover:bg-gray-100 transition-colors"
                 >
                   Anulează
