@@ -49,11 +49,10 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const todayStr = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
-    // Check if there is already an entry for today
+    // Pre-fill form if there is already an entry for today (but don't block saving)
     const todayLog = symptoms.find(s => s.logged_at.startsWith(todayStr));
     if (todayLog) {
       if (todayLog.mood_state) {
-        // Map from old text to level, or use a default
         const moodMap: Record<string, number> = {
           'Foarte bine': 5,
           'Bine': 4,
@@ -63,10 +62,20 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         };
         setMood(moodMap[todayLog.mood_state] || 3);
       } else {
-        setMood(3); // Default if missing
+        setMood(3);
       }
       setNote(todayLog.notes || '');
-      setSavedToday(true);
+      // Pre-fill symptom sliders from today's existing entry
+      if (todayLog.hot_flashes_count !== undefined) setHotFlashesCount(todayLog.hot_flashes_count);
+      if (todayLog.hot_flashes_intensity !== undefined) setHotFlashesIntensity(todayLog.hot_flashes_intensity);
+      if (todayLog.fatigue_level !== undefined) setFatigueLevel(todayLog.fatigue_level);
+      if (todayLog.joint_pain_level !== undefined) setJointPainLevel(todayLog.joint_pain_level);
+      if (todayLog.bone_pain_level !== undefined) setBonePainLevel(todayLog.bone_pain_level);
+      if (todayLog.nausea_level !== undefined) setNauseaLevel(todayLog.nausea_level);
+      if (todayLog.brain_fog !== undefined) setBrainFog(todayLog.brain_fog);
+      if (todayLog.headache !== undefined) setHeadache(todayLog.headache);
+      if (todayLog.sleep_quality !== undefined) setSleepQuality(todayLog.sleep_quality);
+      if (todayLog.mucosal_dryness !== undefined) setMucosalDryness(todayLog.mucosal_dryness);
     }
   }, [symptoms, todayStr]);
 
@@ -192,10 +201,10 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </div>
           <button 
             onClick={handleSave}
-            disabled={saving || savedToday}
+            disabled={saving}
             className="w-full mt-3 h-12 rounded-2xl bg-[#C99A9D] hover:bg-[#B88A8D] dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
-            {savedToday ? "Înregistrat azi ✓" : saving ? "Salvez..." : "Salvează în jurnal"}
+            {saving ? "Salvez..." : "Salvează în jurnal"}
           </button>
         </div>
 
