@@ -17,7 +17,7 @@ import { getMindfulQuoteForHour } from '../data/quotes';
 interface DashboardTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
-  onTakeDose: () => void;
+  onTakeDose: (dateIso?: string) => void;
   onSnoozeDose: () => void;
   onSaveQuickSymptom: (hotFlashes: number, energy: number, jointPain: number) => void;
   onOpenRedFlags: () => void;

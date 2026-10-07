@@ -38,7 +38,12 @@ export function App() {
   const [profile, setProfile] = useState<PatientProfile>(() => storageService.getProfile());
   const [doses, setDoses] = useState<DoseLog[]>(() => storageService.getDoseLogs());
   const [symptoms, setSymptoms] = useState<SymptomLog[]>(() => storageService.getSymptomLogs());
-  const [milestones] = useState<ClinicalMilestone[]>(() => storageService.getMilestones());
+  const [milestones, setMilestones] = useState<ClinicalMilestone[]>(() => storageService.getMilestones());
+
+  const handleUpdateMilestones = (updated: ClinicalMilestone[]) => {
+    setMilestones(updated);
+    storageService.saveMilestones(updated);
+  };
   const [documents, setDocuments] = useState<MedicalDocument[]>(() => storageService.getDocuments());
 
   // Font size state with localStorage persistence
@@ -86,14 +91,15 @@ export function App() {
     window.addEventListener('navimed_open_red_flags', handleOpenSos);
     return () => window.removeEventListener('navimed_open_red_flags', handleOpenSos);
   }, []);
-  const handleTakeDose = async () => {
-    const todayStr = new Date().toISOString();
+  const handleTakeDose = async (dateIso?: string | any) => {
+    const validDateIso = typeof dateIso === 'string' ? dateIso : undefined;
+    const logDateStr = validDateIso || new Date().toISOString();
     const medName = `${profile.medication_name || 'Tamoxifen'} ${profile.medication_dose || '20 mg'}`;
     const newLog: DoseLog = {
       id: `dose_${Date.now()}`,
       medication_name: medName,
-      scheduled_for: todayStr,
-      taken_at: todayStr,
+      scheduled_for: logDateStr,
+      taken_at: logDateStr,
       status: 'taken'
     };
 
@@ -262,6 +268,7 @@ export function App() {
               milestones={milestones}
               documents={documents}
               onAddDocument={handleAddDocument}
+                onUpdateMilestones={handleUpdateMilestones}
               onDeleteDocument={handleDeleteDocument}
             />
           )}

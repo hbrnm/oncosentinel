@@ -13,6 +13,7 @@ interface TimelineTabProps {
   documents: MedicalDocument[];
   onAddDocument: (doc: Partial<MedicalDocument>) => void;
   onDeleteDocument?: (id: string) => void;
+  onUpdateMilestones?: (milestones: ClinicalMilestone[]) => void;
 }
 
 export const TimelineTab: React.FC<TimelineTabProps> = ({
@@ -20,7 +21,8 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   milestones,
   documents,
   onAddDocument,
-  onDeleteDocument
+  onDeleteDocument,
+  onUpdateMilestones
 }) => {
   const [expandedMilestone, setExpandedMilestone] = useState<string | null>('m4');
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);

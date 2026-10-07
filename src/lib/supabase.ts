@@ -130,6 +130,10 @@ export const storageService = {
     localStorage.setItem('navimed_symptoms', JSON.stringify(logs));
   },
 
+  saveMilestones(milestones: ClinicalMilestone[]) {
+    localStorage.setItem('navimed_milestones', JSON.stringify(milestones));
+  },
+
   getMilestones(): ClinicalMilestone[] {
     const saved = localStorage.getItem('navimed_milestones');
     return saved ? JSON.parse(saved) : DEFAULT_MILESTONES;

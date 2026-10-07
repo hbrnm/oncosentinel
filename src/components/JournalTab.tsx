@@ -38,6 +38,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>([]);
   const [mucosalDryness, setMucosalDryness] = useState<number>(0);
   const [waterIntake, setWaterIntake] = useState<number>(2000);
+  const [bonePainLevel, setBonePainLevel] = useState<number>(0);
+  const [nauseaLevel, setNauseaLevel] = useState<number>(0);
+  const [brainFog, setBrainFog] = useState<number>(0);
+  const [headache, setHeadache] = useState<number>(0);
+  const [sleepQuality, setSleepQuality] = useState<number>(3);
 
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -81,6 +86,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         joint_pain_level: jointPainLevel,
         joint_pain_areas: selectedJointAreas,
         mucosal_dryness: mucosalDryness,
+      bone_pain_level: bonePainLevel,
+      nausea_level: nauseaLevel,
+      brain_fog: brainFog,
+      headache: headache,
+      sleep_quality: sleepQuality,
         water_intake_ml: waterIntake
       });
       setSavedToday(true);
@@ -248,7 +258,84 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 </div>
               </div>
 
-              {/* ... Add other missing form sections if needed, for now keeping it brief and saving when Mood is saved */}
+              
+              {/* Other Symptoms */}
+              <div className="p-4 rounded-2xl bg-gray-50/70 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border space-y-4">
+                
+                {/* Dureri Articulare */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Dureri Articulare</span>
+                    <span>Scor {jointPainLevel}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={jointPainLevel} onChange={(e) => setJointPainLevel(parseInt(e.target.value))} className="w-full accent-amber-500 cursor-pointer" />
+                </div>
+
+                {/* Dureri Osoase */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Dureri Osoase</span>
+                    <span>Scor {bonePainLevel}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={bonePainLevel} onChange={(e) => setBonePainLevel(parseInt(e.target.value))} className="w-full accent-amber-600 cursor-pointer" />
+                </div>
+
+                {/* Nivel Oboseală / Energie */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Nivel Oboseală</span>
+                    <span>Scor {fatigueLevel}/5</span>
+                  </div>
+                  <input type="range" min="1" max="5" value={fatigueLevel} onChange={(e) => setFatigueLevel(parseInt(e.target.value))} className="w-full accent-sage-500 cursor-pointer" />
+                </div>
+
+                {/* Ceață Mentală */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Ceață Mentală</span>
+                    <span>Scor {brainFog}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={brainFog} onChange={(e) => setBrainFog(parseInt(e.target.value))} className="w-full accent-indigo-400 cursor-pointer" />
+                </div>
+
+                {/* Greață */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Greață</span>
+                    <span>Scor {nauseaLevel}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={nauseaLevel} onChange={(e) => setNauseaLevel(parseInt(e.target.value))} className="w-full accent-teal-500 cursor-pointer" />
+                </div>
+
+                {/* Uscăciune Mucoasă/Vaginală */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Uscăciune Vaginală / Mucoase</span>
+                    <span>Scor {mucosalDryness}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={mucosalDryness} onChange={(e) => setMucosalDryness(parseInt(e.target.value))} className="w-full accent-rose-400 cursor-pointer" />
+                </div>
+                
+                {/* Dureri de cap */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Durere de cap (Cefalee)</span>
+                    <span>Scor {headache}/5</span>
+                  </div>
+                  <input type="range" min="0" max="5" value={headache} onChange={(e) => setHeadache(parseInt(e.target.value))} className="w-full accent-purple-400 cursor-pointer" />
+                </div>
+
+                {/* Calitatea Somnului */}
+                <div>
+                  <div className="flex justify-between text-xs font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    <span>Calitatea Somnului de azi-noapte</span>
+                    <span>Scor {sleepQuality}/5</span>
+                  </div>
+                  <input type="range" min="1" max="5" value={sleepQuality} onChange={(e) => setSleepQuality(parseInt(e.target.value))} className="w-full accent-blue-400 cursor-pointer" />
+                </div>
+
+              </div>
+
               <button 
                 onClick={handleSave}
                 disabled={!mood || saving || savedToday}

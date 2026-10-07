@@ -6,7 +6,7 @@ import { PatientProfile, DoseLog } from '../types';
 interface TreatmentTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
-  onTakeDose: () => void;
+  onTakeDose: (dateIso?: string) => void;
   onUpdateProfile?: (updated: PatientProfile) => void;
 }
 
@@ -315,8 +315,8 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
             return (
               <div key={cell.iso} className="flex flex-col items-center">
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
+                <button onClick={() => { if (status === "missed") onTakeDose(cell.iso); }}
+                  className={`w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-red-700 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
                     isToday
                       ? 'ring-2 ring-[#5E7A68] dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
                       : ''
@@ -328,7 +328,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                       : 'bg-[#F5F2EB]/60 dark:bg-darkbg-card text-[#3A332E] dark:text-gray-300'
                   }`}
                   title={`${dayNumber} ${monthLabelRo} - ${
-                    status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză sărită' : 'Viitoare / De luat'
+                    status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză sărită (Apasă pentru a bifa retroactiv)' : 'Viitoare / De luat'
                   }`}
                 >
                   {status === 'taken' ? (
@@ -338,7 +338,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                   ) : (
                     dayNumber
                   )}
-                </div>
+                </button>
               </div>
             );
           })}

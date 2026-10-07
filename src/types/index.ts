@@ -21,8 +21,12 @@ export interface SymptomLog {
   sleep_quality: number;         // 1 - 5
   mood_state: string;            // 'Calmă' | 'Anxioasă' | 'Obosită' | 'Optimistă' | 'Echilibrată'
   joint_pain_level: number;      // 0 - 5
+  bone_pain_level?: number;      // 0 - 5
   joint_pain_areas: string[];
   mucosal_dryness: number;       // 0 - 5
+  nausea_level?: number;         // 0 - 5
+  brain_fog?: number;            // 0 - 5
+  headache?: number;             // 0 - 5
   water_intake_ml: number;
   notes?: string;
 }
