@@ -109,8 +109,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         water_intake_ml: waterIntake
       };
       onAddSymptomLog(newLogData);
-      setSavedToday(true);
       setSaving(false);
+      setShowDetailedForm(false);
       
       const hasSevere = 
         hotFlashesIntensity >= 4 || 
@@ -122,10 +122,10 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
       if (hasSevere) {
         setSevereSymptomsAlert(newLogData);
-      } else {
-        setShowDetailedForm(false);
+        // Auto-dismiss toast after 5 seconds
+        setTimeout(() => setSevereSymptomsAlert(null), 5000);
       }
-    }, 600);
+    }, 400);
   };
 
   const jointAreasList = ['genunchi', 'articulații mâini', 'șolduri', 'umeri', 'coloană'];
@@ -158,14 +158,18 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     return moodMap[state || ''] || 3;
   };
 
+
   return (
-    <React.Fragment>
+    <>
       {severeSymptomsAlert && (
-        <SevereSymptomModal 
-          symptoms={severeSymptomsAlert}
-          onClose={() => { setSevereSymptomsAlert(null); setShowDetailedForm(false); }}
-          onNavigateToGuide={() => onNavigateToTab?.('guide')}
-        />
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
+          <span className="text-rose-500 text-lg">⚠️</span>
+          <div className="flex-1">
+            <p className="text-xs font-bold text-rose-700">Simptome severe înregistrate</p>
+            <p className="text-[11px] text-rose-600 mt-0.5">Dacă disconfortul persistă, contactează medicul tău.</p>
+          </div>
+          <button onClick={() => setSevereSymptomsAlert(null)} className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
+        </div>
       )}
     <div className="min-h-screen pb-24 animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
@@ -437,6 +441,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         </div>
       </div>
     </div>
-    </React.Fragment>
+    </>
   );
 };
