@@ -48,12 +48,74 @@
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
+:root {
+  --sage: #5E7A68;
+  --sage-light: #7A9A8B;
+  --sage-soft: #E8EDE7;
+  --sage-deep: #4A6354;
+  --blush: #F6ECEC;
+  --blush-accent: #DFB2B5;
+  --blush-deep: #C99A9D;
+  --cream: #FAF8F5;
+  --cream-deep: #F5F2EB;
+  --warm-border: #EAE5DE;
+  --ink: #3A332E;
+  --ink-soft: #6B6259;
+}
+
 body {
   font-family: var(--font-sans);
 }
 
 .font-serif {
   font-family: var(--font-serif);
+}
+
+/* Base44 Organic Design Components */
+.app-shell {
+  max-width: 440px;
+  margin-inline: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--cream);
+  position: relative;
+  box-shadow: 0 0 60px -20px rgba(58, 51, 46, 0.12);
+}
+
+.organic-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  border: 1px solid var(--warm-border);
+  box-shadow: 0 8px 30px -12px rgba(94, 122, 104, 0.12), 0 2px 8px -4px rgba(58, 51, 46, 0.06);
+}
+
+.sage-card {
+  background: linear-gradient(150deg, #EEF2EC 0%, #E4EBE1 100%);
+  border: 1px solid #D4DFD0;
+  box-shadow: 0 10px 34px -14px rgba(94, 122, 104, 0.28);
+}
+
+.blush-card {
+  background: linear-gradient(150deg, #F6ECEC 0%, #F1E0E1 100%);
+  border: 1px solid #EAD3D5;
+  box-shadow: 0 10px 34px -14px rgba(223, 178, 181, 0.3);
+}
+
+.micro-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+
+.tap-scale {
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tap-scale:active {
+  transform: scale(0.96);
 }
 
 /* Animations & smooth feel */
