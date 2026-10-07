@@ -379,10 +379,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
               <button 
                 onClick={handleSave}
-                disabled={!mood || saving || savedToday}
-                className="w-full h-12 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-semibold flex items-center justify-center gap-2"
-              >
-                Salvează Toate Parametrii
+                disabled={saving}
+                className="w-full h-12 rounded-2xl bg-sage-600 hover:bg-sage-700 disabled:opacity-50 text-white font-semibold flex items-center justify-center gap-2 transition-colors">
+                {saving ? 'Salvez...' : 'Salvează Toate Parametrii'}
               </button>
             </div>
           )}
@@ -416,20 +415,53 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                           {e.notes && <p className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 leading-relaxed">{e.notes}</p>}
                           
                           {/* Show additional symptoms if logged */}
-                          {(e.hot_flashes_count > 0 || e.joint_pain_level > 0) && (
-                            <div className="mt-1.5 flex flex-wrap gap-1">
-                              {e.hot_flashes_count > 0 && (
-                                <span className="text-[9px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded-md">
-                                  {e.hot_flashes_count} Bufeuri (Scor: {e.hot_flashes_intensity})
-                                </span>
-                              )}
-                              {e.joint_pain_level > 0 && (
-                                <span className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md">
-                                  Dureri articulare (Scor: {e.joint_pain_level})
-                                </span>
-                              )}
-                            </div>
-                          )}
+                          <div className="mt-1.5 flex flex-wrap gap-1">
+                            {(e.hot_flashes_count || 0) > 0 && (
+                              <span className="text-[9px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded-md">
+                                🔥 {e.hot_flashes_count} bufeuri (Scor: {e.hot_flashes_intensity})
+                              </span>
+                            )}
+                            {(e.joint_pain_level || 0) > 0 && (
+                              <span className="text-[9px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md">
+                                🦴 Articulații: {e.joint_pain_level}/5
+                              </span>
+                            )}
+                            {(e.bone_pain_level || 0) > 0 && (
+                              <span className="text-[9px] bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded-md">
+                                💪 Oase: {e.bone_pain_level}/5
+                              </span>
+                            )}
+                            {(e.fatigue_level || 0) > 0 && (
+                              <span className="text-[9px] bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded-md">
+                                ⚡ Oboseală: {e.fatigue_level}/5
+                              </span>
+                            )}
+                            {(e.nausea_level || 0) > 0 && (
+                              <span className="text-[9px] bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded-md">
+                                🤢 Greață: {e.nausea_level}/5
+                              </span>
+                            )}
+                            {(e.brain_fog || 0) > 0 && (
+                              <span className="text-[9px] bg-purple-50 text-purple-700 px-1.5 py-0.5 rounded-md">
+                                🧠 Ceață: {e.brain_fog}/5
+                              </span>
+                            )}
+                            {(e.mucosal_dryness || 0) > 0 && (
+                              <span className="text-[9px] bg-pink-50 text-pink-700 px-1.5 py-0.5 rounded-md">
+                                💧 Mucoase: {e.mucosal_dryness}/5
+                              </span>
+                            )}
+                            {(e.headache || 0) > 0 && (
+                              <span className="text-[9px] bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded-md">
+                                🤕 Cefalee: {e.headache}/5
+                              </span>
+                            )}
+                            {e.sleep_quality !== undefined && e.sleep_quality !== 3 && (
+                              <span className="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded-md">
+                                🌙 Somn: {e.sleep_quality}/5
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
