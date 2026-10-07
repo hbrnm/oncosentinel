@@ -463,7 +463,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="text-[10px] text-[#C99A9D] dark:text-petal-300 font-semibold tracking-wide">
               {currentQuote.author}
             </span>
-            <span className="text-xs group-hover:rotate-12 transition-transform">🌿</span>
           </div>
         </div>
       </div>
