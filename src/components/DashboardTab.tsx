@@ -170,7 +170,26 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   // Dynamic Greeting & Mood Title
   const patientFirstName = profile.full_name?.trim() ? profile.full_name.trim().split(' ')[0] : 'dragă';
-  const greetingTime = currentHour < 12 ? 'Bună dimineața' : currentHour < 18 ? 'Bună ziua' : 'Bună seara';
+  const getGreetingData = (hour: number) => {
+    if (hour < 12) {
+      return {
+        hello: 'Bună dimineața',
+        sub: 'Ești puternică. Pas cu pas. Ai grijă de tine.'
+      };
+    }
+    if (hour < 18) {
+      return {
+        hello: 'Bună ziua',
+        sub: 'Fiecare zi este un pas înainte. Respiră adânc.'
+      };
+    }
+    return {
+      hello: 'Bună seara',
+      sub: 'Ai făcut tot ce ai putut azi. E de ajuns.'
+    };
+  };
+
+  const greeting = getGreetingData(currentHour);
 
   const moodSectionTitle = selectedMood
     ? 'Starea ta de azi'
@@ -196,14 +215,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       <div className="pt-2 pb-1 flex items-start justify-between relative z-10">
         <div>
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400 font-medium">
-            {greetingTime},
+            {greeting.hello},
           </p>
           <h1 className="text-2xl sm:text-[26px] font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-tight mt-0.5 capitalize">
             {patientFirstName.toLowerCase()}
           </h1>
           <span className="sr-only">Bună, {patientFirstName}</span>
           <p className="text-xs sm:text-[13px] text-[#6B6259] dark:text-gray-400 mt-1 font-normal leading-relaxed">
-            Ești puternică. Pas cu pas. Ai grijă de tine.
+            {greeting.sub}
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
