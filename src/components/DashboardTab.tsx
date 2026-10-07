@@ -697,6 +697,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
+      )}
+
       {/* 9. Modal Mărire Fotografie Profil */}
       {showPhotoModal && profile.avatar_url && (
         <div 
