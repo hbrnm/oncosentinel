@@ -300,8 +300,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
         
         <div className="flex items-center gap-2 shrink-0">
-          
-                    <button
+          {profile.avatar_url && (
+            <button
+              type="button"
+              onClick={() => onNavigateToTab?.('profile')}
+              className="w-11 h-11 rounded-full overflow-hidden border-2 border-sage-200 dark:border-sage-800 shadow-xs hover:scale-105 transition-transform"
+              title="Vezi profilul tău"
+            >
+              <img src={profile.avatar_url} alt={patientFirstName} className="w-full h-full object-cover" />
+            </button>
+          )}
+          <button
             type="button"
             title={bellActive ? "Dezactivează Memento" : "Activează Memento"}
             onClick={handleToggleBell}

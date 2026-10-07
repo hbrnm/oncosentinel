@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   User as UserIcon, Pill, CalendarHeart, Bell, LogOut, Pencil, Plus, 
-  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock
+  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
@@ -54,6 +54,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
   const [prVal, setPrVal] = useState(profile.pr_status || 'Pozitiv (>80%)');
   const [her2Val, setHer2Val] = useState(profile.her2_status || 'Negativ');
+  const [avatarVal, setAvatarVal] = useState(profile.avatar_url || '');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setNameVal(profile.full_name || '');
@@ -62,7 +64,69 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     setErVal(profile.er_status || 'Pozitiv (>90%)');
     setPrVal(profile.pr_status || 'Pozitiv (>80%)');
     setHer2Val(profile.her2_status || 'Negativ');
+    setAvatarVal(profile.avatar_url || '');
   }, [profile]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check size limit: max 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Te rugăm să alegi o imagine mai mică de 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Resize down if too big (max 400x400) to keep localStorage fast and lightweight
+        const canvas = document.createElement('canvas');
+        const maxDim = 400;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          }
+        } else {
+          if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          setAvatarVal(resizedDataUrl);
+          onUpdateProfile({
+            ...profile,
+            avatar_url: resizedDataUrl
+          });
+        }
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+    // Reset input so same file can be re-selected if needed
+    e.target.value = '';
+  };
+
+  const handleRemoveAvatar = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAvatarVal('');
+    onUpdateProfile({
+      ...profile,
+      avatar_url: undefined
+    });
+  };
 
   // 2. Reminders settings state
   const [doseReminderEnabled, setDoseReminderEnabled] = useState<boolean>(() => {
@@ -185,8 +249,60 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
 
       {/* 1. User Header Card matching Base44 Profil.jsx */}
       <div className="organic-card rounded-[28px] p-5 flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 flex items-center justify-center shrink-0">
-          <UserIcon className="w-7 h-7 text-[#4A6354] dark:text-sage-300" strokeWidth={1.6} />
+        {/* Hidden File Input for Avatar */}
+        <input 
+          ref={fileInputRef}
+          type="file" 
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
+        <div className="relative shrink-0 group">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-16 h-16 rounded-full overflow-hidden bg-[#E8EDE7] dark:bg-sage-900/60 flex items-center justify-center border-2 border-sage-200 dark:border-sage-800 hover:opacity-90 transition-opacity cursor-pointer relative"
+            title="Schimbă fotografia de profil"
+            aria-label="Schimbă fotografia de profil"
+          >
+            {avatarVal ? (
+              <img 
+                src={avatarVal} 
+                alt={displayName} 
+                className="w-full h-full object-cover" 
+              />
+            ) : (
+              <UserIcon className="w-7 h-7 text-[#4A6354] dark:text-sage-300" strokeWidth={1.6} />
+            )}
+            
+            {/* Camera Overlay Icon on Hover / Always accessible on mobile */}
+            <span className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+              <Camera className="w-5 h-5 text-white" />
+            </span>
+          </button>
+
+          {/* Quick badge button for mobile touch */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#4A6354] text-white flex items-center justify-center shadow-md border-2 border-white dark:border-darkbg-surface hover:bg-[#3d5245] transition-colors"
+            title="Adaugă sau schimbă fotografia"
+          >
+            <Camera className="w-3 h-3" />
+          </button>
+
+          {/* Remove photo button if photo exists */}
+          {avatarVal && (
+            <button
+              type="button"
+              onClick={handleRemoveAvatar}
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md border-2 border-white dark:border-darkbg-surface hover:bg-rose-600 transition-colors"
+              title="Șterge fotografia"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">

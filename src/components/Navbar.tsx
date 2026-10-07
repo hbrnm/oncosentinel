@@ -37,8 +37,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center space-x-2.5 cursor-pointer group"
           title="Editează profilul și setările de tratament"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sage-500 to-sage-400 dark:from-sage-600 dark:to-sage-500 flex items-center justify-center text-white shadow-sm shadow-sage-200 dark:shadow-none group-hover:scale-105 transition-transform">
-            <Heart className="w-5 h-5 fill-white/90" />
+          <div className="w-10 h-10 rounded-2xl overflow-hidden bg-gradient-to-tr from-sage-500 to-sage-400 dark:from-sage-600 dark:to-sage-500 flex items-center justify-center text-white shadow-sm shadow-sage-200 dark:shadow-none group-hover:scale-105 transition-transform border border-sage-200/50">
+            {profile.avatar_url ? (
+              <img src={profile.avatar_url} alt="Profil" className="w-full h-full object-cover" />
+            ) : (
+              <Heart className="w-5 h-5 fill-white/90" />
+            )}
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
