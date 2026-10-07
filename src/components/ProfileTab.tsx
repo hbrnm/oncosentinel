@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   User as UserIcon, Pill, CalendarHeart, Bell, LogOut, Pencil, Plus, 
-  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2
+  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';

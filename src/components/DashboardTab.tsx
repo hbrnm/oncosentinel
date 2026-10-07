@@ -118,6 +118,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     }
   };
 
+  const [showPhotoModal, setShowPhotoModal] = useState<boolean>(false);
+
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -303,9 +305,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           {profile.avatar_url && (
             <button
               type="button"
-              onClick={() => onNavigateToTab?.('profile')}
-              className="w-11 h-11 rounded-full overflow-hidden border-2 border-sage-200 dark:border-sage-800 shadow-xs hover:scale-105 transition-transform"
-              title="Vezi profilul tău"
+              onClick={() => setShowPhotoModal(true)}
+              className="w-11 h-11 rounded-full overflow-hidden border-2 border-sage-200 dark:border-sage-800 shadow-xs hover:scale-105 transition-transform cursor-pointer"
+              title="Apasă pentru a mări fotografia sau a deschide profilul"
             >
               <img src={profile.avatar_url} alt={patientFirstName} className="w-full h-full object-cover" />
             </button>
@@ -694,6 +696,68 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           >
             <X className="w-3.5 h-3.5" />
           </button>
+        </div>
+      {/* 9. Modal Mărire Fotografie Profil */}
+      {showPhotoModal && profile.avatar_url && (
+        <div 
+          onClick={() => setShowPhotoModal(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 max-w-xs w-full shadow-2xl border border-sage-200 dark:border-darkbg-border text-center space-y-4 animate-scale-up"
+          >
+            <div className="flex items-center justify-between pb-2 border-b border-[#EAE5DE] dark:border-darkbg-border">
+              <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
+                Fotografie de profil
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowPhotoModal(false)}
+                className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-sage-200 dark:border-sage-800 shadow-md">
+              <img 
+                src={profile.avatar_url} 
+                alt={patientFirstName} 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+
+            <div>
+              <p className="font-serif text-base text-[#3A332E] dark:text-white font-medium">
+                {profile.full_name || 'Pacientă'}
+              </p>
+              <p className="text-xs text-[#6B6259] dark:text-gray-400 mt-0.5">
+                {profile.email || (profile.oncologist_email ? `Medic: ${profile.oncologist_email}` : 'Profil pacient securizat')}
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPhotoModal(false);
+                  onNavigateToTab?.('profile');
+                }}
+                className="w-full py-2.5 rounded-xl bg-[#4A6354] hover:bg-[#3d5245] text-white font-semibold text-xs transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Deschide Profilul Complet</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPhotoModal(false)}
+                className="w-full py-2 rounded-xl text-xs text-[#6B6259] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors"
+              >
+                Închide
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
