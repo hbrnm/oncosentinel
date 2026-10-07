@@ -186,15 +186,19 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   return (
     <div className="space-y-4 pb-24 animate-fade-in relative">
 
-      {/* Top Empathetic Header Banner (Style inspired by mockup) */}
-      <div className="pt-1 pb-1">
-        <h1 className="text-2xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-snug">
-          {greetingTime}, <span className="text-sage-700 dark:text-sage-300">{patientFirstName}</span>
-        </h1>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-normal flex items-center gap-1.5">
-          <span>Ești puternică. Pas cu pas. Ai grijă de tine.</span>
-          <span className="text-xs">🌸</span>
-        </p>
+      {/* Top Empathetic Header Banner (Style faithfully inspired by mockup) */}
+      <div className="pt-2 pb-1 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-snug">
+            {greetingTime}, <span className="text-sage-700 dark:text-sage-300">{patientFirstName}</span>
+          </h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-normal leading-relaxed">
+            Ești puternică. Pas cu pas. Ai grijă de tine.
+          </p>
+        </div>
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sage-100 to-petal-100 dark:from-darkbg-card dark:to-darkbg-surface border border-sage-200/60 dark:border-darkbg-border flex items-center justify-center text-xl shadow-2xs shrink-0 select-none">
+          🌸
+        </div>
       </div>
 
       {/* Hero Card Tratament (Tamoxifen 20mg) */}

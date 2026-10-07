@@ -207,10 +207,10 @@ export function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#F8FAF9] dark:bg-[#151D19] flex justify-center transition-colors ${
+    <div className={`min-h-screen bg-[#FAF8F5] dark:bg-[#161E1A] flex justify-center transition-colors ${
       fontSize === 'large' ? 'text-[110%]' : ''
     }`}>
-      <div className="w-full max-w-md min-h-screen flex flex-col bg-white/70 dark:bg-darkbg/70 shadow-xl shadow-sage-900/5 relative border-x border-sage-100/60 dark:border-darkbg-border">
+      <div className="w-full max-w-md min-h-screen flex flex-col bg-[#FAF8F5]/90 dark:bg-darkbg/90 shadow-xl shadow-sage-900/5 relative border-x border-[#EAE5DE] dark:border-darkbg-border">
         
         {/* Top App Header */}
         <Navbar
