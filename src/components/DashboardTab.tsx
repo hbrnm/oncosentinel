@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 import { notificationsService } from '../lib/notifications';
+import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
+import { QuickActions } from './QuickActions';
 
 interface DashboardTabProps {
   profile: PatientProfile;
@@ -185,9 +187,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   return (
     <div className="space-y-4 pb-24 animate-fade-in relative">
+      {/* Botanical branch background accent in top right */}
+      <div className="absolute top-0 right-0 w-44 h-56 pointer-events-none opacity-80 z-0">
+        <BotanicalBranch className="w-full h-full" />
+      </div>
 
-      {/* Top Empathetic Header Banner (Style faithfully inspired by mockup) */}
-      <div className="pt-2 pb-1 flex items-start justify-between">
+      {/* Top Empathetic Header Banner (Style faithfully inspired by mockup & Base44) */}
+      <div className="pt-2 pb-1 flex items-start justify-between relative z-10">
         <div>
           <h1 className="text-2xl font-bold font-serif text-gray-900 dark:text-white tracking-tight leading-snug">
             {greetingTime}, <span className="text-sage-700 dark:text-sage-300">{patientFirstName}</span>
@@ -196,8 +202,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             Ești puternică. Pas cu pas. Ai grijă de tine.
           </p>
         </div>
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sage-100 to-petal-100 dark:from-darkbg-card dark:to-darkbg-surface border border-sage-200/60 dark:border-darkbg-border flex items-center justify-center text-xl shadow-2xs shrink-0 select-none">
-          🌸
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            title="Notificări & Memento"
+            className="tap-scale relative w-11 h-11 rounded-full bg-white/80 dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border flex items-center justify-center shadow-xs"
+          >
+            <Bell className="w-5 h-5 text-sage-700 dark:text-sage-300" strokeWidth={1.8} />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DFB2B5]" />
+          </button>
         </div>
       </div>
 
@@ -280,17 +293,23 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         </div>
       </div>
 
+      {/* Quick Actions (4 Grid from Base44) */}
+      <QuickActions
+        onNavigateToTab={onNavigateToTab}
+        onOpenDoctorModal={onOpenDoctorVisit}
+        onOpenResources={onOpenGrounding}
+      />
+
       {/* 1. Jurnal de Stare Emoțională (Cel mai proeminent conform cerinței #1) */}
       <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs space-y-3">
         <div className="flex items-center justify-between">
-          <div>
-            <span className="text-[10px] font-bold text-sage-800 dark:text-sage-300 tracking-wider uppercase block">
-              Jurnal de Stare
+            <span className="micro-label block">
+              JURNAL
             </span>
-            <h3 className="text-sm font-bold font-serif text-gray-900 dark:text-white">
-              {moodSectionTitle}
+            <h3 className="text-sm font-bold font-serif text-gray-900 dark:text-white flex items-center gap-1">
+              <span>{moodSectionTitle}</span>
+              <span className="text-xs text-gray-400 font-normal hidden sm:inline">• Cum te-ai simțit în ultima săptămână?</span>
             </h3>
-          </div>
           {selectedMood && (
             <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/50">
               Înregistrat azi
@@ -388,13 +407,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </span>
         </div>
 
-        {/* Card Dreapta: Citat Empatic Roz-Pudrat */}
-        <div className="bg-[#FAF2F2] dark:bg-darkbg-card p-4 rounded-3xl border border-petal-100 dark:border-darkbg-border flex flex-col justify-between shadow-2xs">
-          <p className="text-xs font-serif text-gray-800 dark:text-gray-200 italic leading-relaxed">
+        {/* Card Dreapta: Citat Empatic Roz-Pudrat (Base44 blush-card with LeafSprig) */}
+        <div className="blush-card rounded-3xl p-4 flex flex-col justify-between min-h-[145px] relative overflow-hidden">
+          <LeafSprig className="absolute -bottom-2 -right-2 w-16 h-16 opacity-50 pointer-events-none" />
+          <p className="font-serif italic text-xs leading-relaxed text-[#C99A9D] dark:text-petal-300 pr-4 z-10">
             „Îngrijirea de sine nu este un lux, ci o parte din tratament.”
           </p>
-          <div className="flex items-center justify-between pt-2">
-            <span className="text-[10px] text-petal-700 dark:text-petal-300 font-medium">OncoSentinel</span>
+          <div className="flex items-center justify-between pt-2 z-10">
+            <span className="text-[10px] text-[#C99A9D] dark:text-petal-300 font-semibold tracking-wide">OncoSentinel</span>
             <span className="text-xs">🌿</span>
           </div>
         </div>
@@ -479,51 +499,52 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </button>
         </div>
 
-        {/* Card 1 Ghid: Tamoxifen & Nutriție */}
+        {/* Card 1 Ghid: Tamoxifen și efectele secundare (Base44 style) */}
         <div
           onClick={() => onNavigateToTab?.('guide')}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
-          <div className="w-10 h-10 rounded-2xl bg-[#F0F5F2] dark:bg-darkbg-card text-sage-700 dark:text-sage-300 flex items-center justify-center shrink-0 text-lg">
-            🥦
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sage-100 to-sage-200 dark:bg-darkbg-card text-sage-800 dark:text-sage-200 flex items-center justify-center shrink-0 font-serif font-bold text-xs">
+            GHID
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
-              <span>Ghid Medical</span>
+              <span>GHIDURI & INFORMAȚII</span>
               <span>•</span>
-              <span className="text-gray-400">Sursă: Ghid Clinic ASCO / NCCN</span>
+              <span className="text-gray-400">Sursă: ASCO</span>
             </div>
             <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
-              Nutriție integrativă și metabolizarea estrogenilor
+              Tamoxifen și efectele secundare
             </h4>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-              Cum susțin legumele crucifere (broccoli, varză) ficatul în timpul terapiei cu Tamoxifen.
+              Tot ce trebuie să știi despre tratament, monitorizare și stil de viață.
             </p>
           </div>
+          <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />
         </div>
 
-        {/* Card 2 Noutăți: Supraveghere DCIS */}
+        {/* Card 2 Noutăți: Supraveghere DCIS (Base44 style) */}
         <div
           onClick={() => onNavigateToTab?.('guide')}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
-          <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#E8EDE7] dark:bg-darkbg-card text-sage-800 dark:text-sage-300 flex items-center justify-center shrink-0">
             <BookOpen className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
-              <span className="text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.2 rounded border border-emerald-200">
-                Validat Clinic
-              </span>
-              <span className="text-gray-400">Octombrie 2026</span>
+              <span className="micro-label text-sage-deep">Noutăți</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-400">12 octombrie 2026</span>
             </div>
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
-              Recomandări actualizate de supraveghere mamografică
+            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5 leading-snug">
+              Recomandări actualizate pentru monitorizarea pe termen lung după tratamentul pentru DCIS
             </h4>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-              Protocolul de imagistică bilaterală la 6 luni după finalizarea radioterapiei pentru DCIS.
+              Protocolul de imagistică bilaterală și supraveghere clinică.
             </p>
           </div>
+          <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />
         </div>
       </div>
 
