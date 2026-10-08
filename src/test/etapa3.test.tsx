@@ -64,4 +64,42 @@ describe('Cercul tău', () => {
     expect(screen.queryByText(/Reamintește-i discret/)).not.toBeInTheDocument();
     expect(screen.queryByText(/WhatsApp|SMS Direct/)).not.toBeInTheDocument();
   });
+
+  it('nu trimite nimic fără clic pe „Trimite”; renunțarea la partajare nu arată eroare', async () => {
+    const share = vi.fn().mockRejectedValue(Object.assign(new Error('x'), { name: 'AbortError' }));
+    nav.share = share;
+    open();
+    fireEvent.click(screen.getByRole('button', { name: 'Bine' }));
+    fireEvent.change(screen.getByRole('textbox', { name: /Mesajul tău/ }), { target: { value: 'Altceva' } });
+    expect(share).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Trimite' }));
+    await waitFor(() => expect(share).toHaveBeenCalled());
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('o eroare a partajării spune ce poate face', async () => {
+    nav.share = vi.fn().mockRejectedValue(new Error('x'));
+    open();
+    fireEvent.click(screen.getByRole('button', { name: 'Trimite' }));
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(SHARE_FAILED));
+  });
+
+  it('schimbarea stării reface mesajul, peste textul editat', () => {
+    open();
+    const box = screen.getByRole('textbox', { name: /Mesajul tău/ });
+    fireEvent.change(box, { target: { value: 'Text scris de mine' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Foarte bine' }));
+    expect(box).toHaveValue('Bună, Andrei! Azi mă simt foarte bine. Mulțumesc că ești alături de mine. Ana');
+  });
+
+  it('date vechi sau stricate nu blochează fereastra', () => {
+    localStorage.setItem('navimed_supporter', '{"relationship":"Soră"}');
+    const { unmount } = open();
+    expect(screen.getByRole('textbox', { name: /Mesajul tău/ })).toHaveValue('Bună! Azi mă simt bine. Mulțumesc că ești alături de mine. Ana');
+    unmount();
+    localStorage.setItem('navimed_supporter', 'nu e json');
+    open();
+    expect(screen.getByRole('dialog', { name: /Cercul de Sprijin/ })).toBeInTheDocument();
+  });
 });

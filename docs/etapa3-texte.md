@@ -1,6 +1,6 @@
-# Etapa 3 — „Cercul tău”: texte propuse
+# Etapa 3 — „Cercul tău”: texte aprobate
 
-Mesajul pleacă doar când pacienta apasă „Trimite”, după ce l-a văzut și, dacă vrea, l-a modificat. Nu conține date medicale decât dacă le adaugă ea. Intră în aplicație doar după aprobarea proprietarei.
+Mesajul pleacă doar când pacienta apasă „Trimite”, după ce l-a văzut și, dacă vrea, l-a modificat. Nu conține date medicale decât dacă le adaugă ea. Aprobate de proprietară pe 2026-10-08.
 
 ## Cum mă simt azi (o propoziție, după starea aleasă)
 - Foarte bine: „Azi mă simt foarte bine.”

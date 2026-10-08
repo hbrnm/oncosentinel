@@ -22,13 +22,14 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
   profile
 }) => {
   const [supporter, setSupporter] = useState<SupporterData>(() => {
-    const saved = localStorage.getItem('navimed_supporter');
-    return saved ? JSON.parse(saved) : {
-      name: '',
-      relationship: 'Partener/ă',
-      phone: '',
-      notifyOnMissedDose: true
-    };
+    const empty = { name: '', relationship: 'Partener/ă', phone: '', notifyOnMissedDose: true };
+    // Date salvate vechi sau stricate nu trebuie să blocheze fereastra
+    try {
+      const saved = JSON.parse(localStorage.getItem('navimed_supporter') || 'null');
+      return saved && typeof saved === 'object' ? { ...empty, ...saved, name: String(saved.name ?? '') } : empty;
+    } catch {
+      return empty;
+    }
   });
   const [moodLine, setMoodLine] = useState<string>(MOOD_LINES[1].line);
   const [ideas, setIdeas] = useState<string[]>([]);
@@ -79,7 +80,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div role="dialog" aria-modal="true" aria-labelledby="supporter-title" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl relative overflow-hidden">
+      <div role="dialog" aria-modal="true" aria-labelledby="supporter-title" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl relative max-h-[90vh] overflow-y-auto">
         
         {/* Soft decorative glow */}
         <div className="absolute w-40 h-40 bg-petal-100 dark:bg-petal-900/20 rounded-full blur-3xl -top-10 -right-10 pointer-events-none"></div>
@@ -109,7 +110,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
         </div>
 
         {/* Mesajul către persoana de sprijin: îl compune și îl trimite ea */}
-        <div className="max-h-[60vh] overflow-y-auto -mx-1 px-1 mb-4 space-y-3">
+        <div className="mb-4 space-y-3">
           <fieldset>
             <legend className="text-[10px] font-bold text-ink-soft uppercase tracking-wider mb-1.5">Cum mă simt azi</legend>
             <div className="flex flex-wrap gap-1.5">
@@ -121,6 +122,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
                   onClick={() => { setMoodLine(m.line); setEditedMessage(null); }}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold ${moodLine === m.line ? 'bg-sage-deep text-white' : 'bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-gray-200'}`}
                 >
+                  {moodLine === m.line && <Check className="inline w-3 h-3 mr-1" />}
                   {m.label}
                 </button>
               ))}
