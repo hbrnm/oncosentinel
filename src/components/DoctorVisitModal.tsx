@@ -214,26 +214,26 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
         <span>Programare Următorul Control</span>
       </div>
 
-      <div className="bg-[#FAF8F5] dark:bg-darkbg-surface w-full max-w-md rounded-[32px] shadow-2xl border border-[#EAE5DE] dark:border-darkbg-border overflow-hidden max-h-[92vh] flex flex-col">
+      <div className="bg-cream dark:bg-darkbg-surface w-full max-w-md rounded-[32px] shadow-2xl border border-warmborder dark:border-darkbg-border overflow-hidden max-h-[92vh] flex flex-col">
         
         {/* Header - Base44 Calm Warm Style */}
-        <div className="px-6 pt-5 pb-4 bg-white/70 dark:bg-darkbg-card/70 border-b border-[#EAE5DE] dark:border-darkbg-border flex items-center justify-between">
+        <div className="px-6 pt-5 pb-4 bg-white/70 dark:bg-darkbg-card/70 border-b border-warmborder dark:border-darkbg-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-sage-soft dark:bg-sage-900/60 text-sage-deep dark:text-sage-300 flex items-center justify-center shadow-xs">
               <CalendarHeart className="w-5 h-5" strokeWidth={1.8} />
             </div>
             <div>
-              <h2 className="font-serif text-lg font-bold text-[#3A332E] dark:text-white leading-tight">
+              <h2 className="font-serif text-lg font-bold text-ink dark:text-white leading-tight">
                 Controale Medicale
               </h2>
-              <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5">
+              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5">
                 Programările tale și întrebările pentru medic
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="tap-scale w-9 h-9 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-[#6B6259] hover:text-[#3A332E] dark:hover:text-white transition-colors border border-[#EAE5DE] dark:border-darkbg-border cursor-pointer"
+            className="tap-scale w-9 h-9 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white transition-colors border border-warmborder dark:border-darkbg-border cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -243,15 +243,15 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
         <div className="p-5 overflow-y-auto space-y-4 flex-1">
           
           {/* SECȚIUNEA 1: CARDUL CONTROALE MEDICALE (Exact ca în Base44 Profil) */}
-          <div className="organic-card rounded-[28px] p-5 border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs">
+          <div className="organic-card rounded-[28px] p-5 border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs">
             <div className="flex items-center justify-between mb-3.5">
               <div className="flex items-center gap-2">
-                <CalendarHeart className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+                <CalendarHeart className="w-4 h-4 text-sage-deep dark:text-sage-300" />
                 <p className="micro-label">CONTROALE MEDICALE</p>
               </div>
               <button 
                 onClick={() => setShowAddAppt(prev => !prev)}
-                className="tap-scale w-8 h-8 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 flex items-center justify-center cursor-pointer hover:bg-sage-200 transition-colors"
+                className="tap-scale w-8 h-8 rounded-full bg-sage-soft dark:bg-sage-900/60 text-sage-deep dark:text-sage-300 flex items-center justify-center cursor-pointer hover:bg-sage-200 transition-colors"
                 title="Adaugă un control nou"
               >
                 <Plus className="w-4 h-4" />
@@ -260,72 +260,72 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
             {/* Form de adăugare inline dacă se apasă pe + */}
             {showAddAppt && (
-              <form onSubmit={handleSaveAppt} className="mb-4 p-4 rounded-2xl bg-[#F5F2EB]/80 dark:bg-darkbg-surface/80 border border-[#EAE5DE] dark:border-darkbg-border space-y-3 animate-fade-in">
-                <h4 className="font-serif text-xs font-bold text-[#3A332E] dark:text-white">Adaugă control nou</h4>
+              <form onSubmit={handleSaveAppt} className="mb-4 p-4 rounded-2xl bg-cream-deep/80 dark:bg-darkbg-surface/80 border border-warmborder dark:border-darkbg-border space-y-3 animate-fade-in">
+                <h4 className="font-serif text-xs font-bold text-ink dark:text-white">Adaugă control nou</h4>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Data:</label>
+                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Data:</label>
                     <input
                       type="date"
                       value={apptForm.date}
                       onChange={e => setApptForm({ ...apptForm, date: e.target.value })}
                       required
-                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-xs text-ink dark:text-white"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Ora:</label>
+                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Ora:</label>
                     <input
                       type="time"
                       value={apptForm.time}
                       onChange={e => setApptForm({ ...apptForm, time: e.target.value })}
-                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-xs text-ink dark:text-white"
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Specialitate:</label>
+                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Specialitate:</label>
                     <input
                       type="text"
                       placeholder="ex: Oncologie"
                       value={apptForm.specialty}
                       onChange={e => setApptForm({ ...apptForm, specialty: e.target.value })}
-                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-xs text-ink dark:text-white"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Medic:</label>
+                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Medic:</label>
                     <input
                       type="text"
                       placeholder="ex: Dr. Maria Popescu"
                       value={apptForm.doctor}
                       onChange={e => setApptForm({ ...apptForm, doctor: e.target.value })}
-                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                      className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-xs text-ink dark:text-white"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold text-[#6B6259] dark:text-gray-400 block mb-1">Centru / Spital:</label>
+                  <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Centru / Spital:</label>
                   <input
                     type="text"
                     placeholder="ex: Institutul Oncologic"
                     value={apptForm.center}
                     onChange={e => setApptForm({ ...apptForm, center: e.target.value })}
-                    className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-[#EAE5DE] dark:border-darkbg-border text-xs text-[#3A332E] dark:text-white"
+                    className="w-full px-2.5 py-1.5 rounded-xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-xs text-ink dark:text-white"
                   />
                 </div>
                 <div className="flex justify-end gap-2 pt-1">
                   <button
                     type="button"
                     onClick={() => setShowAddAppt(false)}
-                    className="px-3 py-1.5 rounded-xl text-xs text-[#6B6259] hover:bg-gray-200 transition-colors cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl text-xs text-ink-soft hover:bg-gray-200 transition-colors cursor-pointer"
                   >
                     Anulează
                   </button>
                   <button
                     type="submit"
-                    className="px-3.5 py-1.5 rounded-xl bg-[#5E7A68] hover:bg-[#4A6354] text-white text-xs font-semibold cursor-pointer transition-colors"
+                    className="px-3.5 py-1.5 rounded-xl bg-sage hover:bg-sage-deep text-white text-xs font-semibold cursor-pointer transition-colors"
                   >
                     Salvează controlul
                   </button>
@@ -334,14 +334,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
             )}
 
             {/* Sub-tabs: Următoarele controale vs Istoric */}
-            <div className="flex rounded-2xl bg-[#F5F2EB]/80 dark:bg-darkbg-surface/80 p-1 mb-3.5 border border-[#EAE5DE]/80 dark:border-darkbg-border">
+            <div className="flex rounded-2xl bg-cream-deep/80 dark:bg-darkbg-surface/80 p-1 mb-3.5 border border-warmborder/80 dark:border-darkbg-border">
               <button
                 type="button"
                 onClick={() => setApptTab('upcoming')}
                 className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   apptTab === 'upcoming'
-                    ? 'bg-white dark:bg-darkbg-card text-[#3A332E] dark:text-white shadow-xs'
-                    : 'text-[#6B6259] dark:text-gray-400 hover:text-[#3A332E]'
+                    ? 'bg-white dark:bg-darkbg-card text-ink dark:text-white shadow-xs'
+                    : 'text-ink-soft dark:text-gray-400 hover:text-ink'
                 }`}
               >
                 Viitoare ({upcomingAppts.length})
@@ -351,8 +351,8 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 onClick={() => setApptTab('history')}
                 className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                   apptTab === 'history'
-                    ? 'bg-white dark:bg-darkbg-card text-[#3A332E] dark:text-white shadow-xs'
-                    : 'text-[#6B6259] dark:text-gray-400 hover:text-[#3A332E]'
+                    ? 'bg-white dark:bg-darkbg-card text-ink dark:text-white shadow-xs'
+                    : 'text-ink-soft dark:text-gray-400 hover:text-ink'
                 }`}
               >
                 <History className="w-3.5 h-3.5" />
@@ -364,11 +364,11 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
             {apptTab === 'upcoming' && (
               <div className="space-y-2.5">
                 {upcomingAppts.length === 0 ? (
-                  <div className="p-4 rounded-2xl bg-[#F5F2EB]/50 dark:bg-darkbg-surface/50 border border-dashed border-[#EAE5DE] dark:border-darkbg-border text-center">
-                    <p className="text-[13px] text-[#6B6259] dark:text-gray-400">
+                  <div className="p-4 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/50 border border-dashed border-warmborder dark:border-darkbg-border text-center">
+                    <p className="text-[13px] text-ink-soft dark:text-gray-400">
                       Niciun control viitor.
                     </p>
-                    <p className="text-[11px] text-[#6B6259]/70 dark:text-gray-500 mt-1">
+                    <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
                       Apasă pe butonul + de mai sus pentru a adăuga următoarea programare.
                     </p>
                   </div>
@@ -380,35 +380,35 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     const dayNum = isNaN(dateObj.getTime()) ? '-' : dateObj.getDate();
 
                     return (
-                      <div key={a.id} className="p-3.5 rounded-2xl bg-[#F5F2EB]/60 dark:bg-darkbg-surface/50 border border-[#EAE5DE]/60 dark:border-darkbg-border space-y-3">
+                      <div key={a.id} className="p-3.5 rounded-2xl bg-cream-deep/60 dark:bg-darkbg-surface/50 border border-warmborder/60 dark:border-darkbg-border space-y-3">
                         <div className="flex items-start gap-3">
                           <div className="shrink-0 w-12 h-12 rounded-2xl bg-white dark:bg-darkbg-card flex flex-col items-center justify-center shadow-xs">
-                            <span className="text-[9.5px] text-[#6B6259] dark:text-gray-400 font-bold uppercase tracking-tight">
+                            <span className="text-[9.5px] text-ink-soft dark:text-gray-400 font-bold uppercase tracking-tight">
                               {monthName}
                             </span>
-                            <span className="font-serif text-lg text-[#4A6354] dark:text-sage-300 font-bold leading-none mt-0.5">
+                            <span className="font-serif text-lg text-sage-deep dark:text-sage-300 font-bold leading-none mt-0.5">
                               {dayNum}
                             </span>
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <p className="text-[13px] font-semibold text-[#3A332E] dark:text-white leading-tight">
+                            <p className="text-[13px] font-semibold text-ink dark:text-white leading-tight">
                               {a.specialty}
                             </p>
                             {a.doctor && (
-                              <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5 font-medium">
+                              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 font-medium">
                                 {a.doctor}
                               </p>
                             )}
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-[#6B6259]/80 dark:text-gray-400">
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-ink-soft/80 dark:text-gray-400">
                               {a.time && (
                                 <span className="inline-flex items-center gap-1">
-                                  <Clock className="w-3 h-3 text-[#7A9A8B]" /> {a.time}
+                                  <Clock className="w-3 h-3 text-sage-light" /> {a.time}
                                 </span>
                               )}
                               {a.center && (
                                 <span className="inline-flex items-center gap-1">
-                                  <MapPin className="w-3 h-3 text-[#7A9A8B]" /> {a.center}
+                                  <MapPin className="w-3 h-3 text-sage-light" /> {a.center}
                                 </span>
                               )}
                             </div>
@@ -418,17 +418,17 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                             {d !== null && d >= 0 && (
                               <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
                                 d === 0
-                                  ? 'bg-[#F2DFE1] text-[#9E5D64] dark:bg-rose-950/60 dark:text-rose-300 font-bold'
+                                  ? 'bg-petal-200 text-petal-700 dark:bg-rose-950/60 dark:text-rose-300 font-bold'
                                   : d === 1
                                   ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300'
-                                  : 'bg-[#E8EDE7] text-[#4A6354] dark:bg-sage-900/60 dark:text-sage-300'
+                                  : 'bg-sage-soft text-sage-deep dark:bg-sage-900/60 dark:text-sage-300'
                               }`}>
                                 {d === 0 ? 'Azi' : d === 1 ? 'Mâine' : `peste ${d} zile`}
                               </span>
                             )}
                             <button
                               onClick={() => handleDeleteAppt(a.id)}
-                              className="text-[#6B6259]/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
+                              className="text-ink-soft/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
                               title="Șterge definitiv controlul"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -437,13 +437,13 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                         </div>
 
                         {/* Butoane de marcare respectare control */}
-                        <div className="pt-2 border-t border-[#EAE5DE]/60 dark:border-darkbg-border flex items-center justify-between gap-2">
-                          <span className="text-[10.5px] text-[#6B6259] dark:text-gray-400 font-medium">Ai fost la control?</span>
+                        <div className="pt-2 border-t border-warmborder/60 dark:border-darkbg-border flex items-center justify-between gap-2">
+                          <span className="text-[10.5px] text-ink-soft dark:text-gray-400 font-medium">Ai fost la control?</span>
                           <div className="flex items-center gap-1.5">
                             <button
                               type="button"
                               onClick={() => handleMarkCompleted(a.id)}
-                              className="tap-scale px-2.5 py-1 rounded-xl bg-[#5E7A68] hover:bg-[#4A6354] text-white text-[11px] font-semibold flex items-center gap-1 cursor-pointer shadow-xs transition-colors"
+                              className="tap-scale px-2.5 py-1 rounded-xl bg-sage hover:bg-sage-deep text-white text-[11px] font-semibold flex items-center gap-1 cursor-pointer shadow-xs transition-colors"
                               title="Marchează ca efectuat"
                             >
                               <Check className="w-3 h-3" /> Am fost
@@ -451,7 +451,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                             <button
                               type="button"
                               onClick={() => handleMarkMissed(a.id)}
-                              className="tap-scale px-2.5 py-1 rounded-xl bg-gray-100 dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-[#6B6259] hover:text-rose-600 dark:text-gray-300 text-[11px] font-semibold flex items-center gap-1 cursor-pointer border border-[#EAE5DE] dark:border-darkbg-border transition-colors"
+                              className="tap-scale px-2.5 py-1 rounded-xl bg-gray-100 dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-ink-soft hover:text-rose-600 dark:text-gray-300 text-[11px] font-semibold flex items-center gap-1 cursor-pointer border border-warmborder dark:border-darkbg-border transition-colors"
                               title="Marchează ca ratat"
                             >
                               <XCircle className="w-3 h-3" /> Nu am ajuns
@@ -469,11 +469,11 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
             {apptTab === 'history' && (
               <div className="space-y-2.5">
                 {historyAppts.length === 0 ? (
-                  <div className="p-4 rounded-2xl bg-[#F5F2EB]/50 dark:bg-darkbg-surface/50 border border-dashed border-[#EAE5DE] dark:border-darkbg-border text-center">
-                    <p className="text-[13px] text-[#6B6259] dark:text-gray-400">
+                  <div className="p-4 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/50 border border-dashed border-warmborder dark:border-darkbg-border text-center">
+                    <p className="text-[13px] text-ink-soft dark:text-gray-400">
                       Nu există încă controale în istoric.
                     </p>
-                    <p className="text-[11px] text-[#6B6259]/70 dark:text-gray-500 mt-1">
+                    <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
                       Când marchezi o programare ca efectuată sau ratată, va fi salvată aici.
                     </p>
                   </div>
@@ -486,7 +486,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     const isCompleted = a.status === 'completed';
 
                     return (
-                      <div key={a.id} className="p-3 rounded-2xl bg-[#F5F2EB]/50 dark:bg-darkbg-surface/40 border border-[#EAE5DE]/60 dark:border-darkbg-border flex items-center justify-between gap-3">
+                      <div key={a.id} className="p-3 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/40 border border-warmborder/60 dark:border-darkbg-border flex items-center justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold flex items-center gap-1 ${
@@ -497,16 +497,16 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                               {isCompleted ? <Check className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
                               {isCompleted ? 'Efectuat' : 'Neefectuat'}
                             </span>
-                            <span className="text-[11px] text-[#6B6259] dark:text-gray-400 font-medium">
+                            <span className="text-[11px] text-ink-soft dark:text-gray-400 font-medium">
                               {formattedDate}
                             </span>
                           </div>
 
-                          <p className="text-[13px] font-semibold text-[#3A332E] dark:text-white mt-1">
+                          <p className="text-[13px] font-semibold text-ink dark:text-white mt-1">
                             {a.specialty}
                           </p>
                           {(a.doctor || a.center) && (
-                            <p className="text-[11.5px] text-[#6B6259] dark:text-gray-400 mt-0.5">
+                            <p className="text-[11.5px] text-ink-soft dark:text-gray-400 mt-0.5">
                               {a.doctor ? `${a.doctor} • ` : ''}{a.center || ''}
                             </p>
                           )}
@@ -516,14 +516,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRestoreUpcoming(a.id)}
-                            className="text-[11px] text-[#4A6354] dark:text-sage-300 hover:underline px-2 py-1 cursor-pointer font-medium"
+                            className="text-[11px] text-sage-deep dark:text-sage-300 hover:underline px-2 py-1 cursor-pointer font-medium"
                             title="Mută înapoi la programări viitoare"
                           >
                             Reactivează
                           </button>
                           <button
                             onClick={() => handleDeleteAppt(a.id)}
-                            className="text-[#6B6259]/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
+                            className="text-ink-soft/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
                             title="Șterge din istoric"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -538,14 +538,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
           </div>
 
           {/* SECȚIUNEA 2: ÎNTREBĂRILE MELE PENTRU MEDIC (Curate, fără presetări, customizate de pacientă) */}
-          <div className="organic-card rounded-[28px] p-5 border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs space-y-3.5">
+          <div className="organic-card rounded-[28px] p-5 border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs space-y-3.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <MessageSquarePlus className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+                <MessageSquarePlus className="w-4 h-4 text-sage-deep dark:text-sage-300" />
                 <p className="micro-label">ÎNTREBĂRI PENTRU MEDIC</p>
               </div>
               {questions.length > 0 && (
-                <span className="text-[11px] font-semibold text-[#4A6354] dark:text-sage-300">
+                <span className="text-[11px] font-semibold text-sage-deep dark:text-sage-300">
                   {answeredCount} din {questions.length} lămurite
                 </span>
               )}
@@ -558,11 +558,11 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 placeholder="Scrie o întrebare pentru consultație..."
                 value={newQuestionText}
                 onChange={e => setNewQuestionText(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-[#FAF8F5] dark:bg-darkbg-surface border border-[#EAE5DE] dark:border-darkbg-border focus:outline-none focus:border-[#5E7A68] text-[#3A332E] dark:text-white"
+                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-cream dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border focus:outline-none focus:border-sage text-ink dark:text-white"
               />
               <button
                 type="submit"
-                className="tap-scale px-4 py-2.5 rounded-2xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold text-xs flex items-center gap-1 shadow-xs transition-colors shrink-0 cursor-pointer"
+                className="tap-scale px-4 py-2.5 rounded-2xl bg-sage hover:bg-sage-deep text-white font-semibold text-xs flex items-center gap-1 shadow-xs transition-colors shrink-0 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Adaugă</span>
@@ -572,11 +572,11 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
             {/* Listă de întrebări */}
             <div className="space-y-2">
               {questions.length === 0 ? (
-                <div className="p-4 rounded-2xl bg-[#FAF8F5] dark:bg-darkbg-surface/50 border border-dashed border-[#EAE5DE] dark:border-darkbg-border text-center">
-                  <p className="text-xs text-[#6B6259] dark:text-gray-400">
+                <div className="p-4 rounded-2xl bg-cream dark:bg-darkbg-surface/50 border border-dashed border-warmborder dark:border-darkbg-border text-center">
+                  <p className="text-xs text-ink-soft dark:text-gray-400">
                     Nu ai adăugat încă întrebări pentru medic.
                   </p>
-                  <p className="text-[11px] text-[#6B6259]/70 dark:text-gray-500 mt-1">
+                  <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
                     Notează aici tot ce vrei să discuți la următoarea consultație (efecte secundare, analize etc.).
                   </p>
                 </div>
@@ -587,17 +587,17 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     className={`p-3 rounded-2xl border transition-all ${
                       item.isAnswered
                         ? 'bg-gray-50/70 dark:bg-darkbg-surface/40 border-gray-200 dark:border-darkbg-border opacity-65'
-                        : 'bg-[#FAF8F5]/70 dark:bg-darkbg-surface/70 border-[#EAE5DE] dark:border-darkbg-border shadow-xs'
+                        : 'bg-cream/70 dark:bg-darkbg-surface/70 border-warmborder dark:border-darkbg-border shadow-xs'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2.5">
                       <button
                         onClick={() => toggleAnswered(item.id)}
-                        className="mt-0.5 text-[#5E7A68] dark:text-sage-400 shrink-0 hover:scale-110 transition-transform cursor-pointer"
+                        className="mt-0.5 text-sage dark:text-sage-400 shrink-0 hover:scale-110 transition-transform cursor-pointer"
                         title={item.isAnswered ? 'Marchează ca nelămurită' : 'Marchează ca discutată cu medicul'}
                       >
                         {item.isAnswered ? (
-                          <CheckCircle2 className="w-4 h-4 text-[#5E7A68] fill-[#E8EDE7] dark:fill-sage-950" />
+                          <CheckCircle2 className="w-4 h-4 text-sage fill-sage-soft dark:fill-sage-950" />
                         ) : (
                           <Circle className="w-4 h-4 text-gray-400" />
                         )}
@@ -607,7 +607,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                         <p className={`text-xs font-medium leading-relaxed ${
                           item.isAnswered
                             ? 'line-through text-gray-400 dark:text-gray-500'
-                            : 'text-[#3A332E] dark:text-white'
+                            : 'text-ink dark:text-white'
                         }`}>
                           {item.question}
                         </p>
@@ -630,11 +630,11 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-white/70 dark:bg-darkbg-card border-t border-[#EAE5DE] dark:border-darkbg-border flex justify-between items-center text-xs text-[#6B6259] dark:text-gray-400">
+        <div className="p-4 bg-white/70 dark:bg-darkbg-card border-t border-warmborder dark:border-darkbg-border flex justify-between items-center text-xs text-ink-soft dark:text-gray-400">
           <span className="text-[11px]">Se salvează automat în telefon.</span>
           <button
             onClick={onClose}
-            className="tap-scale px-4 py-2 rounded-xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold text-xs cursor-pointer shadow-xs transition-colors"
+            className="tap-scale px-4 py-2 rounded-xl bg-sage hover:bg-sage-deep text-white font-semibold text-xs cursor-pointer shadow-xs transition-colors"
           >
             Închide
           </button>

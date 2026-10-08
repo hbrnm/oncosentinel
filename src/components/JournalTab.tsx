@@ -183,18 +183,18 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
       <div className="space-y-5">
         {/* Mood Card */}
-        <div className="bg-[#F6ECEC] dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">
+        <div className="bg-blush dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">
           <LeafSprig className="absolute -bottom-3 -right-3 w-20 h-20 opacity-40 text-petal-300 dark:text-petal-900/50" />
           <div className="flex items-center gap-2 mb-1">
-            <Heart className="w-4 h-4 text-[#C99A9D] dark:text-petal-400" />
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#C99A9D] dark:text-petal-400">Cum te simți azi?</p>
+            <Heart className="w-4 h-4 text-blush-deep dark:text-petal-400" />
+            <p className="text-[10px] font-bold uppercase tracking-wider text-blush-deep dark:text-petal-400">Cum te simți azi?</p>
           </div>
-          <p className="text-[13px] text-[#80706A] dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
+          <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
           <MoodPicker value={mood} onChange={setMood} compact />
           
           <div className="mt-5">
-            <h3 className="text-sm font-bold text-[#80706A] dark:text-petal-300 mb-3 flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-ink-soft dark:text-petal-300 mb-3 flex items-center gap-1.5">
               <LeafSprig className="w-4 h-4" />
               Gândurile mele de azi
             </h3>
@@ -208,7 +208,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="w-full mt-3 h-12 rounded-2xl bg-[#C99A9D] hover:bg-[#B88A8D] dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className="w-full mt-3 h-12 rounded-2xl bg-blush-deep hover:bg-petal-500 dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
             {saving ? "Salvez..." : "Salvează în jurnal"}
           </button>

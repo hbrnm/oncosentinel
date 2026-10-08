@@ -48,6 +48,22 @@
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
+/* Tokenii din base44/01_DESIGN_SYSTEM.md, ca utilitare Tailwind (text-ink, bg-sage-deep, border-warmborder…) */
+@theme inline {
+  --color-sage: var(--sage);
+  --color-sage-light: var(--sage-light);
+  --color-sage-soft: var(--sage-soft);
+  --color-sage-deep: var(--sage-deep);
+  --color-blush: var(--blush);
+  --color-blush-accent: var(--blush-accent);
+  --color-blush-deep: var(--blush-deep);
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-warmborder: var(--warm-border);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+}
+
 :root {
   --sage: #5E7A68;
   --sage-light: #7A9A8B;

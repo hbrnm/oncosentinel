@@ -29,12 +29,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
               onClick={() => setActiveTab(tab.id)}
               className={`tap-scale flex flex-col items-center justify-center gap-0.5 rounded-2xl px-2 py-2.5 transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? 'text-[#4A6354] dark:text-sage-300 font-semibold'
-                  : 'text-[#6B6259]/70 dark:text-gray-400 hover:text-gray-700'
+                  ? 'text-sage-deep dark:text-sage-300 font-semibold'
+                  : 'text-ink-soft/70 dark:text-gray-400 hover:text-gray-700'
               }`}
             >
               <span className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
-                isActive ? 'bg-[#E8EDE7] dark:bg-sage-900/60 scale-105' : 'bg-transparent'
+                isActive ? 'bg-sage-soft dark:bg-sage-900/60 scale-105' : 'bg-transparent'
               }`}>
                 <Icon className={`w-[22px] h-[22px] sm:w-6 sm:h-6 ${isActive ? 'stroke-[2.4px]' : 'stroke-[1.8px]'}`} />
               </span>

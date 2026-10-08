@@ -132,7 +132,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           {/* 2. Situație Clinică & Diagnostic */}
-          <div className="p-3.5 rounded-2xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60 border border-sage-100 dark:border-darkbg-border space-y-3">
+          <div className="p-3.5 rounded-2xl bg-cream-deep/60 dark:bg-darkbg-card/60 border border-sage-100 dark:border-darkbg-border space-y-3">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold uppercase tracking-wider text-sage-800 dark:text-sage-300">
                 Situație Clinică & Diagnostic
