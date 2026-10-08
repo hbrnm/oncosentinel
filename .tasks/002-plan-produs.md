@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapele 1 și 2 în PR); etapa 0 integrată (PR #5), cu confirmări care țin de proprietară
+**Stare:** în lucru (etapa 2 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -16,7 +16,7 @@ Deciziile proprietarei (2026-10-08):
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
 | 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
-| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | gata, de testat cu pacientele | PR (ramura claude/etapa1) |
+| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
 | 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
