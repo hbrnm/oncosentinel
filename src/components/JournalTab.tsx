@@ -125,9 +125,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         brainFog >= 4;
 
       if (hasSevere) {
+        // Rămâne pe ecran până o închide utilizatoarea
         setSevereSymptomsAlert(newLogData);
-        // Auto-dismiss toast after 5 seconds
-        setTimeout(() => setSevereSymptomsAlert(null), 5000);
       }
   };
 
@@ -165,13 +164,23 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   return (
     <>
       {severeSymptomsAlert && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
+        <div role="alert" className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
           <span className="text-rose-500 text-lg">⚠️</span>
           <div className="flex-1">
             <p className="text-xs font-bold text-rose-700">Simptome severe înregistrate</p>
             <p className="text-[11px] text-rose-600 mt-0.5">Dacă disconfortul persistă, contactează medicul tău.</p>
+            <p className="text-[11px] text-rose-700 font-semibold mt-1">
+              La simptome grave sau dacă te simți în pericol, sună la <a href="tel:112" className="underline">112</a>.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('navimed_open_red_flags'))}
+              className="mt-1.5 text-[11px] font-bold text-rose-700 underline"
+            >
+              Vezi semnalele de alarmă
+            </button>
           </div>
-          <button onClick={() => setSevereSymptomsAlert(null)} className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
+          <button onClick={() => setSevereSymptomsAlert(null)} aria-label="Închide alerta" className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
         </div>
       )}
     <div className="min-h-screen pb-24 animate-fade-in">

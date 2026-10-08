@@ -38,11 +38,11 @@ Deciziile proprietarei: memento fără promisiune; stocarea explicată + mesaj l
 6. Salvările locale prind spațiul plin cu mesaj clar; datele care nu încap (documente, jurnal, doze, profil, etape) nu mai apar fals pe ecran; „Siguranța datelor” explică necriptarea și limita (d951378).
 7. NaviMed → OncoSentinel în texte, copie de siguranță (copiile vechi se restaurează), cache SW; cheile `navimed_*` rămân (d43054d).
 8. 405 culori hex → tokeni din design system (c10f29b); verificat vizual la 390px.
-- `npm test` (39) și `npm run build` trec.
+- `npm test` (41) și `npm run build` trec.
 
 **De aplicat de proprietară:** migrația `20261008_set_search_path_updated_at.sql`, dacă tabela `dose_logs` există în proiectul Supabase.
 
-**Găsite pe parcurs, de decis:**
+**Găsite pe parcurs — decizii (2026-10-08):** Dosar → număr real + trimitere spre Cronologie (făcut); alerta severă rămâne până e închisă + 112 + semnale de alarmă (făcut); `interactions.ts` rămâne deoparte până la verificarea medicală; `@supabase/supabase-js` se păstrează.
 - Profil → „Dosar Medical” e o machetă cu numere inventate („12 documente”, „3 documente”, „5 documente”) și un buton „Încarcă document” fără efect; documentele reale sunt în Cronologie.
 - `src/lib/interactions.ts` (verificarea interacțiunilor) nu e folosit nicăieri în aplicație.
 - Alerta de simptome severe din Jurnal trimite la medic, dar nu menționează 112 și dispare după 5 secunde.
@@ -59,4 +59,4 @@ Deciziile proprietarei: memento fără promisiune; stocarea explicată + mesaj l
 - culori hardcodate în loc de tokeni; numele vechi „NaviMed”.
 
 ## Următorul pas
-PR cu etapa 4; proprietara decide punctele „găsite pe parcurs”.
+Review și merge pentru PR #4; apoi aplicarea migrației `20261008_set_search_path_updated_at.sql` de către proprietară.

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   User as UserIcon, Pill, CalendarHeart, LogOut, Pencil, Plus, 
-  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2, FileText
+  ChevronRight, MapPin, Check, X, ShieldCheck, Clock, Camera, Trash2, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog } from '../types';
@@ -24,6 +24,7 @@ interface ProfileTabProps {
   onUpdateProfile: (updated: PatientProfile) => void;
   onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenAuth?: () => void;
+  documentsCount?: number;
 }
 
 const daysUntil = (dateStr?: string) => {
@@ -40,7 +41,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   doses,
   onUpdateProfile,
   onNavigateToTab,
-  onOpenAuth
+  onOpenAuth,
+  documentsCount = 0
 }) => {
   // 1. Display name & profile edit modal state
   const [activeTab, setActiveTab] = useState<'settings' | 'dossier'>('settings');
@@ -473,43 +475,26 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       </div>
       )}
 
-      {/* Dossier Mock UI */}
+      {/* Dosar medical: documentele reale stau în Cronologie */}
       {activeTab === 'dossier' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="organic-card p-5 rounded-3xl flex items-center justify-between">
-            <div>
-              <h3 className="font-serif text-xl text-ink dark:text-white">Dosar Medical</h3>
-              <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-1">Documentele tale sigure.</p>
-            </div>
-            <button className="tap-scale px-4 py-2 rounded-2xl bg-sage-deep text-white text-xs font-semibold shadow-md flex items-center gap-1.5">
-              <Plus className="w-4 h-4" />
-              <span className="hidden sm:inline">Încarcă document</span>
-              <span className="sm:hidden">Încarcă</span>
+          <div className="organic-card p-5 rounded-3xl">
+            <h3 className="font-serif text-xl text-ink dark:text-white">Dosar Medical</h3>
+            <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-1">
+              {documentsCount === 0
+                ? 'Încă nu ai încărcat niciun document.'
+                : documentsCount === 1
+                  ? 'Ai 1 document salvat pe acest dispozitiv.'
+                  : `Ai ${documentsCount} documente salvate pe acest dispozitiv.`}
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigateToTab('timeline')}
+              className="tap-scale mt-4 w-full px-4 py-2.5 rounded-2xl bg-sage-deep text-white text-xs font-semibold shadow-md flex items-center justify-center gap-1.5"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Vezi și încarcă documente în Cronologie</span>
             </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
-              <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 flex items-center justify-center mb-1">
-                <Heart className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-ink dark:text-gray-200">Analize Sânge</span>
-              <span className="text-[11px] text-ink-soft dark:text-gray-400">12 documente</span>
-            </div>
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
-              <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-1">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-ink dark:text-gray-200">Imagistică</span>
-              <span className="text-[11px] text-ink-soft dark:text-gray-400">3 documente</span>
-            </div>
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale col-span-2">
-              <div className="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-500 dark:text-purple-400 flex items-center justify-center mb-1">
-                <FileText className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-ink dark:text-gray-200">Scrisori & Rețete</span>
-              <span className="text-[11px] text-ink-soft dark:text-gray-400">5 documente</span>
-            </div>
           </div>
         </div>
       )}

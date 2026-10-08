@@ -252,6 +252,7 @@ export function App() {
               onUpdateProfile={handleSaveProfile}
               onNavigateToTab={(tab) => setActiveTab(tab)}
               onOpenAuth={() => setIsAuthOpen(true)}
+              documentsCount={documents.length}
             />
           )}
         </main>
