@@ -100,3 +100,78 @@ Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, dec
 - Macmillan Cancer Support, *Tamoxifen*, https://www.macmillan.org.uk/cancer-information-and-support/treatments-and-drugs/tamoxifen
 - Breast Cancer Now, *Tamoxifen*, https://breastcancernow.org/about-breast-cancer/treatment/hormone-endocrine-therapy/tamoxifen
 - ACOG Committee Opinion No. 601, *Tamoxifen and Uterine Cancer*, Obstet Gynecol 2014
+
+---
+
+# Partea a doua: g2, g3 și textele din ecrane
+
+## g2 (înlocuiește „Managementul bufeurilor și transpirațiilor nocturne”)
+
+**Titlu:** Bufeurile și transpirațiile de noapte
+**Rezumat:** Ce ajută cu adevărat, după studii, și ce poți încerca pentru confort.
+
+### De ce apar
+Bufeurile sunt printre cele mai frecvente efecte ale tamoxifenului. Nu înseamnă că tratamentul nu merge și nu sunt periculoase, dar pot obosi și pot strica somnul. Merită să vorbești despre ele cu medicul.
+
+### Ce a funcționat în studii
+* **Terapia cognitiv-comportamentală (TCC)**, cu un psiholog: face bufeurile mai ușor de purtat și mai puțin deranjante.
+* **Hipnoza clinică**, cu un specialist: a redus numărul și intensitatea bufeurilor.
+* **Tratamente fără hormoni, prescrise de medic.** Unele antidepresive nu se potrivesc cu tamoxifenul, așa că alegerea e a medicului oncolog.
+
+### Pentru confort
+Măsurile de mai jos nu au redus bufeurile în studii, dar multe femei le găsesc plăcute:
+* haine în straturi, din bumbac sau in, pe care le poți scoate repede;
+* un ventilator, o cameră răcoroasă noaptea, o băutură rece la îndemână;
+* jurnalul din aplicație, ca să vezi dacă anumite momente le declanșează.
+
+### Plante și suplimente
+Suplimentele din plante și cele cu soia nu sunt recomandate pentru bufeuri, iar unele pot interacționa cu tamoxifenul. Întreabă medicul înainte să iei ceva.
+
+*Sursa: The Menopause Society (NAMS), „The 2023 nonhormone therapy position statement”, Menopause 2023; 30(6):573–590.*
+
+**Scos față de varianta veche:** respirația ritmată „reduce bufeurile cu până la 50%” (NAMS: nerecomandată, fără beneficiu dovedit); „tehnici validate”; explicația despre hipotalamus (fără sursă).
+
+---
+
+## g3 (înlocuiește „Protocolul de control la 6 luni și mamografie anuală”)
+
+**Titlu:** Controalele după tratament
+**Rezumat:** Ce controale urmează de obicei după DCIS. Calendarul tău îl stabilește medicul.
+
+### Mamografia
+După operația care păstrează sânul, ghidurile recomandă **mamografie o dată pe an**. Ghidul britanic NICE o recomandă anual cel puțin 5 ani, inclusiv după DCIS. Prima mamografie se face, de obicei, la 6–12 luni după tratament.
+
+### Vizitele la medic
+Ghidul european ESMO recomandă vizite mai dese în primii ani (la 3–6 luni), apoi tot mai rar, până la o dată pe an. Medicul adaptează ritmul după riscul tău și după ce simți tu.
+
+### Controlul ginecologic
+În timpul tratamentului cu tamoxifen, mergi la controalele ginecologice obișnuite și raportează orice sângerare neobișnuită (vezi ghidul despre tamoxifen).
+
+> Notează datele în aplicație: îți arată câte zile mai sunt și te ajută să pregătești întrebările pentru medic.
+
+*Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management” (2018, actualizat); ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*
+
+**Scos față de varianta veche:** „control la 6 luni în primii 2–3 ani, apoi anual … recomandat de ESMO / NCCN” (atribuire inexactă) și „ecografie transvaginală anuală”.
+
+---
+
+## Texte din ecrane
+
+| Unde | Acum | Propus |
+|---|---|---|
+| Respirație (`BreathingModal`), titlu | „Respirație Ritmata (Paced Breathing)” | „Respirație lentă” |
+| Respirație, descriere | „Validat clinic pentru calmarea rapidă a bufeurilor și reducerea stimulului adrenergic.” | „Câteva minute de respirație lentă, pentru un moment de liniște.” |
+| Ancorare (`GroundingModal`), final | „Ai redus ritmul cardiac și ai oferit corpului tău un moment de respiro.” | „Ți-ai oferit un moment de respiro.” |
+| Pornire (`OnboardingModal`) | „Recomandare clinică: aceeași oră în fiecare dimineață pentru nivel sanguin constant.” | „Ia-l la aceeași oră în fiecare zi: e mai ușor să nu uiți.” |
+| Pornire, card | „Protocol DCIS (ER+/PR+)” + „… aflată sub Tamoxifen 20mg.” | „Pentru tine, după DCIS” + „… aflată în tratament cu tamoxifen.” |
+| Pornire, pasul 2 | „Programare Tamoxifen 20mg” | „Tratamentul cu tamoxifen” |
+| Persoana de sprijin (`SupporterModal`) | „… doza de Tamoxifen (20mg) …” | doza din profil (sau fără doză, dacă nu e completată) |
+
+## Rețete: propunere de abordare
+Cele 21 de rețete rămân ca idei de mese simple și echilibrate. Scot afirmațiile terapeutice („antitumoral”, „detoxifiere”, „anti-estrogenic”, „antibufeuri”, „regenerarea ficatului”), iar rezumatul fiecărei rețete descrie doar gustul și ocazia. Infuzia de salvie „Elixir Antibufeuri” se scoate: salvia e o plantă, iar NAMS nu recomandă plantele pentru bufeuri. Eticheta „Sursă: General” dispare.
+
+## Surse (partea a doua)
+- The Menopause Society, *The 2023 nonhormone therapy position statement*, Menopause 2023;30(6):573–590, https://menopause.org/wp-content/uploads/professional/2023-nonhormone-therapy-position-statement.pdf
+- NICE NG101, https://www.ncbi.nlm.nih.gov/books/NBK519155/
+- ESMO, *Early breast cancer: ESMO Clinical Practice Guideline*, Annals of Oncology 2024, https://www.annalsofoncology.org/article/S0923-7534(23)05104-9/fulltext
+- ACR Appropriateness Criteria, *Imaging of DCIS*, JACR 2025, https://www.jacr.org/article/S1546-1440(25)00133-4/fulltext
