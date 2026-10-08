@@ -19,7 +19,7 @@ Deciziile proprietarei (2026-10-08):
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
-| 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | PIN gata (PR, ramura claude/etapa4); memento-uri și sincronizare de făcut | PR (ramura claude/etapa4) |
+| 4 | Continuitate: memento-uri, sincronizare criptată opțională, PIN | PIN gata; memento în calendarul telefonului gata (fără server, decizia proprietarei); sincronizarea de făcut | PR (ramura claude/etapa4) |
 | 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
 
 ## Etapa 0 — pașii
@@ -155,6 +155,13 @@ Deciziile proprietarei (2026-10-08):
 - După `verificare` (nimic blocant): „Pentru medic” și victoriile numără doar notele (simptomele o dată); comparația bufeurilor ignoră săptămânile doar cu note; salvarea unei părți nu mai resetează cealaltă parte, nesalvată.
 - Rămas, acceptat: o intrare veche (cu ambele părți) din ziua actualizării rămâne lângă cele noi.
 - Test nou `jurnal-separat.test.tsx` (pică pe codul vechi). `npm test` (153) și `npm run build` trec; verificat la 390px.
+
+### Memento zilnic în calendarul telefonului (2026-10-08)
+- Deciziile proprietarei: doar calendarul telefonului (fără server și fără push); text discret „E ora pastilei tale. Ai grijă de tine.”, fără numele medicamentului; două butoane („Google Calendar” și „Alt calendar (iPhone, Samsung…)”); cardul „Memento zilnic” în Tratament. Pacientele de test au și iPhone.
+- `src/lib/calendarReminder.ts`: fișier .ics cu eveniment zilnic (RRULE:FREQ=DAILY), oră locală, alertă la ora pastilei; legătură Google Calendar cu evenimentul completat. Pe iPhone, fișierul descărcat se deschide din Descărcări („Adaugă tot”).
+- De verificat cu pacientele: adăugarea pe iPhone și pe Samsung; memento-ul nu se actualizează singur la schimbarea orei (nota din card spune asta).
+- După `verificare` (nimic blocant): ora invalidă cade pe 08:00; fișierul se descarcă și pe iPhone (aplicația rămâne pe ecran); mesaj clar dacă fișierul nu se poate crea (text aprobat); eticheta „se deschide într-o filă nouă” pentru cititorul de ecran.
+- Test nou `memento-calendar.test.tsx`. `npm test` (158) și `npm run build` trec; verificat la 390px.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
