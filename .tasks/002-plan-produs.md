@@ -80,7 +80,7 @@ Deciziile proprietarei (2026-10-08):
 
 - Verificarea cu prospectul românesc (Tamoxifen Sandoz, ANMDMR), prin rezultatele căutării: confirmate lista CYP2D6, anticoagulantele, „nu luați doză dublă”; rifampicina adăugată (aprobată). Neconfirmate în textul românesc: pașii exacți la doza uitată, estrogenii, letrozolul (detalii în `docs/rescriere-etapa0.md`).
 
-**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate; testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
+**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate (închisă mai jos, „Etapa 0: prospectul românesc”); testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
 
 ### Etapa 1 (2026-10-08)
 - Deciziile proprietarei: buton mic pe toate ecranele; mesajele le scrie Claude, le aprobă proprietara; sprijinul apare cu 3 zile înainte de control; un PR pe etapă. Textele aprobate sunt în `docs/etapa1-texte.md`.
@@ -167,10 +167,17 @@ Deciziile proprietarei (2026-10-08):
 - Observația proprietarei: programarea din Dosarul medical nu își mai are locul acolo. Am scos cardul „Supraveghere Oncologică & Imagistică” (avea și „1 zile” / „1 de zile”). Controalele rămân în „Controale medicale”, pe Astăzi, în Profil și în calendarul din Tratament.
 - `npm test` (158) și `npm run build` trec.
 
+### Etapa 0: prospectul românesc (2026-10-08)
+- Proprietara a trimis prospectul Tamoxifen Sandoz (ANMDMR, revizuit în martie 2025); cele trei puncte neconfirmate sunt închise (detalii și texte aprobate în `docs/rescriere-etapa0.md`, „Prospectul citit direct”).
+- g1: doza uitată doar după prospectul românesc; „în timpul mesei”; chirurgul anunțat înaintea unei operații. Medicamente: estrogenii cu contracepție fără hormoni până la 2 luni după; „Anastrozol, letrozol și alți inhibitori de aromatază”.
+- Test nou în `medical-content.test.ts` (pică pe codul vechi). `npm test` (169) și `npm run build` trec.
+
+**Rămâne deschis în etapa 0:** numerele de ajutor (`docs/resurse-de-verificat.md`), de verificat de proprietară.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
 Reparațiile după primele două runde de testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
 
-Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.
+Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Din etapa 0 rămâne deschisă doar confirmarea numerelor de ajutor (prospectul a fost verificat).

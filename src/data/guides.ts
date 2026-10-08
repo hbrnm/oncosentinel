@@ -32,12 +32,13 @@ Tamoxifenul blochează acțiunea estrogenului asupra celulelor din sân. După D
 
 ### Cum îl iei
 
-* O dată pe zi, la aceeași oră, cu un pahar cu apă. Comprimatul se înghite întreg.
+* O dată pe zi, la aceeași oră, în timpul mesei, cu un pahar cu apă. Comprimatul se înghite întreg, fără să-l mesteci.
 * Doza și durata ți le stabilește medicul. Nu opri tratamentul fără să vorbești cu el.
+* Dacă urmează o operație, inclusiv o reconstrucție a sânului, spune-i chirurgului că iei tamoxifen.
 
 ### Ai uitat o doză?
 
-Ia-o când îți amintești. Dacă se apropie ora următoarei doze, sari peste cea uitată. Nu lua niciodată două doze deodată ca să o recuperezi.
+Nu lua niciodată două doze deodată ca să o recuperezi. Dacă nu știi ce să faci cu doza uitată, întreabă medicul sau farmacistul.
 
 ### Alte medicamente și suplimente
 
@@ -60,7 +61,7 @@ Bufeurile sunt cele mai frecvente. Mai pot apărea scurgeri vaginale, greață l
 
 Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, decât dacă medicul consideră că ai un risc crescut. Important e să raportezi orice sângerare neobișnuită. Mergi în continuare la controalele ginecologice obișnuite.
 
-*Surse: prospectul și Rezumatul caracteristicilor produsului pentru tamoxifen (secțiunea 4.5); Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen; ACOG Committee Opinion nr. 601, „Tamoxifen and Uterine Cancer” (2014); Wapnir și colab., Journal of the National Cancer Institute, 2011 (NSABP B-17 și B-24).*`
+*Surse: prospectul Tamoxifen Sandoz aprobat în România (ANMDMR, revizuit în martie 2025); Rezumatul caracteristicilor produsului pentru tamoxifen (secțiunea 4.5); Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen; ACOG Committee Opinion nr. 601, „Tamoxifen and Uterine Cancer” (2014); Wapnir și colab., Journal of the National Cancer Institute, 2011 (NSABP B-17 și B-24).*`
   },
   {
     id: 'g2',
