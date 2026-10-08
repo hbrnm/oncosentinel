@@ -20,10 +20,18 @@ import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { storageService } from './lib/supabase';
 import { setNextControlDate } from './lib/appointments';
+import { startBackNavigation, pushScreen, useBackToClose } from './lib/backNavigation';
 import { PatientProfile, DoseLog, SymptomLog, MedicalDocument, ClinicalMilestone } from './types';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabType>('today');
+  // Back pe telefon: ecranul anterior, iar de pe Astăzi iese din aplicație
+  useEffect(() => startBackNavigation('today', (screen) => setActiveTab(screen as TabType)), []);
+  const goToTab = (tab: TabType) => {
+    if (tab === activeTab) return;
+    pushScreen(tab);
+    setActiveTab(tab);
+  };
   const [darkMode, setDarkMode] = useState<boolean>(false);
   
   // Modals state
@@ -170,6 +178,27 @@ export function App() {
     setIsOnboardingOpen(false);
   };
 
+  const closeHelp = () => { setIsHelpOpen(false); setHelpNote(undefined); };
+  const closeBreathing = () => {
+    setIsBreathingOpen(false);
+    // După respirația pornită din „liniște acum”, întrebăm cum se simte
+    if (breathingFromCalm) {
+      setBreathingFromCalm(false);
+      setCalmStep('check');
+    }
+  };
+
+  // Back pe telefon închide fereastra deschisă
+  useBackToClose(isRedFlagsOpen, () => setIsRedFlagsOpen(false));
+  useBackToClose(isHelpOpen, closeHelp);
+  useBackToClose(isProfileOpen, () => setIsProfileOpen(false));
+  useBackToClose(isBreathingOpen, closeBreathing);
+  useBackToClose(calmStep !== null, () => setCalmStep(null));
+  useBackToClose(isDoctorVisitOpen, () => setIsDoctorVisitOpen(false));
+  useBackToClose(isGroundingOpen, () => setIsGroundingOpen(false));
+  useBackToClose(isAuthOpen, () => setIsAuthOpen(false));
+  useBackToClose(isSupporterOpen, () => setIsSupporterOpen(false));
+
   return (
     <div className={`min-h-screen bg-cream dark:bg-darkbg flex justify-center transition-colors ${
       fontSize === 'large' ? 'text-[110%]' : ''
@@ -208,7 +237,7 @@ export function App() {
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
               onNavigateToTab={(tab) => {
-                setActiveTab(tab);
+                goToTab(tab);
               }}
             />
           )}
@@ -257,7 +286,7 @@ export function App() {
               profile={profile}
               doses={doses}
               onUpdateProfile={handleSaveProfile}
-              onNavigateToTab={(tab) => setActiveTab(tab)}
+              onNavigateToTab={(tab) => goToTab(tab)}
               onOpenAuth={() => setIsAuthOpen(true)}
               documentsCount={documents.length}
             />
@@ -276,7 +305,7 @@ export function App() {
         </button>
 
         {/* Bottom Tab Bar */}
-        <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+        <BottomNav activeTab={activeTab} setActiveTab={goToTab} />
 
         {/* Emergency Modal */}
         <RedFlagsModal
@@ -289,7 +318,7 @@ export function App() {
         {/* Ajutor: urgență, echipa medicală, liniștire, sprijin */}
         <HelpModal
           isOpen={isHelpOpen}
-          onClose={() => { setIsHelpOpen(false); setHelpNote(undefined); }}
+          onClose={closeHelp}
           note={helpNote}
           profile={profile}
           onOpenRedFlags={() => setIsRedFlagsOpen(true)}
@@ -309,14 +338,7 @@ export function App() {
         {/* Guided Breathing Modal */}
         <BreathingModal
           isOpen={isBreathingOpen}
-          onClose={() => {
-            setIsBreathingOpen(false);
-            // După respirația pornită din „liniște acum”, întrebăm cum se simte
-            if (breathingFromCalm) {
-              setBreathingFromCalm(false);
-              setCalmStep('check');
-            }
-          }}
+          onClose={closeBreathing}
         />
 
         <CalmModal

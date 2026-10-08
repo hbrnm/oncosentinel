@@ -15,6 +15,7 @@ import { RenderMarkdown } from './Markdown';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS as CLINICAL_NEWS, ClinicalGuide, NewsProtocol } from '../data/guides';
 import { RECIPES } from '../data/recipes';
 import { searchInteractions } from '../lib/interactions';
+import { useBackToClose } from '../lib/backNavigation';
 
 export interface GuideTabProps {
   onOpenRedFlags: () => void;
@@ -27,6 +28,9 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
   const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(null);
   const [activeCategory, setActiveCategory] = useState<GuideCategory>('clinical');
   const [medicineQuery, setMedicineQuery] = useState<string>('');
+  // Back pe telefon închide ghidul sau știrea deschisă
+  useBackToClose(selectedGuide !== null, () => setSelectedGuide(null));
+  useBackToClose(selectedNews !== null, () => setSelectedNews(null));
   const medicines = searchInteractions(medicineQuery);
 
   if (selectedGuide) {

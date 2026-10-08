@@ -9,6 +9,7 @@ import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
 import type { AppointmentItem } from './DoctorVisitModal';
 import { loadAppointments, saveAppointments } from '../lib/appointments';
+import { useBackToClose } from '../lib/backNavigation';
 
 interface ProfileTabProps {
   profile: PatientProfile;
@@ -136,6 +137,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
 
   // Add Appointment Dialog
   const [addAppt, setAddAppt] = useState(false);
+  useBackToClose(editProfileOpen, () => setEditProfileOpen(false));
+  useBackToClose(addAppt, () => setAddAppt(false));
   const [apptForm, setApptForm] = useState({
     date: '',
     specialty: 'Oncologie',
