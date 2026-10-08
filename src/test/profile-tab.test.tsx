@@ -22,7 +22,7 @@ describe('ProfileTab Component (Base44 Design)', () => {
 
   const mockDoses: DoseLog[] = [];
 
-  it('renders user details, current medication card, appointments, and notification toggles', () => {
+  it('renders user details, current medication card, and appointments, without reminder toggles', () => {
     render(
       <ProfileTab
         profile={mockProfile}
@@ -37,9 +37,10 @@ describe('ProfileTab Component (Base44 Design)', () => {
     expect(screen.getAllByText('DCIS').length).toBeGreaterThan(0);
     expect(screen.getByText('Tratament curent')).toBeInTheDocument();
     expect(screen.getByText('Controale medicale')).toBeInTheDocument();
-    expect(screen.getByText('Notificări')).toBeInTheDocument();
-    expect(screen.getByText('Reminder doză zilnică')).toBeInTheDocument();
-    expect(screen.getByText('Reminder controale')).toBeInTheDocument();
+    // Fără comutatoare de memento: aplicația nu programează notificări
+    expect(screen.queryByText('Notificări')).not.toBeInTheDocument();
+    expect(screen.queryByText('Reminder doză zilnică')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Memento/)).not.toBeInTheDocument();
   });
 
   it('navigates to treatment tab when clicking Gestionează tratamentul', () => {

@@ -3,12 +3,11 @@ import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, Clock, Pill, Sparkles, BatteryCharging, 
   Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
-  Stethoscope, Heart, Bell, BellOff, BellRing, Check, Activity, Dumbbell,
+  Stethoscope, Heart, BellRing, Check, Activity, Dumbbell,
   ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
-import { notificationsService } from '../lib/notifications';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { AppointmentBanner } from './AppointmentBanner';
@@ -18,7 +17,6 @@ interface DashboardTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
   onTakeDose: (dateIso?: string) => void;
-  onSnoozeDose: () => void;
   onSaveQuickSymptom: (hotFlashes: number, energy: number, jointPain: number) => void;
   onOpenRedFlags: () => void;
   onOpenBreathing: () => void;
@@ -35,7 +33,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   profile,
   doses,
   onTakeDose,
-  onSnoozeDose,
   onSaveQuickSymptom,
   onOpenRedFlags,
   onOpenBreathing,
@@ -104,20 +101,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
   const [apptVersion, setApptVersion] = useState<number>(0);
-  const [bellActive, setBellActive] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_dose_reminder_enabled') === 'true';
-  });
-
-  const handleToggleBell = () => {
-    const nextVal = !bellActive;
-    setBellActive(nextVal);
-    localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
-    
-    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
-  };
-
   const [showPhotoModal, setShowPhotoModal] = useState<boolean>(false);
 
 
@@ -310,25 +293,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <img src={profile.avatar_url} alt={patientFirstName} className="w-full h-full object-cover" />
             </button>
           )}
-          <button
-            type="button"
-            title={bellActive ? "Dezactivează Memento" : "Activează Memento"}
-            onClick={handleToggleBell}
-            className={`tap-scale relative w-11 h-11 rounded-full border flex items-center justify-center shadow-xs transition-colors ${
-              bellActive 
-                ? 'bg-sage-50 dark:bg-sage-900/40 border-sage-200 dark:border-sage-800' 
-                : 'bg-white/80 dark:bg-darkbg-card border-[#EAE5DE] dark:border-darkbg-border opacity-70'
-            }`}
-          >
-            {bellActive ? (
-              <>
-                <Bell className="w-5 h-5 text-sage-700 dark:text-sage-300" strokeWidth={1.8} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DFB2B5]" />
-              </>
-            ) : (
-              <BellOff className="w-5 h-5 text-gray-400 dark:text-gray-500" strokeWidth={1.8} />
-            )}
-          </button>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  User as UserIcon, Pill, CalendarHeart, Bell, LogOut, Pencil, Plus, 
+  User as UserIcon, Pill, CalendarHeart, LogOut, Pencil, Plus, 
   ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
@@ -131,29 +131,6 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     });
   };
 
-  // 2. Reminders settings state
-  const [doseReminderEnabled, setDoseReminderEnabled] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_dose_reminder_enabled') !== 'false';
-  });
-  const [apptReminderEnabled, setApptReminderEnabled] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_appt_reminder_enabled') !== 'false';
-  });
-
-  const handleToggleDoseReminder = () => {
-    const nextVal = !doseReminderEnabled;
-    setDoseReminderEnabled(nextVal);
-    localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
-    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
-  };
-
-  const handleToggleApptReminder = () => {
-    const nextVal = !apptReminderEnabled;
-    setApptReminderEnabled(nextVal);
-    localStorage.setItem('navimed_appt_reminder_enabled', String(nextVal));
-  };
-
   // 3. Appointments list state
   const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
     const saved = localStorage.getItem('navimed_appointments_list');
@@ -245,7 +222,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           </button>
         </div>
         <p className="text-[13px] text-[#6B6259] dark:text-gray-300 mt-1 font-sans">
-          Informațiile tale, tratamentul și preferințele de notificare.
+          Informațiile tale și tratamentul.
         </p>
       </header>
 
@@ -483,69 +460,6 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         </div>
       </div>
 
-      {/* 4. Notificări Card cu Comutatoare Switch matching Base44 */}
-      <div className="organic-card rounded-[28px] p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Bell className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
-          <p className="micro-label">Notificări</p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
-                Reminder doză zilnică
-              </p>
-              <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-0.5">
-                Memento blând la ora administrării ({profile.daily_reminder_time || '08:00'})
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleToggleDoseReminder}
-              className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                doseReminderEnabled ? 'bg-[#5E7A68]' : 'bg-gray-300 dark:bg-gray-700'
-              }`}
-              role="switch"
-              aria-checked={doseReminderEnabled}
-            >
-              <span
-                className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                  doseReminderEnabled ? 'right-0.5' : 'left-0.5'
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="h-px bg-[#EAE5DE]/60 dark:bg-darkbg-border" />
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
-                Reminder controale
-              </p>
-              <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-0.5">
-                Înainte de următoarea programare medicală
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleToggleApptReminder}
-              className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                apptReminderEnabled ? 'bg-[#5E7A68]' : 'bg-gray-300 dark:bg-gray-700'
-              }`}
-              role="switch"
-              aria-checked={apptReminderEnabled}
-            >
-              <span
-                className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                  apptReminderEnabled ? 'right-0.5' : 'left-0.5'
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* 5. Siguranța datelor */}
       {onOpenAuth && (
         <button
@@ -725,7 +639,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               
               <div>
                 <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
-                  Ora Memento Tratament
+                  Ora administrării
                 </label>
                 <input
                   type="time"

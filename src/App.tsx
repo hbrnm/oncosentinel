@@ -99,11 +99,6 @@ export function App() {
     storageService.saveProfile(updatedProfile);
   };
 
-  const handleSnoozeDose = () => {
-    alert('⏰ Alarma a fost amânată cu 15 minute. Te vom atenționa la ' + 
-      new Date(Date.now() + 15 * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-  };
-
   const handleSaveQuickSymptom = (hotFlashes: number, energy: number, jointPain: number) => {
     const newLog: SymptomLog = {
       id: `sym_${Date.now()}`,
@@ -206,7 +201,6 @@ export function App() {
               profile={profile}
               doses={doses}
               onTakeDose={handleTakeDose}
-              onSnoozeDose={handleSnoozeDose}
               onSaveQuickSymptom={handleSaveQuickSymptom}
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
               onOpenBreathing={() => setIsBreathingOpen(true)}

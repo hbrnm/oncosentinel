@@ -210,7 +210,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                Oră reminder zilnic:
+                Ora administrării:
               </label>
               <div className="relative">
                 <Clock className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
