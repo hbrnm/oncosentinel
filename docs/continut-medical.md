@@ -46,7 +46,7 @@ Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clin
 | venlafaxina „excelentă”, citalopram/escitalopram „alternative sigure” | DE VERIFICAT: recenziile o susțin ca alternativă cu risc mic; formularea trebuie îndulcită |
 | control ginecologic anual „obligatoriu”, cu ecografie transvaginală | DE VERIFICAT: ghidurile recomandă de obicei raportarea sângerărilor, nu neapărat ecografie de rutină |
 | bufeuri „până la 80% dintre paciente”; gabapentina | DE VERIFICAT |
-| „Ai uitat o doză? … nu lua niciodată doză dublă” | DE VERIFICAT în prospectul aprobat în România |
+| „Ai uitat o doză? … nu lua niciodată doză dublă” | REZOLVAT (2026-10-08): după prospectul Tamoxifen Sandoz (ANMDMR), vezi `docs/rescriere-etapa0.md`, „Prospectul citit direct” |
 
 ### g2 „Managementul bufeurilor” — REZOLVAT (2026-10-08): rescris după NAMS 2023, aprobat
 | Afirmație | Stare |

@@ -47,6 +47,8 @@ Studiul nu a inclus paciente cu DCIS, iar tratamentul de atunci (40 mg pe zi, ti
 
 ## g1 (înlocuiește „Tamoxifen și efectele secundare”)
 
+> Actualizat pe 2026-10-08 după prospectul românesc: „Cum îl iei” și „Ai uitat o doză?” au textul din secțiunea „Prospectul citit direct” de la final.
+
 **Titlu:** Tamoxifen: ce face și cum îl iei
 **Rezumat:** Cum acționează, cum îl iei, ce faci dacă ai uitat o doză și când suni la medic.
 
@@ -81,7 +83,7 @@ Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, dec
 
 *Surse: prospectul și Rezumatul caracteristicilor produsului pentru tamoxifen (secțiunea 4.5); Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen; ACOG Committee Opinion nr. 601, „Tamoxifen and Uterine Cancer” (2014); Wapnir și colab., Journal of the National Cancer Institute, 2011 (NSABP B-17 și B-24).*
 
-**DE COMPLETAT:** verificare cu prospectul aprobat în România (ANMDMR) pentru doza uitată și lista de medicamente.
+**Verificat** cu prospectul Tamoxifen Sandoz (ANMDMR, revizuit în martie 2025), 2026-10-08: vezi secțiunea „Prospectul citit direct” de la final.
 
 **Scos față de varianta veche:**
 * „reduce recurența cu 40–50% și mortalitatea cu ~30%” (cifre din ATLAS, studiu pe cancer invaziv);
@@ -215,7 +217,7 @@ Pragul rămâne cum e: alerta apare când pacienta își notează singură un si
 
 # Partea a patra: verificarea interacțiunilor (`src/lib/interactions.ts`)
 
-Aprobată de proprietară (2026-10-08) și afișată în Ghiduri → „Medicamente”.
+Aprobată de proprietară (2026-10-08) și afișată în Ghiduri → „Medicamente”. Rândurile despre estrogeni și inhibitorii de aromatază au fost înlocuite după prospectul românesc (secțiunea „Prospectul citit direct” de la final).
 
 | Ce | Nivel | Ce scrie în aplicație | Sursă |
 |---|---|---|---|
@@ -232,7 +234,7 @@ Aprobată de proprietară (2026-10-08) și afișată în Ghiduri → „Medicame
 ## Verificarea cu prospectul aprobat în România (2026-10-08)
 Prospectul și RCP-ul Tamoxifen Sandoz de pe anm.ro (pro_2715, rcp_2715), citite prin rezultatele căutării (anm.ro e blocat din mediul de lucru):
 - **Confirmat:** inhibitorii puternici CYP2D6 de evitat pe cât posibil (paroxetină, fluoxetină, bupropion, chinidină, cinacalcet); anticoagulantele orale ca interacțiune; „Nu luați o doză dublă pentru a compensa doza uitată”; rifampicina scade concentrațiile tamoxifenului.
-- **Neconfirmat în textul românesc (rămâne din prospectul UK):** „ia doza uitată când îți amintești; dacă se apropie următoarea, sari peste”; formularea despre estrogeni; letrozolul (prospectul românesc numește anastrozolul).
+- **Neconfirmat în textul românesc (rămâne din prospectul UK):** „ia doza uitată când îți amintești; dacă se apropie următoarea, sari peste”; formularea despre estrogeni; letrozolul (prospectul românesc numește anastrozolul). Închis după citirea directă a prospectului (secțiunea de la final).
 - **Găsit în plus, neintrodus:** citostaticele cresc riscul de tromboză (relevant mai ales în chimioterapie; de discutat cu un medic).
 
 **Scos față de varianta veche:**
@@ -247,3 +249,11 @@ Prospectul și RCP-ul Tamoxifen Sandoz de pe anm.ro (pro_2715, rcp_2715), citite
 - *Interactions Between Natural Products and Tamoxifen in Breast Cancer: A Comprehensive Literature Review*, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9201062/
 - Medscape, grapefruit interactions, https://reference.medscape.com/drug/citrus-paradisi-pomelo-grapefruit-344597
 - Massachusetts General Hospital, fișa tamoxifen (martie 2024), https://www.massgeneral.org/assets/MGH/pdf/cancer-center/breast-cancer/chemotherapy-regimen-tamoxifen.pdf
+
+## Prospectul citit direct (2026-10-08)
+Proprietara a trimis prospectul Tamoxifen Sandoz 10 mg (APP 2715/2010/01-02, revizuit în martie 2025). Decizii aprobate prin chestionar:
+- **Doza uitată:** prospectul spune doar „Nu luați o doză dublă pentru a compensa doza uitată”. În g1: „Nu lua niciodată două doze deodată ca să o recuperezi. Dacă nu știi ce să faci cu doza uitată, întreabă medicul sau farmacistul.” Scos „Ia-o când îți amintești…” (venea din prospectul UK).
+- **Estrogeni:** prospectul spune că preparatele hormonale, mai ales cele cu estrogen (de exemplu pilula), nu trebuie luate în timpul tratamentului; contracepție fără hormoni în timpul tratamentului și până la 2 luni după. Text nou: „Prospectul spune să nu fie luate în timpul tratamentului. Dacă ai nevoie de contracepție, folosește o metodă fără hormoni (de exemplu prezervativul) în timpul tratamentului și încă 2 luni după. Medicul te ajută să alegi.”
+- **Inhibitori de aromatază:** prospectul numește anastrozolul la contraindicații. Intrarea devine „Anastrozol, letrozol și alți inhibitori de aromatază”: „Nu se iau împreună cu tamoxifenul. Prospectul românesc o spune explicit pentru anastrozol.”
+- **Cum îl iei (adăugat):** „în timpul mesei”, „fără să-l mesteci”; „Dacă urmează o operație, inclusiv o reconstrucție a sânului, spune-i chirurgului că iei tamoxifen.”
+- **Găsit, neintrodus:** citostaticele cresc riscul de tromboză (rămâne de discutat cu un medic).

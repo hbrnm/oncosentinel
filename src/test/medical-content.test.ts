@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
 import { RECIPES } from '../data/recipes';
+import { INTERACTIONS_DB } from '../lib/interactions';
 
 // Conținut rescris din surse și aprobat de proprietară (docs/rescriere-etapa0.md)
 describe('Conținutul medical rescris', () => {
@@ -33,5 +34,16 @@ describe('Conținutul medical rescris', () => {
     const all = JSON.stringify(RECIPES);
     expect(RECIPES.find(r => r.title.includes('Salvie'))).toBeUndefined();
     expect(all).not.toMatch(/Sursă|antitumoral|detoxifiere|anti-estrogenic|bufeu|Tamoxifen/i);
+  });
+
+  it('ghidul și interacțiunile urmează prospectul românesc (Tamoxifen Sandoz, ANMDMR)', () => {
+    expect(g1.content).not.toMatch(/Ia-o când îți amintești/);
+    expect(g1.content).toMatch(/întreabă medicul sau farmacistul/);
+    expect(g1.content).toMatch(/în timpul mesei/);
+    expect(g1.content).toMatch(/spune-i chirurgului că iei tamoxifen/);
+    const estrogen = INTERACTIONS_DB.find(i => i.substance.startsWith('Medicamente cu estrogen'))!;
+    expect(estrogen.advice).toMatch(/fără hormoni.*încă 2 luni după/);
+    expect(estrogen.advice).not.toMatch(/una alteia/);
+    expect(INTERACTIONS_DB.find(i => i.substance.startsWith('Anastrozol'))!.source).toMatch(/Tamoxifen Sandoz/);
   });
 });

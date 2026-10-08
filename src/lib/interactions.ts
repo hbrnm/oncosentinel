@@ -20,15 +20,15 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
     substance: 'Medicamente cu estrogen (de exemplu anticoncepționale orale, tratamente hormonale pentru menopauză)',
     level: 'avoid',
     levelLabel: 'De evitat',
-    advice: 'Prospectul spune să nu fie luate în timpul tratamentului: își pot reduce efectul una alteia.',
-    source: 'RCP tamoxifen, secțiunea 4.5'
+    advice: 'Prospectul spune să nu fie luate în timpul tratamentului. Dacă ai nevoie de contracepție, folosește o metodă fără hormoni (de exemplu prezervativul) în timpul tratamentului și încă 2 luni după. Medicul te ajută să alegi.',
+    source: 'Prospectul Tamoxifen Sandoz (ANMDMR)'
   },
   {
-    substance: 'Letrozol și alți inhibitori de aromatază',
+    substance: 'Anastrozol, letrozol și alți inhibitori de aromatază',
     level: 'tell',
     levelLabel: 'Doar la indicația medicului',
-    advice: 'Nu se iau împreună cu tamoxifenul: combinația nu a îmbunătățit tratamentul.',
-    source: 'RCP tamoxifen, secțiunea 4.5'
+    advice: 'Nu se iau împreună cu tamoxifenul. Prospectul românesc o spune explicit pentru anastrozol.',
+    source: 'Prospectul Tamoxifen Sandoz (ANMDMR); RCP tamoxifen, secțiunea 4.5'
   },
   {
     substance: 'Rifampicină (medicament pentru tuberculoză)',
