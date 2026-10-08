@@ -1,7 +1,7 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
 **Stare:** în lucru (etapa 0)
-**Ramura:** claude/plan-produs (planul); fiecare etapă pe ramura ei
+**Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
 O aplicație caldă care liniștește pacientele cu DCIS în tratament cu Tamoxifen (jurnal, empatie, ghiduri, resurse de ajutor), în care se poate avea încredere. Mai întâi încrederea, apoi funcțiile noi.
