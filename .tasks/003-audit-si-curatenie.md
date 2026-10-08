@@ -1,6 +1,6 @@
 # 003 — Audit, copie de siguranță, curățenie, viteză
 
-**Stare:** în lucru
+**Stare:** gata
 **Ramura:** claude/plan-produs-next-step-kx1wr8 (câte un PR pe etapă, din main)
 
 ## Scop
@@ -13,7 +13,7 @@ Decizia proprietarei (2026-10-08), după ce a terminat observațiile de la testa
 | 2 | Reparațiile alese de proprietară din audit | gata | |
 | 3 | Copia de siguranță: o copie veche (dinainte de jurnalul separat și de lista de controale) se restaurează corect | gata | |
 | 4 | Curățenie de cod: importuri, variabile și funcții nefolosite | gata | |
-| 5 | Viteză: împărțirea pachetului JS (avertismentul de la build); `vite.config.ts` doar la orchestrator | de făcut | |
+| 5 | Viteză: împărțirea pachetului JS (avertismentul de la build); `vite.config.ts` doar la orchestrator | gata | |
 
 ## Rezumat pe etape
 ### Etapele 1 și 2 (2026-10-08)
@@ -33,5 +33,12 @@ Decizia proprietarei (2026-10-08), după ce a terminat observațiile de la testa
 - `tsc --noUnusedLocals` găsea 55 de nume nefolosite (mai ales iconuri importate, plus `isLowStock`, `moodSectionTitle`, `savedToday`, `toggleJointArea`, `sageLight`); acum 0. Fără schimbări vizibile.
 - `npm test` (167) și `npm run build` trec.
 
+### Etapa 5 (2026-10-08)
+- Pachetul de pornire avea 509 KB (avertisment la build). Cea mai mare parte e React (react-dom); urmează codul aplicației.
+- `vite.config.ts`: React într-o bucată separată (219 KB), care rămâne în cache la actualizări; codul aplicației scade la 290 KB. Avertismentul a dispărut.
+- `src/lib/supabase.ts`: clientul Supabase se încarcă doar la cerere (`getSupabase()`), ca biblioteca să nu intre în pachetul de pornire acolo unde sunt setate variabilele (Vercel). Clientul nu e folosit acum nicăieri.
+- Neschimbat: încărcarea la cerere a ecranelor (ar cere rescrierea multor teste, pentru un câștig mic).
+- `npm test` (168) și `npm run build` trec; verificat în Chromium: ecranele și raportul PDF merg, fără erori.
+
 ## Următorul pas
-Etapa 5: viteză (împărțirea pachetului JS).
+Sarcina 003 e încheiată. Pentru lucrul următor: decizia proprietarei.

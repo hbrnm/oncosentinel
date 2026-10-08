@@ -1,12 +1,19 @@
-import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { DoseLog, SymptomLog, PatientProfile, ClinicalMilestone, MedicalDocument } from '../types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-export const supabase = (supabaseUrl && supabaseAnonKey)
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+// Clientul Supabase se încarcă doar când e cerut (aplicația lucrează acum local),
+// ca biblioteca să nu intre în pachetul de pornire. Fără variabile: null.
+let client: Promise<SupabaseClient | null> | null = null;
+export const getSupabase = (): Promise<SupabaseClient | null> => {
+  if (!supabaseUrl || !supabaseAnonKey) return Promise.resolve(null);
+  client ??= import('@supabase/supabase-js')
+    .then(({ createClient }) => createClient(supabaseUrl, supabaseAnonKey))
+    .catch((e) => { client = null; throw e; }); // fără rețea: se poate reîncerca
+  return client;
+};
 
 // Initial Patient Profile State for DCIS (Post-op, Post-RT, on Tamoxifen)
 export const DEFAULT_PROFILE: PatientProfile = {
