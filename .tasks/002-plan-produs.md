@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapa 0)
+**Stare:** în așteptare (proprietara): etapa 0 e implementată și integrată (PR #5); rămân confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -15,8 +15,8 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | gata, în afară de numerele de ajutor (așteaptă confirmarea proprietarei) și verificarea cu prospectul din România | |
-| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | gata, de testat cu pacientele | ramura claude/etapa1 |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
+| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | gata, de testat cu pacientele | PR (ramura claude/etapa1) |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
 | 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
@@ -80,7 +80,7 @@ Deciziile proprietarei (2026-10-08):
 
 - Verificarea cu prospectul românesc (Tamoxifen Sandoz, ANMDMR), prin rezultatele căutării: confirmate lista CYP2D6, anticoagulantele, „nu luați doză dublă”; rifampicina adăugată (aprobată). Neconfirmate în textul românesc: pașii exacți la doza uitată, estrogenii, letrozolul (detalii în `docs/rescriere-etapa0.md`).
 
-**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate; testarea cu pacientele, după `docs/ghid-testare.md`; review și merge pentru PR #5.
+**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate; testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
 
 ### Etapa 1 (2026-10-08)
 - Deciziile proprietarei: buton mic pe toate ecranele; mesajele le scrie Claude, le aprobă proprietara; sprijinul apare cu 3 zile înainte de control; un PR pe etapă. Textele aprobate sunt în `docs/etapa1-texte.md`.
