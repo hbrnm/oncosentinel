@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în așteptare (proprietara): review pentru PR #8 (etapa 2), #9 (etapa 3), #10 (PIN, etapa 4) și testare cu pacientele; etapele 0 și 1 integrate (PR #5, #7)
+**Stare:** în așteptare (proprietara): integrarea etapelor 3 și 4 în main (PR #9 și #10 au intrat în ramurile de etapă, aduse acum printr-un PR nou) și testare cu pacientele; etapele 0, 1 și 2 integrate (PR #5, #7, #8)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
