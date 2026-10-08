@@ -27,7 +27,7 @@ export const takenInLastDays = (doses: DoseLog[], startDate: string, days: numbe
 
 // „1 zi”, „5 zile”, „30 de zile”; la fel pentru note
 export const plural = (n: number, one: string, few: string) =>
-  n === 1 ? `1 ${one}` : n % 100 === 0 || n % 100 >= 20 ? `${n} de ${few}` : `${n} ${few}`;
+  n === 1 ? `1 ${one}` : n > 0 && (n % 100 === 0 || n % 100 >= 20) ? `${n} de ${few}` : `${n} ${few}`;
 
 const logsIn = (symptoms: SymptomLog[], days: string[]) => {
   const set = new Set(days);

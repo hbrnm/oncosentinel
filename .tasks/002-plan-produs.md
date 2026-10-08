@@ -97,7 +97,7 @@ Deciziile proprietarei (2026-10-08):
 - „Pentru medic” (fereastra vizitei): doze marcate în 28 de zile, note, cele mai dese 3 simptome, întrebări nediscutate și descărcarea raportului PDF.
 - „O mică victorie” (Astăzi): praguri pe total (doze 7/30/100/365, note 1/10/50), fără „ai pierdut seria”; „Mulțumesc” o ascunde și ține minte.
 - Reparat: copia de siguranță pierdea întrebările pentru medic, programările și numele medicului.
-- `npm test` (81) și `npm run build` trec; verificat la 390px.
+- `npm test` (84) și `npm run build` trec; verificat la 390px.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.

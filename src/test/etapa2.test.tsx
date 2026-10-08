@@ -4,7 +4,7 @@ import React from 'react';
 import App from '../App';
 import { DoctorVisitModal } from '../components/DoctorVisitModal';
 import { DEFAULT_PROFILE } from '../lib/supabase';
-import { weekSummary, doctorSummary, nextVictory, localDay } from '../lib/summary';
+import { weekSummary, doctorSummary, nextVictory, localDay, plural } from '../lib/summary';
 import { generateOncologyReport } from '../lib/pdfGenerator';
 import { DoseLog, SymptomLog } from '../types';
 
@@ -101,5 +101,31 @@ describe('O mică victorie', () => {
     unmount();
     render(<App />);
     expect(screen.queryByLabelText('O mică victorie')).not.toBeInTheDocument();
+  });
+});
+
+describe('Cazuri limită', () => {
+  it('pluralul: 0 zile, 1 zi, 5 zile, 20 de note, 100 de note', () => {
+    expect(plural(0, 'zi', 'zile')).toBe('0 zile');
+    expect(plural(1, 'zi', 'zile')).toBe('1 zi');
+    expect(plural(5, 'zi', 'zile')).toBe('5 zile');
+    expect(plural(20, 'notă', 'note')).toBe('20 de note');
+    expect(plural(100, 'notă', 'note')).toBe('100 de note');
+  });
+
+  it('o listă coruptă de victorii văzute nu strică ecranul Astăzi', () => {
+    localStorage.clear();
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    localStorage.setItem('oncosentinel_victories_seen', '{"x":1}');
+    localStorage.setItem('navimed_symptoms', JSON.stringify([note(0)]));
+    render(<App />);
+    expect(screen.getByText('Prima ta notă în jurnal. Mulțumesc că ai început.')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Mulțumesc'));
+    expect(JSON.parse(localStorage.getItem('oncosentinel_victories_seen')!)).toEqual(['note-1']);
+  });
+
+  it('nota de acum 7 zile intră în săptămâna trecută, nu în aceasta', () => {
+    expect(weekSummary([note(7)])).toEqual(['Săptămâna asta nu ai notat încă. Jurnalul te așteaptă, când vrei.']);
+    expect(weekSummary([note(6)])[0]).toBe('Ai notat într-o zi din ultimele 7.');
   });
 });

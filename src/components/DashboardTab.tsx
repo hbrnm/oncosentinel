@@ -81,7 +81,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   // „O mică victorie”: pragurile văzute se țin minte pe dispozitiv
   const [seenVictories, setSeenVictories] = useState<string[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem('oncosentinel_victories_seen') || '[]');
+      const saved = JSON.parse(localStorage.getItem('oncosentinel_victories_seen') || '[]');
+      return Array.isArray(saved) ? saved : [];
     } catch {
       return [];
     }
