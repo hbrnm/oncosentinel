@@ -112,7 +112,7 @@ Ghidul european ESMO recomandă vizite mai dese în primii ani (la 3–6 luni), 
 
 > Notează datele în aplicație: îți arată câte zile mai sunt și te ajută să pregătești întrebările pentru medic.
 
-*Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management”; ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*`
+*Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management” (2018, actualizat); ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*`
   }
 ];
 

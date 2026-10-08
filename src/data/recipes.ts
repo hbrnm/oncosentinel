@@ -13,7 +13,7 @@ export const RECIPES: Omit<ClinicalGuide, 'category'>[] = [
     "tag": "Mic Dejun",
     "title": "Budincă de Chia cu Zmeură & Lapte de Cocos Ușor",
     "summary": "Un mic dejun rece, pregătit de cu seară.",
-    "content": "Timp: **5 minute**\n\n### Ingrediente\n- **3 linguri semințe de chia**\n- **180ml lapte de cocos ușor sau lapte de ovăz**\n- **O mână de zmeură proaspătă**\n- **1 linguriță semințe de cânepă decorticate**\n\n### Mod de Preparare\n1. Amestecă semințele de chia cu laptele vegetal într-un borcan de sticlă.\n2. Lasă la hidratat în frigider peste noapte (sau minim 2 ore).\n3. Dimineața, adaugă zmeura zdrobită ușor cu furculița și semințele de cânepă.\n\n### Sfat Util\nUn mic dejun rece, perfect pentru diminețile în care simți bufeuri matinale.\n"
+    "content": "Timp: **5 minute**\n\n### Ingrediente\n- **3 linguri semințe de chia**\n- **180ml lapte de cocos ușor sau lapte de ovăz**\n- **O mână de zmeură proaspătă**\n- **1 linguriță semințe de cânepă decorticate**\n\n### Mod de Preparare\n1. Amestecă semințele de chia cu laptele vegetal într-un borcan de sticlă.\n2. Lasă la hidratat în frigider peste noapte (sau minim 2 ore).\n3. Dimineața, adaugă zmeura zdrobită ușor cu furculița și semințele de cânepă.\n\n### Sfat Util\nUn mic dejun rece, bun pentru diminețile calde.\n"
   },
   {
     "id": "r3",

@@ -54,6 +54,19 @@ describe('Raportul PDF pentru medic', () => {
     expect(report()).toContain('1 din 5 zile (20%)');
   });
 
+  it('spune clar când tratamentul nu a început încă', () => {
+    generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-11-01' }, [], []);
+
+    expect(report()).toContain('Tratamentul nu a început înca în ultimele 30 de zile.');
+  });
+
+  it('fără dată de start numără toate cele 30 de zile', () => {
+    generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '' }, ['2026-10-08'].map(taken), []);
+
+    expect(report()).toContain('1 din 30 de zile (3%)');
+    expect(report()).toContain('Start: necompletat');
+  });
+
   it('scrie textul fără ă, ș, ț, pe care fontul PDF le-ar omite', () => {
     generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-01-01' }, [], []);
 

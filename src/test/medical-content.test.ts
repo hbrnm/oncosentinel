@@ -31,6 +31,6 @@ describe('Conținutul medical rescris', () => {
   it('rețetele sunt idei de mese, fără promisiuni terapeutice sau surse neverificate', () => {
     const all = JSON.stringify(RECIPES);
     expect(RECIPES.find(r => r.title.includes('Salvie'))).toBeUndefined();
-    expect(all).not.toMatch(/Sursă|antitumoral|detoxifiere|anti-estrogenic|Antibufeuri|Tamoxifen/);
+    expect(all).not.toMatch(/Sursă|antitumoral|detoxifiere|anti-estrogenic|bufeu|Tamoxifen/i);
   });
 });
