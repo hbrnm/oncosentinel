@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PillIcon } from './Botanical';
 import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
 import { loadAppointments } from '../lib/appointments';
+import { plural } from '../lib/summary';
 import { PatientProfile, DoseLog } from '../types';
 
 interface TreatmentTabProps {
@@ -150,9 +151,10 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
     }
   });
 
+  // Fără zile de numărat (lună viitoare, tratament neînceput, azi încă nebifat) nu arătăm procent
   const adherenceMonth = applicableDaysInMonth > 0
     ? Math.min(100, Math.round((takenInMonth / applicableDaysInMonth) * 100))
-    : 100;
+    : null;
 
   const handleSaveEdit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -240,17 +242,19 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         <div className="flex items-center justify-between mb-1">
           <p className="micro-label">Aderență · {monthLabelRo}</p>
           <span className="font-serif text-2xl text-sage-deep dark:text-sage-300">
-            {adherenceMonth}%
+            {adherenceMonth === null ? '—' : `${adherenceMonth}%`}
           </span>
         </div>
         <div className="h-2 rounded-full bg-cream-deep dark:bg-darkbg-card mt-2 overflow-hidden">
           <div
             className="h-full rounded-full bg-sage dark:bg-sage-400 transition-all duration-700"
-            style={{ width: `${adherenceMonth}%` }}
+            style={{ width: `${adherenceMonth ?? 0}%` }}
           />
         </div>
         <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-2 font-medium">
-          {takenInMonth} doze luate din {applicableDaysInMonth > 0 ? applicableDaysInMonth : daysInMonth} zile.
+          {adherenceMonth === null
+            ? 'Încă nu sunt zile de numărat în această lună.'
+            : `Ai marcat ${takenInMonth} din ${plural(applicableDaysInMonth, 'zi', 'zile')}.`}
         </p>
       </div>
 
