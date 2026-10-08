@@ -276,7 +276,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
           {showDetailedForm && (
             <div className="mt-5 pt-5 border-t border-gray-100 dark:border-darkbg-border space-y-4 animate-fade-in">
-              {/* Copied Detailed Form Fields from SymptomsTab */}
+              {/* Detailed Form Fields */}
               <div className="p-4 rounded-2xl bg-gray-50/70 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">

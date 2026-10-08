@@ -86,3 +86,11 @@ export interface DrugInteraction {
   recommendation: string;
   details: string;
 }
+
+export interface ShoppingItem {
+  id: string;
+  name: string;
+  recipeSource?: string;
+  isBought: boolean;
+  addedAt: string;
+}

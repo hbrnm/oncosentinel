@@ -1,7 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { PatientProfile } from '../types';
-import { ShoppingItem } from '../components/ShoppingListModal';
+import { PatientProfile, ShoppingItem } from '../types';
 
 export function generateWeeklyPlannerPDF(
   profile: PatientProfile,
