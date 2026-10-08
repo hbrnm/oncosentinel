@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapa 2 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
+**Stare:** în așteptare (proprietara): integrarea etapelor 3 și 4 în main (PR #9 și #10 au intrat în ramurile de etapă, aduse acum printr-un PR nou) și testare cu pacientele; etapele 0, 1 și 2 integrate (PR #5, #7, #8)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -18,8 +18,8 @@ Deciziile proprietarei (2026-10-08):
 | 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
-| 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
-| 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
+| 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
+| 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | PIN gata (PR, ramura claude/etapa4); memento-uri și sincronizare de făcut | PR (ramura claude/etapa4) |
 | 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
 
 ## Etapa 0 — pașii
@@ -99,8 +99,24 @@ Deciziile proprietarei (2026-10-08):
 - Reparat: copia de siguranță pierdea întrebările pentru medic, programările și numele medicului.
 - `npm test` (84) și `npm run build` trec; verificat la 390px.
 
+### Etapa 3 (2026-10-08)
+- Deciziile proprietarei: mesaj scurt ales de pacientă; trimitere prin meniul de partajare al telefonului; lista „Cum mă poți ajuta”; pacienta vede textul exact, îl poate modifica și apasă ea „Trimite”. Textele aprobate: `docs/etapa3-texte.md`.
+- `SupporterModal`: „Cum mă simt azi” (5 stări), „Cum mă poți ajuta” (10 idei de bifat), mesajul editabil, „Trimite” (`navigator.share`; altfel copiere, cu mesaj clar; altfel instrucțiuni). Datele în `src/data/circle.ts`.
+- Scos: bifa „Reamintește-i discret dacă omit pastila 2 zile la rând” (promisiune neținută), mesajul fix „azi am o stare bună” și butoanele WhatsApp/SMS.
+- Câmpul „Număr de telefon” scos (decizia proprietarei); numerele salvate se șterg la deschidere.
+- `npm test` (95) și `npm run build` trec; verificat la 390px.
+
+### Etapa 4, partea 1: PIN pe telefon (2026-10-08)
+- Deciziile proprietarei: întâi PIN-ul, fără server; 4 cifre; blocare la fiecare deschidere și după 5 minute în fundal; PIN uitat = ștergere și restaurare din copie. Textele aprobate: `docs/etapa4-texte.md` (cu nota despre limitele unui PIN de 4 cifre).
+- `src/lib/vault.ts`: cu PIN activ, în localStorage stă doar `oncosentinel_vault` (AES-GCM, cheie PBKDF2-SHA256, 310.000 de iterații); cât timp aplicația e deblocată, citirile și scrierile merg într-o copie din memorie și fiecare scriere se recriptează. Activare, deblocare, blocare, dezactivare, ștergere.
+- `VaultGate` (în `main.tsx`): ecranul de blocare înaintea aplicației, blocare după 5 minute în fundal, aplicația se remontează după deblocare. „Siguranța datelor”: „Protejează cu PIN” și textul despre criptare după starea PIN-ului.
+- Restaurarea dintr-o copie așteaptă scrierea criptată înainte de reîncărcare.
+- După verificare (2 probleme blocante găsite și reparate): conversia base64 pe bucăți (datele mari dădeau eroare și blocau scrierile următoare); activarea protejată de apăsare dublă; scrierile comasate printr-o coadă care nu rămâne blocată după o eroare; generații, ca o scriere veche să nu readucă seiful după ștergere sau blocare; interceptarea rămâne instalată și, cât e blocat, ignoră scrierile (nimic în clar); eroare clară la scoaterea PIN-ului cu spațiu plin; altă filă care schimbă seiful blochează fila curentă. A doua verificare: tratate și fila fără PIN când alta activează PIN-ul, fila blocată când alta scoate PIN-ul, ștergerea din altă filă și scrierile din timpul blocării.
+- Verificat în browser real: după activare, în localStorage rămâne doar seiful, fără date în clar; după reîncărcare cere PIN-ul; după deblocare datele sunt acolo.
+- `npm test` (118) și `npm run build` trec; verificat la 390px și în browser real.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-PR-urile pentru etapele 1 și 2, apoi proprietara alege pașii pentru etapa 3 („Cercul tău”); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
+Decizia proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.

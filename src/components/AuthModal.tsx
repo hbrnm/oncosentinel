@@ -1,6 +1,7 @@
-import React from 'react';
-import { X, ShieldCheck, Download, Upload, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, ShieldCheck, Download, Upload, Trash2, Lock } from 'lucide-react';
 import { backupService } from '../lib/backupService';
+import { vault } from '../lib/vault';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -9,7 +10,43 @@ interface AuthModalProps {
 
 // Aplicația funcționează doar local: fereastra explică unde stau datele și oferă copie de siguranță.
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
+  const [pinEnabled, setPinEnabled] = useState<boolean>(() => vault.isEnabled());
+  const [choosingPin, setChoosingPin] = useState<boolean>(false);
+  const [pin, setPin] = useState<string>('');
+  const [pinAgain, setPinAgain] = useState<string>('');
+  const [pinError, setPinError] = useState<string>('');
+  const [pinBusy, setPinBusy] = useState<boolean>(false);
+
   if (!isOpen) return null;
+
+  const handleEnablePin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/^\d{4}$/.test(pin)) return setPinError('PIN-ul are 4 cifre.');
+    if (pin !== pinAgain) return setPinError('PIN-urile nu se potrivesc. Scrie-l din nou.');
+    setPinBusy(true);
+    try {
+      await vault.enable(pin);
+      setPinEnabled(true);
+      setChoosingPin(false);
+      setPin('');
+      setPinAgain('');
+      setPinError('');
+    } catch {
+      setPinError('Nu am putut activa PIN-ul. Încearcă din nou; datele tale au rămas neschimbate.');
+    } finally {
+      setPinBusy(false);
+    }
+  };
+
+  const handleDisablePin = async () => {
+    if (!confirm('Scoți PIN-ul? Datele vor rămâne pe telefon necriptate.')) return;
+    try {
+      await vault.disable();
+      setPinEnabled(false);
+    } catch {
+      setPinError('Nu am putut scoate PIN-ul: spațiul de pe telefon e plin. Datele tale au rămas criptate; șterge câteva documente și încearcă din nou.');
+    }
+  };
 
   const handleDeleteAll = () => {
     if (confirm('Sigur ștergi toate datele de pe acest dispozitiv (profil, doze, jurnal, documente)? Nu pot fi recuperate fără o copie de siguranță descărcată înainte.')) {
@@ -55,7 +92,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           </p>
 
           <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-            Datele nu sunt criptate: oricine poate deschide acest browser le poate vedea. Folosește un telefon blocat cu parolă sau amprentă și nu folosi aplicația pe un dispozitiv comun.
+            {pinEnabled
+              ? 'Datele sunt criptate cu PIN-ul tău. Copia de siguranță pe care o descarci nu e criptată: păstreaz-o într-un loc sigur.'
+              : 'Datele nu sunt criptate: oricine poate deschide acest browser le poate vedea. Folosește un telefon blocat cu parolă sau amprentă și nu folosi aplicația pe un dispozitiv comun.'}
           </p>
 
           <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -85,6 +124,53 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               }}
             />
           </label>
+
+          {/* Protejează cu PIN (texte aprobate, docs/etapa4-texte.md) */}
+          <section aria-labelledby="pin-title" className="p-3.5 rounded-2xl border border-sage-200 dark:border-darkbg-border bg-sage-50/60 dark:bg-darkbg-card space-y-2.5">
+            <h4 id="pin-title" className="text-xs font-bold text-ink dark:text-white flex items-center gap-1.5">
+              <Lock className="w-4 h-4 text-sage-deep" /> Protejează cu PIN
+            </h4>
+            {pinEnabled ? (
+              <>
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                  PIN-ul e activ. Aplicația îl cere la fiecare deschidere și după 5 minute în fundal.
+                </p>
+                <button type="button" onClick={handleDisablePin} className="w-full py-2 rounded-xl border border-gray-200 dark:border-darkbg-border text-xs font-semibold text-ink dark:text-gray-100">
+                  Scoate PIN-ul
+                </button>
+                {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
+              </>
+            ) : !choosingPin ? (
+              <>
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Datele tale de pe acest telefon vor fi criptate cu un PIN de 4 cifre. Fără PIN nu le poate citi nimeni, nici tu. Dacă îl uiți, datele nu se pot recupera decât dintr-o copie de siguranță. Descarcă o copie înainte.
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button type="button" onClick={() => backupService.exportCompleteBackup()} className="py-2 rounded-xl border border-sage-200 dark:border-darkbg-border text-xs font-semibold text-sage-800 dark:text-sage-200">
+                    Descarcă o copie
+                  </button>
+                  <button type="button" onClick={() => setChoosingPin(true)} className="py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold">
+                    Alege PIN-ul
+                  </button>
+                </div>
+              </>
+            ) : (
+              <form onSubmit={handleEnablePin} className="space-y-2">
+                <label className="block text-[11px] font-semibold text-ink-soft">
+                  PIN nou (4 cifre)
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                </label>
+                <label className="block text-[11px] font-semibold text-ink-soft">
+                  Scrie-l încă o dată
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                </label>
+                {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
+                <button type="submit" disabled={pinBusy} className="w-full py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold disabled:opacity-50">
+                  Activează PIN-ul
+                </button>
+              </form>
+            )}
+          </section>
 
           <button
             onClick={handleDeleteAll}
