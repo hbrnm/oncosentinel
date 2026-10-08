@@ -4,12 +4,13 @@ import {
   CheckCircle2, Clock, Pill, Sparkles, BatteryCharging, 
   Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
   Stethoscope, Heart, BellRing, Check, Activity, Dumbbell,
-  ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
+  ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake, CalendarHeart
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
+import { controlSupportText } from '../data/comfort';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 
@@ -291,6 +292,25 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           onDismiss={() => setApptBannerDismissed(true)}
           onClick={onOpenDoctorVisit}
         />
+      )}
+
+      {/* Sprijin înaintea controlului: cu 3 zile înainte și în ziua controlului */}
+      {nextControlDate && daysUntilControl >= 0 && daysUntilControl <= 3 && (
+        <section aria-label="Sprijin înaintea controlului" className="rounded-[28px] p-5 bg-blush dark:bg-petal-950/30 border border-petal-100 dark:border-petal-900/30">
+          <h2 className="font-serif text-lg text-ink dark:text-white flex items-center gap-2">
+            <CalendarHeart className="w-5 h-5 text-blush-deep" />
+            {controlSupportText(daysUntilControl).title}
+          </h2>
+          <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-1.5 leading-relaxed">{controlSupportText(daysUntilControl).text}</p>
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <button type="button" onClick={onOpenDoctorVisit} className="tap-scale py-2.5 px-2 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[12px] font-semibold text-ink dark:text-gray-100">
+              Întrebările pentru medic
+            </button>
+            <button type="button" onClick={onOpenBreathing} className="tap-scale py-2.5 px-2 rounded-2xl bg-sage-deep text-white text-[12px] font-semibold">
+              Un moment de liniște
+            </button>
+          </div>
+        </section>
       )}
 
       {/* Hero Card Tratament (Tamoxifen 20mg - Base44 sage-card) */}

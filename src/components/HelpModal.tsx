@@ -11,6 +11,7 @@ interface HelpModalProps {
   onOpenBreathing: () => void;
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
+  note?: string;
 }
 
 // Fereastra „Ajutor”: urgență, echipa medicală, liniștire și sprijin, într-un singur loc
@@ -21,7 +22,8 @@ export const HelpModal: React.FC<HelpModalProps> = ({
   onOpenRedFlags,
   onOpenBreathing,
   onOpenGrounding,
-  onOpenSupporter
+  onOpenSupporter,
+  note
 }) => {
   if (!isOpen) return null;
 
@@ -63,6 +65,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({
         </div>
 
         <div className="p-5 overflow-y-auto space-y-5">
+          {note && <p className="text-sm font-semibold text-sage-deep dark:text-sage-300">{note}</p>}
           {/* 1. Urgență */}
           <section className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50">
             <h3 className="text-sm font-bold text-rose-800 dark:text-rose-200 flex items-center gap-1.5">
