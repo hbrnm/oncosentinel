@@ -39,7 +39,7 @@ describe('Memento în calendar', () => {
 
     expect(screen.getByRole('heading', { name: 'Memento zilnic' })).toBeInTheDocument();
     expect(screen.getByText(/în fiecare zi la 21:30/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Google Calendar (se deschide într-o filă nouă)' }).getAttribute('href')).toContain('calendar.google.com');
+    expect(screen.getByRole('link', { name: /^Google Calendar\s*\(se deschide într-o filă nouă\)/ }).getAttribute('href')).toContain('calendar.google.com');
 
     fireEvent.click(screen.getByRole('button', { name: 'Alt calendar (iPhone, Samsung…)' }));
     expect(createUrl).toHaveBeenCalled();
