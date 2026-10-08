@@ -175,3 +175,38 @@ Cele 21 de rețete rămân ca idei de mese simple și echilibrate. Scot afirmaț
 - NICE NG101, https://www.ncbi.nlm.nih.gov/books/NBK519155/
 - ESMO, *Early breast cancer: ESMO Clinical Practice Guideline*, Annals of Oncology 2024, https://www.annalsofoncology.org/article/S0923-7534(23)05104-9/fulltext
 - ACR Appropriateness Criteria, *Imaging of DCIS*, JACR 2025, https://www.jacr.org/article/S1546-1440(25)00133-4/fulltext
+
+---
+
+# Partea a treia: semnalele de alarmă și alerta din jurnal
+
+## Semnalele de alarmă (`RedFlagsModal`)
+Se sprijină pe secțiunea „Când suni la 112 sau la medic” din g1, deja aprobată, și pe aceleași surse (prospect, Macmillan, Breast Cancer Now).
+
+**Titlu:** Semnale de alarmă
+**Subtitlu:** Când suni la 112 și când anunți repede medicul
+
+**Sună la 112:**
+1. **Respirație grea apărută brusc sau durere în piept.** Pot fi semnele unui cheag de sânge ajuns la plămâni.
+2. **Semne de accident vascular cerebral:** vorbire neclară, vedere încețoșată brusc, amorțeală bruscă la față, braț sau picior.
+3. **Umflare bruscă a feței, a buzelor sau a gâtului**, mai ales cu greutate la respirat: poate fi o reacție alergică.
+
+**Anunță repede medicul:**
+4. **Durere sau umflare la un singur picior**, mai ales la gambă: poate fi un cheag de sânge.
+5. **Orice sângerare vaginală neobișnuită** ori scurgere cu sânge sau maronie, mai ales după menopauză.
+6. **Schimbări ale vederii.**
+
+*Surse: prospectul tamoxifenului; Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen.*
+
+**Scos față de varianta veche:** „Necesită ecografie Doppler de urgență”, „pentru ecografie transvaginală”, „control oftalmologic pentru evaluarea retinei” (decizii de investigație ale medicului), „Tamoxifenul stimulează endometrul” (formulare fără sursă în textul aprobat).
+
+**Ajustare propusă și în g1, pentru consecvență:** „o umflătură apărută brusc” devine „umflare bruscă a feței, a buzelor sau a gâtului”.
+
+## Alerta din jurnal (`JournalTab`)
+Pragul rămâne cum e: alerta apare când pacienta își notează singură un simptom la 4 sau 5 din 5. E nota ei, nu o evaluare medicală, iar textul spune asta.
+
+| Acum | Propus |
+|---|---|
+| „Simptome severe înregistrate” | „Ai notat un simptom puternic” |
+| „Dacă disconfortul persistă, contactează medicul tău.” | „Dacă nu trece sau te îngrijorează, spune-i medicului tău.” |
+| „La simptome grave sau dacă te simți în pericol, sună la 112.” | rămâne |
