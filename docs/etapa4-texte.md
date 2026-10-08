@@ -13,5 +13,9 @@
   - fără PIN (ca acum): „Datele nu sunt criptate: oricine poate deschide acest browser le poate vedea. Folosește un telefon blocat cu parolă sau amprentă și nu folosi aplicația pe un dispozitiv comun.”
   - cu PIN: „Datele sunt criptate cu PIN-ul tău. Copia de siguranță pe care o descarci nu e criptată: păstreaz-o într-un loc sigur.”
 
+- Eroare la scoaterea PIN-ului (aprobată ulterior): „Nu am putut scoate PIN-ul: spațiul de pe telefon e plin. Datele tale au rămas criptate; șterge câteva documente și încearcă din nou.”
+
 ## De știut
 Un PIN de 4 cifre are 10.000 de combinații. Protejează bine de cineva care ia telefonul în mână; cineva care copiază datele browserului și le încearcă pe un calculator le-ar putea ghici, chiar dacă fiecare încercare e făcută intenționat lentă. Copia de siguranță descărcată nu e criptată.
+- Spațiu: datele criptate ocupă cu aproximativ o treime mai mult. La activare, pentru câteva clipe, există și datele în clar, și seiful; dacă nu e loc, activarea eșuează, iar datele rămân neschimbate.
+- Mai multe file deschise: dacă aplicația e deschisă în două file și una schimbă datele, cealaltă se blochează și cere din nou PIN-ul, ca să nu suprascrie datele mai noi.

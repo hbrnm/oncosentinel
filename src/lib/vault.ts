@@ -1,6 +1,7 @@
 // Seiful cu PIN: când e activ, datele aplicației stau în localStorage doar criptate (AES-GCM,
 // cheie derivată din PIN cu PBKDF2). Cât timp aplicația e deblocată, citirile și scrierile
-// din localStorage merg într-o copie din memorie, iar fiecare scriere se recriptează.
+// din localStorage merg într-o copie din memorie, iar scrierile se recriptează (comasate).
+// Cât timp e blocată, citirile întorc null și scrierile sunt ignorate: nimic nu ajunge în clar.
 // Fără PIN datele nu se pot citi; un PIN uitat înseamnă date pierdute (rămâne copia de siguranță).
 
 const VAULT_KEY = 'oncosentinel_vault';
@@ -21,15 +22,25 @@ const original = {
   clear: proto.clear
 };
 
+let enabled = false;
 let memory: Map<string, string> | null = null;
 let cryptoKey: CryptoKey | null = null;
 let salt: Uint8Array<ArrayBuffer> | null = null;
+// Crește la blocare, ștergere și dezactivare: o scriere pornită înainte nu mai are voie să scrie după
+let generation = 0;
+let dirty = false;
 let pending: Promise<void> = Promise.resolve();
+let busy = false;
 let onPersistError: (() => void) | null = null;
 
 const isProtected = (key: string) => key !== VAULT_KEY;
 
-const toB64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
+// Pe bucăți: datele pot avea mulți MB (documente)
+const toB64 = (bytes: Uint8Array) => {
+  let text = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) text += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(text);
+};
 const fromB64 = (text: string): Uint8Array<ArrayBuffer> => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
 
 const deriveKey = async (pin: string, saltBytes: Uint8Array<ArrayBuffer>, iterations: number) => {
@@ -51,60 +62,72 @@ const readBlob = (): VaultBlob | null => {
   }
 };
 
-// Recriptează toată copia din memorie și o scrie în localStorage
+const writeBlob = async (map: Map<string, string>, key: CryptoKey, saltBytes: Uint8Array<ArrayBuffer>, gen: number) => {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const plain = new TextEncoder().encode(JSON.stringify([...map.entries()]));
+  const cipher = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plain));
+  if (gen !== generation) return false;
+  const blob: VaultBlob = { salt: toB64(saltBytes), iv: toB64(iv), data: toB64(cipher), iterations: ITERATIONS };
+  original.setItem.call(localStorage, VAULT_KEY, JSON.stringify(blob));
+  return true;
+};
+
+// Comasează scrierile: cel mult o recriptare în lucru, plus una la final dacă au venit altele
 const persist = () => {
-  pending = pending.then(async () => {
-    if (!memory || !cryptoKey || !salt) return;
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const plain = new TextEncoder().encode(JSON.stringify([...memory.entries()]));
-    const cipher = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, plain));
-    const blob: VaultBlob = { salt: toB64(salt), iv: toB64(iv), data: toB64(cipher), iterations: ITERATIONS };
-    try {
-      original.setItem.call(localStorage, VAULT_KEY, JSON.stringify(blob));
-    } catch {
-      onPersistError?.();
-    }
-  });
+  dirty = true;
+  const gen = generation;
+  pending = pending
+    .catch(() => undefined)
+    .then(async () => {
+      if (!dirty || gen !== generation || !memory || !cryptoKey || !salt) return;
+      dirty = false;
+      try {
+        await writeBlob(memory, cryptoKey, salt, gen);
+      } catch {
+        onPersistError?.();
+      }
+    });
   return pending;
 };
 
-const install = () => {
-  proto.getItem = function (this: Storage, key: string) {
-    if (this === localStorage && memory && isProtected(key)) return memory.get(key) ?? null;
-    return original.getItem.call(this, key);
-  };
-  proto.setItem = function (this: Storage, key: string, value: string) {
-    if (this === localStorage && memory && isProtected(key)) {
-      memory.set(key, String(value));
-      persist();
-      return;
-    }
-    original.setItem.call(this, key, value);
-  };
-  proto.removeItem = function (this: Storage, key: string) {
-    if (this === localStorage && memory && isProtected(key)) {
-      memory.delete(key);
-      persist();
-      return;
-    }
-    original.removeItem.call(this, key);
-  };
-  proto.clear = function (this: Storage) {
-    if (this === localStorage) {
-      memory = null;
-      cryptoKey = null;
-      uninstall();
-    }
-    original.clear.call(this);
-  };
+// Interceptarea e instalată mereu; nu face nimic cât timp seiful nu e activ
+proto.getItem = function (this: Storage, key: string) {
+  if (this === localStorage && enabled && isProtected(key)) return memory ? memory.get(key) ?? null : null;
+  return original.getItem.call(this, key);
+};
+proto.setItem = function (this: Storage, key: string, value: string) {
+  if (this === localStorage && enabled && isProtected(key)) {
+    if (!memory) return; // blocat: nimic în clar
+    memory.set(key, String(value));
+    persist();
+    return;
+  }
+  original.setItem.call(this, key, value);
+};
+proto.removeItem = function (this: Storage, key: string) {
+  if (this === localStorage && enabled && isProtected(key)) {
+    if (!memory) return;
+    memory.delete(key);
+    persist();
+    return;
+  }
+  original.removeItem.call(this, key);
+};
+proto.clear = function (this: Storage) {
+  if (this === localStorage) reset();
+  original.clear.call(this);
 };
 
-const uninstall = () => {
-  proto.getItem = original.getItem;
-  proto.setItem = original.setItem;
-  proto.removeItem = original.removeItem;
-  proto.clear = original.clear;
+const reset = () => {
+  generation++;
+  enabled = false;
+  memory = null;
+  cryptoKey = null;
+  salt = null;
+  dirty = false;
 };
+
+enabled = readBlob() !== null;
 
 const plainKeys = () => {
   const keys: string[] = [];
@@ -116,7 +139,7 @@ const plainKeys = () => {
 };
 
 export const vault = {
-  isEnabled: () => readBlob() !== null,
+  isEnabled: () => enabled,
   isUnlocked: () => memory !== null,
 
   // La spațiu plin, aplicația spune utilizatoarei (vezi STORAGE_FULL_MESSAGE)
@@ -124,16 +147,30 @@ export const vault = {
     onPersistError = handler;
   },
 
-  // Mută datele existente în seif și șterge varianta necriptată
+  // Mută datele existente în seif și șterge varianta necriptată; la eșec, nimic nu se schimbă
   async enable(pin: string) {
-    salt = crypto.getRandomValues(new Uint8Array(16));
-    cryptoKey = await deriveKey(pin, salt, ITERATIONS);
-    const keys = plainKeys();
-    memory = new Map(keys.map((k) => [k, original.getItem.call(localStorage, k) as string]));
-    await persist();
-    if (!readBlob()) throw new Error('Seiful nu a putut fi salvat');
-    keys.forEach((k) => original.removeItem.call(localStorage, k));
-    install();
+    if (busy || enabled) return;
+    busy = true;
+    try {
+      const newSalt = crypto.getRandomValues(new Uint8Array(16));
+      const key = await deriveKey(pin, newSalt, ITERATIONS);
+      // Copie + interceptare fără pauză între ele: nicio scriere nu scapă în clar
+      const keys = plainKeys();
+      const map = new Map(keys.map((k) => [k, original.getItem.call(localStorage, k) as string]));
+      generation++;
+      memory = map;
+      cryptoKey = key;
+      salt = newSalt;
+      enabled = true;
+      await persist();
+      if (!readBlob()) {
+        reset();
+        throw new Error('Seiful nu a putut fi salvat');
+      }
+      keys.forEach((k) => original.removeItem.call(localStorage, k));
+    } finally {
+      busy = false;
+    }
   },
 
   // false = PIN greșit
@@ -147,39 +184,60 @@ export const vault = {
       memory = new Map(JSON.parse(new TextDecoder().decode(plain)));
       cryptoKey = key;
       salt = saltBytes;
-      install();
+      enabled = true;
       return true;
     } catch {
       return false;
     }
   },
 
-  async lock() {
-    await pending;
+  // discardPending: altă filă a scris un seif mai nou; nu-l suprascriem
+  async lock(discardPending = false) {
+    if (discardPending) generation++;
+    else await pending.catch(() => undefined);
+    generation++;
     memory = null;
     cryptoKey = null;
-    uninstall();
+    salt = null;
+    dirty = false;
   },
 
-  // Scoate PIN-ul: datele revin necriptate în localStorage
+  // Scoate PIN-ul: datele revin necriptate; la spațiu plin, rămân criptate și se aruncă eroare
   async disable() {
-    await pending;
+    await pending.catch(() => undefined);
     if (!memory) return;
     const entries = [...memory.entries()];
-    uninstall();
-    entries.forEach(([k, v]) => original.setItem.call(localStorage, k, v));
+    const written: string[] = [];
+    try {
+      entries.forEach(([k, v]) => {
+        original.setItem.call(localStorage, k, v);
+        written.push(k);
+      });
+    } catch (err) {
+      written.forEach((k) => original.removeItem.call(localStorage, k));
+      throw err;
+    }
     original.removeItem.call(localStorage, VAULT_KEY);
-    memory = null;
-    cryptoKey = null;
+    reset();
   },
 
   // „Am uitat PIN-ul”: șterge tot de pe acest dispozitiv
   eraseAll() {
-    memory = null;
-    cryptoKey = null;
-    uninstall();
+    reset();
     original.clear.call(localStorage);
   },
 
-  flush: () => pending
+  isVaultKey: (key: string | null) => key === VAULT_KEY,
+
+  // Altă filă a schimbat seiful: blocăm fila aceasta fără să-l suprascriem (sau îl uităm, dacă a fost scos)
+  async syncWithOtherTab() {
+    if (!readBlob()) {
+      reset();
+      return;
+    }
+    await vault.lock(true);
+    enabled = true;
+  },
+
+  flush: () => pending.catch(() => undefined)
 };

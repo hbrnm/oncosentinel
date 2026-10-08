@@ -15,6 +15,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [pin, setPin] = useState<string>('');
   const [pinAgain, setPinAgain] = useState<string>('');
   const [pinError, setPinError] = useState<string>('');
+  const [pinBusy, setPinBusy] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -22,6 +23,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     if (!/^\d{4}$/.test(pin)) return setPinError('PIN-ul are 4 cifre.');
     if (pin !== pinAgain) return setPinError('PIN-urile nu se potrivesc. Scrie-l din nou.');
+    setPinBusy(true);
     try {
       await vault.enable(pin);
       setPinEnabled(true);
@@ -31,13 +33,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       setPinError('');
     } catch {
       setPinError('Nu am putut activa PIN-ul. Încearcă din nou; datele tale au rămas neschimbate.');
+    } finally {
+      setPinBusy(false);
     }
   };
 
   const handleDisablePin = async () => {
     if (!confirm('Scoți PIN-ul? Datele vor rămâne pe telefon necriptate.')) return;
-    await vault.disable();
-    setPinEnabled(false);
+    try {
+      await vault.disable();
+      setPinEnabled(false);
+    } catch {
+      setPinError('Nu am putut scoate PIN-ul: spațiul de pe telefon e plin. Datele tale au rămas criptate; șterge câteva documente și încearcă din nou.');
+    }
   };
 
   const handleDeleteAll = () => {
@@ -130,6 +138,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 <button type="button" onClick={handleDisablePin} className="w-full py-2 rounded-xl border border-gray-200 dark:border-darkbg-border text-xs font-semibold text-ink dark:text-gray-100">
                   Scoate PIN-ul
                 </button>
+                {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
               </>
             ) : !choosingPin ? (
               <>
@@ -149,14 +158,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <form onSubmit={handleEnablePin} className="space-y-2">
                 <label className="block text-[11px] font-semibold text-ink-soft">
                   PIN nou (4 cifre)
-                  <input type="password" inputMode="numeric" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
                 <label className="block text-[11px] font-semibold text-ink-soft">
                   Scrie-l încă o dată
-                  <input type="password" inputMode="numeric" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
                 {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
-                <button type="submit" className="w-full py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold">
+                <button type="submit" disabled={pinBusy} className="w-full py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold disabled:opacity-50">
                   Activează PIN-ul
                 </button>
               </form>

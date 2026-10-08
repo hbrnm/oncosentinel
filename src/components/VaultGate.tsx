@@ -24,8 +24,20 @@ export const VaultGate: React.FC<{ children: React.ReactNode }> = ({ children })
       }
       hiddenAt.current = null;
     };
+    // Altă filă a schimbat seiful: fila aceasta se blochează (sau repornește, dacă PIN-ul a fost scos)
+    const onStorage = (e: StorageEvent) => {
+      if (!vault.isVaultKey(e.key) || !vault.isUnlocked()) return;
+      vault.syncWithOtherTab().then(() => {
+        if (vault.isEnabled()) setLocked(true);
+        else setSession((n) => n + 1);
+      });
+    };
     document.addEventListener('visibilitychange', onVisibility);
-    return () => document.removeEventListener('visibilitychange', onVisibility);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('storage', onStorage);
+    };
   }, []);
 
   if (locked) {
