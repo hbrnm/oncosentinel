@@ -270,7 +270,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   });
 
   return (
-    <div className="space-y-4 pb-24 animate-fade-in relative">
+    <div className="space-y-4 animate-fade-in relative">
       {/* Botanical branch background accent in top right (shifted slightly left/down to frame the avatar gracefully) */}
       <div className="absolute top-6 right-1 w-36 h-48 pointer-events-none opacity-60 z-0 overflow-visible text-sage-light">
         <BotanicalBranch className="w-full h-full" />
@@ -354,8 +354,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <PillIcon className="w-9 h-9" />
             </div>
             <div className="min-w-0">
-              <h3 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight truncate">
-                {profile.medication_name || 'Tamoxifen'} {profile.medication_dose || '20 mg'}
+              <h3 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight break-words">
+                {profile.medication_name || 'Tamoxifen'}
               </h3>
               <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-0.5">
                 {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat / zi'}
@@ -365,8 +365,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           {isTakenToday ? (
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[11px] font-semibold shadow-xs">
               <Check className="w-3.5 h-3.5" strokeWidth={3} />
-              <span>✓ Azi • Luat</span>
-              <span className="sr-only">Luat pentru azi</span>
+              <span>Luat azi</span>
             </span>
           ) : (
             <button
@@ -483,8 +482,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               JURNAL
             </span>
             <h3 className="text-sm font-bold font-serif text-gray-900 dark:text-white mt-0.5">
-              <span>Cum te-ai simțit în ultima săptămână?</span>
-              <span className="sr-only">Cum te simți azi?</span>
+              Cum te simți azi?
             </h3>
           </div>
           <div className="flex items-center gap-1.5">
@@ -507,11 +505,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         {/* 5 Levels Selector (48px touch targets) */}
         <div className="grid grid-cols-5 gap-1.5 pt-1">
           {[
-            { id: 'foarte_rau' as MoodLevel, level: 1, label: 'Dificil' },
-            { id: 'rau' as MoodLevel, level: 2, label: 'Scăzut' },
-            { id: 'neutru' as MoodLevel, level: 3, label: 'Echilibrat' },
-            { id: 'bine' as MoodLevel, level: 4, label: 'Bun' },
-            { id: 'foarte_bine' as MoodLevel, level: 5, label: 'Foarte bun' },
+            { id: 'foarte_rau' as MoodLevel, level: 1, label: 'Greu' },
+            { id: 'rau' as MoodLevel, level: 2, label: 'Obosită' },
+            { id: 'neutru' as MoodLevel, level: 3, label: 'Liniștită' },
+            { id: 'bine' as MoodLevel, level: 4, label: 'Bine' },
+            { id: 'foarte_bine' as MoodLevel, level: 5, label: 'Foarte bine' },
           ].map((item) => {
             const isSelected = selectedMood === item.id;
             return (

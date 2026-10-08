@@ -39,6 +39,10 @@ export const LeafSprig: React.FC<BotanicalProps> = ({ className = '', style }) =
       <path d="M40 56 C32 54 26 48 22 40 C30 42 36 48 40 54" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.35" />
       <path d="M40 40 C48 38 54 32 58 24 C50 26 44 32 40 38" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.35" />
       <path d="M40 26 C34 24 30 18 28 12 C34 14 38 20 40 24" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" opacity="0.35" />
+      {/* Floarea din vârf, ca la BotanicalBranch */}
+      <circle cx="40" cy="11" r="4" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.35" />
+      <circle cx="33" cy="16" r="2.6" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.3" />
+      <circle cx="47" cy="16" r="2.6" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.3" />
     </svg>
   );
 };

@@ -169,7 +169,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   const monthLabelRo = `${RO_MONTHS[viewMonth]} ${viewYear}`;
 
   return (
-    <div className="space-y-5 animate-fade-in pb-12">
+    <div className="space-y-5 animate-fade-in">
       {/* Header matching Base44 */}
       <header className="px-2 pt-1 pb-1">
         <h1 className="font-serif text-3xl font-normal text-ink dark:text-white tracking-tight">

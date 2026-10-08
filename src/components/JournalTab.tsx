@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Heart, BookOpen, Leaf, Sparkles, ChevronDown, ChevronUp, FileDown,
+  Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown,
   Flame, Moon, Battery, Droplets, Check
 } from 'lucide-react';
 import { LeafSprig } from './Botanical';
@@ -190,7 +190,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button onClick={() => setSevereSymptomsAlert(null)} aria-label="Închide alerta" className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
         </div>
       )}
-    <div className="min-h-screen pb-24 animate-fade-in">
+    <div className="min-h-screen animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <LeafSprig className="absolute top-0 right-0 w-14 h-14 text-sage-200 dark:text-sage-900/50 opacity-50" />
         <h1 className="font-heading text-2xl text-gray-900 dark:text-white">Jurnal</h1>
@@ -198,6 +198,20 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       </header>
 
       <div className="space-y-5">
+        {/* Săptămâna ta: rezumat în cuvinte, doar din ce a notat pacienta */}
+        <section aria-labelledby="week-title" className="organic-card rounded-[28px] p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Leaf className="w-4 h-4 text-sage-deep dark:text-sage-400" />
+            <h2 id="week-title" className="font-heading text-lg text-ink dark:text-white">Săptămâna ta</h2>
+          </div>
+          <ul className="space-y-1.5">
+            {weekSummary(symptoms).map((line) => (
+              <li key={line} className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
+            ))}
+          </ul>
+          <p className="text-[11px] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
+        </section>
+
         {/* Mood Card */}
         <div className="bg-blush dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">
           <LeafSprig className="absolute -bottom-3 -right-3 w-20 h-20 opacity-40 text-petal-300 dark:text-petal-900/50" />
@@ -243,49 +257,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           )}
         </div>
 
-        {/* PDF Export Section */}
-        <div className="bg-gradient-to-r from-sage-500 to-sage-600 dark:from-sage-600 dark:to-sage-700 text-white rounded-3xl p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="max-w-md">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-sage-100 block">
-              Rapoarte & Fise
-            </span>
-            <h3 className="text-sm font-bold mt-0.5">
-              Documente Medicale
-            </h3>
-            <p className="text-[11px] text-sage-100 mt-1 leading-tight">
-              Descarcă rezumatul pentru medicul oncolog sau fișa săptămânală.
-            </p>
-          </div>
-
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={() => {
-                const list = JSON.parse(localStorage.getItem('navimed_shopping_list') || '[]');
-                const exercise = parseInt(localStorage.getItem('navimed_exercise_minutes') || '45', 10);
-                import('../lib/weeklyPdfGenerator')
-                  .then(({ generateWeeklyPlannerPDF }) => generateWeeklyPlannerPDF(profile, list, exercise))
-                  .catch(() => alert(PDF_LOAD_ERROR));
-              }}
-              className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
-            >
-              <FileDown className="w-4 h-4 text-emerald-600" />
-              <span>Fișă Frigider</span>
-            </button>
-
-            <button
-              onClick={() => {
-                import('../lib/pdfGenerator')
-                  .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
-                  .catch(() => alert(PDF_LOAD_ERROR));
-              }}
-              className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
-            >
-              <FileDown className="w-4 h-4 text-sage-600" />
-              <span>Raport Oncolog</span>
-            </button>
-          </div>
-        </div>
-
         {/* Detailed Form Toggle */}
         <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs">
           <div 
@@ -294,7 +265,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-sage-50 dark:bg-sage-900/40 text-sage-600 dark:text-sage-300 flex items-center justify-center transition-transform group-hover:scale-105">
-                <Sparkles className="w-5 h-5" />
+                <ClipboardList className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">
@@ -424,19 +395,48 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           )}
         </div>
 
-        {/* Săptămâna ta: rezumat în cuvinte, doar din ce a notat pacienta */}
-        <section aria-labelledby="week-title" className="organic-card rounded-[28px] p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <Leaf className="w-4 h-4 text-sage-deep dark:text-sage-400" />
-            <h2 id="week-title" className="font-heading text-lg text-ink dark:text-white">Săptămâna ta</h2>
+        {/* PDF Export Section */}
+        <div className="bg-gradient-to-r from-sage-500 to-sage-600 dark:from-sage-600 dark:to-sage-700 text-white rounded-3xl p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="max-w-md">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-sage-100 block">
+              Rapoarte & Fise
+            </span>
+            <h3 className="text-sm font-bold mt-0.5">
+              Documente Medicale
+            </h3>
+            <p className="text-[11px] text-sage-100 mt-1 leading-tight">
+              Descarcă rezumatul pentru medicul oncolog sau fișa săptămânală.
+            </p>
           </div>
-          <ul className="space-y-1.5">
-            {weekSummary(symptoms).map((line) => (
-              <li key={line} className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
-            ))}
-          </ul>
-          <p className="text-[11px] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
-        </section>
+
+          <div className="flex gap-2 shrink-0">
+            <button
+              onClick={() => {
+                const list = JSON.parse(localStorage.getItem('navimed_shopping_list') || '[]');
+                const exercise = parseInt(localStorage.getItem('navimed_exercise_minutes') || '45', 10);
+                import('../lib/weeklyPdfGenerator')
+                  .then(({ generateWeeklyPlannerPDF }) => generateWeeklyPlannerPDF(profile, list, exercise))
+                  .catch(() => alert(PDF_LOAD_ERROR));
+              }}
+              className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
+            >
+              <FileDown className="w-4 h-4 text-emerald-600" />
+              <span>Fișă Frigider</span>
+            </button>
+
+            <button
+              onClick={() => {
+                import('../lib/pdfGenerator')
+                  .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
+                  .catch(() => alert(PDF_LOAD_ERROR));
+              }}
+              className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
+            >
+              <FileDown className="w-4 h-4 text-sage-600" />
+              <span>Raport Oncolog</span>
+            </button>
+          </div>
+        </div>
 
         {/* History Section */}
         <div>

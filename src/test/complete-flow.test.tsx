@@ -36,7 +36,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     // ETAPA 2: Rutina de dimineață - Hero Card Tamoxifen
     // -------------------------------------------------------------
     // Verificăm statusul inițial: În așteptare
-    expect(screen.getByText(/Tamoxifen 20 mg/i)).toBeInTheDocument();
+    expect(screen.getByText(/20 mg • 1 comprimat/i)).toBeInTheDocument();
     expect(screen.getByText(/1 comprimat \/ zi/i)).toBeInTheDocument();
     expect(screen.getByText(/În așteptare/i)).toBeInTheDocument();
 
@@ -45,7 +45,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     fireEvent.click(takePillBtn);
 
     // Confirmare vizuală imediată
-    expect(screen.getByText(/✓ Azi • Luat/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Luat azi$/i)).toBeInTheDocument();
     expect(screen.getByText(/Doza de azi este bifată cu succes!/i)).toBeInTheDocument();
 
     // Stocul scade automat în profil
@@ -59,7 +59,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     expect(screen.getByText(/Cum te simți azi\?/i)).toBeInTheDocument();
 
     // Pacienta se simte bine și selectează starea "Bun" (nivel 4 clinic)
-    const goodMoodBtn = screen.getByText('Bun').closest('button');
+    const goodMoodBtn = screen.getByText('Bine').closest('button');
     expect(goodMoodBtn).toBeTruthy();
     fireEvent.click(goodMoodBtn!);
 
@@ -128,7 +128,7 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     fireEvent.click(todayNavBtn);
 
     // Doza este în continuare marcată ca Luat
-    expect(screen.getByText(/✓ Azi • Luat/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Luat azi$/i)).toBeInTheDocument();
     // Starea emoțională este în continuare Bifată
     expect(screen.getByText(/Înregistrat azi/i)).toBeInTheDocument();
   });

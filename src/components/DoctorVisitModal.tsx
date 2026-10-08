@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { doctorSummary, plural } from '../lib/summary';
+import { loadAppointments } from '../lib/appointments';
 const daysUntil = (dateStr?: string) => {
   if (!dateStr) return null;
   const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
@@ -55,16 +56,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
   const [apptTab, setApptTab] = useState<'upcoming' | 'history'>('upcoming');
 
   // 1. Appointments list state
-  const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
-    const saved = localStorage.getItem('navimed_appointments_list');
-    if (saved) {
-      try { 
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      } catch (e) {}
-    }
-    return [];
-  });
+  const [appointments, setAppointments] = useState<AppointmentItem[]>(loadAppointments);
 
   // 2. Questions list state (Empty by default per user request - no preset questions)
   const [questions, setQuestions] = useState<QuestionItem[]>(() => {
@@ -90,15 +82,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
   // Re-sync appointments from localStorage whenever the modal is opened
   useEffect(() => {
     if (!isOpen) return;
-    const saved = localStorage.getItem('navimed_appointments_list');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          setAppointments(parsed);
-        }
-      } catch (e) {}
-    }
+    setAppointments(loadAppointments());
   }, [isOpen]);
 
   // Persist appointments and update legacy key for Dashboard sync
@@ -575,7 +559,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 placeholder="Scrie o întrebare pentru consultație..."
                 value={newQuestionText}
                 onChange={e => setNewQuestionText(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 rounded-2xl text-xs bg-cream dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border focus:outline-none focus:border-sage text-ink dark:text-white"
+                className="flex-1 min-w-0 px-3.5 py-2.5 rounded-2xl text-xs bg-cream dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border focus:outline-none focus:border-sage text-ink dark:text-white"
               />
               <button
                 type="submit"

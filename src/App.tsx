@@ -19,6 +19,7 @@ import { AuthModal } from './components/AuthModal';
 import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { storageService } from './lib/supabase';
+import { setNextControlDate } from './lib/appointments';
 import { PatientProfile, DoseLog, SymptomLog, MedicalDocument, ClinicalMilestone } from './types';
 
 export function App() {
@@ -147,9 +148,8 @@ export function App() {
       ...configuredProfile
     };
     if (storageService.saveProfile(updated)) setProfile(updated);
-    if (nextControlDate) {
-      localStorage.setItem('navimed_next_control_date', nextControlDate);
-    }
+    // Data intră în lista de controale, ca să apară pe Astăzi și în „Controale medicale”
+    if (nextControlDate) setNextControlDate(nextControlDate);
     localStorage.setItem('oncosentinel_onboarded', 'true');
     setIsOnboardingOpen(false);
   };
@@ -177,7 +177,8 @@ export function App() {
         )}
 
         {/* Tab View Container */}
-        <main className="flex-1 px-4 pt-3 pb-8">
+        {/* Spațiu jos pentru bara de navigare și butonul cu inimă */}
+        <main className="flex-1 px-4 pt-3 pb-44">
           {activeTab === 'today' && (
             <DashboardTab
               profile={profile}
@@ -250,7 +251,7 @@ export function App() {
           onClick={() => setCalmStep('welcome')}
           aria-label="Am nevoie de liniște acum"
           title="Am nevoie de liniște acum"
-          className="tap-scale fixed bottom-24 left-[max(1rem,calc(50%-204px))] z-40 w-12 h-12 rounded-full bg-sage-deep text-white shadow-lg flex items-center justify-center"
+          className="tap-scale fixed bottom-[7.5rem] left-[max(1rem,calc(50%-204px))] z-40 w-12 h-12 rounded-full bg-sage-deep text-white shadow-lg flex items-center justify-center"
         >
           <Heart className="w-5 h-5" />
         </button>
