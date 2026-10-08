@@ -210,3 +210,34 @@ Pragul rămâne cum e: alerta apare când pacienta își notează singură un si
 | „Simptome severe înregistrate” | „Ai notat un simptom puternic” |
 | „Dacă disconfortul persistă, contactează medicul tău.” | „Dacă nu trece sau te îngrijorează, spune-i medicului tău.” |
 | „La simptome grave sau dacă te simți în pericol, sună la 112.” | rămâne |
+
+---
+
+# Partea a patra: verificarea interacțiunilor (`src/lib/interactions.ts`)
+
+Lista nu e folosită în aplicație. Propunerea de mai jos o înlocuiește; intră în aplicație doar după aprobarea proprietarei.
+
+| Ce | Nivel | Ce scrie în aplicație | Sursă |
+|---|---|---|---|
+| Paroxetină, fluoxetină, bupropion, chinidină, cinacalcet | De evitat | Pot scădea forma activă a tamoxifenului. Prospectul recomandă să fie evitate, pe cât posibil. Nu le opri singură: vorbește cu medicul. | RCP tamoxifen, 4.5 |
+| Anticoagulante de tip warfarină (acenocumarol, warfarină) | Spune medicului | Tamoxifenul poate modifica efectul lor asupra coagulării. Medicul poate cere analize mai dese. | RCP tamoxifen, 4.5 |
+| Medicamente cu estrogen (de exemplu anticoncepționale orale, tratamente hormonale pentru menopauză) | De evitat | Prospectul spune să nu fie luate în timpul tratamentului: își pot reduce efectul una alteia. | RCP tamoxifen, 4.5 |
+| Letrozol și alți inhibitori de aromatază | Doar la indicația medicului | Nu se iau împreună cu tamoxifenul: combinația nu a îmbunătățit tratamentul. | RCP tamoxifen, 4.5 |
+| Sunătoare (ceai, tinctură, capsule) | De evitat | Poate scădea nivelul tamoxifenului din sânge. | Recenzie: interacțiuni între produse naturale și tamoxifen (PMC9201062) |
+| Suplimente concentrate de soia sau izoflavone | Întreabă medicul | Siguranța lor pe termen lung nu e stabilită. Alimentele obișnuite cu soia (tofu, edamame) nu intră aici. | Aceeași recenzie |
+| Grepfrut și suc de grepfrut | Întreabă medicul | Dovezile sunt foarte slabe; unele spitale recomandă evitarea sucului de grepfrut. | Bază de date de interacțiuni (Medscape); fișa MGH pentru tamoxifen |
+
+**DE COMPLETAT:** rifampicina și alți inductori puternici ai CYP3A4 (o singură sursă, un protocol de studiu; de verificat în RCP-ul aprobat în România).
+
+**Scos față de varianta veche:**
+- „Contraindicație: evită complet” pentru grepfrut (dovezi foarte slabe);
+- „reduce endoxifenul cu până la 70%” (cifră fără sursă);
+- venlafaxina, citalopramul și escitalopramul marcate „Sigur” și „Recomandat” (alegerea e a medicului);
+- vitamina D3+K2, magneziul și curcumina (nu sunt interacțiuni; recomandări de suplimente fără sursă);
+- valoarea-țintă „40–60 ng/ml” pentru vitamina D.
+
+## Surse (partea a patra)
+- RCP Tamoxifen 20 mg, secțiunea 4.5, https://rwandafda.gov.rw/wp-content/uploads/2023/09/Tamoxifen-20-mg-film-coated-tablets-SmPC.pdf
+- *Interactions Between Natural Products and Tamoxifen in Breast Cancer: A Comprehensive Literature Review*, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9201062/
+- Medscape, grapefruit interactions, https://reference.medscape.com/drug/citrus-paradisi-pomelo-grapefruit-344597
+- Massachusetts General Hospital, fișa tamoxifen (martie 2024), https://www.massgeneral.org/assets/MGH/pdf/cancer-center/breast-cancer/chemotherapy-regimen-tamoxifen.pdf

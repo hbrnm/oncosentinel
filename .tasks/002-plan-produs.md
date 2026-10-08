@@ -15,7 +15,7 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1, 2 și 4 făcuți; 4 așteaptă numerele confirmate) | |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | gata, în afară de numerele de ajutor (așteaptă confirmarea proprietarei) și verificarea cu prospectul din România | |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | de făcut | |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
@@ -71,8 +71,17 @@ Deciziile proprietarei (2026-10-08):
 - Găsit: `DashboardTab` are un container `sr-only` cu butoane ascunse „pentru teste” (citite de cititorul de ecran); de scos, cu testele vechi adaptate.
 - `npm test` (59) și `npm run build` trec; verificat la 390px.
 
+### Etapa 0, pașii 5 și 6 și curățenie (2026-10-08)
+- Interacțiuni (pasul 5): lista rescrisă din RCP (secțiunea 4.5) și surse publice, aprobată și afișată în Ghiduri → „Medicamente”, cu căutare, nivel în text + icon, sursă la fiecare intrare și mesajul că lipsa din listă nu înseamnă siguranță. Scoase: suplimentele „recomandate” (vitamina D, magneziu, curcumină), „Sigur” la antidepresive, „−70%”, „contraindicație completă” la grepfrut. DE COMPLETAT: rifampicina (de verificat în RCP-ul din România).
+- Ghid de testare (pasul 6): `docs/ghid-testare.md`, cu 7 sarcini, întrebări de final și șablon de notițe fără date personale.
+- Sursa vizibilă sub fiecare ghid (pasul 3): fiecare ghid, știre, semnal de alarmă și interacțiune își afișează sursa.
+- Scos containerul `sr-only` de pe Astăzi (butoane ascunse „pentru teste”) și codul rămas fără folos; testele folosesc drumurile reale.
+- `npm test` (61) și `npm run build` trec; verificat la 390px.
+
+**Rămâne deschis în etapa 0:** numerele de ajutor (`docs/resurse-de-verificat.md`, de confirmat de proprietară); verificarea textelor cu prospectul aprobat în România (ANMDMR); testarea cu pacientele, după `docs/ghid-testare.md`.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Etapa 0: verificarea interacțiunilor (pasul 5) și ghidul de testare cu pacientele (pasul 6); în paralel, proprietara confirmă numerele de ajutor.
+Proprietara: confirmă numerele de ajutor și face testarea cu pacientele; apoi etapa 1 („Nu ești singură”).

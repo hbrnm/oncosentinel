@@ -62,7 +62,9 @@ Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clin
 | control la 6 luni în primii 2–3 ani, apoi anual | DE VERIFICAT |
 | mamografie și/sau RMN anual; „ecografie transvaginală anuală” | DE VERIFICAT (vezi g1) |
 
-## Prioritate 4: verificarea interacțiunilor (`src/lib/interactions.ts`, nefolosit în aplicație)
+## Prioritate 4: verificarea interacțiunilor (`src/lib/interactions.ts`) — REZOLVAT (2026-10-08): rescrisă din RCP și surse publice, aprobată și afișată în Ghiduri → Medicamente
+
+### Starea inițială (nefolosită în aplicație)
 Toate cele 11 intrări sunt DE VERIFICAT. De urmărit în special:
 - **grepfrut**: marcat „Contraindicație: evită complet”. De verificat în prospect cât de puternică e de fapt interacțiunea.
 - **paroxetina, fluoxetina, bupropionul**: marcate „Contraindicație majoră”. Sursele vorbesc de „de evitat dacă se poate”, iar datele clinice sunt contradictorii. „Reduce endoxifenul cu până la 70%” e o cifră fără sursă.
