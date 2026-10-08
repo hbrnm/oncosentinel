@@ -49,9 +49,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   // Detailed form state
   const [showDetailedForm, setShowDetailedForm] = useState<boolean>(false);
   const [hotFlashesCount, setHotFlashesCount] = useState<number>(0);
-  const [hotFlashesIntensity, setHotFlashesIntensity] = useState<number>(1);
+  const [hotFlashesIntensity, setHotFlashesIntensity] = useState<number>(0);
   const [nightSweats, setNightSweats] = useState<boolean>(false);
-  const [fatigueLevel, setFatigueLevel] = useState<number>(1);
+  const [fatigueLevel, setFatigueLevel] = useState<number>(0);
   const [jointPainLevel, setJointPainLevel] = useState<number>(0);
   const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>([]);
   const [mucosalDryness, setMucosalDryness] = useState<number>(0);
@@ -410,7 +410,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                     <span>Nivel Oboseală</span>
                     <span>Scor {fatigueLevel}/5</span>
                   </div>
-                  <input type="range" min="1" max="5" value={fatigueLevel} onChange={(e) => setFatigueLevel(parseInt(e.target.value))} className="w-full accent-sage-500 cursor-pointer" />
+                  <input type="range" min="0" max="5" aria-label="Nivel oboseală" value={fatigueLevel} onChange={(e) => setFatigueLevel(parseInt(e.target.value))} className="w-full accent-sage-500 cursor-pointer" />
                 </div>
 
                 {/* Ceață Mentală */}

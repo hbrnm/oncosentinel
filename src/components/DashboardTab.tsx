@@ -14,6 +14,7 @@ import { controlSupportText } from '../data/comfort';
 import { nextVictory } from '../lib/summary';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
+import { moodLevelFromState } from '../lib/mood';
 import { useBackToClose } from '../lib/backNavigation';
 
 interface DashboardTabProps {
@@ -27,6 +28,8 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onOpenHelp?: () => void;
+  /** Starea aleasă aici se salvează ca nota de azi din Jurnal (treapta 1–5) */
+  onSaveMood?: (level: number) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
 }
 
@@ -43,6 +46,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenGrounding,
   onOpenSupporter,
   onOpenHelp,
+  onSaveMood,
   onNavigateToTab
 }) => {
   const now = new Date();
@@ -62,14 +66,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   });
   const isTakenToday = todayDose?.status === 'taken';
 
-  // 1. Mood State (Persisted locally with date)
+  // 1. Starea de azi vine din nota de azi din Jurnal (o alegere de aici o salvează acolo)
+  const MOOD_IDS: MoodLevel[] = ['foarte_rau', 'rau', 'neutru', 'bine', 'foarte_bine'];
   const [selectedMood, setSelectedMood] = useState<MoodLevel | null>(() => {
-    const saved = localStorage.getItem('navimed_today_mood');
-    const savedDate = localStorage.getItem('navimed_today_mood_date');
-    if (saved && savedDate === todayStr) {
-      return saved as MoodLevel;
-    }
-    return null;
+    const todayNote = symptoms.find(s => s.kind !== 'symptoms' && s.mood_state && getLocalDateString(new Date(s.logged_at)) === todayStr);
+    return todayNote ? MOOD_IDS[moodLevelFromState(todayNote.mood_state) - 1] : null;
   });
 
   const [moodMessage, setMoodMessage] = useState<string | null>(null);
@@ -183,6 +184,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const handleSelectMood = (mood: MoodLevel) => {
     setSelectedMood(mood);
     localStorage.setItem('navimed_today_mood', mood);
+    onSaveMood?.(MOOD_IDS.indexOf(mood) + 1);
     localStorage.setItem('navimed_today_mood_date', todayStr);
 
     // Light haptic feedback if supported
@@ -350,12 +352,13 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
       {/* Hero Card Tratament (Tamoxifen 20mg - Base44 sage-card) */}
       <div className="sage-card rounded-[28px] p-5 relative overflow-hidden">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3.5 min-w-0">
+        {/* Cu litere mari, eticheta trece sub nume, ca numele să nu se rupă */}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex items-center gap-3.5">
             <div className="shrink-0 w-14 h-14 rounded-2xl bg-white/70 dark:bg-darkbg-surface/70 flex items-center justify-center shadow-xs">
               <PillIcon className="w-9 h-9" />
             </div>
-            <div className="min-w-0">
+            <div>
               <h3 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight break-words">
                 {profile.medication_name || 'Tamoxifen'}
               </h3>

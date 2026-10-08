@@ -70,7 +70,7 @@ describe('Jurnal: notă și simptome separate', () => {
   it('salvarea notei nu resetează simptomele schimbate și nesalvate', () => {
     openJournal();
     fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
-    const fatigue = document.querySelector('input[type="range"][min="1"][max="5"]') as HTMLInputElement;
+    const fatigue = document.querySelector('input[aria-label="Nivel oboseală"]') as HTMLInputElement;
     fireEvent.change(fatigue, { target: { value: '4' } });
     fireEvent.click(screen.getByText('Salvează în jurnal'));
     expect(fatigue.value).toBe('4');
@@ -96,5 +96,66 @@ describe('Rezumatele cu note și simptome separate', () => {
     const lastWeek = new Date(Date.now() - 8 * 86400000).toISOString();
     const lines = weekSummary([...logs, { id: 'v', logged_at: lastWeek, kind: 'note', mood_state: 'Bine' }]);
     expect(lines.join(' ')).not.toMatch(/bufeuri/);
+  });
+});
+
+describe('Starea de pe Astăzi și din Jurnal (audit 2026-10-08)', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('starea aleasă pe Astăzi devine nota de azi, cu aceleași etichete în Jurnal', () => {
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+    fireEvent.click(screen.getByText('Obosită').closest('button')!);
+    const note = storageService.getSymptomLogs().find(l => l.kind === 'note')!;
+    expect(note.mood_state).toBe('Rău');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Jurnal' }));
+    // Jurnalul are aceleași 5 stări, în aceeași ordine, și a preluat starea
+    const labels = ['Greu', 'Obosită', 'Liniștită', 'Bine', 'Foarte bine'];
+    labels.forEach(l => expect(screen.getAllByRole('button', { name: l }).length).toBeGreaterThan(0));
+    expect(screen.getByRole('button', { name: 'Obosită', pressed: true })).toBeInTheDocument();
+    // Istoricul arată eticheta nouă
+    expect(screen.getAllByText('Obosită').length).toBeGreaterThan(1);
+  });
+
+  it('a doua alegere pe Astăzi schimbă doar starea notei, nu și gândurile', () => {
+    storageService.saveSymptomLogs([{ id: 'azi', logged_at: new Date().toISOString(), kind: 'note', mood_state: 'Bine', notes: 'Gândurile mele' }]);
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+    fireEvent.click(screen.getByText('Greu').closest('button')!);
+    const logs = storageService.getSymptomLogs();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toMatchObject({ mood_state: 'Foarte rău', notes: 'Gândurile mele' });
+  });
+});
+
+describe('Starea zilei: cazuri vechi și conversii', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('o intrare veche de azi (fără tip) primește starea nouă, fără a doua notă', () => {
+    storageService.saveSymptomLogs([{ id: 'vechi', logged_at: new Date().toISOString(), mood_state: 'Bine', notes: 'Text vechi', fatigue_level: 2 }]);
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+    fireEvent.click(screen.getByText('Greu').closest('button')!);
+    const logs = storageService.getSymptomLogs();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toMatchObject({ mood_state: 'Foarte rău', notes: 'Text vechi', fatigue_level: 2 });
+  });
+
+  it('fără notă azi, Astăzi nu arată o stare veche', () => {
+    localStorage.setItem('navimed_today_mood', 'bine');
+    localStorage.setItem('navimed_today_mood_date', new Date().toISOString().slice(0, 10));
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+    expect(screen.queryByText(/Înregistrat azi/)).not.toBeInTheDocument();
+  });
+
+  it('conversiile: valorile vechi primesc etichetele noi, iar cele necunoscute devin „Liniștită”', async () => {
+    const { moodLabelFromState, moodLevelFromState, moodStateFromLevel } = await import('../lib/mood');
+    expect(moodLabelFromState('Rău')).toBe('Obosită');
+    expect(moodLabelFromState('Echilibrată')).toBe('Liniștită');
+    expect(moodLevelFromState('altceva')).toBe(3);
+    expect(moodStateFromLevel(1)).toBe('Foarte rău');
+    expect(weekSummary([{ id: 'x', logged_at: new Date().toISOString(), kind: 'note', mood_state: 'Rău' }]).join(' ')).toContain('Cel mai des te-ai simțit: Obosită.');
   });
 });

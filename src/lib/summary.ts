@@ -1,4 +1,5 @@
 import { DoseLog, SymptomLog } from '../types';
+import { moodLabelFromState } from './mood';
 
 // Rezumate din ce a notat pacienta; textele sunt aprobate (docs/etapa2-texte.md)
 
@@ -51,7 +52,7 @@ export const weekSummary = (symptoms: SymptomLog[], today = new Date()): string[
     const counts = new Map<string, number>();
     moods.forEach(m => counts.set(m, (counts.get(m) || 0) + 1));
     const top = [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    lines.push(`Cel mai des te-ai simțit: ${top}.`);
+    lines.push(`Cel mai des te-ai simțit: ${moodLabelFromState(top)}.`);
   }
 
   const sleepNow = thisWeek.map(s => s.sleep_quality).filter((v): v is number => typeof v === 'number');

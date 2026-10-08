@@ -104,7 +104,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               {profile.histology || 'Diagnostic necompletat'}
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              {profile.stage ? `Stadiu ${profile.stage}` : 'Stadiu necompletat'}
+              {profile.stage || 'Stadiu necompletat'}
             </p>
           </div>
         </div>

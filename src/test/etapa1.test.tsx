@@ -76,7 +76,7 @@ describe('Am nevoie de liniște acum: alte drumuri', () => {
 describe('Jurnalul care răspunde', () => {
   it('mesajul dispare când schimbi starea după salvare', () => {
     render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} onOpenHelp={vi.fn()} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Foarte rău' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Greu' }));
     fireEvent.click(screen.getByText('Salvează în jurnal'));
     expect(screen.getByRole('status')).toBeInTheDocument();
 
@@ -88,7 +88,7 @@ describe('Jurnalul care răspunde', () => {
     const onOpenHelp = vi.fn();
     render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} onOpenHelp={onOpenHelp} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Foarte rău' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Greu' }));
     fireEvent.click(screen.getByText('Salvează în jurnal'));
 
     const status = screen.getByRole('status');
