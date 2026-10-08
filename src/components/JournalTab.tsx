@@ -10,6 +10,10 @@ import { generateOncologyReport } from '../lib/pdfGenerator';
 import { generateWeeklyPlannerPDF } from '../lib/weeklyPdfGenerator';
 import { formatDateRo } from './TreatmentTab';
 
+// Ziua locală (AAAA-LL-ZZ), nu cea din UTC
+const localDay = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 interface JournalTabProps {
   profile: PatientProfile;
   symptoms: SymptomLog[];
@@ -46,11 +50,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [headache, setHeadache] = useState<number>(0);
   const [sleepQuality, setSleepQuality] = useState<number>(3);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDay(new Date());
 
   useEffect(() => {
     // Pre-fill form if there is already an entry for today (but don't block saving)
-    const todayLog = symptoms.find(s => s.logged_at.startsWith(todayStr));
+    const todayLog = symptoms.find(s => localDay(new Date(s.logged_at)) === todayStr);
     if (todayLog) {
       if (todayLog.mood_state) {
         const moodMap: Record<string, number> = {
@@ -137,7 +141,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
   // Group history by date (using logged_at string)
   const historyGrouped = symptoms.reduce((acc, log) => {
-    const date = log.logged_at.split('T')[0];
+    const date = localDay(new Date(log.logged_at));
     if (!acc[date]) acc[date] = [];
     acc[date].push(log);
     return acc;
