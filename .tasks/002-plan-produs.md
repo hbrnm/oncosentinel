@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în așteptare (proprietara): etapa 0 e implementată și integrată (PR #5); rămân confirmări care țin de proprietară
+**Stare:** în lucru (etapa 1 în PR); etapa 0 integrată (PR #5), cu confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
