@@ -50,7 +50,7 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
     : null;
 
   return (
-    <div className="animate-fade-in blush-card rounded-3xl p-4 relative overflow-hidden shadow-xs border border-[#EAE5DE] dark:border-darkbg-border">
+    <div className="animate-fade-in blush-card rounded-3xl p-4 relative overflow-hidden shadow-xs border border-warmborder dark:border-darkbg-border">
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -59,7 +59,7 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
         className="tap-scale absolute top-3 right-3 w-7 h-7 rounded-full bg-white/60 dark:bg-darkbg-card/60 flex items-center justify-center hover:bg-white transition-colors cursor-pointer"
         aria-label="Închide"
       >
-        <X className="w-3.5 h-3.5 text-[#C99A9D]" />
+        <X className="w-3.5 h-3.5 text-blush-deep" />
       </button>
 
       <div
@@ -67,27 +67,27 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
         className="flex items-start gap-3.5 pr-6 cursor-pointer"
       >
         <span className="shrink-0 w-11 h-11 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 flex items-center justify-center shadow-xs">
-          <CalendarHeart className="w-5 h-5 text-[#C99A9D]" strokeWidth={1.8} />
+          <CalendarHeart className="w-5 h-5 text-blush-deep" strokeWidth={1.8} />
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[11px] font-semibold text-[#C99A9D] capitalize">
+            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[11px] font-semibold text-blush-deep capitalize">
               {label}
             </span>
           </div>
 
-          <p className="text-[14px] text-[#3A332E] dark:text-gray-200 mt-1 font-semibold leading-tight">
+          <p className="text-[14px] text-ink dark:text-gray-200 mt-1 font-semibold leading-tight">
             {appointment.specialty || 'Control Oncologic'}
           </p>
 
-          <p className="text-[12px] text-[#6B6259] dark:text-gray-300 font-medium capitalize mt-0.5">
+          <p className="text-[12px] text-ink-soft dark:text-gray-300 font-medium capitalize mt-0.5">
             {formattedFullDate}
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-[11.5px] text-[#6B6259] dark:text-gray-400">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-[11.5px] text-ink-soft dark:text-gray-400">
             {appointment.time && (
               <span className="flex items-center gap-1 font-medium bg-white/50 dark:bg-darkbg-card/50 px-2 py-0.5 rounded-lg">
-                <Clock className="w-3 h-3 text-[#C99A9D]" /> {appointment.time}
+                <Clock className="w-3 h-3 text-blush-deep" /> {appointment.time}
               </span>
             )}
             {cleanDoctor && (
@@ -95,12 +95,12 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
             )}
             {appointment.center && (
               <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-[#C99A9D]" /> {appointment.center}
+                <MapPin className="w-3 h-3 text-blush-deep" /> {appointment.center}
               </span>
             )}
           </div>
 
-          <p className="text-[11px] text-[#C99A9D] font-medium mt-2">
+          <p className="text-[11px] text-blush-deep font-medium mt-2">
             Apasă pentru detalii și întrebări pentru medic →
           </p>
         </div>

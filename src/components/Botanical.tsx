@@ -49,9 +49,9 @@ export const LeafSprig: React.FC<BotanicalProps> = ({ className = '', style }) =
 export const PillIcon: React.FC<BotanicalProps> = ({ className = '', style }) => {
   return (
     <svg viewBox="0 0 64 64" className={className} style={style} fill="none" aria-hidden="true">
-      <rect x="6" y="22" width="52" height="20" rx="10" transform="rotate(-30 32 32)" fill="#E8EDE7" stroke="#5E7A68" strokeWidth="1.6" />
-      <path d="M22 18 L42 38" stroke="#5E7A68" strokeWidth="1.6" strokeLinecap="round" transform="rotate(-30 32 32)" />
-      <rect x="6" y="22" width="26" height="20" rx="10" transform="rotate(-30 32 32)" fill="#5E7A68" opacity="0.35" />
+      <rect x="6" y="22" width="52" height="20" rx="10" transform="rotate(-30 32 32)" className="fill-sage-soft stroke-sage" strokeWidth="1.6" />
+      <path d="M22 18 L42 38" className="stroke-sage" strokeWidth="1.6" strokeLinecap="round" transform="rotate(-30 32 32)" />
+      <rect x="6" y="22" width="26" height="20" rx="10" transform="rotate(-30 32 32)" className="fill-sage" opacity="0.35" />
     </svg>
   );
 };

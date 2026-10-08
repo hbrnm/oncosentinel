@@ -54,6 +54,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             Profilul, dozele, jurnalul și documentele sunt salvate doar în acest browser, nu în cloud. Dacă ștergi datele browserului sau schimbi telefonul, le pierzi. Descarcă din când în când o copie de siguranță și păstreaz-o într-un loc sigur: conține date medicale.
           </p>
 
+          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            Datele nu sunt criptate: oricine poate deschide acest browser le poate vedea. Folosește un telefon blocat cu parolă sau amprentă și nu folosi aplicația pe un dispozitiv comun.
+          </p>
+
+          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            Spațiul e limitat (aproximativ 5 MB în total, documente de cel mult 1,5 MB fiecare). Dacă se umple, aplicația îți spune și poți șterge documente din Cronologie.
+          </p>
+
           <button
             onClick={() => backupService.exportCompleteBackup()}
             className="w-full py-2.5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"

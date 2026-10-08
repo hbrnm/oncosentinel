@@ -41,8 +41,7 @@ export function App() {
   const [milestones, setMilestones] = useState<ClinicalMilestone[]>(() => storageService.getMilestones());
 
   const handleUpdateMilestones = (updated: ClinicalMilestone[]) => {
-    setMilestones(updated);
-    storageService.saveMilestones(updated);
+    if (storageService.saveMilestones(updated)) setMilestones(updated);
   };
   const [documents, setDocuments] = useState<MedicalDocument[]>(() => storageService.getDocuments());
 
@@ -87,21 +86,15 @@ export function App() {
     };
 
     const updatedDoses = [newLog, ...doses];
+    if (!storageService.saveDoseLogs(updatedDoses)) return;
     setDoses(updatedDoses);
-    storageService.saveDoseLogs(updatedDoses);
 
     // Update pill stock count
     const updatedProfile = {
       ...profile,
       pill_stock_count: Math.max(0, profile.pill_stock_count - 1)
     };
-    setProfile(updatedProfile);
-    storageService.saveProfile(updatedProfile);
-  };
-
-  const handleSnoozeDose = () => {
-    alert('⏰ Alarma a fost amânată cu 15 minute. Te vom atenționa la ' + 
-      new Date(Date.now() + 15 * 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    if (storageService.saveProfile(updatedProfile)) setProfile(updatedProfile);
   };
 
   const handleSaveQuickSymptom = (hotFlashes: number, energy: number, jointPain: number) => {
@@ -121,8 +114,7 @@ export function App() {
     };
 
     const updated = [newLog, ...symptoms];
-    setSymptoms(updated);
-    storageService.saveSymptomLogs(updated);
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
   };
 
   const handleAddSymptomLog = (logData: Omit<SymptomLog, 'id'>) => {
@@ -131,8 +123,7 @@ export function App() {
       id: `sym_${Date.now()}`
     };
     const updated = [newLog, ...symptoms];
-    setSymptoms(updated);
-    storageService.saveSymptomLogs(updated);
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
   };
 
   const handleAddDocument = (docData: Partial<MedicalDocument>) => {
@@ -148,8 +139,8 @@ export function App() {
 
     const nonDemoDocs = documents.filter(d => !d.is_demo);
     const updated = [newDoc, ...nonDemoDocs];
-    setDocuments(updated);
-    storageService.saveDocuments(updated);
+    // Datele apar pe ecran doar dacă au încăput pe dispozitiv
+    if (storageService.saveDocuments(updated)) setDocuments(updated);
   };
 
   const handleDeleteDocument = (docId: string) => {
@@ -159,8 +150,7 @@ export function App() {
   };
 
   const handleSaveProfile = (updated: PatientProfile) => {
-    setProfile(updated);
-    storageService.saveProfile(updated);
+    if (storageService.saveProfile(updated)) setProfile(updated);
   };
 
   const handleCompleteOnboarding = (configuredProfile: PatientProfile, nextControlDate: string) => {
@@ -168,8 +158,7 @@ export function App() {
       ...profile,
       ...configuredProfile
     };
-    setProfile(updated);
-    storageService.saveProfile(updated);
+    if (storageService.saveProfile(updated)) setProfile(updated);
     if (nextControlDate) {
       localStorage.setItem('navimed_next_control_date', nextControlDate);
     }
@@ -178,10 +167,10 @@ export function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#FAF8F5] dark:bg-[#161E1A] flex justify-center transition-colors ${
+    <div className={`min-h-screen bg-cream dark:bg-darkbg flex justify-center transition-colors ${
       fontSize === 'large' ? 'text-[110%]' : ''
     }`}>
-      <div className="w-full max-w-md min-h-screen flex flex-col bg-[#FAF8F5]/90 dark:bg-darkbg/90 shadow-xl shadow-sage-900/5 relative border-x border-[#EAE5DE] dark:border-darkbg-border">
+      <div className="w-full max-w-md min-h-screen flex flex-col bg-cream/90 dark:bg-darkbg/90 shadow-xl shadow-sage-900/5 relative border-x border-warmborder dark:border-darkbg-border">
         
         {/* Top App Header (Displayed on secondary tabs to keep Astăzi clean like Base44) */}
         {activeTab !== 'today' && (
@@ -206,7 +195,6 @@ export function App() {
               profile={profile}
               doses={doses}
               onTakeDose={handleTakeDose}
-              onSnoozeDose={handleSnoozeDose}
               onSaveQuickSymptom={handleSaveQuickSymptom}
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
               onOpenBreathing={() => setIsBreathingOpen(true)}
@@ -264,6 +252,7 @@ export function App() {
               onUpdateProfile={handleSaveProfile}
               onNavigateToTab={(tab) => setActiveTab(tab)}
               onOpenAuth={() => setIsAuthOpen(true)}
+              documentsCount={documents.length}
             />
           )}
         </main>

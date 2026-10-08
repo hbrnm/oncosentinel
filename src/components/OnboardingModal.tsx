@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { 
-  Heart, Sparkles, User, Bell, Clock, Pill, Calendar, 
+  Heart, Sparkles, User, Clock, Pill, Calendar, 
   ShieldCheck, ArrowRight, CheckCircle2 
 } from 'lucide-react';
 import { PatientProfile } from '../types';
-import { notificationsService } from '../lib/notifications';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -23,7 +22,6 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   const [pillStock, setPillStock] = useState<number | ''>(profile?.pill_stock_count ?? 30);
   const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || new Date().toISOString().slice(0, 10));
   const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '');
-  const [notificationsAllowed, setNotificationsAllowed] = useState<boolean>(false);
 
   React.useEffect(() => {
     if (isOpen && profile) {
@@ -35,17 +33,6 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   }, [isOpen, profile]);
 
   if (!isOpen) return null;
-
-  const handleRequestNotification = async () => {
-    const granted = await notificationsService.requestPermission();
-    if (granted) {
-      setNotificationsAllowed(true);
-      notificationsService.sendImmediateNotification(
-        'OncoSentinel: Alerte Activate 🌸',
-        `Te vom atenționa zilnic la ora ${reminderTime} pentru doza de Tamoxifen 20mg.`
-      );
-    }
-  };
 
   const handleFinish = () => {
     const configuredProfile: PatientProfile = {
@@ -154,7 +141,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">
                   Programare Tamoxifen 20mg
                 </h3>
-                <p className="text-[11px] text-gray-500">Stabilește ora alarmei zilnice</p>
+                <p className="text-[11px] text-gray-500">Ora și stocul de pastile</p>
               </div>
             </div>
 
@@ -175,35 +162,6 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <p className="text-[10px] text-gray-500 mt-0.5">
                 Recomandare clinică: aceeași oră în fiecare dimineață pentru nivel sanguin constant.
               </p>
-            </div>
-
-            {/* Notification Permission Card */}
-            <div className="p-3 rounded-2xl bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Bell className="w-4 h-4 text-sage-600" />
-                <div>
-                  <span className="text-xs font-semibold text-gray-900 dark:text-white block">
-                    Alerte sonore pe telefon
-                  </span>
-                  <span className="text-[10px] text-gray-500">
-                    {notificationsAllowed ? 'Notificările sunt permise' : 'Apasă pentru activare'}
-                  </span>
-                </div>
-              </div>
-
-              {notificationsAllowed ? (
-                <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-1 rounded-lg flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> Activ
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleRequestNotification}
-                  className="px-2.5 py-1.5 rounded-xl bg-sage-500 text-white text-[11px] font-bold shadow-2xs"
-                >
-                  Permite
-                </button>
-              )}
             </div>
 
             <div className="grid grid-cols-2 gap-2">

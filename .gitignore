@@ -9,6 +9,7 @@ dist-ssr
 *.local
 
 # Environment variables & local secrets
+.env
 .env.local
 .env.*.local
 

@@ -132,7 +132,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           {/* 2. Situație Clinică & Diagnostic */}
-          <div className="p-3.5 rounded-2xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60 border border-sage-100 dark:border-darkbg-border space-y-3">
+          <div className="p-3.5 rounded-2xl bg-cream-deep/60 dark:bg-darkbg-card/60 border border-sage-100 dark:border-darkbg-border space-y-3">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold uppercase tracking-wider text-sage-800 dark:text-sage-300">
                 Situație Clinică & Diagnostic
@@ -210,7 +210,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                Oră reminder zilnic:
+                Ora administrării:
               </label>
               <div className="relative">
                 <Clock className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />

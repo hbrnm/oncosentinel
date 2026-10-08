@@ -3,12 +3,11 @@ import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, Clock, Pill, Sparkles, BatteryCharging, 
   Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
-  Stethoscope, Heart, Bell, BellOff, BellRing, Check, Activity, Dumbbell,
+  Stethoscope, Heart, BellRing, Check, Activity, Dumbbell,
   ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake
 } from 'lucide-react';
 import { PatientProfile, DoseLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
-import { notificationsService } from '../lib/notifications';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { AppointmentBanner } from './AppointmentBanner';
@@ -18,7 +17,6 @@ interface DashboardTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
   onTakeDose: (dateIso?: string) => void;
-  onSnoozeDose: () => void;
   onSaveQuickSymptom: (hotFlashes: number, energy: number, jointPain: number) => void;
   onOpenRedFlags: () => void;
   onOpenBreathing: () => void;
@@ -35,7 +33,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   profile,
   doses,
   onTakeDose,
-  onSnoozeDose,
   onSaveQuickSymptom,
   onOpenRedFlags,
   onOpenBreathing,
@@ -104,20 +101,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
   const [apptVersion, setApptVersion] = useState<number>(0);
-  const [bellActive, setBellActive] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_dose_reminder_enabled') === 'true';
-  });
-
-  const handleToggleBell = () => {
-    const nextVal = !bellActive;
-    setBellActive(nextVal);
-    localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
-    
-    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
-  };
-
   const [showPhotoModal, setShowPhotoModal] = useState<boolean>(false);
 
 
@@ -229,6 +212,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       particleCount: 65,
       spread: 60,
       origin: { y: 0.7 },
+      // canvas-confetti cere culori literale: sage-light, petal-500, peach-600
       colors: ['#7A9A8B', '#CA868C', '#D97746']
     });
     onTakeDose();
@@ -280,21 +264,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   return (
     <div className="space-y-4 pb-24 animate-fade-in relative">
       {/* Botanical branch background accent in top right (shifted slightly left/down to frame the avatar gracefully) */}
-      <div className="absolute top-6 right-1 w-36 h-48 pointer-events-none opacity-60 z-0 overflow-visible text-[#7A9A8B]">
+      <div className="absolute top-6 right-1 w-36 h-48 pointer-events-none opacity-60 z-0 overflow-visible text-sage-light">
         <BotanicalBranch className="w-full h-full" />
       </div>
 
       {/* Top Empathetic Header Banner (Style faithfully inspired by mockup & Base44) */}
       <div className="pt-2 pb-1 flex items-start justify-between relative z-10">
         <div>
-          <p className="text-[12px] text-[#6B6259] dark:text-gray-400 font-medium">
+          <p className="text-[12px] text-ink-soft dark:text-gray-400 font-medium">
             {greeting.hello},
           </p>
-          <h1 className="text-2xl sm:text-[26px] font-normal font-serif text-[#3A332E] dark:text-[#F5F2EB] tracking-tight leading-tight mt-0.5 capitalize">
+          <h1 className="text-2xl sm:text-[26px] font-normal font-serif text-ink dark:text-cream-deep tracking-tight leading-tight mt-0.5 capitalize">
             {patientFirstName.toLowerCase()}
           </h1>
           <span className="sr-only">Bună, {patientFirstName}</span>
-          <p className="text-xs sm:text-[13px] text-[#6B6259] dark:text-gray-400 mt-1 font-normal leading-relaxed">
+          <p className="text-xs sm:text-[13px] text-ink-soft dark:text-gray-400 mt-1 font-normal leading-relaxed">
             {greeting.sub}
           </p>
         </div>
@@ -310,25 +294,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <img src={profile.avatar_url} alt={patientFirstName} className="w-full h-full object-cover" />
             </button>
           )}
-          <button
-            type="button"
-            title={bellActive ? "Dezactivează Memento" : "Activează Memento"}
-            onClick={handleToggleBell}
-            className={`tap-scale relative w-11 h-11 rounded-full border flex items-center justify-center shadow-xs transition-colors ${
-              bellActive 
-                ? 'bg-sage-50 dark:bg-sage-900/40 border-sage-200 dark:border-sage-800' 
-                : 'bg-white/80 dark:bg-darkbg-card border-[#EAE5DE] dark:border-darkbg-border opacity-70'
-            }`}
-          >
-            {bellActive ? (
-              <>
-                <Bell className="w-5 h-5 text-sage-700 dark:text-sage-300" strokeWidth={1.8} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DFB2B5]" />
-              </>
-            ) : (
-              <BellOff className="w-5 h-5 text-gray-400 dark:text-gray-500" strokeWidth={1.8} />
-            )}
-          </button>
         </div>
       </div>
 
@@ -349,16 +314,16 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <PillIcon className="w-9 h-9" />
             </div>
             <div className="min-w-0">
-              <h3 className="font-serif text-xl text-[#4A6354] dark:text-sage-200 leading-tight truncate">
+              <h3 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight truncate">
                 {profile.medication_name || 'Tamoxifen'} {profile.medication_dose || '20 mg'}
               </h3>
-              <p className="text-[13px] text-[#6B6259] dark:text-gray-400 mt-0.5">
+              <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-0.5">
                 {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat / zi'}
               </p>
             </div>
           </div>
           {isTakenToday ? (
-            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#5E7A68] text-white text-[11px] font-semibold shadow-xs">
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[11px] font-semibold shadow-xs">
               <Check className="w-3.5 h-3.5" strokeWidth={3} />
               <span>✓ Azi • Luat</span>
               <span className="sr-only">Luat pentru azi</span>
@@ -366,7 +331,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           ) : (
             <button
               onClick={handleTakeWithConfetti}
-              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-darkbg-surface text-[#4A6354] dark:text-sage-300 text-[11px] font-semibold border border-sage-300/60 hover:bg-sage-600 hover:text-white transition-all cursor-pointer active:scale-95"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-darkbg-surface text-sage-deep dark:text-sage-300 text-[11px] font-semibold border border-sage-300/60 hover:bg-sage-600 hover:text-white transition-all cursor-pointer active:scale-95"
             >
               <span>De luat</span>
               <span className="sr-only">În așteptare</span>
@@ -378,17 +343,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <span className="sr-only">Doza de azi este bifată cu succes!</span>
         )}
 
-        <div className="mt-4 pt-3.5 border-t border-[#5E7A68]/15 flex items-center justify-between">
+        <div className="mt-4 pt-3.5 border-t border-sage/15 flex items-center justify-between">
           <div>
             <p className="micro-label">URMĂTOAREA DOZĂ</p>
-            <p className="text-[13px] font-semibold text-[#3A332E] dark:text-white mt-0.5">
+            <p className="text-[13px] font-semibold text-ink dark:text-white mt-0.5">
               {isTakenToday ? `Mâine, ${profile.daily_reminder_time || '08:00'}` : `Azi, ${profile.daily_reminder_time || '08:00'}`}
             </p>
           </div>
           {!isTakenToday ? (
             <button
               onClick={handleTakeWithConfetti}
-              className="tap-scale inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#5E7A68] hover:bg-[#4A6354] text-white text-[12px] font-semibold shadow-xs transition-colors cursor-pointer"
+              className="tap-scale inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-sage hover:bg-sage-deep text-white text-[12px] font-semibold shadow-xs transition-colors cursor-pointer"
             >
               <Check className="w-3.5 h-3.5" strokeWidth={2.5} /> 
               <span>Bifat ca luat</span>
@@ -396,7 +361,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           ) : (
             <button
               onClick={() => onNavigateToTab?.('treatment')}
-              className="tap-scale inline-flex items-center gap-0.5 text-[#4A6354] dark:text-sage-300 text-[12px] font-semibold hover:underline"
+              className="tap-scale inline-flex items-center gap-0.5 text-sage-deep dark:text-sage-300 text-[12px] font-semibold hover:underline"
             >
               <span>Vezi detalii</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -458,11 +423,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           className="tap-scale blush-card rounded-3xl p-4 flex flex-col justify-between min-h-[145px] relative overflow-hidden cursor-pointer select-none group"
         >
           <LeafSprig className="absolute -bottom-2 -right-2 w-16 h-16 opacity-50 pointer-events-none group-hover:scale-110 transition-transform duration-300" />
-          <p className="font-serif italic text-xs leading-relaxed text-[#C99A9D] dark:text-petal-300 pr-3 z-10 transition-opacity">
+          <p className="font-serif italic text-xs leading-relaxed text-blush-deep dark:text-petal-300 pr-3 z-10 transition-opacity">
             {currentQuote.text}
           </p>
           <div className="flex items-center justify-between pt-2 z-10">
-            <span className="text-[10px] text-[#C99A9D] dark:text-petal-300 font-semibold tracking-wide">
+            <span className="text-[10px] text-blush-deep dark:text-petal-300 font-semibold tracking-wide">
               {currentQuote.author}
             </span>
           </div>
@@ -516,7 +481,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 className={`flex flex-col items-center justify-center p-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
                   isSelected
                     ? 'bg-sage-600 text-white shadow-sm scale-105'
-                    : 'bg-[#F9FAF8] dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
+                    : 'bg-cream dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
                 }`}
               >
                 <span className={`w-7 h-7 rounded-full flex items-center justify-center font-semibold text-xs ${
@@ -599,7 +564,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           onClick={() => onNavigateToTab?.('guide')}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
-          <div className="w-12 h-12 rounded-2xl bg-[#E8EDE7] dark:bg-darkbg-card text-sage-800 dark:text-sage-300 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-sage-soft dark:bg-darkbg-card text-sage-800 dark:text-sage-300 flex items-center justify-center shrink-0">
             <BookOpen className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
@@ -627,7 +592,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <Heart className="w-5 h-5 text-sage-deep" strokeWidth={1.8} />
           </span>
           <div className="flex-1 min-w-0 pr-6">
-            <p className="font-serif italic text-[13px] leading-relaxed text-[#4A6354] dark:text-sage-200">
+            <p className="font-serif italic text-[13px] leading-relaxed text-sage-deep dark:text-sage-200">
               „Nu ești doar un pacient. Ești o persoană cu o viață întreagă în față.”
             </p>
           </div>
@@ -709,14 +674,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             onClick={(e) => e.stopPropagation()}
             className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 max-w-xs w-full shadow-2xl border border-sage-200 dark:border-darkbg-border text-center space-y-4 animate-scale-up"
           >
-            <div className="flex items-center justify-between pb-2 border-b border-[#EAE5DE] dark:border-darkbg-border">
-              <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
+            <div className="flex items-center justify-between pb-2 border-b border-warmborder dark:border-darkbg-border">
+              <h3 className="font-serif text-lg font-normal text-ink dark:text-white">
                 Fotografie de profil
               </h3>
               <button
                 type="button"
                 onClick={() => setShowPhotoModal(false)}
-                className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -731,10 +696,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </div>
 
             <div>
-              <p className="font-serif text-base text-[#3A332E] dark:text-white font-medium">
+              <p className="font-serif text-base text-ink dark:text-white font-medium">
                 {profile.full_name || 'Pacientă'}
               </p>
-              <p className="text-xs text-[#6B6259] dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-ink-soft dark:text-gray-400 mt-0.5">
                 {profile.email || (profile.oncologist_email ? `Medic: ${profile.oncologist_email}` : 'Profil pacient securizat')}
               </p>
             </div>
@@ -746,7 +711,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                   setShowPhotoModal(false);
                   onNavigateToTab?.('profile');
                 }}
-                className="w-full py-2.5 rounded-xl bg-[#4A6354] hover:bg-[#3d5245] text-white font-semibold text-xs transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-sage-deep hover:bg-sage-800 text-white font-semibold text-xs transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Deschide Profilul Complet</span>
                 <ArrowRight className="w-4 h-4" />
@@ -754,7 +719,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPhotoModal(false)}
-                className="w-full py-2 rounded-xl text-xs text-[#6B6259] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors"
+                className="w-full py-2 rounded-xl text-xs text-ink-soft dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors"
               >
                 Închide
               </button>

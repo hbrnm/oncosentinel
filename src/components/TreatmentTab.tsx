@@ -172,10 +172,10 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
     <div className="space-y-5 animate-fade-in pb-12">
       {/* Header matching Base44 */}
       <header className="px-2 pt-1 pb-1">
-        <h1 className="font-serif text-3xl font-normal text-[#3A332E] dark:text-white tracking-tight">
+        <h1 className="font-serif text-3xl font-normal text-ink dark:text-white tracking-tight">
           Tratament
         </h1>
-        <p className="text-[13px] text-[#6B6259] dark:text-gray-300 mt-1 font-sans">
+        <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-1 font-sans">
           Planul tău zilnic și istoricul dozelor.
         </p>
       </header>
@@ -188,13 +188,13 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               <PillIcon className="w-9 h-9" />
             </div>
             <div>
-              <h2 className="font-serif text-xl font-normal text-[#4A6354] dark:text-sage-300">
+              <h2 className="font-serif text-xl font-normal text-sage-deep dark:text-sage-300">
                 {profile.medication_name || medName}
               </h2>
-              <p className="text-[13px] text-[#6B6259] dark:text-gray-300 mt-0.5">
+              <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-0.5">
                 {profile.medication_dose || medDose} • {profile.medication_frequency || medFrequency}
               </p>
-              <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
+              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5" /> {profile.daily_reminder_time || medTime}
               </p>
             </div>
@@ -206,22 +206,22 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             title="Editează tratamentul"
             aria-label="Editează tratamentul"
           >
-            <Pencil className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <Pencil className="w-4 h-4 text-sage-deep dark:text-sage-300" />
           </button>
         </div>
 
         {/* Dose Action Banner */}
-        <div className="mt-4 pt-4 border-t border-[#5E7A68]/15 dark:border-sage-800/40">
+        <div className="mt-4 pt-4 border-t border-sage/15 dark:border-sage-800/40">
           {!isTodayTaken ? (
             <button
               onClick={() => onTakeDose()}
-              className="tap-scale w-full h-12 rounded-2xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer text-[14px]"
+              className="tap-scale w-full h-12 rounded-2xl bg-sage hover:bg-sage-deep text-white font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer text-[14px]"
             >
               <Check className="w-4 h-4" strokeWidth={2.5} /> Marchează doza de azi
             </button>
           ) : (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 text-[#4A6354] dark:text-sage-300 font-semibold text-[14px]">
-              <Check className="w-5 h-5 text-[#4A6354] dark:text-sage-300" strokeWidth={2.5} />
+            <div className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 text-sage-deep dark:text-sage-300 font-semibold text-[14px]">
+              <Check className="w-5 h-5 text-sage-deep dark:text-sage-300" strokeWidth={2.5} />
               <span>Ai luat doza de azi. Felicitări!</span>
             </div>
           )}
@@ -232,17 +232,17 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
       <div className="organic-card rounded-3xl p-5">
         <div className="flex items-center justify-between mb-1">
           <p className="micro-label">Aderență · {monthLabelRo}</p>
-          <span className="font-serif text-2xl text-[#4A6354] dark:text-sage-300">
+          <span className="font-serif text-2xl text-sage-deep dark:text-sage-300">
             {adherenceMonth}%
           </span>
         </div>
-        <div className="h-2 rounded-full bg-[#F5F2EB] dark:bg-darkbg-card mt-2 overflow-hidden">
+        <div className="h-2 rounded-full bg-cream-deep dark:bg-darkbg-card mt-2 overflow-hidden">
           <div
-            className="h-full rounded-full bg-[#5E7A68] dark:bg-sage-400 transition-all duration-700"
+            className="h-full rounded-full bg-sage dark:bg-sage-400 transition-all duration-700"
             style={{ width: `${adherenceMonth}%` }}
           />
         </div>
-        <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-2 font-medium">
+        <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-2 font-medium">
           {takenInMonth} doze luate din {applicableDaysInMonth > 0 ? applicableDaysInMonth : daysInMonth} zile.
         </p>
       </div>
@@ -251,7 +251,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
       <div className="organic-card rounded-3xl p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <CalendarDays className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <CalendarDays className="w-4 h-4 text-sage-deep dark:text-sage-300" />
             <p className="micro-label">Calendar doze</p>
           </div>
 
@@ -259,18 +259,18 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           <div className="flex items-center gap-1.5">
             <button
               onClick={handlePrevMonth}
-              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-[#6B6259] dark:text-gray-300 transition-colors"
+              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
               title="Luna precedentă"
               aria-label="Luna precedentă"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200 capitalize min-w-[110px] text-center">
+            <span className="text-[13px] font-semibold text-ink dark:text-gray-200 capitalize min-w-[110px] text-center">
               {monthLabelRo}
             </span>
             <button
               onClick={handleNextMonth}
-              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-[#6B6259] dark:text-gray-300 transition-colors"
+              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
               title="Luna următoare"
               aria-label="Luna următoare"
             >
@@ -280,17 +280,17 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 py-1.5 mb-3 bg-[#FAF8F5] dark:bg-darkbg-card/50 rounded-xl text-[11px] text-[#6B6259] dark:text-gray-300">
+        <div className="flex items-center justify-center gap-4 py-1.5 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[11px] text-ink-soft dark:text-gray-300">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#5E7A68]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-sage" />
             <span>Luat (verde)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#DC2626]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
             <span>Sărit (roșu)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#EAE5DE] dark:bg-gray-600" />
+            <span className="w-2.5 h-2.5 rounded-full bg-warmborder dark:bg-gray-600" />
             <span>Programat</span>
           </div>
         </div>
@@ -298,7 +298,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         {/* Day of Week Header: L, M, M, J, V, S, D */}
         <div className="grid grid-cols-7 gap-1.5 text-center mb-1">
           {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, idx) => (
-            <span key={idx} className="text-[10px] text-[#6B6259]/70 dark:text-gray-400 font-semibold py-0.5">
+            <span key={idx} className="text-[10px] text-ink-soft/70 dark:text-gray-400 font-semibold py-0.5">
               {d}
             </span>
           ))}
@@ -318,14 +318,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                 <button onClick={() => { if (status === "missed") onTakeDose(cell.iso); }}
                   className={`w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-red-700 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
                     isToday
-                      ? 'ring-2 ring-[#5E7A68] dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
+                      ? 'ring-2 ring-sage dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
                       : ''
                   } ${
                     status === 'taken'
-                      ? 'bg-[#5E7A68] text-white shadow-xs'
+                      ? 'bg-sage text-white shadow-xs'
                       : status === 'missed'
-                      ? 'bg-[#DC2626] text-white shadow-xs'
-                      : 'bg-[#F5F2EB]/60 dark:bg-darkbg-card text-[#3A332E] dark:text-gray-300'
+                      ? 'bg-red-600 text-white shadow-xs'
+                      : 'bg-cream-deep/60 dark:bg-darkbg-card text-ink dark:text-gray-300'
                   }`}
                   title={`${dayNumber} ${monthLabelRo} - ${
                     status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză sărită (Apasă pentru a bifa retroactiv)' : 'Viitoare / De luat'
@@ -354,19 +354,19 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             return (
               <div
                 key={l.id}
-                className="flex items-center justify-between py-2 border-b border-[#EAE5DE]/60 dark:border-darkbg-border last:border-0"
+                className="flex items-center justify-between py-2 border-b border-warmborder/60 dark:border-darkbg-border last:border-0"
               >
-                <span className="text-[13px] text-[#3A332E] dark:text-gray-200">
+                <span className="text-[13px] text-ink dark:text-gray-200">
                   {formatDateRo(dateStr)}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[12px] text-[#4A6354] dark:text-sage-300 font-semibold">
+                <span className="inline-flex items-center gap-1 text-[12px] text-sage-deep dark:text-sage-300 font-semibold">
                   <Check className="w-3.5 h-3.5" strokeWidth={2.5} /> Luat
                 </span>
               </div>
             );
           })}
           {recentTakenDoses.length === 0 && (
-            <p className="text-[13px] text-[#6B6259]/70 dark:text-gray-400 text-center py-4">
+            <p className="text-[13px] text-ink-soft/70 dark:text-gray-400 text-center py-4">
               Nicio doză marcată încă.
             </p>
           )}
@@ -377,14 +377,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
       {editing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EAE5DE] dark:border-darkbg-border mb-4">
-              <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
+              <h3 className="font-serif text-lg font-normal text-ink dark:text-white">
                 Editează tratamentul
               </h3>
               <button
                 type="button"
                 onClick={() => setEditing(false)}
-                className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -392,14 +392,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
             <form onSubmit={handleSaveEdit} className="space-y-3.5">
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Denumire medicament
                 </label>
                 <input
                   type="text"
                   value={medName}
                   onChange={(e) => setMedName(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: Tamoxifen"
                   required
                 />
@@ -407,27 +407,27 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Doză
                   </label>
                   <input
                     type="text"
                     value={medDose}
                     onChange={(e) => setMedDose(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: 20 mg"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Frecvență
                   </label>
                   <input
                     type="text"
                     value={medFrequency}
                     onChange={(e) => setMedFrequency(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: 1 comprimat/zi"
                     required
                   />
@@ -435,29 +435,29 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Ora administrării
                 </label>
                 <input
                   type="time"
                   value={medTime}
                   onChange={(e) => setMedTime(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   required
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#EAE5DE] dark:border-darkbg-border mt-4">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-warmborder dark:border-darkbg-border mt-4">
                 <button
                   type="button"
                   onClick={() => setEditing(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-[#6B6259] dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 >
                   Anulează
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-[#5E7A68] hover:bg-[#4A6354] text-white shadow-xs transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer"
                 >
                   Salvează
                 </button>

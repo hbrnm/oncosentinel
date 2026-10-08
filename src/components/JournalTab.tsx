@@ -6,9 +6,14 @@ import {
 import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
-import { generateOncologyReport } from '../lib/pdfGenerator';
-import { generateWeeklyPlannerPDF } from '../lib/weeklyPdfGenerator';
 import { formatDateRo } from './TreatmentTab';
+
+// Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
+const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
+
+// Ziua locală (AAAA-LL-ZZ), nu cea din UTC
+const localDay = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 interface JournalTabProps {
   profile: PatientProfile;
@@ -46,11 +51,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [headache, setHeadache] = useState<number>(0);
   const [sleepQuality, setSleepQuality] = useState<number>(3);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDay(new Date());
 
   useEffect(() => {
     // Pre-fill form if there is already an entry for today (but don't block saving)
-    const todayLog = symptoms.find(s => s.logged_at.startsWith(todayStr));
+    const todayLog = symptoms.find(s => localDay(new Date(s.logged_at)) === todayStr);
     if (todayLog) {
       if (todayLog.mood_state) {
         const moodMap: Record<string, number> = {
@@ -120,9 +125,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         brainFog >= 4;
 
       if (hasSevere) {
+        // Rămâne pe ecran până o închide utilizatoarea
         setSevereSymptomsAlert(newLogData);
-        // Auto-dismiss toast after 5 seconds
-        setTimeout(() => setSevereSymptomsAlert(null), 5000);
       }
   };
 
@@ -137,7 +141,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
   // Group history by date (using logged_at string)
   const historyGrouped = symptoms.reduce((acc, log) => {
-    const date = log.logged_at.split('T')[0];
+    const date = localDay(new Date(log.logged_at));
     if (!acc[date]) acc[date] = [];
     acc[date].push(log);
     return acc;
@@ -160,13 +164,23 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   return (
     <>
       {severeSymptomsAlert && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
+        <div role="alert" className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
           <span className="text-rose-500 text-lg">⚠️</span>
           <div className="flex-1">
             <p className="text-xs font-bold text-rose-700">Simptome severe înregistrate</p>
             <p className="text-[11px] text-rose-600 mt-0.5">Dacă disconfortul persistă, contactează medicul tău.</p>
+            <p className="text-[11px] text-rose-700 font-semibold mt-1">
+              La simptome grave sau dacă te simți în pericol, sună la <a href="tel:112" className="underline">112</a>.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('navimed_open_red_flags'))}
+              className="mt-1.5 text-[11px] font-bold text-rose-700 underline"
+            >
+              Vezi semnalele de alarmă
+            </button>
           </div>
-          <button onClick={() => setSevereSymptomsAlert(null)} className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
+          <button onClick={() => setSevereSymptomsAlert(null)} aria-label="Închide alerta" className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
         </div>
       )}
     <div className="min-h-screen pb-24 animate-fade-in">
@@ -178,18 +192,18 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
       <div className="space-y-5">
         {/* Mood Card */}
-        <div className="bg-[#F6ECEC] dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">
+        <div className="bg-blush dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">
           <LeafSprig className="absolute -bottom-3 -right-3 w-20 h-20 opacity-40 text-petal-300 dark:text-petal-900/50" />
           <div className="flex items-center gap-2 mb-1">
-            <Heart className="w-4 h-4 text-[#C99A9D] dark:text-petal-400" />
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#C99A9D] dark:text-petal-400">Cum te simți azi?</p>
+            <Heart className="w-4 h-4 text-blush-deep dark:text-petal-400" />
+            <p className="text-[10px] font-bold uppercase tracking-wider text-blush-deep dark:text-petal-400">Cum te simți azi?</p>
           </div>
-          <p className="text-[13px] text-[#80706A] dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
+          <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
           <MoodPicker value={mood} onChange={setMood} compact />
           
           <div className="mt-5">
-            <h3 className="text-sm font-bold text-[#80706A] dark:text-petal-300 mb-3 flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-ink-soft dark:text-petal-300 mb-3 flex items-center gap-1.5">
               <LeafSprig className="w-4 h-4" />
               Gândurile mele de azi
             </h3>
@@ -203,7 +217,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="w-full mt-3 h-12 rounded-2xl bg-[#C99A9D] hover:bg-[#B88A8D] dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className="w-full mt-3 h-12 rounded-2xl bg-blush-deep hover:bg-petal-500 dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
             {saving ? "Salvez..." : "Salvează în jurnal"}
           </button>
@@ -228,7 +242,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               onClick={() => {
                 const list = JSON.parse(localStorage.getItem('navimed_shopping_list') || '[]');
                 const exercise = parseInt(localStorage.getItem('navimed_exercise_minutes') || '45', 10);
-                generateWeeklyPlannerPDF(profile, list, exercise);
+                import('../lib/weeklyPdfGenerator')
+                  .then(({ generateWeeklyPlannerPDF }) => generateWeeklyPlannerPDF(profile, list, exercise))
+                  .catch(() => alert(PDF_LOAD_ERROR));
               }}
               className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
@@ -237,7 +253,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             </button>
 
             <button
-              onClick={() => generateOncologyReport(profile, doses, symptoms)}
+              onClick={() => {
+                import('../lib/pdfGenerator')
+                  .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
+                  .catch(() => alert(PDF_LOAD_ERROR));
+              }}
               className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-sage-600" />
@@ -272,7 +292,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
           {showDetailedForm && (
             <div className="mt-5 pt-5 border-t border-gray-100 dark:border-darkbg-border space-y-4 animate-fade-in">
-              {/* Copied Detailed Form Fields from SymptomsTab */}
+              {/* Detailed Form Fields */}
               <div className="p-4 rounded-2xl bg-gray-50/70 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1.5">

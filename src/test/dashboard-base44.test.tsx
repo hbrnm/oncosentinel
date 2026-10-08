@@ -21,8 +21,8 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     const botanicalBranch = container.querySelector('svg.overflow-visible, svg[viewBox="0 0 120 180"], svg[viewBox="0 0 120 160"]');
     expect(botanicalBranch).toBeInTheDocument();
 
-    // 2. Notification Bell in top right
-    expect(screen.getByTitle(/Memento/i)).toBeInTheDocument();
+    // 2. Fără clopoțel de memento: aplicația nu programează notificări
+    expect(screen.queryByTitle(/Memento/i)).not.toBeInTheDocument();
 
     // 3. Medication Hero Card (Tamoxifen 20 mg)
     expect(screen.getByText(/Tamoxifen 20 mg/i)).toBeInTheDocument();

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  User as UserIcon, Pill, CalendarHeart, Bell, LogOut, Pencil, Plus, 
-  ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2, FileText
+  User as UserIcon, Pill, CalendarHeart, LogOut, Pencil, Plus, 
+  ChevronRight, MapPin, Check, X, ShieldCheck, Clock, Camera, Trash2, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog } from '../types';
-import { generateOncologyReport } from '../lib/pdfGenerator';
 import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
 
@@ -25,6 +24,7 @@ interface ProfileTabProps {
   onUpdateProfile: (updated: PatientProfile) => void;
   onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenAuth?: () => void;
+  documentsCount?: number;
 }
 
 const daysUntil = (dateStr?: string) => {
@@ -41,7 +41,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   doses,
   onUpdateProfile,
   onNavigateToTab,
-  onOpenAuth
+  onOpenAuth,
+  documentsCount = 0
 }) => {
   // 1. Display name & profile edit modal state
   const [activeTab, setActiveTab] = useState<'settings' | 'dossier'>('settings');
@@ -132,29 +133,6 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     });
   };
 
-  // 2. Reminders settings state
-  const [doseReminderEnabled, setDoseReminderEnabled] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_dose_reminder_enabled') !== 'false';
-  });
-  const [apptReminderEnabled, setApptReminderEnabled] = useState<boolean>(() => {
-    return localStorage.getItem('navimed_appt_reminder_enabled') !== 'false';
-  });
-
-  const handleToggleDoseReminder = () => {
-    const nextVal = !doseReminderEnabled;
-    setDoseReminderEnabled(nextVal);
-    localStorage.setItem('navimed_dose_reminder_enabled', String(nextVal));
-    if (nextVal && 'Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
-  };
-
-  const handleToggleApptReminder = () => {
-    const nextVal = !apptReminderEnabled;
-    setApptReminderEnabled(nextVal);
-    localStorage.setItem('navimed_appt_reminder_enabled', String(nextVal));
-  };
-
   // 3. Appointments list state
   const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
     const saved = localStorage.getItem('navimed_appointments_list');
@@ -227,26 +205,26 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     <div className="space-y-5 animate-fade-in pb-16">
       {/* Header matching Base44 */}
       <header className="px-2 pt-1 pb-1">
-        <h1 className="font-serif text-3xl font-normal text-[#3A332E] dark:text-white tracking-tight">
+        <h1 className="font-serif text-3xl font-normal text-ink dark:text-white tracking-tight">
           Profil
         </h1>
         {/* Horizontal Navigation Tabs */}
         <div className="flex items-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
           <button 
             onClick={() => setActiveTab('settings')}
-            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'settings' ? 'bg-[#4A6354] text-white shadow-md' : 'bg-white text-[#6B6259] border border-[#EAE5DE] dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
+            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'settings' ? 'bg-sage-deep text-white shadow-md' : 'bg-white text-ink-soft border border-warmborder dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
           >
             Setări & Tratament
           </button>
           <button 
             onClick={() => setActiveTab('dossier')}
-            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'dossier' ? 'bg-[#4A6354] text-white shadow-md' : 'bg-white text-[#6B6259] border border-[#EAE5DE] dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
+            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeTab === 'dossier' ? 'bg-sage-deep text-white shadow-md' : 'bg-white text-ink-soft border border-warmborder dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
           >
             Dosar Medical
           </button>
         </div>
-        <p className="text-[13px] text-[#6B6259] dark:text-gray-300 mt-1 font-sans">
-          Informațiile tale, tratamentul și preferințele de notificare.
+        <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-1 font-sans">
+          Informațiile tale și tratamentul.
         </p>
       </header>
 
@@ -268,7 +246,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-16 h-16 rounded-full overflow-hidden bg-[#E8EDE7] dark:bg-sage-900/60 flex items-center justify-center border-2 border-sage-200 dark:border-sage-800 hover:opacity-90 transition-opacity cursor-pointer relative"
+            className="w-16 h-16 rounded-full overflow-hidden bg-sage-soft dark:bg-sage-900/60 flex items-center justify-center border-2 border-sage-200 dark:border-sage-800 hover:opacity-90 transition-opacity cursor-pointer relative"
             title="Schimbă fotografia de profil"
             aria-label="Schimbă fotografia de profil"
           >
@@ -279,7 +257,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                 className="w-full h-full object-cover" 
               />
             ) : (
-              <UserIcon className="w-7 h-7 text-[#4A6354] dark:text-sage-300" strokeWidth={1.6} />
+              <UserIcon className="w-7 h-7 text-sage-deep dark:text-sage-300" strokeWidth={1.6} />
             )}
             
             {/* Camera Overlay Icon on Hover / Always accessible on mobile */}
@@ -292,7 +270,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#4A6354] text-white flex items-center justify-center shadow-md border-2 border-white dark:border-darkbg-surface hover:bg-[#3d5245] transition-colors"
+            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-sage-deep text-white flex items-center justify-center shadow-md border-2 border-white dark:border-darkbg-surface hover:bg-sage-800 transition-colors"
             title="Adaugă sau schimbă fotografia"
           >
             <Camera className="w-3 h-3" />
@@ -312,14 +290,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <h2 className="font-serif text-xl text-[#3A332E] dark:text-white truncate">
+            <h2 className="font-serif text-xl text-ink dark:text-white truncate">
               {displayName}
             </h2>
-            <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#E8EDE7] dark:bg-sage-900/70 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold border border-sage-200/50">
+            <span className="shrink-0 px-2 py-0.5 rounded-full bg-sage-soft dark:bg-sage-900/70 text-sage-deep dark:text-sage-300 text-[10px] font-semibold border border-sage-200/50">
               {profile.histology?.includes('DCIS') ? 'DCIS' : (profile.stage || 'Diagnostic necompletat')}
             </span>
           </div>
-          <p className="text-[12px] text-[#6B6259] dark:text-gray-400 truncate mt-0.5">
+          <p className="text-[12px] text-ink-soft dark:text-gray-400 truncate mt-0.5">
             {profile.email || (profile.oncologist_email ? `Medic: ${profile.oncologist_email}` : 'Profil pacient securizat')}
           </p>
         </div>
@@ -336,11 +314,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             setHer2Val(profile.her2_status || '');
             setEditProfileOpen(true);
           }}
-          className="tap-scale w-10 h-10 rounded-full bg-[#F5F2EB] dark:bg-darkbg-card flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer"
+          className="tap-scale w-10 h-10 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer"
           title="Modifică profilul"
           aria-label="Modifică profilul"
         >
-          <Pencil className="w-4 h-4 text-[#6B6259] dark:text-gray-300" />
+          <Pencil className="w-4 h-4 text-ink-soft dark:text-gray-300" />
         </button>
       </div>
 
@@ -348,7 +326,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       <div className="organic-card rounded-[28px] p-5 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <ShieldCheck className="w-4 h-4 text-sage-deep dark:text-sage-300" />
             <p className="micro-label">Diagnostic & Receptori</p>
           </div>
           <button
@@ -361,33 +339,33 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               setHer2Val(profile.her2_status || '');
               setEditProfileOpen(true);
             }}
-            className="text-[11px] font-semibold text-[#4A6354] dark:text-sage-300 hover:underline"
+            className="text-[11px] font-semibold text-sage-deep dark:text-sage-300 hover:underline"
           >
             Modifică
           </button>
         </div>
 
         <div className="space-y-1">
-          <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
+          <p className="text-[13px] font-semibold text-ink dark:text-gray-200">
             {profile.histology || 'Diagnostic necompletat'}
           </p>
-          <p className="text-[12px] text-[#6B6259] dark:text-gray-400">
+          <p className="text-[12px] text-ink-soft dark:text-gray-400">
             {profile.stage || 'Stadiu necompletat'}
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#EAE5DE]/60 dark:border-darkbg-border text-center">
-          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
-            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor ER</span>
-            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.er_status || '—'}</span>
+        <div className="grid grid-cols-3 gap-2 pt-2 border-t border-warmborder/60 dark:border-darkbg-border text-center">
+          <div className="p-2 rounded-xl bg-cream-deep/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-ink-soft dark:text-gray-400 block font-medium">Receptor ER</span>
+            <span className="text-[11px] font-bold text-sage-deep dark:text-sage-300 truncate block">{profile.er_status || '—'}</span>
           </div>
-          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
-            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor PR</span>
-            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.pr_status || '—'}</span>
+          <div className="p-2 rounded-xl bg-cream-deep/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-ink-soft dark:text-gray-400 block font-medium">Receptor PR</span>
+            <span className="text-[11px] font-bold text-sage-deep dark:text-sage-300 truncate block">{profile.pr_status || '—'}</span>
           </div>
-          <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
-            <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Status HER2</span>
-            <span className="text-[11px] font-bold text-[#3A332E] dark:text-gray-200 truncate block">{profile.her2_status || '—'}</span>
+          <div className="p-2 rounded-xl bg-cream-deep/60 dark:bg-darkbg-card/60">
+            <span className="text-[10px] text-ink-soft dark:text-gray-400 block font-medium">Status HER2</span>
+            <span className="text-[11px] font-bold text-ink dark:text-gray-200 truncate block">{profile.her2_status || '—'}</span>
           </div>
         </div>
       </div>
@@ -395,7 +373,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       {/* 2. Tratament Curent Card (sage-card) matching Base44 */}
       <div className="sage-card rounded-[28px] p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Pill className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+          <Pill className="w-4 h-4 text-sage-deep dark:text-sage-300" />
           <p className="micro-label">Tratament curent</p>
         </div>
         <div className="flex items-center gap-3.5">
@@ -403,17 +381,17 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             <PillIcon className="w-8 h-8" />
           </div>
           <div>
-            <p className="font-serif text-lg text-[#4A6354] dark:text-sage-300 leading-tight">
+            <p className="font-serif text-lg text-sage-deep dark:text-sage-300 leading-tight">
               {profile.medication_name || 'Tamoxifen'}
             </p>
-            <p className="text-[12px] text-[#6B6259] dark:text-gray-300 mt-0.5">
+            <p className="text-[12px] text-ink-soft dark:text-gray-300 mt-0.5">
               {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat/zi'} • {profile.daily_reminder_time || '08:00'}
             </p>
           </div>
         </div>
         <button
           onClick={() => onNavigateToTab('treatment')}
-          className="tap-scale mt-4 w-full text-[13px] font-semibold text-[#4A6354] dark:text-sage-300 flex items-center justify-center gap-1 py-2.5 rounded-2xl bg-white/60 dark:bg-darkbg-card/60 hover:bg-white/80 transition-colors cursor-pointer"
+          className="tap-scale mt-4 w-full text-[13px] font-semibold text-sage-deep dark:text-sage-300 flex items-center justify-center gap-1 py-2.5 rounded-2xl bg-white/60 dark:bg-darkbg-card/60 hover:bg-white/80 transition-colors cursor-pointer"
         >
           Gestionează tratamentul <ChevronRight className="w-4 h-4" />
         </button>
@@ -423,21 +401,21 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       <div className="organic-card rounded-[28px] p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <CalendarHeart className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <CalendarHeart className="w-4 h-4 text-sage-deep dark:text-sage-300" />
             <p className="micro-label">Controale medicale</p>
           </div>
           <button
             onClick={() => setAddAppt(true)}
-            className="tap-scale w-8 h-8 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 flex items-center justify-center hover:bg-sage-200 transition-colors cursor-pointer"
+            className="tap-scale w-8 h-8 rounded-full bg-sage-soft dark:bg-sage-900/60 flex items-center justify-center hover:bg-sage-200 transition-colors cursor-pointer"
             title="Adaugă control"
             aria-label="Adaugă control"
           >
-            <Plus className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
+            <Plus className="w-4 h-4 text-sage-deep dark:text-sage-300" />
           </button>
         </div>
         <div className="space-y-3">
           {upcoming.length === 0 && (
-            <p className="text-[13px] text-[#6B6259]/70 dark:text-gray-400 text-center py-3">
+            <p className="text-[13px] text-ink-soft/70 dark:text-gray-400 text-center py-3">
               Niciun control viitor. Adaugă unul cu butonul +.
             </p>
           )}
@@ -448,33 +426,33 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             const dayNum = dateObj.getDate();
 
             return (
-              <div key={a.id} className="flex items-start gap-3 p-3 rounded-2xl bg-[#F5F2EB]/50 dark:bg-darkbg-card/50">
+              <div key={a.id} className="flex items-start gap-3 p-3 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-card/50">
                 <div className="shrink-0 w-12 h-12 rounded-2xl bg-white dark:bg-darkbg-surface flex flex-col items-center justify-center shadow-xs">
-                  <span className="text-[10px] text-[#6B6259] dark:text-gray-400 font-medium uppercase leading-tight">
+                  <span className="text-[10px] text-ink-soft dark:text-gray-400 font-medium uppercase leading-tight">
                     {monthShort}
                   </span>
-                  <span className="font-serif text-lg text-[#4A6354] dark:text-sage-300 leading-none">
+                  <span className="font-serif text-lg text-sage-deep dark:text-sage-300 leading-none">
                     {dayNum}
                   </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
+                  <p className="text-[13px] font-semibold text-ink dark:text-gray-200">
                     {a.specialty}
                   </p>
                   {a.doctor && (
-                    <p className="text-[12px] text-[#6B6259] dark:text-gray-400 mt-0.5">
+                    <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5">
                       {a.doctor}
                     </p>
                   )}
                   {a.center && (
-                    <p className="text-[11px] text-[#6B6259]/80 dark:text-gray-400 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-[#4A6354] dark:text-sage-300" />
+                    <p className="text-[11px] text-ink-soft/80 dark:text-gray-400 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-sage-deep dark:text-sage-300" />
                       <span>{a.center}</span>
                     </p>
                   )}
                 </div>
                 {d !== null && d >= 0 && (
-                  <span className="shrink-0 px-2 py-1 rounded-full bg-[#E8EDE7] dark:bg-sage-900/60 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold">
+                  <span className="shrink-0 px-2 py-1 rounded-full bg-sage-soft dark:bg-sage-900/60 text-sage-deep dark:text-sage-300 text-[10px] font-semibold">
                     peste {d} {d === 1 ? 'zi' : 'zile'}
                   </span>
                 )}
@@ -484,74 +462,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         </div>
       </div>
 
-      {/* 4. Notificări Card cu Comutatoare Switch matching Base44 */}
-      <div className="organic-card rounded-[28px] p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Bell className="w-4 h-4 text-[#4A6354] dark:text-sage-300" />
-          <p className="micro-label">Notificări</p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
-                Reminder doză zilnică
-              </p>
-              <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-0.5">
-                Memento blând la ora administrării ({profile.daily_reminder_time || '08:00'})
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleToggleDoseReminder}
-              className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                doseReminderEnabled ? 'bg-[#5E7A68]' : 'bg-gray-300 dark:bg-gray-700'
-              }`}
-              role="switch"
-              aria-checked={doseReminderEnabled}
-            >
-              <span
-                className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                  doseReminderEnabled ? 'right-0.5' : 'left-0.5'
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="h-px bg-[#EAE5DE]/60 dark:bg-darkbg-border" />
-
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
-                Reminder controale
-              </p>
-              <p className="text-[11px] text-[#6B6259] dark:text-gray-400 mt-0.5">
-                Înainte de următoarea programare medicală
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleToggleApptReminder}
-              className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                apptReminderEnabled ? 'bg-[#5E7A68]' : 'bg-gray-300 dark:bg-gray-700'
-              }`}
-              role="switch"
-              aria-checked={apptReminderEnabled}
-            >
-              <span
-                className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${
-                  apptReminderEnabled ? 'right-0.5' : 'left-0.5'
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* 5. Siguranța datelor */}
       {onOpenAuth && (
         <button
           onClick={onOpenAuth}
-          className="tap-scale w-full organic-card rounded-2xl p-4 flex items-center justify-center gap-2 text-[#4A6354] dark:text-sage-300 font-semibold text-[14px] hover:bg-gray-50 transition-colors cursor-pointer"
+          className="tap-scale w-full organic-card rounded-2xl p-4 flex items-center justify-center gap-2 text-sage-deep dark:text-sage-300 font-semibold text-[14px] hover:bg-gray-50 transition-colors cursor-pointer"
         >
           <ShieldCheck className="w-4 h-4" />
           <span>Siguranța datelor</span>
@@ -560,43 +475,26 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       </div>
       )}
 
-      {/* Dossier Mock UI */}
+      {/* Dosar medical: documentele reale stau în Cronologie */}
       {activeTab === 'dossier' && (
         <div className="space-y-4 animate-fade-in">
-          <div className="organic-card p-5 rounded-3xl flex items-center justify-between">
-            <div>
-              <h3 className="font-serif text-xl text-[#3A332E] dark:text-white">Dosar Medical</h3>
-              <p className="text-[13px] text-[#6B6259] dark:text-gray-400 mt-1">Documentele tale sigure.</p>
-            </div>
-            <button className="tap-scale px-4 py-2 rounded-2xl bg-[#4A6354] text-white text-xs font-semibold shadow-md flex items-center gap-1.5">
-              <Plus className="w-4 h-4" />
-              <span className="hidden sm:inline">Încarcă document</span>
-              <span className="sm:hidden">Încarcă</span>
+          <div className="organic-card p-5 rounded-3xl">
+            <h3 className="font-serif text-xl text-ink dark:text-white">Dosar Medical</h3>
+            <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-1">
+              {documentsCount === 0
+                ? 'Încă nu ai încărcat niciun document.'
+                : documentsCount === 1
+                  ? 'Ai 1 document salvat pe acest dispozitiv.'
+                  : `Ai ${documentsCount} documente salvate pe acest dispozitiv.`}
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigateToTab('timeline')}
+              className="tap-scale mt-4 w-full px-4 py-2.5 rounded-2xl bg-sage-deep text-white text-xs font-semibold shadow-md flex items-center justify-center gap-1.5"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Vezi și încarcă documente în Cronologie</span>
             </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
-              <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 flex items-center justify-center mb-1">
-                <Heart className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Analize Sânge</span>
-              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">12 documente</span>
-            </div>
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale">
-              <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-1">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Imagistică</span>
-              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">3 documente</span>
-            </div>
-            <div className="organic-card p-4 rounded-3xl flex flex-col items-center justify-center gap-2 cursor-pointer tap-scale col-span-2">
-              <div className="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-500 dark:text-purple-400 flex items-center justify-center mb-1">
-                <FileText className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-sm text-[#3A332E] dark:text-gray-200">Scrisori & Rețete</span>
-              <span className="text-[11px] text-[#6B6259] dark:text-gray-400">5 documente</span>
-            </div>
           </div>
         </div>
       )}
@@ -605,119 +503,119 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       {editProfileOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in overflow-y-auto">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm max-h-[90vh] overflow-y-auto rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl my-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EAE5DE] dark:border-darkbg-border mb-4">
-              <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
+              <h3 className="font-serif text-lg font-normal text-ink dark:text-white">
                 Date Profil & Situație
               </h3>
               <button
                 type="button"
                 onClick={() => setEditProfileOpen(false)}
-                className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleSaveProfileForm} className="space-y-3.5">
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Nume și prenume
                 </label>
                 <input
                   type="text"
                   value={nameVal}
                   onChange={(e) => setNameVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="Introdu numele tău..."
                   autoFocus
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Adresa ta de E-mail
                 </label>
                 <input
                   type="email"
                   value={emailVal}
                   onChange={(e) => setEmailVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: pacient@exemplu.ro"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   E-mail Medic Oncolog (opțional)
                 </label>
                 <input
                   type="email"
                   value={oncologistEmailVal}
                   onChange={(e) => setOncologistEmailVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: medic.oncolog@spital.ro"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Diagnostic / Histopatologie
                 </label>
                 <input
                   type="text"
                   value={histologyVal}
                   onChange={(e) => setHistologyVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: Carcinom Ductal In Situ (DCIS)"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Stadiu clinic
                 </label>
                 <input
                   type="text"
                   value={stageVal}
                   onChange={(e) => setStageVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: Grad 0 (TisN0M0, G2)"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[10px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Receptor ER
                   </label>
                   <input
                     type="text"
                     value={erVal}
                     onChange={(e) => setErVal(e.target.value)}
-                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-10 px-2 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="Pozitiv"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[10px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Receptor PR
                   </label>
                   <input
                     type="text"
                     value={prVal}
                     onChange={(e) => setPrVal(e.target.value)}
-                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-10 px-2 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="Pozitiv"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[10px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Status HER2
                   </label>
                   <input
                     type="text"
                     value={her2Val}
                     onChange={(e) => setHer2Val(e.target.value)}
-                    className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-10 px-2 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: Negativ"
                   />
                 </div>
@@ -725,14 +623,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
 
               
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
-                  Ora Memento Tratament
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
+                  Ora administrării
                 </label>
                 <input
                   type="time"
                   value={reminderTimeVal}
                   onChange={(e) => setReminderTimeVal(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                 />
               </div>
 
@@ -740,13 +638,13 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditProfileOpen(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] text-[#6B6259] hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-gray-100 transition-colors"
                 >
                   Anulează
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-[#5E7A68] text-white hover:bg-[#4A6354] transition-colors"
+                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage text-white hover:bg-sage-deep transition-colors"
                 >
                   Salvează
                 </button>
@@ -760,81 +658,81 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       {addAppt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#EAE5DE] dark:border-darkbg-border mb-4">
-              <h3 className="font-serif text-lg font-normal text-[#3A332E] dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
+              <h3 className="font-serif text-lg font-normal text-ink dark:text-white">
                 Adaugă control
               </h3>
               <button
                 type="button"
                 onClick={() => setAddAppt(false)}
-                className="p-1 rounded-full text-[#6B6259] hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleSaveAppt} className="space-y-3.5">
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Data
                 </label>
                 <input
                   type="date"
                   value={apptForm.date}
                   onChange={(e) => setApptForm({ ...apptForm, date: e.target.value })}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   required
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Specialitate
                   </label>
                   <input
                     type="text"
                     value={apptForm.specialty}
                     onChange={(e) => setApptForm({ ...apptForm, specialty: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: Oncologie"
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Medic
                   </label>
                   <input
                     type="text"
                     value={apptForm.doctor}
                     onChange={(e) => setApptForm({ ...apptForm, doctor: e.target.value })}
-                    className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="Dr. Popescu"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-[12px] font-semibold text-[#6B6259] dark:text-gray-300 mb-1">
+                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Centru / Spital
                 </label>
                 <input
                   type="text"
                   value={apptForm.center}
                   onChange={(e) => setApptForm({ ...apptForm, center: e.target.value })}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: Institutul Oncologic"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t border-[#EAE5DE] dark:border-darkbg-border mt-4">
+              <div className="flex justify-end gap-2 pt-3 border-t border-warmborder dark:border-darkbg-border mt-4">
                 <button
                   type="button"
                   onClick={() => setAddAppt(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] text-[#6B6259] hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-gray-100 transition-colors"
                 >
                   Anulează
                 </button>
                 <button
                   type="submit"
                   disabled={!apptForm.date}
-                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-[#5E7A68] hover:bg-[#4A6354] text-white disabled:opacity-50 transition-colors"
+                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white disabled:opacity-50 transition-colors"
                 >
                   Adaugă
                 </button>
