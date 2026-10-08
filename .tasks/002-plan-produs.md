@@ -65,8 +65,14 @@ Deciziile proprietarei (2026-10-08):
 
 **În așteptare (proprietara):** confirmarea numerelor din `docs/resurse-de-verificat.md`.
 
+### Etapa 0: semnalele de alarmă și alerta din jurnal (2026-10-08)
+- Aprobate: semnalele de alarmă, împărțite în „Sună la 112” și „Anunță repede medicul”, fără decizii de investigație (Doppler, ecografie), cu surse; în g1, „umflare bruscă a feței, a buzelor sau a gâtului”; alerta din jurnal devine „Ai notat un simptom puternic” (pragul rămâne nota pacientei ≥ 4 din 5).
+- Înlocuită și „Notă de liniște” fără sursă („Tamoxifenul este bine tolerat”) cu una fără afirmații medicale.
+- Găsit: `DashboardTab` are un container `sr-only` cu butoane ascunse „pentru teste” (citite de cititorul de ecran); de scos, cu testele vechi adaptate.
+- `npm test` (59) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Etapa 0: semnalele de alarmă (`RedFlagsModal`) și pragul „sever” din jurnal; în paralel, proprietara confirmă numerele de ajutor.
+Etapa 0: verificarea interacțiunilor (pasul 5) și ghidul de testare cu pacientele (pasul 6); în paralel, proprietara confirmă numerele de ajutor.

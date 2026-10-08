@@ -84,7 +84,7 @@ Fiecare rețetă are „Sursă: General”, adică nicio sursă. Afirmațiile de
 
 Propunere pentru pasul 2: rețetele rămân ca idei de mese echilibrate, fără afirmații terapeutice, iar salvia trece prin verificarea interacțiunilor înainte de a fi recomandată.
 
-## Prioritate 6: alte ecrane — REZOLVAT pentru respirație, ancorare, pornire și persoana de sprijin (2026-10-08); rămân semnalele de alarmă și pragul „sever” din jurnal
+## Prioritate 6: alte ecrane — REZOLVAT (2026-10-08): respirație, ancorare, pornire, persoana de sprijin, semnalele de alarmă și alerta din jurnal
 | Fișier | Text | Stare |
 |---|---|---|
 | `BreathingModal.tsx:73` | „Validat clinic pentru calmarea rapidă a bufeurilor și reducerea stimulului adrenergic.” | DE VERIFICAT: „validat clinic” fără sursă |

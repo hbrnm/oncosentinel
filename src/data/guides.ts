@@ -53,7 +53,7 @@ Bufeurile sunt cele mai frecvente. Mai pot apărea scurgeri vaginale, greață l
 
 ### Când suni la 112 sau la medic
 
-* **Sună la 112** dacă ai brusc respirație grea sau durere în piept, o umflătură apărută brusc, sau semne de accident vascular cerebral: vorbire neclară, vedere încețoșată brusc, amorțeală bruscă la față, braț sau picior.
+* **Sună la 112** dacă ai brusc respirație grea sau durere în piept, umflare bruscă a feței, a buzelor sau a gâtului, sau semne de accident vascular cerebral: vorbire neclară, vedere încețoșată brusc, amorțeală bruscă la față, braț sau picior.
 * **Anunță repede medicul** dacă ai durere sau umflare la un picior, orice sângerare vaginală neobișnuită ori scurgere cu sânge (mai ales după menopauză) sau schimbări ale vederii.
 
 ### Controlul ginecologic

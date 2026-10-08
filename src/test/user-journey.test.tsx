@@ -171,8 +171,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     // Testăm Butonul Semnale de Alarmă / Red Flags din Dashboard
     const redFlagsBtn = screen.getByText(/Când trebuie să suni medicul de urgență/i);
     fireEvent.click(redFlagsBtn);
-    expect(screen.getByText(/Ghid de Semnale de Alarmă/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tromboză Venoasă Profundă/i)).toBeInTheDocument();
+    expect(screen.getByText(/Semnale de alarmă/i)).toBeInTheDocument();
+    expect(screen.getByText(/Durere sau umflare la un singur picior/i)).toBeInTheDocument();
   });
 
   it('7. Flux Jurnal Emoțional: Selecție Stare -> Mesaj Empatic Contextual -> Salvare Locală', async () => {
