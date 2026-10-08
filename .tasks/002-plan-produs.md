@@ -184,6 +184,10 @@ Deciziile proprietarei (2026-10-08):
 - După `verificare` (nimic blocant): „o singură dată” nu mai e luat drept singurătate; „frici” și „temeri” recunoscute; „Păstrează-o” scris corect.
 - Test nou `etapa5-mesaje.test.tsx`. `npm test` (174) și `npm run build` trec; verificat la 390px.
 
+### Culoarea butoanelor 112 (2026-10-08)
+- Decizia proprietarei: butoanele „Sună la 112” (Jurnal, Ajutor), „Apelează 112” (Semnale de alarmă) și „SOS Urgențe” (Astăzi) în petal închis (`bg-petal-700`, din paletă; contrast cu alb ≈ 6,2:1). Restul alertelor rămân cum sunt.
+- Test nou `culoare-112.test.tsx`. `npm test` (176) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 

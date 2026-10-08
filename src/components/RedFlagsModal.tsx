@@ -94,7 +94,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
         <div className="p-4 bg-gray-50 dark:bg-darkbg-card border-t border-gray-100 dark:border-darkbg-border grid grid-cols-2 gap-2.5">
           <a
             href="tel:112"
-            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs transition-colors shadow-xs"
+            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-2xl bg-petal-700 hover:bg-petal-800 text-white font-semibold text-xs transition-colors shadow-xs"
           >
             <PhoneCall className="w-4 h-4" />
             <span>Apelează 112 (Urgențe)</span>
