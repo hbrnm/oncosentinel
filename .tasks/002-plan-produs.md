@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în așteptare (proprietara): etapa 0 e implementată și integrată (PR #5); rămân confirmări care țin de proprietară
+**Stare:** în lucru (etapa 1 în PR); etapa 0 integrată (PR #5), cu confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -16,7 +16,7 @@ Deciziile proprietarei (2026-10-08):
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
 | 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
-| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | de făcut | |
+| 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | gata, de testat cu pacientele | PR (ramura claude/etapa1) |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
 | 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
@@ -82,8 +82,17 @@ Deciziile proprietarei (2026-10-08):
 
 **Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate; testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
 
+### Etapa 1 (2026-10-08)
+- Deciziile proprietarei: buton mic pe toate ecranele; mesajele le scrie Claude, le aprobă proprietara; sprijinul apare cu 3 zile înainte de control; un PR pe etapă. Textele aprobate sunt în `docs/etapa1-texte.md`.
+- „Am nevoie de liniște acum” (`CalmModal`): un buton rotund deasupra barei de jos, pe toate filele. Fluxul: mesaj cald → respirație lentă → „Te simți puțin mai liniștită?”. „Da, puțin” se încheie cu un mesaj; „Nu încă” deschide „Ajutor” cu „E în regulă să ceri ajutor.”
+- Jurnalul care răspunde: după salvare apare un mesaj aprobat pentru starea aleasă (3 pe stare, se schimbă zilnic; `src/data/comfort.ts`); la „Foarte rău” apare și linkul „Am nevoie de ajutor”.
+- Sprijin înaintea controlului: card pe Astăzi cu 1–3 zile înainte („Controlul se apropie…”) și în ziua controlului („Multă putere azi”), cu „Întrebările pentru medic” și „Un moment de liniște”.
+- Butonul de închidere de la respirație are acum etichetă pentru cititorul de ecran.
+- De urmărit la testare: în jurnal, selectorul de stare are deja o propoziție caldă; cu mesajul nou, pacienta vede două.
+- `npm test` (72) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Proprietara: confirmă numerele de ajutor, citește pe anm.ro cele trei puncte neconfirmate și face testarea cu pacientele; apoi etapa 1 („Nu ești singură”).
+PR pentru etapa 1, apoi proprietara alege pașii pentru etapa 2 („Te înțeleg”); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.

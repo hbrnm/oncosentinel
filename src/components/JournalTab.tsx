@@ -7,6 +7,7 @@ import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { formatDateRo } from './TreatmentTab';
+import { pickJournalResponse } from '../data/comfort';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
 const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
@@ -21,18 +22,22 @@ interface JournalTabProps {
   doses: DoseLog[];
   onAddSymptomLog: (log: Omit<SymptomLog, 'id'>) => void;
   onNavigateToTab?: (tab: 'guide') => void;
+  onOpenHelp?: () => void;
 }
 
 export const JournalTab: React.FC<JournalTabProps> = ({
   profile,
   symptoms,
   doses,
-  onAddSymptomLog
+  onAddSymptomLog,
+  onOpenHelp
 }) => {
   const [mood, setMood] = useState<number | null>(null);
   const [note, setNote] = useState<string>('');
   const [savedToday, setSavedToday] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
+  // Mesajul cald de după salvare (aprobat, docs/etapa1-texte.md)
+  const [response, setResponse] = useState<{ mood: number; text: string } | null>(null);
   
   // Detailed form state
   const [showDetailedForm, setShowDetailedForm] = useState<boolean>(false);
@@ -113,6 +118,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       water_intake_ml: waterIntake
     };
     onAddSymptomLog(newLogData);
+    setResponse({ mood: effectiveMood, text: pickJournalResponse(effectiveMood) });
     setSaving(false);
     setShowDetailedForm(false);
       
@@ -200,7 +206,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </div>
           <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
-          <MoodPicker value={mood} onChange={setMood} compact />
+          <MoodPicker value={mood} onChange={(m) => { setMood(m); setResponse(null); }} compact />
           
           <div className="mt-5">
             <h3 className="text-sm font-bold text-ink-soft dark:text-petal-300 mb-3 flex items-center gap-1.5">
@@ -209,7 +215,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             </h3>
             <textarea 
               value={note}
-              onChange={(e) => setNote(e.target.value)}
+              onChange={(e) => { setNote(e.target.value); setResponse(null); }}
               placeholder="Notează un gând, un simptom, sau o bucurie de azi..."
               className="w-full min-h-[120px] p-4 rounded-3xl bg-white/70 dark:bg-darkbg/50 border border-petal-200/60 dark:border-petal-900/40 text-[14px] resize-none text-gray-800 dark:text-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-petal-300 transition-all disabled:opacity-70 shadow-sm" 
             />
@@ -221,6 +227,19 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           >
             {saving ? "Salvez..." : "Salvează în jurnal"}
           </button>
+          {response && (
+            <div role="status" className="mt-3 p-4 rounded-2xl bg-white/80 dark:bg-darkbg-card border border-petal-200/60 dark:border-petal-900/40 flex items-start gap-2.5">
+              <Heart className="w-4 h-4 text-blush-deep shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed">{response.text}</p>
+                {response.mood === 1 && onOpenHelp && (
+                  <button type="button" onClick={onOpenHelp} className="mt-2 text-xs font-semibold text-sage-deep dark:text-sage-300 underline">
+                    Am nevoie de ajutor
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* PDF Export Section */}

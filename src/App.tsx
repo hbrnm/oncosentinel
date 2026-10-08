@@ -13,6 +13,8 @@ import { BreathingModal } from './components/BreathingModal';
 import { DoctorVisitModal } from './components/DoctorVisitModal';
 import { GroundingModal } from './components/GroundingModal';
 import { HelpModal } from './components/HelpModal';
+import { CalmModal, CalmStep } from './components/CalmModal';
+import { Heart } from 'lucide-react';
 import { AuthModal } from './components/AuthModal';
 import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
@@ -32,6 +34,10 @@ export function App() {
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
   const [isSupporterOpen, setIsSupporterOpen] = useState<boolean>(false);
   const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
+  const [helpNote, setHelpNote] = useState<string | undefined>(undefined);
+  // „Am nevoie de liniște acum”: mesaj → respirație → întrebare
+  const [calmStep, setCalmStep] = useState<CalmStep | null>(null);
+  const [breathingFromCalm, setBreathingFromCalm] = useState<boolean>(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(() => {
     return localStorage.getItem('oncosentinel_onboarded') !== 'true';
   });
@@ -215,6 +221,7 @@ export function App() {
               symptoms={symptoms}
               doses={doses}
               onAddSymptomLog={handleAddSymptomLog}
+              onOpenHelp={() => setIsHelpOpen(true)}
             />
           )}
 
@@ -236,6 +243,17 @@ export function App() {
           )}
         </main>
 
+        {/* Am nevoie de liniște acum: pe toate ecranele */}
+        <button
+          type="button"
+          onClick={() => setCalmStep('welcome')}
+          aria-label="Am nevoie de liniște acum"
+          title="Am nevoie de liniște acum"
+          className="tap-scale fixed bottom-24 left-[max(1rem,calc(50%-204px))] z-40 w-12 h-12 rounded-full bg-sage-deep text-white shadow-lg flex items-center justify-center"
+        >
+          <Heart className="w-5 h-5" />
+        </button>
+
         {/* Bottom Tab Bar */}
         <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -250,7 +268,8 @@ export function App() {
         {/* Ajutor: urgență, echipa medicală, liniștire, sprijin */}
         <HelpModal
           isOpen={isHelpOpen}
-          onClose={() => setIsHelpOpen(false)}
+          onClose={() => { setIsHelpOpen(false); setHelpNote(undefined); }}
+          note={helpNote}
           profile={profile}
           onOpenRedFlags={() => setIsRedFlagsOpen(true)}
           onOpenBreathing={() => setIsBreathingOpen(true)}
@@ -269,7 +288,29 @@ export function App() {
         {/* Guided Breathing Modal */}
         <BreathingModal
           isOpen={isBreathingOpen}
-          onClose={() => setIsBreathingOpen(false)}
+          onClose={() => {
+            setIsBreathingOpen(false);
+            // După respirația pornită din „liniște acum”, întrebăm cum se simte
+            if (breathingFromCalm) {
+              setBreathingFromCalm(false);
+              setCalmStep('check');
+            }
+          }}
+        />
+
+        <CalmModal
+          step={calmStep}
+          onClose={() => setCalmStep(null)}
+          onBreathe={() => {
+            setCalmStep(null);
+            setBreathingFromCalm(true);
+            setIsBreathingOpen(true);
+          }}
+          onNeedHelp={() => {
+            setHelpNote(calmStep === 'check' ? 'E în regulă să ceri ajutor.' : undefined);
+            setCalmStep(null);
+            setIsHelpOpen(true);
+          }}
         />
 
         {/* Doctor Visit Q&A Modal */}
