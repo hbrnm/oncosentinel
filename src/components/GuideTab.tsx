@@ -4,23 +4,30 @@ import {
   ChevronRight, 
   FileText,
   ShieldCheck,
-  Utensils
+  Utensils,
+  Pill,
+  Search,
+  Ban,
+  MessageCircle
 } from 'lucide-react';
 import { RenderMarkdown } from './Markdown';
 
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS as CLINICAL_NEWS, ClinicalGuide, NewsProtocol } from '../data/guides';
 import { RECIPES } from '../data/recipes';
+import { searchInteractions } from '../lib/interactions';
 
 export interface GuideTabProps {
   onOpenRedFlags: () => void;
 }
 
-type GuideCategory = 'clinical' | 'news' | 'nutrition';
+type GuideCategory = 'clinical' | 'news' | 'nutrition' | 'medicines';
 
 export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
   const [selectedGuide, setSelectedGuide] = useState<Omit<ClinicalGuide, 'category'> | null>(null);
   const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(null);
   const [activeCategory, setActiveCategory] = useState<GuideCategory>('clinical');
+  const [medicineQuery, setMedicineQuery] = useState<string>('');
+  const medicines = searchInteractions(medicineQuery);
 
   if (selectedGuide) {
     return (
@@ -100,7 +107,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
     <div className="min-h-screen pb-24 animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <h1 className="font-heading text-2xl text-gray-900 dark:text-white">Ghiduri</h1>
-        <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Informații clinice și nutriție.</p>
+        <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Informații clinice, nutriție și medicamente.</p>
         
         {/* Horizontal Navigation Tabs */}
         <div className="flex items-center gap-2 mt-5 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
@@ -121,6 +128,12 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
             className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeCategory === 'nutrition' ? 'bg-sage-deep text-white shadow-md' : 'bg-white text-ink-soft border border-warmborder dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
           >
             Nutriție & Rețete
+          </button>
+          <button 
+            onClick={() => setActiveCategory('medicines')}
+            className={`whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${activeCategory === 'medicines' ? 'bg-sage-deep text-white shadow-md' : 'bg-white text-ink-soft border border-warmborder dark:bg-darkbg-surface dark:border-darkbg-border dark:text-gray-300'}`}
+          >
+            Medicamente
           </button>
         </div>
       </header>
@@ -215,6 +228,44 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                 </button>
               ))}
             </div>
+          </section>
+        )}
+
+        {activeCategory === 'medicines' && (
+          <section className="animate-fade-in space-y-3">
+            <p className="text-[12px] text-ink dark:text-gray-200 bg-sage-soft dark:bg-sage-900/30 p-3 rounded-2xl border border-sage-200/80 dark:border-sage-800/40 leading-relaxed">
+              Medicamente și suplimente care contează în timpul tratamentului cu tamoxifen. Lista nu e completă: verifică întotdeauna cu medicul sau farmacistul înainte să începi ceva nou.
+            </p>
+            <label className="relative block">
+              <span className="sr-only">Caută un medicament sau un supliment</span>
+              <Search className="w-4 h-4 text-ink-soft absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="search"
+                value={medicineQuery}
+                onChange={(e) => setMedicineQuery(e.target.value)}
+                placeholder="Caută: ex. paroxetină, sunătoare"
+                className="w-full pl-10 pr-3 py-2.5 rounded-2xl text-[13px] bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:ring-2 focus:ring-sage"
+              />
+            </label>
+            {medicines.length === 0 && (
+              <p className="text-[12px] text-ink-soft dark:text-gray-400 px-1">
+                Nu am găsit „{medicineQuery}” în listă. Asta nu înseamnă că e sigur: întreabă medicul sau farmacistul.
+              </p>
+            )}
+            {medicines.map((item) => (
+              <div key={item.substance} className="organic-card rounded-3xl p-4">
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${item.level === 'avoid' ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300' : 'bg-blush text-ink dark:bg-petal-950/40 dark:text-petal-200'}`}>
+                  {item.level === 'avoid' ? <Ban className="w-3 h-3" /> : <MessageCircle className="w-3 h-3" />}
+                  {item.levelLabel}
+                </span>
+                <h3 className="font-heading text-[15px] text-ink dark:text-white leading-snug mt-2 flex items-start gap-1.5">
+                  <Pill className="w-4 h-4 text-sage-deep mt-0.5 shrink-0" />
+                  {item.substance}
+                </h3>
+                <p className="text-[12.5px] text-ink-soft dark:text-gray-300 mt-1.5 leading-relaxed">{item.advice}</p>
+                <p className="text-[10.5px] text-ink-soft/80 dark:text-gray-500 mt-2 italic">Sursa: {item.source}</p>
+              </div>
+            ))}
           </section>
         )}
       </div>

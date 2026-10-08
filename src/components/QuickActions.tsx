@@ -1,16 +1,18 @@
 import React from 'react';
-import { CalendarDays, FileText, Stethoscope, FolderHeart } from 'lucide-react';
+import { CalendarDays, FileText, Stethoscope, FolderHeart, LifeBuoy } from 'lucide-react';
 
 export interface QuickActionsProps {
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenDoctorModal?: () => void;
   onOpenResources?: () => void;
+  onOpenHelp?: () => void;
 }
 
 export const QuickActions: React.FC<QuickActionsProps> = ({
   onNavigateToTab,
   onOpenDoctorModal,
   onOpenResources,
+  onOpenHelp,
 }) => {
   const actions = [
     {
@@ -46,10 +48,17 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
         onNavigateToTab?.('timeline');
       },
     },
+    {
+      label1: 'Ajutor',
+      label2: 'acum',
+      icon: LifeBuoy,
+      tint: 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300',
+      onClick: () => onOpenHelp?.(),
+    },
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-2.5">
+    <div className="grid grid-cols-5 gap-2">
       {actions.map(({ label1, label2, icon: Icon, tint, onClick }) => (
         <button
           key={`${label1}-${label2}`}

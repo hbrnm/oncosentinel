@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { useReadableText } from './pdfText';
 import { PatientProfile, ShoppingItem } from '../types';
 
 export function generateWeeklyPlannerPDF(
@@ -12,6 +13,7 @@ export function generateWeeklyPlannerPDF(
     unit: 'mm',
     format: 'a4'
   });
+  useReadableText(doc);
 
   const sageDark: [number, number, number] = [77, 102, 91];
   const sageLight: [number, number, number] = [234, 242, 238];

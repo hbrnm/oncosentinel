@@ -79,12 +79,10 @@ export interface PatientProfile {
 
 export interface DrugInteraction {
   substance: string;
-  category: 'antidepresiv' | 'planta' | 'analgezic' | 'supliment' | 'aliment' | 'altele';
-  riskLevel: 'SAFE' | 'CAUTION' | 'CONTRAINDICATED';
-  riskLabel: string;
-  mechanism: string;
-  recommendation: string;
-  details: string;
+  level: 'avoid' | 'tell' | 'ask';
+  levelLabel: string;
+  advice: string;
+  source: string;
 }
 
 export interface ShoppingItem {

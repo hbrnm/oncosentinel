@@ -167,8 +167,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         <div role="alert" className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
           <span className="text-rose-500 text-lg">⚠️</span>
           <div className="flex-1">
-            <p className="text-xs font-bold text-rose-700">Simptome severe înregistrate</p>
-            <p className="text-[11px] text-rose-600 mt-0.5">Dacă disconfortul persistă, contactează medicul tău.</p>
+            <p className="text-xs font-bold text-rose-700">Ai notat un simptom puternic</p>
+            <p className="text-[11px] text-rose-600 mt-0.5">Dacă nu trece sau te îngrijorează, spune-i medicului tău.</p>
             <p className="text-[11px] text-rose-700 font-semibold mt-1">
               La simptome grave sau dacă te simți în pericol, sună la <a href="tel:112" className="underline">112</a>.
             </p>

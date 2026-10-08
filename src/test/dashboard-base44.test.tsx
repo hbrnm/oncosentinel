@@ -52,8 +52,8 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     expect(screen.getByText('Foarte bun')).toBeInTheDocument();
 
     // 7. Clinical Guide & News Cards
-    expect(screen.getByText(/Tamoxifen și efectele secundare/i)).toBeInTheDocument();
-    expect(screen.getByText(/ASCO 2026: Tamoxifen în doze mici/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tamoxifen: ce face și cum îl iei/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tamoxifen în doză mică după DCIS/i)).toBeInTheDocument();
 
     // 8. Inspiration Banner
     expect(screen.getByText(/Nu ești doar un pacient/i)).toBeInTheDocument();

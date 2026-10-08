@@ -21,92 +21,117 @@ export const CLINICAL_GUIDES: ClinicalGuide[] = [
     id: 'g1',
     tag: 'GHIDURI & INFORMAȚII',
     image_url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&fit=crop',
-    title: 'Tamoxifen și efectele secundare',
-    summary: 'Tot ce trebuie să știi despre tratament, monitorizare și stil de viață.',
+    title: 'Tamoxifen: ce face și cum îl iei',
+    summary: 'Cum acționează, cum îl iei, ce faci dacă ai uitat o doză și când suni la medic.',
     category: 'tratament',
-    content: `### Ce este Tamoxifenul și eficacitatea sa
+    content: `### Ce face tamoxifenul
 
-Tamoxifenul este un modulator selectiv al receptorilor estrogenici (SERM) care blochează estrogenul la nivelul celulelor mamare. Pe termen lung (5–10 ani), studiile (precum ATLAS) arată că reduce riscul de recurență cu **40–50%** și mortalitatea cu aproximativ **30%**.
+Tamoxifenul blochează acțiunea estrogenului asupra celulelor din sân. După DCIS, poate scădea riscul ca boala să revină sau să apară un cancer nou în oricare dintre sâni.
 
-### Interacțiuni medicamentoase majore (CYP2D6)
+Într-un studiu mare cu femei operate și iradiate pentru DCIS (NSABP B-24), urmărite 15 ani, cancerul invaziv în același sân a fost cu aproximativ o treime mai rar la cele care au luat tamoxifen. Un nou cancer în celălalt sân a apărut la 7,3% dintre ele, față de 10,8% fără tamoxifen.
 
-Tamoxifenul este transformat de ficat în forma sa activă, *endoxifen*. Anumite medicamente blochează această conversie și **reduc drastic eficacitatea tratamentului**.
+### Cum îl iei
 
-* **DE EVITAT (Inhibitori puternici):** Antidepresive precum Paroxetină (Seroxat), Fluoxetină (Prozac), Bupropion. Nu le luați concomitent cu Tamoxifen.
-* **Alternative Sigure:** Venlafaxină (Effexor) — excelentă și pentru ameliorarea bufeurilor — Citalopram, Escitalopram.
+* O dată pe zi, la aceeași oră, cu un pahar cu apă. Comprimatul se înghite întreg.
+* Doza și durata ți le stabilește medicul. Nu opri tratamentul fără să vorbești cu el.
 
-> Verifică întotdeauna cu medicul oncolog înainte de a adăuga un medicament nou, inclusiv suplimente sau antidepresive.
+### Ai uitat o doză?
 
-### Monitorizare medicală și Efecte Secundare
+Ia-o când îți amintești. Dacă se apropie ora următoarei doze, sari peste cea uitată. Nu lua niciodată două doze deodată ca să o recuperezi.
 
-1. **Control Ginecologic Anual:** Deși protejează sânii, are un ușor efect de stimulare asupra uterului. Este obligatoriu controlul ginecologic anual (ecografie transvaginală). Raportează imediat medicului orice sângerare vaginală anormală.
-2. **Bufeurile:** Afectează până la 80% dintre paciente. Acestea pot fi ameliorate prin metode non-farmacologice sau, la recomandarea medicului, prin medicamente precum Venlafaxina sau Gabapentina.
+### Alte medicamente și suplimente
 
-> Aceste efecte sunt adesea mai intense în primele luni și tind să se amelioreze în timp. Fii blândă cu tine — nu ești singura care trece prin asta.
+Unele medicamente pot scădea efectul tamoxifenului. Prospectul recomandă să fie evitate, pe cât posibil, medicamentele care blochează puternic enzima CYP2D6, de exemplu paroxetina, fluoxetina, bupropionul, chinidina și cinacalcetul. Cât de mult contează acest lucru pentru rezultatul tratamentului nu e încă pe deplin lămurit.
 
-### Sfaturi de aur pentru administrare
+Spune medicului sau farmacistului de fiecare dată când începi un medicament nou, inclusiv suplimente sau ceaiuri. Dacă ai nevoie de un antidepresiv, medicul poate alege unul care nu interferează cu tamoxifenul.
 
-* **Fii constantă:** Alege o oră din zi și încearcă să nu o modifici.
-* **Ai uitat o doză?:** Ia comprimatul de îndată ce îți amintești. Dacă se apropie ora pentru următoarea doză, pur și simplu continuă programul normal. Nu lua niciodată doză dublă.`
+### Efecte secundare frecvente
+
+Bufeurile sunt cele mai frecvente. Mai pot apărea scurgeri vaginale, greață la început (ajută să-l iei cu mâncare sau seara; de obicei trece cu timpul), crampe în picioare, dureri de cap sau păr mai subțire. Spune-i medicului dacă te deranjează: de multe ori există ce se poate face.
+
+> Fii blândă cu tine: nu ești singura care trece prin asta.
+
+### Când suni la 112 sau la medic
+
+* **Sună la 112** dacă ai brusc respirație grea sau durere în piept, umflare bruscă a feței, a buzelor sau a gâtului, sau semne de accident vascular cerebral: vorbire neclară, vedere încețoșată brusc, amorțeală bruscă la față, braț sau picior.
+* **Anunță repede medicul** dacă ai durere sau umflare la un picior, orice sângerare vaginală neobișnuită ori scurgere cu sânge (mai ales după menopauză) sau schimbări ale vederii.
+
+### Controlul ginecologic
+
+Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, decât dacă medicul consideră că ai un risc crescut. Important e să raportezi orice sângerare neobișnuită. Mergi în continuare la controalele ginecologice obișnuite.
+
+*Surse: prospectul și Rezumatul caracteristicilor produsului pentru tamoxifen (secțiunea 4.5); Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen; ACOG Committee Opinion nr. 601, „Tamoxifen and Uterine Cancer” (2014); Wapnir și colab., Journal of the National Cancer Institute, 2011 (NSABP B-17 și B-24).*`
   },
   {
     id: 'g2',
     tag: 'STIL DE VIAȚĂ & CONFORT',
-    title: 'Managementul bufeurilor și transpirațiilor nocturne',
-    summary: 'Strategii practice non-hormonale: îmbrăcăminte în straturi, igiena somnului, respirație ritmată și răcorire.',
+    title: 'Bufeurile și transpirațiile de noapte',
+    summary: 'Ce ajută cu adevărat, după studii, și ce poți încerca pentru confort.',
     category: 'stil_viata',
-    content: `### Înțelegerea Bufeurilor
+    content: `### De ce apar
 
-Bufeurile sunt cauzate de o ușoară dereglare temporară a centrului de termoreglare din hipotalamus, cauzată de blocarea estrogenilor.
+Bufeurile sunt printre cele mai frecvente efecte ale tamoxifenului. Nu înseamnă că tratamentul nu merge și nu sunt periculoase, dar pot obosi și pot strica somnul. Merită să vorbești despre ele cu medicul.
 
-#### Tehnici validate de control:
-* **Îmbrăcăminte în straturi (layering)**: Folosește materiale naturale (bumbac, in, bambus) pe care le poți îndepărta ușor la debutul unui val de căldură.
-* **Respirație ghidată paced breathing**: 6 respirații lente pe minut (inspiri 5 secunde, expiri 5 secunde) reduc frecvența și severitatea bufeului cu până la 50%.
-* **Evitarea triggerilor**: Condimentele iuți, alcoolul, cofeina și stresul acut sunt declanșatori cunoscuți. Menține un jurnal pentru a identifica proprii tăi triggeri.`
+### Ce a funcționat în studii
+
+* **Terapia cognitiv-comportamentală (TCC)**, cu un psiholog: face bufeurile mai ușor de purtat și mai puțin deranjante.
+* **Hipnoza clinică**, cu un specialist: a redus numărul și intensitatea bufeurilor.
+* **Tratamente fără hormoni, prescrise de medic.** Unele antidepresive nu se potrivesc cu tamoxifenul, așa că alegerea e a medicului oncolog.
+
+### Pentru confort
+
+Măsurile de mai jos nu au redus bufeurile în studii, dar multe femei le găsesc plăcute:
+
+* haine în straturi, din bumbac sau in, pe care le poți scoate repede;
+* un ventilator, o cameră răcoroasă noaptea, o băutură rece la îndemână;
+* jurnalul din aplicație, ca să vezi dacă anumite momente le declanșează.
+
+### Plante și suplimente
+
+Suplimentele din plante și cele cu soia nu sunt recomandate pentru bufeuri, iar unele pot interacționa cu tamoxifenul. Întreabă medicul înainte să iei ceva.
+
+*Sursa: The Menopause Society (NAMS), „The 2023 nonhormone therapy position statement”, Menopause 2023; 30(6):573–590.*`
   },
   {
     id: 'g3',
     tag: 'SUPRAVEGHERE & IMAGISTICĂ',
-    title: 'Protocolul de control la 6 luni și mamografie anuală',
-    summary: 'Calendarul recomandat de societățile internaționale (ESMO / NCCN) pentru supravegherea oncologică post-operatorie.',
+    title: 'Controalele după tratament',
+    summary: 'Ce controale urmează de obicei după DCIS. Calendarul tău îl stabilește medicul.',
     category: 'monitorizare',
-    content: `### Protocolul de Supraveghere în DCIS
+    content: `### Mamografia
 
-După finalizarea tratamentului local (chirurgie conservatoare și radioterapie), supravegherea este cheia liniștii tale pe termen lung.
+După operația care păstrează sânul, ghidurile recomandă **mamografie o dată pe an**. Ghidul britanic NICE o recomandă anual cel puțin 5 ani, inclusiv după DCIS. Prima mamografie se face, de obicei, la 6–12 luni după tratament.
 
-#### Etapele recomandate:
-1. **Control clinic oncologic**: la fiecare 6 luni în primii 2-3 ani, apoi anual.
-2. **Imagistică anuală**: Mamografie și/sau RMN de sân (în funcție de densitatea mamară), de obicei la 12 luni de la intervenția chirurgicală.
-3. **Control ginecologic**: Foarte important în timpul tratamentului cu Tamoxifen (ecografie transvaginală anuală).`
+### Vizitele la medic
+
+Ghidul european ESMO recomandă vizite mai dese în primii ani (la 3–6 luni), apoi tot mai rar, până la o dată pe an. Medicul adaptează ritmul după riscul tău și după ce simți tu.
+
+### Controlul ginecologic
+
+În timpul tratamentului cu tamoxifen, mergi la controalele ginecologice obișnuite și raportează orice sângerare neobișnuită (vezi ghidul despre tamoxifen).
+
+> Notează datele în aplicație: îți arată câte zile mai sunt și te ajută să pregătești întrebările pentru medic.
+
+*Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management” (2018, actualizat); ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*`
   }
 ];
 
 export const NEWS_PROTOCOLS: NewsProtocol[] = [
   {
     id: 'n1',
-    title: 'ASCO 2026: Tamoxifen în doze mici (Low-Dose) pentru leziuni cu risc înalt',
+    title: 'Tamoxifen în doză mică după DCIS: ce arată un studiu din 2026',
     date: 'Iunie 2026',
-    summary: 'Studiile recente de la ASCO 2026 arată că dozele mici de Tamoxifen (5 mg zilnic) sunt extrem de eficiente pentru DCIS.',
-    content: `În cadrul întâlnirii anuale ASCO din 2026, au fost prezentate date noi și esențiale despre utilizarea dozelor mici de Tamoxifen (cunoscut și ca *babytam*).
+    summary: 'O analiză a trei studii arată că 5 mg pe zi a redus riscul unui nou cancer de sân la femeile după menopauză. Doza potrivită ți-o stabilește medicul.',
+    content: `### Ce s-a studiat
+Cercetătorii au analizat împreună datele a 1.545 de femei din trei studii. Femeile aveau DCIS, carcinom microinvaziv sau leziuni cu risc crescut, cu receptori de estrogen pozitivi sau necunoscuți. Unele au primit tamoxifen în doză mică (5 mg pe zi sau 10 mg o dată la două zile, timp de 2–5 ani), altele placebo sau niciun tratament. Au fost urmărite în medie 9,4 ani.
 
-### Eficacitate dovedită cu mai puține efecte secundare
-Un studiu de analiză a datelor (pooled analysis) a arătat că utilizarea Tamoxifenului în doze de 5 mg pe zi (sau 10 mg o dată la două zile) reduce semnificativ riscul de evenimente mamare, în special la femeile aflate la postmenopauză care au fost diagnosticate cu carcinom ductal in situ (DCIS) sau hiperplazie atipică.
+### Ce s-a găsit
+* **După menopauză:** doza mică a redus cam la jumătate riscul unui nou cancer de sân (40 din 335 de femei, față de 93 din 401).
+* **Înainte de menopauză:** beneficiul a fost mai puțin clar, mai ales pentru sânul operat.
 
-### Avantajul major
-Deoarece doza este redusă semnificativ (față de doza standard de 20 mg), **incidența efectelor secundare** (cum ar fi bufeurile, riscul de tromboze și modificările endometriale) scade dramatic. 
+### Ce înseamnă pentru tine
+Doza potrivită pentru tine o stabilește medicul oncolog. Dacă tolerezi greu tratamentul, îl poți întreba dacă doza mică ar fi o variantă. Nu schimba niciodată singură doza.
 
-> Dacă tolerezi greu doza de 20 mg, discută cu medicul tău oncolog posibilitatea trecerii la o doză mai mică (low-dose tamoxifen). Nu modifica niciodată doza fără acordul medicului tău.`
-  },
-  {
-    id: 'n2',
-    title: 'Urmărire pe 20 de ani (Stockholm Trials): Beneficiul Tamoxifen',
-    date: 'Iulie 2026',
-    summary: 'Noi date publicate în JNCI confirmă rolul protector al Tamoxifenului pe o perioadă de până la 20 de ani.',
-    content: `Studii recente pe termen lung (până la 20 de ani de urmărire), bazate pe testele clinice de la Stockholm (publicate în *JNCI*, iulie 2026), reafirmă importanța de necontestat a terapiei cu Tamoxifen.
-
-### Protecție pe termen lung
-Studiul a demonstrat un beneficiu susținut al terapiei cu Tamoxifen în rândul pacientelor cu cancer de sân HR-pozitiv (Luminal A și B), subliniind rolul fundamental al aderenței la tratament în prevenirea recurențelor tardive.
-
-Pacienții care și-au finalizat tratamentul recomandat au prezentat o rată semnificativ redusă a recurenței chiar și la 15-20 de ani post-diagnostic.`
+*Sursa: Gandini și colab., Journal of Clinical Oncology, 2026; 44:2121–2129 (DOI 10.1200/JCO-26-00841), prezentat la ASCO 2026.*`
   }
 ];

@@ -21,6 +21,7 @@ describe('Alerta pentru simptome severe', () => {
 
     act(() => { vi.advanceTimersByTime(10000); });
     const alert = screen.getByRole('alert');
+    expect(within(alert).getByText('Ai notat un simptom puternic')).toBeInTheDocument();
     expect(within(alert).getByRole('link', { name: '112' })).toHaveAttribute('href', 'tel:112');
 
     fireEvent.click(within(alert).getByText('Vezi semnalele de alarmă'));

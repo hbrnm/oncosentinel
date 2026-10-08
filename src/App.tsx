@@ -12,6 +12,7 @@ import { EditProfileModal } from './components/EditProfileModal';
 import { BreathingModal } from './components/BreathingModal';
 import { DoctorVisitModal } from './components/DoctorVisitModal';
 import { GroundingModal } from './components/GroundingModal';
+import { HelpModal } from './components/HelpModal';
 import { AuthModal } from './components/AuthModal';
 import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
@@ -30,6 +31,7 @@ export function App() {
   const [isGroundingOpen, setIsGroundingOpen] = useState<boolean>(false);
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
   const [isSupporterOpen, setIsSupporterOpen] = useState<boolean>(false);
+  const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(() => {
     return localStorage.getItem('oncosentinel_onboarded') !== 'true';
   });
@@ -95,26 +97,6 @@ export function App() {
       pill_stock_count: Math.max(0, profile.pill_stock_count - 1)
     };
     if (storageService.saveProfile(updatedProfile)) setProfile(updatedProfile);
-  };
-
-  const handleSaveQuickSymptom = (hotFlashes: number, energy: number, jointPain: number) => {
-    const newLog: SymptomLog = {
-      id: `sym_${Date.now()}`,
-      logged_at: new Date().toISOString(),
-      hot_flashes_count: hotFlashes > 0 ? hotFlashes : 0,
-      hot_flashes_intensity: hotFlashes,
-      night_sweats: false,
-      fatigue_level: 6 - energy,
-      sleep_quality: 3,
-      mood_state: energy >= 4 ? 'Optimistă' : 'Echilibrată',
-      joint_pain_level: jointPain,
-      joint_pain_areas: jointPain > 0 ? ['articulații'] : [],
-      mucosal_dryness: 0,
-      water_intake_ml: 2000
-    };
-
-    const updated = [newLog, ...symptoms];
-    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
   };
 
   const handleAddSymptomLog = (logData: Omit<SymptomLog, 'id'>) => {
@@ -195,15 +177,12 @@ export function App() {
               profile={profile}
               doses={doses}
               onTakeDose={handleTakeDose}
-              onSaveQuickSymptom={handleSaveQuickSymptom}
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
               onOpenBreathing={() => setIsBreathingOpen(true)}
               onOpenDoctorVisit={() => setIsDoctorVisitOpen(true)}
               onOpenGrounding={() => setIsGroundingOpen(true)}
               onOpenSupporter={() => setIsSupporterOpen(true)}
-              onNavigateToRecipes={(query) => {
-                setActiveTab('guide');
-              }}
+              onOpenHelp={() => setIsHelpOpen(true)}
               onNavigateToTab={(tab) => {
                 setActiveTab(tab);
               }}
@@ -265,6 +244,18 @@ export function App() {
           isOpen={isRedFlagsOpen}
           onClose={() => setIsRedFlagsOpen(false)}
           profile={profile}
+          onOpenHelp={() => { setIsRedFlagsOpen(false); setIsHelpOpen(true); }}
+        />
+
+        {/* Ajutor: urgență, echipa medicală, liniștire, sprijin */}
+        <HelpModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+          profile={profile}
+          onOpenRedFlags={() => setIsRedFlagsOpen(true)}
+          onOpenBreathing={() => setIsBreathingOpen(true)}
+          onOpenGrounding={() => setIsGroundingOpen(true)}
+          onOpenSupporter={() => setIsSupporterOpen(true)}
         />
 
         {/* Edit Profile Modal */}

@@ -22,3 +22,6 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 Thumbs.db
+
+# Rapoarte PDF generate local (pot conține date medicale)
+*.pdf

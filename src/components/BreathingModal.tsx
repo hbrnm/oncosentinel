@@ -66,11 +66,11 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
         {/* Title */}
         <div className="flex items-center gap-1.5 text-xs text-sage-800 dark:text-sage-300 font-bold uppercase tracking-wider mb-1">
           <Wind className="w-4 h-4 text-sage-600" />
-          <span>Respirație Ritmata (Paced Breathing)</span>
+          <span>Respirație lentă</span>
         </div>
 
         <p className="text-[11px] text-gray-500 dark:text-gray-400 mb-6 max-w-[240px]">
-          Validat clinic pentru calmarea rapidă a bufeurilor și reducerea stimulului adrenergic.
+          Câteva minute de respirație lentă, pentru un moment de liniște.
         </p>
 
         {/* Breathing Circle Widget */}
