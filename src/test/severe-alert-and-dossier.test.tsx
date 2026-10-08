@@ -17,7 +17,7 @@ describe('Alerta pentru simptome severe', () => {
     fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
     const fatigue = container.querySelector('input[type="range"][min="1"][max="5"]')!;
     fireEvent.change(fatigue, { target: { value: '5' } });
-    fireEvent.click(screen.getByText('Salvează în jurnal'));
+    fireEvent.click(screen.getByText('Salvează simptomele'));
 
     act(() => { vi.advanceTimersByTime(10000); });
     const alert = screen.getByRole('alert');

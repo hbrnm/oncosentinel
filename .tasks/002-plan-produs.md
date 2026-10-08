@@ -149,6 +149,13 @@ Deciziile proprietarei (2026-10-08):
 - După reblocarea cu PIN sau reîncărcare, Back poate duce încă la ecranele vizitate înainte (istoricul browserului rămâne).
 - Test nou `back-telefon.test.tsx` (pică pe codul vechi). `npm test` (147) și `npm run build` trec.
 
+### Jurnal: nota și simptomele separate (2026-10-08)
+- Observația proprietarei: salvarea notei lua și simptomele (inclusiv cele completate din salvări mai vechi). Deciziile ei: două intrări separate pe zi („Salvează în jurnal” = stare și gânduri; „Salvează simptomele” = formularul), fiecare actualizată la a doua salvare din aceeași zi; efect pe buton: verde, cu bifă și „Salvat”, 2 secunde.
+- `SymptomLog.kind` ('note' | 'symptoms'; lipsă = intrare veche, cu ambele), câmpurile de simptome devin opționale. Istoricul arată „Simptome” cu icon separat. Raportul PDF pune „-” la simptome pentru note. Alerta de simptom puternic apare doar la salvarea simptomelor.
+- După `verificare` (nimic blocant): „Pentru medic” și victoriile numără doar notele (simptomele o dată); comparația bufeurilor ignoră săptămânile doar cu note; salvarea unei părți nu mai resetează cealaltă parte, nesalvată.
+- Rămas, acceptat: o intrare veche (cu ambele părți) din ziua actualizării rămâne lângă cele noi.
+- Test nou `jurnal-separat.test.tsx` (pică pe codul vechi). `npm test` (153) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 

@@ -14,20 +14,22 @@ export interface SymptomLog {
   id: string;
   user_id?: string;
   logged_at: string;
-  hot_flashes_count: number;
-  hot_flashes_intensity: number; // 0 - 5
-  night_sweats: boolean;
-  fatigue_level: number;         // 1 - 5
-  sleep_quality: number;         // 1 - 5
-  mood_state: string;            // 'Calmă' | 'Anxioasă' | 'Obosită' | 'Optimistă' | 'Echilibrată'
-  joint_pain_level: number;      // 0 - 5
+  // 'note' = stare + gânduri, 'symptoms' = formularul de simptome; lipsă = intrare veche, cu ambele
+  kind?: 'note' | 'symptoms';
+  hot_flashes_count?: number;
+  hot_flashes_intensity?: number; // 0 - 5
+  night_sweats?: boolean;
+  fatigue_level?: number;         // 1 - 5
+  sleep_quality?: number;         // 1 - 5
+  mood_state?: string;            // 'Foarte bine' | 'Bine' | 'Echilibrată' | 'Rău' | 'Foarte rău'
+  joint_pain_level?: number;      // 0 - 5
   bone_pain_level?: number;      // 0 - 5
-  joint_pain_areas: string[];
-  mucosal_dryness: number;       // 0 - 5
+  joint_pain_areas?: string[];
+  mucosal_dryness?: number;       // 0 - 5
   nausea_level?: number;         // 0 - 5
   brain_fog?: number;            // 0 - 5
   headache?: number;             // 0 - 5
-  water_intake_ml: number;
+  water_intake_ml?: number;
   notes?: string;
 }
 
