@@ -143,8 +143,8 @@ export function App() {
 
     const nonDemoDocs = documents.filter(d => !d.is_demo);
     const updated = [newDoc, ...nonDemoDocs];
-    setDocuments(updated);
-    storageService.saveDocuments(updated);
+    // Documentul apare doar dacă a încăput pe dispozitiv
+    if (storageService.saveDocuments(updated)) setDocuments(updated);
   };
 
   const handleDeleteDocument = (docId: string) => {

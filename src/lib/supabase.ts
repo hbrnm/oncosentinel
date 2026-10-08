@@ -23,6 +23,21 @@ export const DEFAULT_PROFILE: PatientProfile = {
   oncologist_email: ''
 };
 
+export const STORAGE_FULL_MESSAGE =
+  'Nu am putut salva: spațiul pentru date de pe acest dispozitiv e plin. Șterge câteva documente din Cronologie (cele mari ocupă cel mai mult) și încearcă din nou.';
+
+// Salvează în localStorage; când spațiul e plin, spune utilizatoarei în loc să piardă datele în tăcere
+const save = (key: string, value: unknown): boolean => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (err) {
+    console.error('Salvare locală eșuată:', err);
+    alert(STORAGE_FULL_MESSAGE);
+    return false;
+  }
+};
+
 // Helper functions for Local Storage & Supabase Sync
 export const storageService = {
   getProfile(): PatientProfile {
@@ -30,7 +45,7 @@ export const storageService = {
     return saved ? JSON.parse(saved) : DEFAULT_PROFILE;
   },
   saveProfile(profile: PatientProfile) {
-    localStorage.setItem('navimed_profile', JSON.stringify(profile));
+    return save('navimed_profile', profile);
   },
   
   getDoseLogs(): DoseLog[] {
@@ -51,7 +66,7 @@ export const storageService = {
     return [];
   },
   saveDoseLogs(logs: DoseLog[]) {
-    localStorage.setItem('navimed_doses', JSON.stringify(logs));
+    return save('navimed_doses', logs);
   },
 
   getSymptomLogs(): SymptomLog[] {
@@ -72,11 +87,11 @@ export const storageService = {
     return [];
   },
   saveSymptomLogs(logs: SymptomLog[]) {
-    localStorage.setItem('navimed_symptoms', JSON.stringify(logs));
+    return save('navimed_symptoms', logs);
   },
 
   saveMilestones(milestones: ClinicalMilestone[]) {
-    localStorage.setItem('navimed_milestones', JSON.stringify(milestones));
+    return save('navimed_milestones', milestones);
   },
 
   getMilestones(): ClinicalMilestone[] {
@@ -102,11 +117,6 @@ export const storageService = {
     return [];
   },
   saveDocuments(docs: MedicalDocument[]) {
-    try {
-      localStorage.setItem('navimed_docs', JSON.stringify(docs));
-    } catch (err) {
-      console.error('LocalStorage quota exceeded for documents:', err);
-      alert('Memoria locală a browserului pentru documente este plină. Încearcă să încarci un fișier mai mic.');
-    }
+    return save('navimed_docs', docs);
   }
 };
