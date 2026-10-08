@@ -9,7 +9,7 @@ Sarcina 002, etapa 0, pasul 1 (2026-10-08). Fiecare afirmație medicală din apl
 - **CONFIRMAT**: sursa e găsită și textul îi corespunde (cu sursa notată).
 - **NU E MEDICAL**: text de interfață, rămâne.
 
-## Prioritate 1: raportul PDF pentru medic (`src/lib/pdfGenerator.ts`)
+## Prioritate 1: raportul PDF pentru medic (`src/lib/pdfGenerator.ts`) — REZOLVAT (2026-10-08)
 Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clinică.
 
 | Linie | Text | Stare | De ce |
@@ -22,7 +22,9 @@ Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clin
 | 30 | „Ghid Integrativ Oncologic” | DE VERIFICAT | eticheta sugerează un ghid clinic care nu există |
 | 141 | „… are scop informativ de suport clinic.” | NU E MEDICAL | de păstrat, eventual mai clar: „date notate de pacientă” |
 
-## Prioritate 2: „Noutăți” (`src/data/guides.ts`, `NEWS_PROTOCOLS`, afișate și pe Astăzi)
+## Prioritate 2: „Noutăți” — REZOLVAT (2026-10-08): n1 rescris și aprobat, n2 scos (vezi docs/rescriere-etapa0.md)
+
+### Starea inițială (`src/data/guides.ts`, `NEWS_PROTOCOLS`, afișate și pe Astăzi)
 
 | Element | Afirmație din aplicație | Stare | Ce spune sursa |
 |---|---|---|---|
@@ -35,7 +37,7 @@ Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clin
 
 ## Prioritate 3: ghidurile (`src/data/guides.ts`, `CLINICAL_GUIDES`)
 
-### g1 „Tamoxifen și efectele secundare”
+### g1 „Tamoxifen și efectele secundare” — REZOLVAT (2026-10-08): rescris ca „Tamoxifen: ce face și cum îl iei”, aprobat
 | Afirmație | Stare |
 |---|---|
 | SERM care blochează estrogenul în țesutul mamar | DE VERIFICAT (probabil corect) |

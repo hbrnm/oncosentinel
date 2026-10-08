@@ -15,7 +15,7 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pasul 1 gata) | |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1–2 parțial: PDF, Noutăți, g1) | |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | de făcut | |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
@@ -45,8 +45,14 @@ Deciziile proprietarei (2026-10-08):
 - `npm test` (46) și `npm run build` trec.
 - Opțiune pentru mai târziu: un font cu diacritice în PDF (ar crește pachetul PDF cu ~100–300 KB).
 
+### Etapa 0, pasul 2, prima parte (2026-10-08)
+- Rescrieri în `docs/rescriere-etapa0.md`; aprobate de proprietară: n1 (doza mică, cu precizarea „după menopauză”) și g1 („Tamoxifen: ce face și cum îl iei”). n2 (Stockholm, cancer invaziv) a fost scos.
+- Test nou `medical-content.test.ts`, ca afirmațiile scoase să nu revină.
+- DE COMPLETAT: verificarea lui g1 cu prospectul aprobat în România (ANMDMR).
+- Paginile NHS, ASCO Post și ascopubs sunt blocate de rețeaua mediului; sursele au fost citite prin rezultatele căutării.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Etapa 0, pasul 2: rescrierea „Noutăților” și a ghidului g1 din surse oficiale, cu aprobarea proprietarei.
+Etapa 0, pasul 2, continuare: ghidurile g2 (bufeuri) și g3 (controale), apoi textele din ecrane (respirație, pornire), apoi rețetele.
