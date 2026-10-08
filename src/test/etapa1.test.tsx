@@ -48,7 +48,42 @@ describe('Am nevoie de liniște acum', () => {
   });
 });
 
+describe('Am nevoie de liniște acum: alte drumuri', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+  });
+
+  it('„Am nevoie de ajutor acum” deschide „Ajutor” fără notă; redeschiderea pornește de la început', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: 'Am nevoie de liniște acum' }));
+    fireEvent.click(screen.getByText('Am nevoie de ajutor acum'));
+    expect(screen.getByRole('dialog', { name: 'Ajutor' })).toBeInTheDocument();
+    expect(screen.queryByText('E în regulă să ceri ajutor.')).not.toBeInTheDocument();
+    fireEvent.click(within(screen.getByRole('dialog', { name: 'Ajutor' })).getByRole('button', { name: 'Închide' }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Am nevoie de liniște acum' }));
+    fireEvent.click(screen.getByText('Respiră cu mine'));
+    fireEvent.click(within(screen.getByRole('dialog', { name: 'Respirație lentă' })).getByRole('button', { name: 'Închide' }));
+    fireEvent.click(screen.getByText('Da, puțin'));
+    fireEvent.click(within(screen.getByRole('dialog')).getAllByRole('button', { name: 'Închide' })[0]);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Am nevoie de liniște acum' }));
+    expect(screen.getByText('Ești aici. E în regulă.')).toBeInTheDocument();
+  });
+});
+
 describe('Jurnalul care răspunde', () => {
+  it('mesajul dispare când schimbi starea după salvare', () => {
+    render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} onOpenHelp={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Foarte rău' }));
+    fireEvent.click(screen.getByText('Salvează în jurnal'));
+    expect(screen.getByRole('status')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Bine' }));
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
   it('după salvare arată un mesaj aprobat pentru starea aleasă; la „Foarte rău”, și ajutorul', () => {
     const onOpenHelp = vi.fn();
     render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} onOpenHelp={onOpenHelp} />);
@@ -82,6 +117,12 @@ describe('Sprijin înaintea controlului', () => {
     render(<App />);
     expect(screen.getByText('Controlul se apropie: peste 2 zile')).toBeInTheDocument();
     expect(screen.getByText('Întrebările pentru medic')).toBeInTheDocument();
+  });
+
+  it('cu o zi înainte spune „mâine”', () => {
+    localStorage.setItem('navimed_next_control_date', localDay(1));
+    render(<App />);
+    expect(screen.getByText('Controlul se apropie: mâine')).toBeInTheDocument();
   });
 
   it('în ziua controlului spune „Multă putere azi”', () => {

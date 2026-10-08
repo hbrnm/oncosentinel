@@ -206,7 +206,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </div>
           <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
-          <MoodPicker value={mood} onChange={setMood} compact />
+          <MoodPicker value={mood} onChange={(m) => { setMood(m); setResponse(null); }} compact />
           
           <div className="mt-5">
             <h3 className="text-sm font-bold text-ink-soft dark:text-petal-300 mb-3 flex items-center gap-1.5">
@@ -215,7 +215,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             </h3>
             <textarea 
               value={note}
-              onChange={(e) => setNote(e.target.value)}
+              onChange={(e) => { setNote(e.target.value); setResponse(null); }}
               placeholder="Notează un gând, un simptom, sau o bucurie de azi..."
               className="w-full min-h-[120px] p-4 rounded-3xl bg-white/70 dark:bg-darkbg/50 border border-petal-200/60 dark:border-petal-900/40 text-[14px] resize-none text-gray-800 dark:text-gray-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-petal-300 transition-all disabled:opacity-70 shadow-sm" 
             />

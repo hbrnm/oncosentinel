@@ -89,7 +89,7 @@ Deciziile proprietarei (2026-10-08):
 - Sprijin înaintea controlului: card pe Astăzi cu 1–3 zile înainte („Controlul se apropie…”) și în ziua controlului („Multă putere azi”), cu „Întrebările pentru medic” și „Un moment de liniște”.
 - Butonul de închidere de la respirație are acum etichetă pentru cititorul de ecran.
 - De urmărit la testare: în jurnal, selectorul de stare are deja o propoziție caldă; cu mesajul nou, pacienta vede două.
-- `npm test` (69) și `npm run build` trec; verificat la 390px.
+- `npm test` (72) și `npm run build` trec; verificat la 390px.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
