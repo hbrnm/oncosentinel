@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PillIcon } from './Botanical';
-import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, AlertCircle, BellRing } from 'lucide-react';
+import { downloadReminderIcs, googleCalendarUrl, REMINDER_TEXT } from '../lib/calendarReminder';
 import { loadAppointments } from '../lib/appointments';
 import { plural } from '../lib/summary';
 import { PatientProfile, DoseLog } from '../types';
@@ -66,6 +67,10 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   });
 
   const isTodayTaken = takenDates.has(todayStr);
+
+  // Memento zilnic în calendarul telefonului
+  const reminderTime = profile.daily_reminder_time || '08:00';
+  const [reminderError, setReminderError] = useState(false);
   const firstDoseDate = [...takenDates, ...missedDates].sort()[0];
 
   // Controalele viitoare din „Controale medicale”, marcate și în calendar
@@ -240,6 +245,43 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           )}
         </div>
       </div>
+
+      {/* Memento zilnic în calendarul telefonului (fără server) */}
+      <section aria-labelledby="reminder-title" className="organic-card rounded-3xl p-5">
+        <div className="flex items-center gap-2 mb-2">
+          <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
+          <h2 id="reminder-title" className="micro-label">Memento zilnic</h2>
+        </div>
+        <p className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">
+          Pune un memento în calendarul telefonului, în fiecare zi la {reminderTime}. În memento scrie doar „{REMINDER_TEXT}”, fără numele medicamentului.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+          <a
+            href={googleCalendarUrl(reminderTime)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tap-scale py-2.5 px-3 rounded-2xl bg-sage-deep text-white text-[13px] font-semibold text-center"
+          >
+            Google Calendar
+            <span className="sr-only"> (se deschide într-o filă nouă)</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => setReminderError(!downloadReminderIcs(reminderTime))}
+            className="tap-scale py-2.5 px-3 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[13px] font-semibold text-ink dark:text-gray-100"
+          >
+            Alt calendar (iPhone, Samsung…)
+          </button>
+        </div>
+        {reminderError && (
+          <p role="alert" className="text-[12px] text-ink dark:text-gray-100 font-semibold mt-3 leading-relaxed">
+            Nu am putut crea fișierul de calendar. Încearcă din nou sau folosește Google Calendar.
+          </p>
+        )}
+        <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-3 leading-relaxed">
+          Dacă schimbi ora, adaugă din nou memento-ul și șterge-l pe cel vechi din calendar.
+        </p>
+      </section>
 
       {/* Card Aderență pe Luna Curentă */}
       <div className="organic-card rounded-3xl p-5">
