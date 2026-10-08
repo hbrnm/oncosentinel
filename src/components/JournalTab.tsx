@@ -312,7 +312,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 <p className="text-[13px] font-semibold text-ink dark:text-gray-100">Am salvat nota de azi.</p>
                 <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed mt-0.5">{response.text}</p>
                 {response.crisis && (
-                  <a href="tel:112" className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">
+                  <a href="tel:112" className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-petal-700 hover:bg-petal-800 text-white text-sm font-bold">
                     <PhoneCall className="w-4 h-4" /> Sună la 112
                   </a>
                 )}

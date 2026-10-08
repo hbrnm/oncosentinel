@@ -644,7 +644,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="fixed bottom-24 right-4 z-50 flex items-center gap-1.5 animate-bounce">
           <button
             onClick={onOpenRedFlags}
-            className="py-2.5 px-4 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-lg flex items-center gap-2"
+            className="py-2.5 px-4 rounded-full bg-petal-700 hover:bg-petal-800 text-white text-xs font-bold shadow-lg flex items-center gap-2"
           >
             <PhoneCall className="w-4 h-4" />
             <span>SOS Urgențe</span>
