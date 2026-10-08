@@ -17,14 +17,12 @@ interface DashboardTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
   onTakeDose: (dateIso?: string) => void;
-  onSaveQuickSymptom: (hotFlashes: number, energy: number, jointPain: number) => void;
   onOpenRedFlags: () => void;
   onOpenBreathing: () => void;
   onOpenDoctorVisit: () => void;
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onOpenHelp?: () => void;
-  onNavigateToRecipes?: (query?: string) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
 }
 
@@ -34,14 +32,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   profile,
   doses,
   onTakeDose,
-  onSaveQuickSymptom,
   onOpenRedFlags,
   onOpenBreathing,
   onOpenDoctorVisit,
   onOpenGrounding,
   onOpenSupporter,
   onOpenHelp,
-  onNavigateToRecipes,
   onNavigateToTab
 }) => {
   const now = new Date();
@@ -157,10 +153,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   };
 
   // Quick symptom states (preserved for test compatibility and full check-in)
-  const [quickHotFlashes, setQuickHotFlashes] = useState<number>(0);
-  const [quickEnergy, setQuickEnergy] = useState<number>(3);
-  const [quickJoints, setQuickJoints] = useState<number>(0);
-  const [symptomSavedNotice, setSymptomSavedNotice] = useState<boolean>(false);
 
   // Stock status
   const isLowStock = profile.pill_stock_count <= 7;
@@ -218,12 +210,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       colors: ['#7A9A8B', '#CA868C', '#D97746']
     });
     onTakeDose();
-  };
-
-  const handleSaveSymptoms = () => {
-    onSaveQuickSymptom(quickHotFlashes, quickEnergy, quickJoints);
-    setSymptomSavedNotice(true);
-    setTimeout(() => setSymptomSavedNotice(false), 3000);
   };
 
   // Dynamic Greeting & Mood Title
@@ -609,43 +595,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </button>
         </div>
       )}
-
-      {/* Hidden container to preserve quick symptom check-in & supporter triggers for full tests */}
-      <div className="sr-only">
-        <button onClick={handleSaveSymptoms}>Salvează</button>
-        <span>Check-in Fizic Rapid (60 secunde)</span>
-        <button onClick={onOpenRedFlags}>Ghid rapid: Când trebuie să suni medicul de urgență?</button>
-        <button onClick={onOpenSupporter}>Cercul de sprijin</button>
-        <div onClick={onOpenGrounding} className="cursor-pointer">
-          <span>Ancorare 5-4-3-2-1</span>
-        </div>
-        <div>
-          <span>Nivel de Energie</span>
-          <div className="grid grid-cols-5">
-            {[1, 2, 3, 4, 5].map((lvl) => (
-              <button key={lvl} onClick={() => setQuickEnergy(lvl)}>
-                {lvl}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <span>Bufeuri</span>
-          <div className="grid grid-cols-6">
-            {[0, 1, 2, 3, 4, 5].map((lvl) => (
-              <button key={lvl} onClick={() => setQuickHotFlashes(lvl)}>
-                {lvl}
-              </button>
-            ))}
-          </div>
-        </div>
-        {quickEnergy <= 2 && (
-          <div onClick={() => onNavigateToRecipes?.('energie')} className="cursor-pointer">
-            <p>Smoothie „Energie Curată” cu cacao pură & in</p>
-            <span>Vezi rețeta &rarr;</span>
-          </div>
-        )}
-      </div>
 
       {/* 8. Contextual Floating Action Button (FAB) SOS */}
       {showSosFab && (

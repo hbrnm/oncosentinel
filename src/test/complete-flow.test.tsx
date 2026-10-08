@@ -91,9 +91,8 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     // -------------------------------------------------------------
     // ETAPA 5: Resurse de Liniște (Ancorare 5-4-3-2-1)
     // -------------------------------------------------------------
-    const groundingCard = screen.getByText(/Ancorare 5-4-3-2-1/i).closest('div[class*="cursor-pointer"]');
-    expect(groundingCard).toBeTruthy();
-    fireEvent.click(groundingCard!);
+    fireEvent.click(screen.getByRole('button', { name: /Ajutor\s*acum/ }));
+    fireEvent.click(screen.getByText(/Exercițiul 5-4-3-2-1/i));
 
     // Se deschide modalul de ancorare senzorială
     expect(screen.getByText(/Metoda de Ancorare 5-4-3-2-1/i)).toBeInTheDocument();

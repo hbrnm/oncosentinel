@@ -127,40 +127,13 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     expect(savedSymptoms[0].notes).toBe('M-am simțit foarte energică azi după plimbare.');
   });
 
-  it('5. Flux Interconectat: Recomandare Rețetă din Dashboard deschide Tab-ul Ghid & Rețete', async () => {
-    localStorage.setItem('oncosentinel_onboarded', 'true');
-    render(<App />);
-
-    // În secțiunea Nivel de Energie din Dashboard, selectăm nivelul 2 (scăzut)
-    const energyHeading = screen.getByText(/Nivel de Energie/i);
-    const energyContainer = energyHeading.closest('div')?.parentElement;
-    expect(energyContainer).toBeTruthy();
-
-    const lowEnergyBtn = energyContainer!.querySelector('button:nth-child(2)');
-    expect(lowEnergyBtn).toBeTruthy();
-    fireEvent.click(lowEnergyBtn!);
-
-    // Apare recomandarea automată cu legătură către rețetă
-    const recipeRecommendation = await screen.findByText(/Smoothie „Energie Curată”/i);
-    expect(recipeRecommendation).toBeInTheDocument();
-
-    // Dăm click pe containerul recomandării
-    const recipeCard = recipeRecommendation.closest('div[class*="cursor-pointer"]');
-    expect(recipeCard).toBeTruthy();
-    fireEvent.click(recipeCard!);
-
-    // Suntem redirecționați automat în modulul Ghiduri
-    expect(screen.getByText(/Ghiduri Clinice/i)).toBeInTheDocument();
-    expect(screen.getByText(/Noutăți/i)).toBeInTheDocument();
-  });
-
   it('6. Flux Modale Clinice & Suport: Deschiderea și Închiderea Modalelor', async () => {
     localStorage.setItem('oncosentinel_onboarded', 'true');
     render(<App />);
 
     // Testăm Deschiderea Cercului de Sprijin din Dashboard
-    const supporterCard = screen.getByText(/Cercul de sprijin/i);
-    fireEvent.click(supporterCard);
+    fireEvent.click(screen.getByRole('button', { name: /Ajutor\s*acum/ }));
+    fireEvent.click(screen.getByText(/Trimite un mesaj persoanei tale de sprijin/i));
     expect(screen.getByText(/Conectează o persoană dragă de încredere/i)).toBeInTheDocument();
 
     // Închidem modalul apăsând pe butonul de închidere X din modal
@@ -169,8 +142,8 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     if (closeBtn) fireEvent.click(closeBtn);
 
     // Testăm Butonul Semnale de Alarmă / Red Flags din Dashboard
-    const redFlagsBtn = screen.getByText(/Când trebuie să suni medicul de urgență/i);
-    fireEvent.click(redFlagsBtn);
+    fireEvent.click(screen.getByRole('button', { name: /Ajutor\s*acum/ }));
+    fireEvent.click(screen.getByText('Vezi semnalele de alarmă'));
     expect(screen.getByRole('heading', { name: 'Semnale de alarmă' })).toBeInTheDocument();
     expect(screen.getByText(/Durere sau umflare la un singur picior/i)).toBeInTheDocument();
   });

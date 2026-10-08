@@ -99,26 +99,6 @@ export function App() {
     if (storageService.saveProfile(updatedProfile)) setProfile(updatedProfile);
   };
 
-  const handleSaveQuickSymptom = (hotFlashes: number, energy: number, jointPain: number) => {
-    const newLog: SymptomLog = {
-      id: `sym_${Date.now()}`,
-      logged_at: new Date().toISOString(),
-      hot_flashes_count: hotFlashes > 0 ? hotFlashes : 0,
-      hot_flashes_intensity: hotFlashes,
-      night_sweats: false,
-      fatigue_level: 6 - energy,
-      sleep_quality: 3,
-      mood_state: energy >= 4 ? 'Optimistă' : 'Echilibrată',
-      joint_pain_level: jointPain,
-      joint_pain_areas: jointPain > 0 ? ['articulații'] : [],
-      mucosal_dryness: 0,
-      water_intake_ml: 2000
-    };
-
-    const updated = [newLog, ...symptoms];
-    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
-  };
-
   const handleAddSymptomLog = (logData: Omit<SymptomLog, 'id'>) => {
     const newLog: SymptomLog = {
       ...logData,
@@ -197,16 +177,12 @@ export function App() {
               profile={profile}
               doses={doses}
               onTakeDose={handleTakeDose}
-              onSaveQuickSymptom={handleSaveQuickSymptom}
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
               onOpenBreathing={() => setIsBreathingOpen(true)}
               onOpenDoctorVisit={() => setIsDoctorVisitOpen(true)}
               onOpenGrounding={() => setIsGroundingOpen(true)}
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
-              onNavigateToRecipes={(query) => {
-                setActiveTab('guide');
-              }}
               onNavigateToTab={(tab) => {
                 setActiveTab(tab);
               }}
