@@ -1,7 +1,6 @@
 import React from 'react';
-import { X, LifeBuoy, PhoneCall, AlertCircle, Mail, Wind, Sparkles, HeartHandshake, Phone } from 'lucide-react';
+import { X, LifeBuoy, PhoneCall, AlertCircle, Mail, Wind, Sparkles, HeartHandshake } from 'lucide-react';
 import { PatientProfile } from '../types';
-import { HELP_LINES } from '../data/helpLines';
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -107,25 +106,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({
             </p>
           </section>
 
-          {/* 3. Linii de sprijin (doar cele confirmate) */}
-          {HELP_LINES.length > 0 && (
-            <section>
-              <h3 className="micro-label mb-2">Vrei să vorbești cu cineva?</h3>
-              <div className="space-y-2">
-                {HELP_LINES.map((line) => (
-                  <a key={line.phone} href={`tel:${line.phone.replace(/\s/g, '')}`} className={optionClass}>
-                    <Phone className="w-5 h-5 text-sage-deep shrink-0" />
-                    <span>
-                      <span className="block text-sm font-semibold text-ink dark:text-gray-100">{line.name}: {line.phone}</span>
-                      <span className="block text-xs text-ink-soft dark:text-gray-400">{line.description} {line.hours}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* 4. Liniștire */}
+          {/* 3. Liniștire */}
           <section>
             <h3 className="micro-label mb-2">Un moment de liniște</h3>
             <div className="space-y-2">
@@ -140,7 +121,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({
             </div>
           </section>
 
-          {/* 5. Persoana de sprijin */}
+          {/* 4. Persoana de sprijin */}
           <section>
             <h3 className="micro-label mb-2">Cineva drag</h3>
             <button type="button" onClick={openInstead(onOpenSupporter)} className={optionClass}>
