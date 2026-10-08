@@ -23,6 +23,7 @@ interface DashboardTabProps {
   onOpenDoctorVisit: () => void;
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
+  onOpenHelp?: () => void;
   onNavigateToRecipes?: (query?: string) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
 }
@@ -39,6 +40,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenDoctorVisit,
   onOpenGrounding,
   onOpenSupporter,
+  onOpenHelp,
   onNavigateToRecipes,
   onNavigateToTab
 }) => {
@@ -375,6 +377,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         onNavigateToTab={onNavigateToTab}
         onOpenDoctorModal={onOpenDoctorVisit}
         onOpenResources={onOpenGrounding}
+        onOpenHelp={onOpenHelp}
       />
 
       {/* 2. Card Dual: Următorul Control + Citat Empatic (Right after QuickActions as in Base44) */}

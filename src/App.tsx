@@ -12,6 +12,7 @@ import { EditProfileModal } from './components/EditProfileModal';
 import { BreathingModal } from './components/BreathingModal';
 import { DoctorVisitModal } from './components/DoctorVisitModal';
 import { GroundingModal } from './components/GroundingModal';
+import { HelpModal } from './components/HelpModal';
 import { AuthModal } from './components/AuthModal';
 import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
@@ -30,6 +31,7 @@ export function App() {
   const [isGroundingOpen, setIsGroundingOpen] = useState<boolean>(false);
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
   const [isSupporterOpen, setIsSupporterOpen] = useState<boolean>(false);
+  const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(() => {
     return localStorage.getItem('oncosentinel_onboarded') !== 'true';
   });
@@ -201,6 +203,7 @@ export function App() {
               onOpenDoctorVisit={() => setIsDoctorVisitOpen(true)}
               onOpenGrounding={() => setIsGroundingOpen(true)}
               onOpenSupporter={() => setIsSupporterOpen(true)}
+              onOpenHelp={() => setIsHelpOpen(true)}
               onNavigateToRecipes={(query) => {
                 setActiveTab('guide');
               }}
@@ -265,6 +268,18 @@ export function App() {
           isOpen={isRedFlagsOpen}
           onClose={() => setIsRedFlagsOpen(false)}
           profile={profile}
+          onOpenHelp={() => { setIsRedFlagsOpen(false); setIsHelpOpen(true); }}
+        />
+
+        {/* Ajutor: urgență, echipa medicală, liniștire, sprijin */}
+        <HelpModal
+          isOpen={isHelpOpen}
+          onClose={() => setIsHelpOpen(false)}
+          profile={profile}
+          onOpenRedFlags={() => setIsRedFlagsOpen(true)}
+          onOpenBreathing={() => setIsBreathingOpen(true)}
+          onOpenGrounding={() => setIsGroundingOpen(true)}
+          onOpenSupporter={() => setIsSupporterOpen(true)}
         />
 
         {/* Edit Profile Modal */}

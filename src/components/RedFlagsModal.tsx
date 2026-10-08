@@ -6,9 +6,10 @@ interface RedFlagsModalProps {
   isOpen: boolean;
   onClose: () => void;
   profile: PatientProfile;
+  onOpenHelp?: () => void;
 }
 
-export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, profile }) => {
+export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, profile, onOpenHelp }) => {
   if (!isOpen) return null;
 
   const redFlags = [
@@ -108,6 +109,15 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
             <Phone className="w-4 h-4" />
             <span>Contactează Medicul</span>
           </a>
+          {onOpenHelp && (
+            <button
+              type="button"
+              onClick={onOpenHelp}
+              className="col-span-2 text-xs font-semibold text-sage-deep dark:text-sage-300 underline py-1"
+            >
+              Alte forme de ajutor și sprijin
+            </button>
+          )}
         </div>
 
       </div>

@@ -15,7 +15,7 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1–2: PDF, Noutăți, ghiduri, ecrane, rețete) | |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1, 2 și 4 făcuți; 4 așteaptă numerele confirmate) | |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | de făcut | |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
@@ -57,8 +57,16 @@ Deciziile proprietarei (2026-10-08):
 - `npm test` (50) și `npm run build` trec.
 - Rămase în etapa 0: semnalele de alarmă (`RedFlagsModal`) și pragul „sever” din jurnal, de verificat; verificarea interacțiunilor (pasul 5); pagina „Ajutor” cu resurse din România (pasul 4); ghidul de testare (pasul 6); sursa vizibilă sub fiecare ghid (pasul 3, parțial: sursa e deja în text).
 
+### Etapa 0, pasul 4 (2026-10-08)
+- Deciziile proprietarei: pagina se face acum, iar numerele intră după verificarea ei; „Ajutor” e acțiune rapidă pe Astăzi și link din fereastra SOS.
+- `HelpModal`: 112 primul (cu semnalele de alarmă), echipa medicală (e-mail oncolog din profil; psihologul sau asistentul social din spital), respirație și 5-4-3-2-1, persoana de sprijin. Liniile de sprijin vin din `src/data/helpLines.ts`, gol până la confirmare; secțiunea nu apare cât timp lista e goală.
+- Lista de verificat: `docs/resurse-de-verificat.md` (ARPS 0800 801 200 cu program contradictoriu și anunț de nefuncționare, 116 123, Colegiul Pacienților, OncoHelp, M.A.M.E., canceruldesan.ro).
+- Verificat la 390px, fără overflow. `npm test` (57) și `npm run build` trec.
+
+**În așteptare (proprietara):** confirmarea numerelor din `docs/resurse-de-verificat.md`.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Etapa 0, pasul 4: pagina „Ajutor” cu resurse verificate din România; apoi semnalele de alarmă.
+Etapa 0: semnalele de alarmă (`RedFlagsModal`) și pragul „sever” din jurnal; în paralel, proprietara confirmă numerele de ajutor.
