@@ -18,7 +18,8 @@ export const backupService = {
       next_control_date: localStorage.getItem('navimed_next_control_date'),
       doctor_questions_custom: localStorage.getItem('navimed_doctor_questions_custom'),
       appointments: localStorage.getItem('navimed_appointments_list'),
-      doctor_name: localStorage.getItem('navimed_doctor_name')
+      doctor_name: localStorage.getItem('navimed_doctor_name'),
+      victories_seen: localStorage.getItem('oncosentinel_victories_seen')
     };
 
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -44,7 +45,14 @@ export const backupService = {
 
       // Check structure validity
       if (data.profile) {
-        try { JSON.parse(data.profile); localStorage.setItem('navimed_profile', data.profile); } catch (_) {}
+        try {
+          const profile = JSON.parse(data.profile);
+          localStorage.setItem('navimed_profile', data.profile);
+          // Un profil restaurat (cu conținut) e deja configurat: fără fereastra de configurare peste el
+          if (profile && typeof profile === 'object' && !Array.isArray(profile) && Object.keys(profile).length > 0) {
+            localStorage.setItem('oncosentinel_onboarded', 'true');
+          }
+        } catch (_) {}
       }
       if (data.doses) {
         try { JSON.parse(data.doses); localStorage.setItem('navimed_doses', data.doses); } catch (_) {}
@@ -81,6 +89,9 @@ export const backupService = {
       }
       if (data.doctor_name) {
         localStorage.setItem('navimed_doctor_name', data.doctor_name);
+      }
+      if (data.victories_seen) {
+        try { JSON.parse(data.victories_seen); localStorage.setItem('oncosentinel_victories_seen', data.victories_seen); } catch (_) {}
       }
 
       // Cu PIN activ, datele se criptează asincron: așteptăm scrierea înainte de reîncărcare
