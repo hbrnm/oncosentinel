@@ -9,6 +9,7 @@ describe('Conținutul medical rescris', () => {
   it('ghidul despre tamoxifen are surse și nu mai conține afirmațiile scoase', () => {
     expect(g1.content).toMatch(/\*Surse:/);
     expect(g1.content).toMatch(/112/);
+    expect(g1.content).toMatch(/umflare bruscă a feței, a buzelor sau a gâtului/);
     expect(g1.content).not.toMatch(/40–50%|80% dintre paciente|obligatoriu|excelentă/);
   });
 

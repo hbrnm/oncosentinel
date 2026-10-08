@@ -171,7 +171,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     // Testăm Butonul Semnale de Alarmă / Red Flags din Dashboard
     const redFlagsBtn = screen.getByText(/Când trebuie să suni medicul de urgență/i);
     fireEvent.click(redFlagsBtn);
-    expect(screen.getByText(/Semnale de alarmă/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Semnale de alarmă' })).toBeInTheDocument();
     expect(screen.getByText(/Durere sau umflare la un singur picior/i)).toBeInTheDocument();
   });
 
