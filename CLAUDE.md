@@ -47,6 +47,8 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 **Economie (decizia proprietarei, 2026-10-08):**
 - un PR pe etapă, din `main`, integrat imediat ce e verde; fără PR-uri puse unul peste altul;
 - agentul `verificare` o singură dată pe PR și doar când se schimbă codul; se reverifică numai după o problemă blocantă;
-- capturi Playwright doar pentru ecrane noi sau schimbări de aspect;
+- capturi Playwright doar pentru ecrane noi sau schimbări de aspect, decupate pe zona schimbată (nu pagina întreagă);
 - textele unei etape se aprobă într-un singur chestionar;
-- fiecare etapă mare într-o sesiune nouă, reluată din fișierul de sarcină.
+- fiecare etapă mare într-o sesiune nouă, reluată din fișierul de sarcină;
+- fără abonare la activitatea PR-ului și fără verificări programate: singura verificare e Vercel (sub un minut), deci se așteaptă direct rezultatul și se integrează (decizia proprietarei, 2026-10-08);
+- observațiile mici dintr-o rundă de testare se adună într-un singur PR.
