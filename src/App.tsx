@@ -15,7 +15,7 @@ import { GroundingModal } from './components/GroundingModal';
 import { AuthModal } from './components/AuthModal';
 import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
-import { storageService, supabase } from './lib/supabase';
+import { storageService } from './lib/supabase';
 import { PatientProfile, DoseLog, SymptomLog, MedicalDocument, ClinicalMilestone } from './types';
 
 export function App() {
@@ -68,23 +68,6 @@ export function App() {
     }
   }, [fontSize]);
 
-  // Attempt async sync with Supabase if table is ready
-  useEffect(() => {
-    const client = supabase;
-    if (!client) return;
-    const testSync = async () => {
-      try {
-        const { data, error } = await client.from('dose_logs').select('*').limit(1);
-        if (!error && data) {
-          console.log('Supabase connection verified successfully.');
-        }
-      } catch (err) {
-        console.warn('Supabase offline or awaiting migrations:', err);
-      }
-    };
-    testSync();
-  }, []);
-
   // Listen for global SOS / Red Flags opening event
   useEffect(() => {
     const handleOpenSos = () => setIsRedFlagsOpen(true);
@@ -114,20 +97,6 @@ export function App() {
     };
     setProfile(updatedProfile);
     storageService.saveProfile(updatedProfile);
-
-    // Optional background sync with Supabase
-    if (supabase) {
-      try {
-        await supabase.from('dose_logs').insert([{
-          medication_name: medName,
-          scheduled_for: todayStr,
-          taken_at: todayStr,
-          status: 'taken'
-        }]);
-      } catch (e) {
-        // Safe local fallback
-      }
-    }
   };
 
   const handleSnoozeDose = () => {

@@ -22,7 +22,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   const [reminderTime, setReminderTime] = useState<string>(profile?.daily_reminder_time || '08:30');
   const [pillStock, setPillStock] = useState<number | ''>(profile?.pill_stock_count ?? 30);
   const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || new Date().toISOString().slice(0, 10));
-  const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '2027-03-15');
+  const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '');
   const [notificationsAllowed, setNotificationsAllowed] = useState<boolean>(false);
 
   React.useEffect(() => {
@@ -51,11 +51,11 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
     const configuredProfile: PatientProfile = {
       ...(profile || {
         full_name: '',
-        histology: 'Carcinom Ductal In Situ (DCIS)',
-        stage: 'Grad 0 (TisN0M0, G2)',
-        er_status: 'Pozitiv (>90%)',
-        pr_status: 'Pozitiv (>80%)',
-        her2_status: 'Negativ',
+        histology: '',
+        stage: '',
+        er_status: '',
+        pr_status: '',
+        her2_status: '',
         tamoxifen_start_date: new Date().toISOString().slice(0, 10),
         pill_stock_count: 30,
         daily_reminder_time: '08:30',
@@ -281,7 +281,6 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 value={controlDate}
                 onChange={(e) => setControlDate(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white font-bold focus:outline-none focus:border-sage-500"
-                required
               />
               <p className="text-[10px] text-gray-500 mt-1">
                 Aplicația va afișa automat numărătoarea inversă a zilelor rămase și te va ajuta să pregătești întrebările pentru medic.

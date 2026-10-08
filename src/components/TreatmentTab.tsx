@@ -214,7 +214,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         <div className="mt-4 pt-4 border-t border-[#5E7A68]/15 dark:border-sage-800/40">
           {!isTodayTaken ? (
             <button
-              onClick={onTakeDose}
+              onClick={() => onTakeDose()}
               className="tap-scale w-full h-12 rounded-2xl bg-[#5E7A68] hover:bg-[#4A6354] text-white font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer text-[14px]"
             >
               <Check className="w-4 h-4" strokeWidth={2.5} /> Marchează doza de azi

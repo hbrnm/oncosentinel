@@ -18,7 +18,7 @@ export interface GuideTabProps {
 type GuideCategory = 'clinical' | 'news' | 'nutrition';
 
 export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
-  const [selectedGuide, setSelectedGuide] = useState<ClinicalGuide | null>(null);
+  const [selectedGuide, setSelectedGuide] = useState<Omit<ClinicalGuide, 'category'> | null>(null);
   const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(null);
   const [activeCategory, setActiveCategory] = useState<GuideCategory>('clinical');
 

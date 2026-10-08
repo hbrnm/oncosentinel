@@ -16,12 +16,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   onSave
 }) => {
   const [fullName, setFullName] = useState(profile.full_name);
-  const [histology, setHistology] = useState(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-  const [stage, setStage] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
-  const [erStatus, setErStatus] = useState(profile.er_status || 'Pozitiv (>90%)');
-  const [prStatus, setPrStatus] = useState(profile.pr_status || 'Pozitiv (>80%)');
-  const [her2Status, setHer2Status] = useState(profile.her2_status || 'Negativ');
+  const [histology, setHistology] = useState(profile.histology || '');
+  const [stage, setStage] = useState(profile.stage || '');
+  const [erStatus, setErStatus] = useState(profile.er_status || '');
+  const [prStatus, setPrStatus] = useState(profile.pr_status || '');
+  const [her2Status, setHer2Status] = useState(profile.her2_status || '');
   const [reminderTime, setReminderTime] = useState(profile.daily_reminder_time);
+  const [startDate, setStartDate] = useState(profile.tamoxifen_start_date || '');
   const [stock, setStock] = useState<number | ''>(profile.pill_stock_count ?? 30);
   const [email, setEmail] = useState(profile.email || '');
   const [oncologistEmail, setOncologistEmail] = useState(profile.oncologist_email || '');
@@ -31,11 +32,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
     if (isOpen) {
       setFullName(profile.full_name || '');
       setEmail(profile.email || '');
-      setHistology(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-      setStage(profile.stage || 'Grad 0 (TisN0M0, G2)');
-      setErStatus(profile.er_status || 'Pozitiv (>90%)');
-      setPrStatus(profile.pr_status || 'Pozitiv (>80%)');
-      setHer2Status(profile.her2_status || 'Negativ');
+      setHistology(profile.histology || '');
+      setStage(profile.stage || '');
+      setErStatus(profile.er_status || '');
+      setPrStatus(profile.pr_status || '');
+      setHer2Status(profile.her2_status || '');
       setReminderTime(profile.daily_reminder_time || '08:30');
       setStock(profile.pill_stock_count ?? 30);
       setStartDate(profile.tamoxifen_start_date || '');
@@ -174,7 +175,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   type="text"
                   value={erStatus}
                   onChange={(e) => setErStatus(e.target.value)}
-                  placeholder="Pozitiv (>90%)"
+                  placeholder="ex: Pozitiv (>90%)"
                   className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
@@ -186,7 +187,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   type="text"
                   value={prStatus}
                   onChange={(e) => setPrStatus(e.target.value)}
-                  placeholder="Pozitiv (>80%)"
+                  placeholder="ex: Pozitiv (>80%)"
                   className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
@@ -198,7 +199,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   type="text"
                   value={her2Status}
                   onChange={(e) => setHer2Status(e.target.value)}
-                  placeholder="Negativ"
+                  placeholder="ex: Negativ"
                   className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
