@@ -19,6 +19,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   const [step, setStep] = useState<number>(1);
   const [name, setName] = useState<string>(profile?.full_name || '');
   const [reminderTime, setReminderTime] = useState<string>(profile?.daily_reminder_time || '08:30');
+  const [dose, setDose] = useState<string>(profile?.medication_dose || '20 mg');
   const [pillStock, setPillStock] = useState<number | ''>(profile?.pill_stock_count ?? 30);
   const [tamoxifenStartDate, setTamoxifenStartDate] = useState<string>(profile?.tamoxifen_start_date || new Date().toISOString().slice(0, 10));
   const [controlDate, setControlDate] = useState<string>(() => localStorage.getItem('navimed_next_control_date') || '');
@@ -27,6 +28,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
     if (isOpen && profile) {
       if (profile.full_name) setName(profile.full_name);
       if (profile.daily_reminder_time) setReminderTime(profile.daily_reminder_time);
+      if (profile.medication_dose) setDose(profile.medication_dose);
       if (profile.pill_stock_count !== undefined) setPillStock(profile.pill_stock_count);
       if (profile.tamoxifen_start_date) setTamoxifenStartDate(profile.tamoxifen_start_date);
     }
@@ -51,7 +53,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
       full_name: name.trim() || profile?.full_name || '',
       tamoxifen_start_date: tamoxifenStartDate,
       pill_stock_count: pillStock === '' ? 0 : Number(pillStock),
-      daily_reminder_time: reminderTime
+      daily_reminder_time: reminderTime,
+      medication_dose: dose.trim() || profile?.medication_dose || '20 mg'
     };
 
     onComplete(configuredProfile, controlDate);
@@ -161,6 +164,22 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               </div>
               <p className="text-[10px] text-gray-500 mt-0.5">
                 Ia-l la aceeași oră în fiecare zi: e mai ușor să nu uiți.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="onboarding-dose" className="text-[11px] font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                Ce doză ți-a prescris medicul?
+              </label>
+              <input
+                id="onboarding-dose"
+                type="text"
+                value={dose}
+                onChange={(e) => setDose(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500 font-bold"
+              />
+              <p className="text-[10px] text-gray-500 mt-0.5">
+                Scrie cum apare pe rețetă.
               </p>
             </div>
 

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';
+import { setNextControlDate as saveNextControlDate } from '../lib/appointments';
 import { MilestoneModal } from './MilestoneModal';
 
 interface TimelineTabProps {
@@ -42,7 +43,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   const handleSaveControlDate = () => {
     if (!tempDate) return;
     setNextControlDate(tempDate);
-    localStorage.setItem('navimed_next_control_date', tempDate);
+    saveNextControlDate(tempDate);
     setIsEditingControlDate(false);
   };
 
@@ -113,7 +114,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   };
 
   return (
-    <div className="space-y-4 pb-20 animate-fade-in">
+    <div className="space-y-4 animate-fade-in">
 
       {/* 0. 6-Month Oncology & Imaging Surveillance Countdown Card */}
       <div className="bg-gradient-to-r from-blue-50/90 to-sage-50/90 dark:from-darkbg-card dark:to-darkbg-surface rounded-3xl p-4 border border-blue-100/80 dark:border-darkbg-border shadow-xs">

@@ -66,7 +66,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     fireEvent.click(takePillBtn);
 
     // Verificăm confirmarea vizuală
-    expect(screen.getByText(/Luat pentru azi/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Luat azi$/i)).toBeInTheDocument();
     expect(screen.getByText(/Doza de azi este bifată cu succes/i)).toBeInTheDocument();
 
     // Verificăm persistența dozei în storage
@@ -84,7 +84,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     render(<App />);
 
     // Verificăm prezența tab-ului implicit: Today
-    expect(screen.getByText(/Tamoxifen 20 mg/i)).toBeInTheDocument();
+    expect(screen.getByText(/20 mg • 1 comprimat/i)).toBeInTheDocument();
 
     // Navigăm la Jurnal Simptome
     const symptomsTabBtn = screen.getByText('Jurnal');
@@ -153,7 +153,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     render(<App />);
 
     // Găsim butonul "Foarte bun" (nivel 5)
-    const greatMoodBtn = screen.getByText('Foarte bun').closest('button');
+    const greatMoodBtn = screen.getByText('Foarte bine').closest('button');
     expect(greatMoodBtn).toBeTruthy();
     fireEvent.click(greatMoodBtn!);
 
@@ -172,7 +172,7 @@ describe('Suite de Teste Utilizator E2E - OncoSentinel Flow Complet', () => {
     render(<App />);
 
     // Selectăm starea "Dificil" (nivel 1)
-    const veryBadMoodBtn = screen.getByText('Dificil').closest('button');
+    const veryBadMoodBtn = screen.getByText('Greu').closest('button');
     expect(veryBadMoodBtn).toBeTruthy();
     fireEvent.click(veryBadMoodBtn!);
 

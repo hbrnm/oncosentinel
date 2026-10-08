@@ -31,7 +31,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
 
   if (selectedGuide) {
     return (
-      <div className="space-y-4 pb-20 animate-fade-in">
+      <div className="space-y-4 animate-fade-in">
         <div className="flex items-center gap-2 pt-1 pb-1">
           <button
             onClick={() => setSelectedGuide(null)}
@@ -68,7 +68,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
 
   if (selectedNews) {
     return (
-      <div className="space-y-4 pb-20 animate-fade-in">
+      <div className="space-y-4 animate-fade-in">
         <div className="flex items-center gap-2 pt-1 pb-1">
           <button
             onClick={() => setSelectedNews(null)}
@@ -104,7 +104,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
   }
 
   return (
-    <div className="min-h-screen pb-24 animate-fade-in">
+    <div className="min-h-screen animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <h1 className="font-heading text-2xl text-gray-900 dark:text-white">Ghiduri</h1>
         <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Informații clinice, nutriție și medicamente.</p>

@@ -202,7 +202,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const displayName = profile.full_name?.trim() || 'Pacientă';
 
   return (
-    <div className="space-y-5 animate-fade-in pb-16">
+    <div className="space-y-5 animate-fade-in">
       {/* Header matching Base44 */}
       <header className="px-2 pt-1 pb-1">
         <h1 className="font-serif text-3xl font-normal text-ink dark:text-white tracking-tight">
@@ -289,8 +289,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <h2 className="font-serif text-xl text-ink dark:text-white truncate">
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+            <h2 className="font-serif text-xl text-ink dark:text-white break-words min-w-0">
               {displayName}
             </h2>
             <span className="shrink-0 px-2 py-0.5 rounded-full bg-sage-soft dark:bg-sage-900/70 text-sage-deep dark:text-sage-300 text-[10px] font-semibold border border-sage-200/50">

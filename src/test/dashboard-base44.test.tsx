@@ -25,7 +25,7 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     expect(screen.queryByTitle(/Memento/i)).not.toBeInTheDocument();
 
     // 3. Medication Hero Card (Tamoxifen 20 mg)
-    expect(screen.getByText(/Tamoxifen 20 mg/i)).toBeInTheDocument();
+    expect(screen.getByText(/20 mg • 1 comprimat/i)).toBeInTheDocument();
 
     // 4. 4 Quick Actions (Calendar tratament, Ghiduri medicale, Medici și centre, Resurse utile)
     expect(screen.getByText(/Calendar/i)).toBeInTheDocument();
@@ -44,12 +44,12 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     expect(leafSprig).toBeInTheDocument();
 
     // 6. Emotional Mood Journal (5 Clinical Levels)
-    expect(screen.getByText(/Cum te-ai simțit în ultima săptămână\?/i)).toBeInTheDocument();
-    expect(screen.getByText('Dificil')).toBeInTheDocument();
-    expect(screen.getByText('Scăzut')).toBeInTheDocument();
-    expect(screen.getByText('Echilibrat')).toBeInTheDocument();
-    expect(screen.getByText('Bun')).toBeInTheDocument();
-    expect(screen.getByText('Foarte bun')).toBeInTheDocument();
+    expect(screen.getByText(/Cum te simți azi\?/i)).toBeInTheDocument();
+    expect(screen.getByText('Greu')).toBeInTheDocument();
+    expect(screen.getByText('Obosită')).toBeInTheDocument();
+    expect(screen.getByText('Liniștită')).toBeInTheDocument();
+    expect(screen.getByText('Bine')).toBeInTheDocument();
+    expect(screen.getByText('Foarte bine')).toBeInTheDocument();
 
     // 7. Clinical Guide & News Cards
     expect(screen.getByText(/Tamoxifen: ce face și cum îl iei/i)).toBeInTheDocument();

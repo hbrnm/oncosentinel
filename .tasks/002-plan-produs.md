@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** etapele 0–4 integrate în main (PR #5, #7, #8, #11); în așteptare: testarea cu pacientele și deciziile pentru lucrul pe server (memento-uri push, sincronizare criptată, etapa 5)
+**Stare:** etapele 0–4 integrate în main (PR #5, #7, #8, #11); primele observații de la paciente reparate; în așteptare: restul testării și deciziile pentru lucrul pe server (memento-uri push, sincronizare criptată, etapa 5)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -115,8 +115,20 @@ Deciziile proprietarei (2026-10-08):
 - Verificat în browser real: după activare, în localStorage rămâne doar seiful, fără date în clar; după reîncărcare cere PIN-ul; după deblocare datele sunt acolo.
 - `npm test` (118) și `npm run build` trec; verificat la 390px și în browser real.
 
+### Reparații după prima testare cu pacientele (2026-10-08)
+- Observațiile proprietarei (capturi de pe Android), 12 probleme. Texte aprobate: etichetele 1–5 de pe Astăzi „Greu / Obosită / Liniștită / Bine / Foarte bine”; titlul „Cum te simți azi?”; la configurare „Ce doză ți-a prescris medicul?” (câmp liber, „20 mg” completat, „Scrie cum apare pe rețetă.”); „Luat azi” cu o singură bifă.
+- Data controlului de la configurare dispărea: fereastra „Controale medicale”, montată mereu, scria lista goală la pornire și ștergea data. Acum data intră în lista de controale (`src/lib/appointments.ts`); o dată care lipsește din listă devine programare. Același lucru și la data schimbată din Dosar.
+- Bara de jos: conținutul are loc dedesubt (spațiu comun în `main`), iar inima stă deasupra barei.
+- Cardul pastilei: numele întreg, doza și frecvența dedesubt. Profil: numele nu mai e ascuns de eticheta diagnosticului.
+- Jurnal: „Săptămâna ta” prima, apoi starea de azi, formularul de simptome (fără steluță), documentele la final.
+- „Controale medicale”: „Adaugă” nu mai iese din ecran, iar cardurile sunt aliniate. Planta din cardul roz are floare.
+- Rămas: în `ProfileTab`, lista de controale folosește alt tip de stare („done” față de „completed”); nu s-a atins.
+- `npm test` (127) și `npm run build` trec; verificat la 390px. Agentul `verificare`: nimic blocant; reparat și cazul unui control trecut rămas „viitor”.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Decizia proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.
+Reparațiile după prima testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
+
+Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.
