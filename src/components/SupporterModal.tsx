@@ -6,7 +6,6 @@ import { MOOD_LINES, HELP_IDEAS, buildSupporterMessage, SHARE_COPIED, SHARE_FAIL
 interface SupporterData {
   name: string;
   relationship: string;
-  phone: string;
   notifyOnMissedDose: boolean;
 }
 
@@ -22,11 +21,14 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
   profile
 }) => {
   const [supporter, setSupporter] = useState<SupporterData>(() => {
-    const empty = { name: '', relationship: 'Partener/ă', phone: '', notifyOnMissedDose: true };
+    const empty = { name: '', relationship: 'Partener/ă', notifyOnMissedDose: true };
     // Date salvate vechi sau stricate nu trebuie să blocheze fereastra
     try {
       const saved = JSON.parse(localStorage.getItem('navimed_supporter') || 'null');
-      return saved && typeof saved === 'object' ? { ...empty, ...saved, name: String(saved.name ?? '') } : empty;
+      if (!saved || typeof saved !== 'object') return empty;
+      // Numărul de telefon nu mai e folosit: nu-l mai păstrăm
+      const { phone, ...rest } = saved;
+      return { ...empty, ...rest, name: String(saved.name ?? '') };
     } catch {
       return empty;
     }
@@ -197,18 +199,6 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">
-              Număr de telefon:
-            </label>
-            <input
-              type="tel"
-              value={supporter.phone}
-              onChange={(e) => setSupporter({ ...supporter, phone: e.target.value })}
-              placeholder="ex: 0722123456"
-              className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
-            />
-          </div>
 
 
           <button

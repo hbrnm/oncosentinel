@@ -103,8 +103,8 @@ Deciziile proprietarei (2026-10-08):
 - Deciziile proprietarei: mesaj scurt ales de pacientă; trimitere prin meniul de partajare al telefonului; lista „Cum mă poți ajuta”; pacienta vede textul exact, îl poate modifica și apasă ea „Trimite”. Textele aprobate: `docs/etapa3-texte.md`.
 - `SupporterModal`: „Cum mă simt azi” (5 stări), „Cum mă poți ajuta” (10 idei de bifat), mesajul editabil, „Trimite” (`navigator.share`; altfel copiere, cu mesaj clar; altfel instrucțiuni). Datele în `src/data/circle.ts`.
 - Scos: bifa „Reamintește-i discret dacă omit pastila 2 zile la rând” (promisiune neținută), mesajul fix „azi am o stare bună” și butoanele WhatsApp/SMS.
-- De decis: câmpul „Număr de telefon” nu mai e folosit la trimitere.
-- `npm test` (94) și `npm run build` trec; verificat la 390px.
+- Câmpul „Număr de telefon” scos (decizia proprietarei); numerele salvate se șterg la deschidere.
+- `npm test` (95) și `npm run build` trec; verificat la 390px.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.

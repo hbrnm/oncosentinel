@@ -102,4 +102,11 @@ describe('Cercul tău', () => {
     open();
     expect(screen.getByRole('dialog', { name: /Cercul de Sprijin/ })).toBeInTheDocument();
   });
+
+  it('nu mai cere și nu mai păstrează numărul de telefon', () => {
+    localStorage.setItem('navimed_supporter', JSON.stringify({ name: 'Andrei', relationship: 'Soț', phone: '0722000000', notifyOnMissedDose: true }));
+    open();
+    expect(screen.queryByText(/Număr de telefon/)).not.toBeInTheDocument();
+    expect(localStorage.getItem('navimed_supporter')).not.toContain('0722000000');
+  });
 });
