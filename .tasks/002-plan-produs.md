@@ -15,7 +15,7 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | încheiată (prospect verificat, PR #27; liniile de sprijin scoase, decizia proprietarei) | PR #5, #27 |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
@@ -32,7 +32,7 @@ Deciziile proprietarei (2026-10-08):
 
 ## Etapa 5 — limitele pentru AI (de stabilit în detaliu atunci)
 - doar mesaje de sprijin emoțional, niciodată sfaturi medicale, doze sau diagnostic;
-- la orice semn de criză sau simptom sever: mesaj fix, scris de om, cu 112 și linia de sprijin, fără AI;
+- la orice semn de criză sau simptom sever: mesaj fix, scris de om, cu 112 și medicul, fără AI (liniile de sprijin nu sunt în aplicație);
 - datele de sănătate trimise furnizorului doar cu acordul explicit al pacientei, minim necesar, fără nume;
 - cheia API doar pe server (funcție Supabase), niciodată în `src/`;
 - mesajele scrise de om rămân varianta implicită și de rezervă.
@@ -59,11 +59,11 @@ Deciziile proprietarei (2026-10-08):
 
 ### Etapa 0, pasul 4 (2026-10-08)
 - Deciziile proprietarei: pagina se face acum, iar numerele intră după verificarea ei; „Ajutor” e acțiune rapidă pe Astăzi și link din fereastra SOS.
-- `HelpModal`: 112 primul (cu semnalele de alarmă), echipa medicală (e-mail oncolog din profil; psihologul sau asistentul social din spital), respirație și 5-4-3-2-1, persoana de sprijin. Liniile de sprijin vin din `src/data/helpLines.ts`, gol până la confirmare; secțiunea nu apare cât timp lista e goală.
-- Lista de verificat: `docs/resurse-de-verificat.md` (ARPS 0800 801 200 cu program contradictoriu și anunț de nefuncționare, 116 123, Colegiul Pacienților, OncoHelp, M.A.M.E., canceruldesan.ro).
+- `HelpModal`: 112 primul (cu semnalele de alarmă), echipa medicală (e-mail oncolog din profil; psihologul sau asistentul social din spital), respirație și 5-4-3-2-1, persoana de sprijin. Liniile de sprijin veneau din `src/data/helpLines.ts`, gol până la confirmare (scoase ulterior, decizia proprietarei).
+- Lista de verificat (ștearsă ulterior): `docs/resurse-de-verificat.md` (ARPS 0800 801 200 cu program contradictoriu și anunț de nefuncționare, 116 123, Colegiul Pacienților, OncoHelp, M.A.M.E., canceruldesan.ro).
 - Verificat la 390px, fără overflow. `npm test` (57) și `npm run build` trec.
 
-**În așteptare (proprietara):** confirmarea numerelor din `docs/resurse-de-verificat.md`.
+**În așteptare (proprietara):** confirmarea numerelor (renunțat ulterior: liniile nu intră în aplicație, vezi „Etapa 0: liniile de sprijin scoase”).
 
 ### Etapa 0: semnalele de alarmă și alerta din jurnal (2026-10-08)
 - Aprobate: semnalele de alarmă, împărțite în „Sună la 112” și „Anunță repede medicul”, fără decizii de investigație (Doppler, ecografie), cu surse; în g1, „umflare bruscă a feței, a buzelor sau a gâtului”; alerta din jurnal devine „Ai notat un simptom puternic” (pragul rămâne nota pacientei ≥ 4 din 5).
@@ -80,7 +80,7 @@ Deciziile proprietarei (2026-10-08):
 
 - Verificarea cu prospectul românesc (Tamoxifen Sandoz, ANMDMR), prin rezultatele căutării: confirmate lista CYP2D6, anticoagulantele, „nu luați doză dublă”; rifampicina adăugată (aprobată). Neconfirmate în textul românesc: pașii exacți la doza uitată, estrogenii, letrozolul (detalii în `docs/rescriere-etapa0.md`).
 
-**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate (închisă mai jos, „Etapa 0: prospectul românesc”); testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
+**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (renunțat, liniile nu intră în aplicație); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate (închisă mai jos, „Etapa 0: prospectul românesc”); testarea cu pacientele, după `docs/ghid-testare.md`. PR #5 a fost integrat pe 2026-10-08.
 
 ### Etapa 1 (2026-10-08)
 - Deciziile proprietarei: buton mic pe toate ecranele; mesajele le scrie Claude, le aprobă proprietara; sprijinul apare cu 3 zile înainte de control; un PR pe etapă. Textele aprobate sunt în `docs/etapa1-texte.md`.
@@ -172,7 +172,11 @@ Deciziile proprietarei (2026-10-08):
 - g1: doza uitată doar după prospectul românesc; „în timpul mesei”; chirurgul anunțat înaintea unei operații. Medicamente: estrogenii cu contracepție fără hormoni până la 2 luni după; „Anastrozol, letrozol și alți inhibitori de aromatază”.
 - Test nou în `medical-content.test.ts` (pică pe codul vechi). `npm test` (169) și `npm run build` trec.
 
-**Rămâne deschis în etapa 0:** numerele de ajutor (`docs/resurse-de-verificat.md`), de verificat de proprietară.
+### Etapa 0: liniile de sprijin scoase (2026-10-08)
+- Decizia proprietarei: liniile de sprijin nu mai intră în aplicație. Scoase `src/data/helpLines.ts`, secțiunea goală din `HelpModal` și lista `docs/resurse-de-verificat.md`. „Ajutor” rămâne cu 112, echipa medicală, exercițiile de liniștire și persoana de sprijin.
+- `npm test` (169) și `npm run build` trec.
+
+**Etapa 0 e încheiată.** Rămâne doar testarea cu pacientele, după `docs/ghid-testare.md`.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
@@ -180,4 +184,4 @@ Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; f�
 ## Următorul pas
 Reparațiile după primele două runde de testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
 
-Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Din etapa 0 rămâne deschisă doar confirmarea numerelor de ajutor (prospectul a fost verificat).
+Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Etapa 0 e încheiată (prospectul verificat; liniile de sprijin scoase din aplicație, decizia proprietarei).
