@@ -130,9 +130,12 @@ Deciziile proprietarei (2026-10-08):
 - „Salvează în jurnal” funcționa, dar părea inactiv și nu arăta clar că a salvat, așa că pacienta a apăsat de mai multe ori (4 note la fel). Duplicatele vechi se pot șterge acum din Istoric.
 - Cardul verde de jos de pe Astăzi: doar inima, fără plantă. Alerta de simptom puternic din Jurnal urcă deasupra barei.
 - Lista „Programările următoare” nu apare când nu există controale viitoare.
-- Observat, neatins: în Tratament, aderența arată 100% chiar și la „0 doze luate din 31 zile”.
 - După `verificare` (nimic blocant): „Anulează” dispare după o salvare nouă (fără două note pe zi); mesajul de ștergere și alerta de simptom stau una sub alta; buton de ștergere mai mare.
 - `npm test` (134) și `npm run build` trec; verificat la 390px.
+
+### Aderența din Tratament (2026-10-08)
+- Bug: când luna nu avea încă nicio zi de numărat, cardul arăta 100% și „0 doze luate din 31 zile”. Aprobate: „—” cu „Încă nu sunt zile de numărat în această lună.”; rândul devine „Ai marcat 5 din 8 zile.” (acord corect: „1 din 1 zi”, „20 din 20 de zile”).
+- Test nou `aderenta.test.tsx` (pică pe codul vechi). `npm test` (138) și `npm run build` trec.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
