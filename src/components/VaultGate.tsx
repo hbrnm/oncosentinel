@@ -26,10 +26,14 @@ export const VaultGate: React.FC<{ children: React.ReactNode }> = ({ children })
     };
     // Altă filă a schimbat seiful: fila aceasta se blochează (sau repornește, dacă PIN-ul a fost scos)
     const onStorage = (e: StorageEvent) => {
-      if (!vault.isVaultKey(e.key) || !vault.isUnlocked()) return;
+      // e.key null = localStorage.clear() din altă filă
+      if (e.storageArea !== localStorage || (e.key !== null && !vault.isVaultKey(e.key))) return;
       vault.syncWithOtherTab().then(() => {
         if (vault.isEnabled()) setLocked(true);
-        else setSession((n) => n + 1);
+        else {
+          setLocked(false);
+          setSession((n) => n + 1);
+        }
       });
     };
     document.addEventListener('visibilitychange', onVisibility);
@@ -64,7 +68,8 @@ const LockScreen: React.FC<{ onUnlocked: () => void }> = ({ onUnlocked }) => {
     setChecking(true);
     const ok = await vault.unlock(pin);
     setChecking(false);
-    if (ok) onUnlocked();
+    // PIN-ul a fost scos între timp (din altă filă): aplicația pornește fără el
+    if (ok || !vault.isEnabled()) onUnlocked();
     else {
       setError(true);
       setPin('');

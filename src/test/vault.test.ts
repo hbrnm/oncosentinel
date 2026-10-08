@@ -154,4 +154,39 @@ describe('Seiful cu PIN', () => {
     expect(vault.isEnabled()).toBe(false);
     expect(vault.isUnlocked()).toBe(false);
   });
+
+  it('o filă fără PIN trece în modul blocat când altă filă activează PIN-ul', async () => {
+    await vault.enable('1234');
+    const blob = window.localStorage.getItem('oncosentinel_vault')!;
+    vault.eraseAll();
+    localStorage.setItem('navimed_profile', '{"full_name":"Ana"}');
+    // „cealaltă filă” scrie seiful și șterge datele în clar
+    window.localStorage.setItem('oncosentinel_vault', blob);
+    await vault.syncWithOtherTab();
+    expect(vault.isEnabled()).toBe(true);
+    expect(vault.isUnlocked()).toBe(false);
+
+    localStorage.setItem('navimed_doses', '["din fila veche"]');
+    expect(JSON.stringify(Object.entries(localStorage))).not.toContain('din fila veche');
+  });
+
+  it('o filă blocată nu rămâne blocată dacă altă filă a scos PIN-ul', async () => {
+    await vault.enable('1234');
+    await vault.lock();
+    window.localStorage.removeItem('oncosentinel_vault');
+
+    expect(await vault.unlock('1234')).toBe(false);
+    expect(vault.isEnabled()).toBe(false);
+  });
+
+  it('o scriere făcută chiar în timpul blocării nu se pierde', async () => {
+    await vault.enable('1234');
+    localStorage.setItem('navimed_doses', '["a"]');
+    const locking = vault.lock();
+    localStorage.setItem('navimed_doses', '["b"]');
+    await locking;
+
+    expect(await vault.unlock('1234')).toBe(true);
+    expect(localStorage.getItem('navimed_doses')).toBe('["b"]');
+  });
 });

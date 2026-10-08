@@ -176,7 +176,11 @@ export const vault = {
   // false = PIN greșit
   async unlock(pin: string): Promise<boolean> {
     const blob = readBlob();
-    if (!blob) return false;
+    if (!blob) {
+      // Seiful a fost scos (de exemplu, din altă filă): nu mai e nimic de deblocat
+      reset();
+      return false;
+    }
     try {
       const saltBytes = fromB64(blob.salt);
       const key = await deriveKey(pin, saltBytes, blob.iterations);
@@ -194,7 +198,8 @@ export const vault = {
   // discardPending: altă filă a scris un seif mai nou; nu-l suprascriem
   async lock(discardPending = false) {
     if (discardPending) generation++;
-    else await pending.catch(() => undefined);
+    // Așteptăm și scrierile venite cât timp se termina coada
+    else do await pending.catch(() => undefined); while (dirty && memory);
     generation++;
     memory = null;
     cryptoKey = null;
@@ -235,7 +240,8 @@ export const vault = {
       reset();
       return;
     }
-    await vault.lock(true);
+    if (memory) await vault.lock(true);
+    // Și o filă fără PIN trece în modul blocat: nimic nu mai ajunge în clar
     enabled = true;
   },
 

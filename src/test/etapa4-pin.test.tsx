@@ -89,4 +89,17 @@ describe('Protejează cu PIN', () => {
     await waitFor(() => expect(vault.isEnabled()).toBe(false));
     expect(localStorage.getItem('navimed_profile')).toBe('{"full_name":"Ana"}');
   });
+
+  it('ștergerea datelor din altă filă repornește aplicația fără seiful vechi', async () => {
+    await vault.enable('1234');
+    render(<VaultGate><p>Aplicația</p></VaultGate>);
+    window.localStorage.removeItem('oncosentinel_vault');
+    await act(async () => {
+      window.dispatchEvent(new StorageEvent('storage', { key: null, storageArea: localStorage }));
+      await vault.flush();
+    });
+
+    await waitFor(() => expect(vault.isEnabled()).toBe(false));
+    expect(screen.getByText('Aplicația')).toBeInTheDocument();
+  });
 });
