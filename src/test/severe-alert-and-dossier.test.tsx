@@ -15,7 +15,7 @@ describe('Alerta pentru simptome severe', () => {
     const { container } = render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} />);
 
     fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
-    const fatigue = container.querySelector('input[type="range"][min="1"][max="5"]')!;
+    const fatigue = container.querySelector('input[aria-label="Nivel oboseală"]')!;
     fireEvent.change(fatigue, { target: { value: '5' } });
     fireEvent.click(screen.getByText('Salvează simptomele'));
 

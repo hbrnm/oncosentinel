@@ -432,8 +432,8 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                     </p>
                   )}
                   {a.center && (
-                    <p className="text-[11px] text-ink-soft/80 dark:text-gray-400 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-sage-deep dark:text-sage-300" />
+                    <p className="text-[11px] text-ink-soft/80 dark:text-gray-400 flex items-start gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" aria-hidden="true" />
                       <span>{a.center}</span>
                     </p>
                   )}

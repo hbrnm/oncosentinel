@@ -19,7 +19,7 @@ export interface SymptomLog {
   hot_flashes_count?: number;
   hot_flashes_intensity?: number; // 0 - 5
   night_sweats?: boolean;
-  fatigue_level?: number;         // 1 - 5
+  fatigue_level?: number;         // 0 - 5 (0 = nenotat)
   sleep_quality?: number;         // 1 - 5
   mood_state?: string;            // 'Foarte bine' | 'Bine' | 'Echilibrată' | 'Rău' | 'Foarte rău'
   joint_pain_level?: number;      // 0 - 5

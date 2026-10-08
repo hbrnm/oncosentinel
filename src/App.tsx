@@ -20,6 +20,8 @@ import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { storageService } from './lib/supabase';
 import { setNextControlDate } from './lib/appointments';
+import { moodStateFromLevel } from './lib/mood';
+import { localDay } from './lib/summary';
 import { startBackNavigation, pushScreen, useBackToClose } from './lib/backNavigation';
 import { PatientProfile, DoseLog, SymptomLog, MedicalDocument, ClinicalMilestone } from './types';
 
@@ -120,6 +122,19 @@ export function App() {
       id: `sym_${Date.now()}`
     };
     const updated = [newLog, ...symptoms];
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
+  };
+
+  // Starea aleasă pe Astăzi devine (sau actualizează) nota de azi din Jurnal; gândurile scrise rămân
+  const handleSaveTodayMood = (level: number) => {
+    const today = localDay(new Date());
+    // Ca în Jurnal: nota de azi sau, dacă lipsește, intrarea veche de azi (cu notă și simptome)
+    const todayEntries = symptoms.filter(s => localDay(new Date(s.logged_at)) === today);
+    const todayNote = todayEntries.find(s => s.kind === 'note') || todayEntries.find(s => !s.kind);
+    const mood_state = moodStateFromLevel(level);
+    const updated = todayNote
+      ? symptoms.map(s => (s.id === todayNote.id ? { ...s, mood_state } : s))
+      : [{ id: `sym_${Date.now()}`, logged_at: new Date().toISOString(), kind: 'note' as const, mood_state }, ...symptoms];
     if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
   };
 
@@ -236,6 +251,7 @@ export function App() {
               onOpenGrounding={() => setIsGroundingOpen(true)}
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
+              onSaveMood={handleSaveTodayMood}
               onNavigateToTab={(tab) => {
                 goToTab(tab);
               }}

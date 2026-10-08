@@ -395,8 +395,9 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                                 </span>
                               )}
                               {a.center && (
-                                <span className="inline-flex items-center gap-1">
-                                  <MapPin className="w-3 h-3 text-sage-light" /> {a.center}
+                                <span className="flex items-start gap-1">
+                                  <MapPin className="w-3 h-3 text-sage-light shrink-0 mt-0.5" aria-hidden="true" />
+                                  <span>{a.center}</span>
                                 </span>
                               )}
                             </div>
