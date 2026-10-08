@@ -194,7 +194,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
               onClick={handleReset}
               className="w-full py-2.5 rounded-xl bg-sage-500 hover:bg-sage-600 text-white font-bold text-xs shadow-xs"
             >
-              Înapoi la NaviMed
+              Înapoi la OncoSentinel
             </button>
           </div>
         )}

@@ -1,7 +1,7 @@
 export const backupService = {
   exportCompleteBackup() {
     const backupData = {
-      app: 'NaviMed',
+      app: 'OncoSentinel',
       version: '1.0',
       exported_at: new Date().toISOString(),
       profile: localStorage.getItem('navimed_profile'),
@@ -77,38 +77,5 @@ export const backupService = {
       alert('A apărut o eroare la citirea fișierului de backup.');
       return false;
     }
-  },
-
-  getRawBackupPayload() {
-    return {
-      app: 'NaviMed',
-      version: '1.0',
-      synced_at: new Date().toISOString(),
-      profile: localStorage.getItem('navimed_profile'),
-      doses: localStorage.getItem('navimed_doses'),
-      symptoms: localStorage.getItem('navimed_symptoms'),
-      documents: localStorage.getItem('navimed_docs'),
-      milestones: localStorage.getItem('navimed_milestones'),
-      doctor_questions: localStorage.getItem('navimed_doctor_questions'),
-      supporter: localStorage.getItem('navimed_supporter'),
-      shopping_list: localStorage.getItem('navimed_shopping_list'),
-      exercise_minutes: localStorage.getItem('navimed_exercise_minutes'),
-      next_control_date: localStorage.getItem('navimed_next_control_date')
-    };
-  },
-
-  applyPayload(data: any): boolean {
-    if (!data || data.app !== 'NaviMed') return false;
-    if (data.profile) localStorage.setItem('navimed_profile', data.profile);
-    if (data.doses) localStorage.setItem('navimed_doses', data.doses);
-    if (data.symptoms) localStorage.setItem('navimed_symptoms', data.symptoms);
-    if (data.documents) localStorage.setItem('navimed_docs', data.documents);
-    if (data.milestones) localStorage.setItem('navimed_milestones', data.milestones);
-    if (data.doctor_questions) localStorage.setItem('navimed_doctor_questions', data.doctor_questions);
-    if (data.supporter) localStorage.setItem('navimed_supporter', data.supporter);
-    if (data.shopping_list) localStorage.setItem('navimed_shopping_list', data.shopping_list);
-    if (data.exercise_minutes) localStorage.setItem('navimed_exercise_minutes', data.exercise_minutes);
-    if (data.next_control_date) localStorage.setItem('navimed_next_control_date', data.next_control_date);
-    return true;
   }
 };

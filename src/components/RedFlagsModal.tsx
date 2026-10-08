@@ -102,7 +102,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
           </a>
 
           <a
-            href={`mailto:${profile.oncologist_email || ''}?subject=Semnal%20Alarma%20NaviMed`}
+            href={`mailto:${profile.oncologist_email || ''}?subject=Semnal%20alarm%C4%83%20OncoSentinel`}
             className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-2xl bg-sage-600 hover:bg-sage-700 text-white font-semibold text-xs transition-colors shadow-xs"
           >
             <Phone className="w-4 h-4" />
