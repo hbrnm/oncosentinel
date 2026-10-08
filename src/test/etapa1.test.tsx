@@ -92,7 +92,8 @@ describe('Jurnalul care răspunde', () => {
     fireEvent.click(screen.getByText('Salvează în jurnal'));
 
     const status = screen.getByRole('status');
-    expect(JOURNAL_RESPONSES[1]).toContain(status.querySelector('p')!.textContent);
+    expect(within(status).getByText('Am salvat nota de azi.')).toBeInTheDocument();
+    expect(JOURNAL_RESPONSES[1]).toContain(status.querySelectorAll('p')[1].textContent);
     fireEvent.click(within(status).getByText('Am nevoie de ajutor'));
     expect(onOpenHelp).toHaveBeenCalled();
   });

@@ -626,7 +626,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {/* 5. Banner de Inspirație (Condiționat: dacă starea este Rău/Foarte Rău sau rotativ) */}
       {showInspirationBanner && (
         <div className="sage-card rounded-3xl p-5 relative overflow-hidden flex items-center gap-4 animate-fade-in">
-          <LeafSprig className="absolute -left-3 -bottom-3 w-20 h-20 opacity-30 pointer-events-none" />
           <span className="shrink-0 w-11 h-11 rounded-full bg-white/60 flex items-center justify-center text-sage-deep shadow-xs">
             <Heart className="w-5 h-5 text-sage-deep" strokeWidth={1.8} />
           </span>

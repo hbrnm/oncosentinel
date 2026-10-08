@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PillIcon } from './Botanical';
-import { Check, Pencil, CalendarDays, Clock, X, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import { loadAppointments } from '../lib/appointments';
 import { PatientProfile, DoseLog } from '../types';
 
 interface TreatmentTabProps {
@@ -62,6 +63,12 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   });
 
   const isTodayTaken = takenDates.has(todayStr);
+
+  // Controalele viitoare din „Controale medicale”, marcate și în calendar
+  const upcomingAppointments = loadAppointments()
+    .filter(a => a.status === 'upcoming' && a.date >= todayStr)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const appointmentDates = new Set(upcomingAppointments.map(a => a.date));
 
   // Calendar month calculation: standard monthly calendar from 1 to last day of month
   const viewYear = viewDate.getFullYear();
@@ -280,7 +287,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-4 py-1.5 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[11px] text-ink-soft dark:text-gray-300">
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 py-1.5 px-2 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[11px] text-ink-soft dark:text-gray-300">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-sage" />
             <span>Luat (verde)</span>
@@ -292,6 +299,10 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-warmborder dark:bg-gray-600" />
             <span>Programat</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <CalendarHeart className="w-3.5 h-3.5 text-blush-deep" aria-hidden="true" />
+            <span>Control la medic</span>
           </div>
         </div>
 
@@ -312,9 +323,16 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             }
 
             const { dayNumber, status, isToday } = cell;
+            const hasAppointment = appointmentDates.has(cell.iso);
 
             return (
-              <div key={cell.iso} className="flex flex-col items-center">
+              <div key={cell.iso} className="relative flex flex-col items-center">
+                {hasAppointment && (
+                  <span className="absolute -top-1 right-0 z-10 w-4 h-4 rounded-full bg-white dark:bg-darkbg-surface shadow-xs flex items-center justify-center">
+                    <CalendarHeart className="w-3 h-3 text-blush-deep" aria-hidden="true" />
+                    <span className="sr-only">Control la medic</span>
+                  </span>
+                )}
                 <button onClick={() => { if (status === "missed") onTakeDose(cell.iso); }}
                   className={`w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-red-700 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
                     isToday
@@ -344,6 +362,28 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           })}
         </div>
       </div>
+
+      {/* Programările următoare, din „Controale medicale” */}
+      {upcomingAppointments.length > 0 && (
+        <section aria-labelledby="appointments-title" className="organic-card rounded-3xl p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <CalendarHeart className="w-4 h-4 text-blush-deep" />
+            <h2 id="appointments-title" className="micro-label">Programările următoare</h2>
+          </div>
+          <ul className="space-y-2">
+            {upcomingAppointments.map((a) => (
+              <li key={a.id} className="py-2 border-b border-warmborder/60 dark:border-darkbg-border last:border-0">
+                <p className="text-[13px] font-semibold text-ink dark:text-gray-200">
+                  {formatDateRo(a.date)}{a.time ? `, ${a.time}` : ''}
+                </p>
+                <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 break-words">
+                  {[a.specialty, a.doctor, a.center].filter(Boolean).join(' • ')}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Card Istoric Recent matching Base44 */}
       <div className="organic-card rounded-3xl p-5">

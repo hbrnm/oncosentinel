@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown,
-  Flame, Moon, Battery, Droplets, Check
+  Flame, Moon, Battery, Droplets, Check, Trash2
 } from 'lucide-react';
 import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
@@ -22,6 +22,9 @@ interface JournalTabProps {
   symptoms: SymptomLog[];
   doses: DoseLog[];
   onAddSymptomLog: (log: Omit<SymptomLog, 'id'>) => void;
+  onUpdateSymptomLog?: (id: string, log: Omit<SymptomLog, 'id'>) => void;
+  onDeleteSymptomLog?: (id: string) => void;
+  onRestoreSymptomLog?: (log: SymptomLog) => void;
   onNavigateToTab?: (tab: 'guide') => void;
   onOpenHelp?: () => void;
 }
@@ -31,6 +34,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   symptoms,
   doses,
   onAddSymptomLog,
+  onUpdateSymptomLog,
+  onDeleteSymptomLog,
+  onRestoreSymptomLog,
   onOpenHelp
 }) => {
   const [mood, setMood] = useState<number | null>(null);
@@ -58,6 +64,27 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [sleepQuality, setSleepQuality] = useState<number>(3);
 
   const todayStr = localDay(new Date());
+  // O notă pe zi: a doua salvare actualizează nota de azi
+  const todayLog = symptoms.find(s => localDay(new Date(s.logged_at)) === todayStr);
+
+  // Ștergerea din Istoric se poate anula câteva secunde
+  const [lastDeleted, setLastDeleted] = useState<SymptomLog | null>(null);
+  useEffect(() => {
+    if (!lastDeleted) return;
+    const timer = setTimeout(() => setLastDeleted(null), 5000);
+    return () => clearTimeout(timer);
+  }, [lastDeleted]);
+
+  const handleDelete = (log: SymptomLog) => {
+    if (!onDeleteSymptomLog) return;
+    onDeleteSymptomLog(log.id);
+    setLastDeleted(log);
+  };
+
+  const handleUndoDelete = () => {
+    if (lastDeleted) onRestoreSymptomLog?.(lastDeleted);
+    setLastDeleted(null);
+  };
 
   useEffect(() => {
     // Pre-fill form if there is already an entry for today (but don't block saving)
@@ -92,6 +119,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
   const handleSave = () => {
     setSaving(true);
+    // După o salvare nouă, nota ștearsă nu mai poate fi readusă (rămâne o notă pe zi)
+    setLastDeleted(null);
     
     // Use a default mood level of 3 (Echilibrată) if none selected
     const effectiveMood = mood ?? 3;
@@ -118,7 +147,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       headache: headache,
       water_intake_ml: waterIntake
     };
-    onAddSymptomLog(newLogData);
+    if (todayLog && onUpdateSymptomLog) {
+      onUpdateSymptomLog(todayLog.id, newLogData);
+    } else {
+      onAddSymptomLog(newLogData);
+    }
     setResponse({ mood: effectiveMood, text: pickJournalResponse(effectiveMood) });
     setSaving(false);
     setShowDetailedForm(false);
@@ -170,8 +203,17 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
   return (
     <>
+      <div className="fixed bottom-[11rem] left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm flex flex-col gap-2">
+      {lastDeleted && (
+        <div role="status" className="bg-ink text-white rounded-2xl px-4 py-3 shadow-lg flex items-center justify-between gap-3 animate-fade-in">
+          <p className="text-[13px]">Nota a fost ștearsă.</p>
+          <button type="button" onClick={handleUndoDelete} className="tap-scale text-[13px] font-bold underline shrink-0">
+            Anulează
+          </button>
+        </div>
+      )}
       {severeSymptomsAlert && (
-        <div role="alert" className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
+        <div role="alert" className="bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 shadow-lg flex items-start gap-3 animate-fade-in">
           <span className="text-rose-500 text-lg">⚠️</span>
           <div className="flex-1">
             <p className="text-xs font-bold text-rose-700">Ai notat un simptom puternic</p>
@@ -190,6 +232,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button onClick={() => setSevereSymptomsAlert(null)} aria-label="Închide alerta" className="text-rose-400 hover:text-rose-600 text-sm font-bold">✕</button>
         </div>
       )}
+      </div>
     <div className="min-h-screen animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <LeafSprig className="absolute top-0 right-0 w-14 h-14 text-sage-200 dark:text-sage-900/50 opacity-50" />
@@ -238,15 +281,16 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="w-full mt-3 h-12 rounded-2xl bg-blush-deep hover:bg-petal-500 dark:bg-petal-600 dark:hover:bg-petal-500 text-white font-semibold disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className="w-full mt-3 h-12 rounded-2xl bg-petal-600 hover:bg-petal-600/90 text-white font-semibold shadow-sm disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
-            {saving ? "Salvez..." : "Salvează în jurnal"}
+            {saving ? "Salvez..." : todayLog ? "Actualizează nota de azi" : "Salvează în jurnal"}
           </button>
           {response && (
             <div role="status" className="mt-3 p-4 rounded-2xl bg-white/80 dark:bg-darkbg-card border border-petal-200/60 dark:border-petal-900/40 flex items-start gap-2.5">
               <Heart className="w-4 h-4 text-blush-deep shrink-0 mt-0.5" />
               <div>
-                <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed">{response.text}</p>
+                <p className="text-[13px] font-semibold text-ink dark:text-gray-100">Am salvat nota de azi.</p>
+                <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed mt-0.5">{response.text}</p>
                 {response.mood === 1 && onOpenHelp && (
                   <button type="button" onClick={onOpenHelp} className="mt-2 text-xs font-semibold text-sage-deep dark:text-sage-300 underline">
                     Am nevoie de ajutor
@@ -464,7 +508,20 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                           {getMoodLevelFromState(e.mood_state)}/5
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-[12px] font-semibold text-gray-900 dark:text-gray-100">{m.label}</p>
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="text-[12px] font-semibold text-gray-900 dark:text-gray-100">{m.label}</p>
+                            {onDeleteSymptomLog && (
+                              <button
+                                type="button"
+                                onClick={() => handleDelete(e)}
+                                aria-label="Șterge nota"
+                                title="Șterge nota"
+                                className="tap-scale shrink-0 -mt-2.5 -mr-2 w-10 h-10 rounded-xl flex items-center justify-center text-ink-soft hover:text-blush-deep transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
                           {e.notes && <p className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 leading-relaxed">{e.notes}</p>}
                           
                           {/* Show additional symptoms if logged */}
