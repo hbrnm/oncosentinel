@@ -1,6 +1,28 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { useReadableText } from './pdfText';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
+
+const localDay = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+// „1 zi”, „5 zile”, „30 de zile”
+const zile = (n: number) => (n === 1 ? '1 zi' : n % 100 === 0 || n % 100 >= 20 ? `${n} de zile` : `${n} zile`);
+
+// Zilele cu doza marcată ca luată, din ultimele 30 de zile (doar de la începutul tratamentului)
+const adherenceLast30Days = (doses: DoseLog[], startDate: string) => {
+  const today = new Date();
+  const days: string[] = [];
+  for (let i = 29; i >= 0; i--) {
+    const iso = localDay(new Date(today.getFullYear(), today.getMonth(), today.getDate() - i));
+    if (!startDate || iso >= startDate) days.push(iso);
+  }
+  const takenDays = new Set(
+    doses.filter(d => d.status === 'taken').map(d => localDay(new Date(d.taken_at || d.scheduled_for)))
+  );
+  const taken = days.filter(iso => takenDays.has(iso)).length;
+  return { taken, total: days.length };
+};
 
 export function generateOncologyReport(
   profile: PatientProfile,
@@ -12,6 +34,7 @@ export function generateOncologyReport(
     unit: 'mm',
     format: 'a4'
   });
+  useReadableText(doc);
 
   const primaryColor: [number, number, number] = [77, 102, 91]; // Sage Dark #4D665B
   const textColor: [number, number, number] = [40, 50, 45];
@@ -23,11 +46,11 @@ export function generateOncologyReport(
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
-  doc.text('OncoSentinel - Raport Periodic de Aderență & Simptome', 14, 15);
+  doc.text('OncoSentinel - Raport Periodic de Aderență & Simptome', 14, 13);
 
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Generat la: ${new Date().toLocaleDateString('ro-RO')} | Ghid Integrativ Oncologic`, 140, 15);
+  doc.text(`Generat la: ${new Date().toLocaleDateString('ro-RO')}`, 14, 21);
 
   // 2. Patient & Clinical Context
   doc.setTextColor(...textColor);
@@ -45,7 +68,7 @@ export function generateOncologyReport(
   doc.text(`Diagnostic: ${profile.histology} (${profile.stage})`, 14, 49);
   doc.text(`Status Receptori: ER ${profile.er_status} | PR ${profile.pr_status} | HER2 ${profile.her2_status}`, 14, 55);
 
-  doc.text(`Tratament: Tamoxifen 20mg/zi (Start: ${profile.tamoxifen_start_date})`, 110, 43);
+  doc.text(`Tratament: ${profile.medication_name || 'Tamoxifen'} ${profile.medication_dose || '(doză necompletată)'} (Start: ${profile.tamoxifen_start_date || 'necompletat'})`, 110, 43);
   doc.text(`Medic Oncolog: ${profile.oncologist_email || 'Necompletat'}`, 110, 49);
   doc.text(`Stoc Curent Pastile: ${profile.pill_stock_count} bucăți`, 110, 55);
 
@@ -55,14 +78,15 @@ export function generateOncologyReport(
   doc.text('2. RAPORT ADERENȚĂ LA TAMOXIFEN (30 ZILE)', 14, 66);
   doc.line(14, 68, 196, 68);
 
-  const totalDoses = doses.length || 1;
-  const takenDoses = doses.filter(d => d.status === 'taken').length;
-  const adherenceRate = Math.round((takenDoses / totalDoses) * 100);
+  const { taken, total } = adherenceLast30Days(doses, profile.tamoxifen_start_date);
+  const adherenceRate = total > 0 ? Math.round((taken / total) * 100) : 0;
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
-  doc.text(`Rată estimată de aderență: ${adherenceRate}% (${takenDoses} din ${totalDoses} doze monitorizate)`, 14, 75);
-  doc.text('Status: Aderență optimă terapeutică pentru protecție împotriva recidivei mamare.', 14, 81);
+  doc.text(total > 0
+    ? `Zile cu doza marcată ca luată: ${taken} din ${zile(total)} (${adherenceRate}%)`
+    : 'Tratamentul nu a început încă în ultimele 30 de zile.', 14, 75);
+  doc.text('Dozele sunt marcate de pacientă în aplicație; o zi nemarcată nu înseamnă neapărat doză omisă.', 14, 81);
 
   // 4. Symptoms Evolution Table
   doc.setFont('helvetica', 'bold');
@@ -123,22 +147,20 @@ export function generateOncologyReport(
   
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('4. VERIFICARE SEMNALE DE ALARMĂ (RED FLAGS)', 14, finalY);
+  doc.text('4. SEMNALE DE ALARMĂ ȘI ALTE MEDICAMENTE', 14, finalY);
   doc.line(14, finalY + 2, 196, finalY + 2);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  doc.text('• Semne de tromboză venoasă profundă (durere/umflare unilaterală gambă): Negativ / Neraportat', 14, finalY + 9);
-  doc.text('• Sângerări vaginale anormale sau modificări endometriale: Neraportat', 14, finalY + 15);
-  doc.text('• Dispnee bruscă sau dureri toracice acute: Neraportat', 14, finalY + 21);
-  doc.text('• Interacțiuni medicamentoase verificate: Nu s-au înregistrat inhibitori CYP2D6 concomitenti.', 14, finalY + 27);
+  doc.text('Aplicația nu înregistrează semnale de alarmă (ex. tromboză, sângerări, dispnee) și nici alte medicamente', 14, finalY + 9);
+  doc.text('luate de pacientă. Vă rugăm să le discutați direct cu ea.', 14, finalY + 15);
 
   // 6. Footer Notes
   doc.setDrawColor(200, 200, 200);
   doc.line(14, 272, 196, 272);
   doc.setFontSize(8);
   doc.setTextColor(120, 120, 120);
-  doc.text('Acest raport este generat din jurnalul de monitorizare OncoSentinel și are scop informativ de suport clinic.', 14, 277);
+  doc.text('Raport generat din datele notate de pacientă în OncoSentinel; are scop informativ.', 14, 277);
   doc.text('Pagina 1 / 1 • Confidențial Medical (GDPR)', 150, 277);
 
   // Save/Download
