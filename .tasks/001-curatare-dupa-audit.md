@@ -1,6 +1,6 @@
 # 001 — Curățare după auditul codului generat
 
-**Stare:** în lucru
+**Stare:** gata (PR #2, #4 integrate)
 **Ramura:** fix/erori-care-blocheaza (etapele 1–3, PR #2), claude/curatare-audit-etapa4 (etapa 4)
 
 ## Scop

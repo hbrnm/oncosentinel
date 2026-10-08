@@ -32,7 +32,7 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 | `explorare` | Haiku | căutări care ar cere multe citiri („unde se folosește…”, „ce componente scriu în…”); doar citire |
 | `testare` | Sonnet | rularea testelor Vitest / build; întoarce doar ce a picat și de ce |
 | `executie` | Sonnet | sarcini bine definite, cu model de urmat: o componentă după modelul alteia, un test după modelul altuia, aceeași schimbare în mai multe taburi |
-| `verificare` | Sonnet | înaintea fiecărui push care schimbă cod: citește diff-ul față de regulile din acest fișier |
+| `verificare` | Sonnet | o dată pe PR care schimbă cod, înainte de push: citește diff-ul față de regulile din acest fișier |
 
 **Rămân la orchestrator, niciodată delegate:** deciziile proprietarului (chestionar), conținutul medical, migrațiile și orice SQL pe Supabase, politicile RLS/Storage, `vite.config.ts`, dependențele noi, workflow-urile CI, commit, push, PR, merge. Tot ce atinge producția.
 
@@ -43,3 +43,10 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 **Cum deleg:** sarcina pentru agent conține tot ce îi trebuie (agentul pornește fără contextul conversației): ce să facă, fișierele exacte, fișierul-model, ce să NU atingă, cum arată „gata”. Agenții independenți (fără fișiere comune) pot rula în paralel. Ce întoarce un agent se verifică înainte de folosire: orchestratorul citește diff-ul și rulează testele. O greșeală a agentului o repară orchestratorul sau o retrimite cu instrucțiuni mai clare.
 
 **Lucrările mari** (mai multe etape sau sesiuni): fișier de sarcină în `.tasks/NNN-nume.md` după `.tasks/README.md`, cu planul pe etape și un rezumat după fiecare etapă (ce s-a făcut, commit, ce urmează). La reluarea după pierderea contextului se citește întâi fișierul de sarcină.
+
+**Economie (decizia proprietarei, 2026-10-08):**
+- un PR pe etapă, din `main`, integrat imediat ce e verde; fără PR-uri puse unul peste altul;
+- agentul `verificare` o singură dată pe PR și doar când se schimbă codul; se reverifică numai după o problemă blocantă;
+- capturi Playwright doar pentru ecrane noi sau schimbări de aspect;
+- textele unei etape se aprobă într-un singur chestionar;
+- fiecare etapă mare într-o sesiune nouă, reluată din fișierul de sarcină.
