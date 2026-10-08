@@ -102,7 +102,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
   const diffMs = targetDate.getTime() - todayDate.getTime();
-  const daysUntilControl = isNaN(diffMs) ? 0 : Math.ceil(diffMs / (1000 * 3600 * 24));
+  // Rotunjit, nu în sus: la schimbarea orei (octombrie, martie) o zi are 23 sau 25 de ore
+  const daysUntilControl = isNaN(diffMs) ? 0 : Math.round(diffMs / (1000 * 3600 * 24));
   const isUrgentControl = Boolean(nextControlDate) && daysUntilControl >= 0 && daysUntilControl < 14;
 
   // 3. Inspiration Banner Visibility State (Conditional + 7 days dismiss)
