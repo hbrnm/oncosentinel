@@ -20,7 +20,7 @@ Deciziile proprietarei (2026-10-08):
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
 | 4 | Continuitate: memento-uri, sincronizare criptată opțională, PIN | PIN gata; memento în calendarul telefonului gata (fără server, decizia proprietarei); sincronizarea de făcut | PR (ramura claude/etapa4) |
-| 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
+| 5 | Mesaje mai bogate după nota din Jurnal (fără AI, decizia proprietarei) | gata | PR #29 |
 
 ## Etapa 0 — pașii
 1. **Inventarul conținutului medical** → `docs/continut-medical.md`: fiecare afirmație din `src/data/guides.ts`, `src/lib/interactions.ts`, „Noutăți” (ASCO 2026, Stockholm), `RedFlagsModal`, `OnboardingModal` („Recomandare clinică…”), `TreatmentTab`, cu stare: are sursă / de verificat / de scos.
@@ -177,6 +177,12 @@ Deciziile proprietarei (2026-10-08):
 - `npm test` (169) și `npm run build` trec.
 
 **Etapa 0 e încheiată.** Rămâne doar testarea cu pacientele, după `docs/ghid-testare.md`.
+
+### Etapa 5: fără AI, mesaje mai multe (2026-10-08)
+- Deciziile proprietarei: mesajele doar după nota din Jurnal; fără AI, pentru că nu vrea să plătească generarea, iar planurile gratuite pot folosi textele pentru antrenare. În loc de AI: 10 mesaje pe stare (7 noi) și mesaje pe subiecte, alese pe telefon după cuvintele din notă. Texte aprobate: `docs/etapa5-texte.md`. (Deciziile pentru AI, dacă revine: după notă, doar starea + gândurile, întrebare la prima notă.)
+- `journalResponseFor` (`src/data/comfort.ts`): întâi criza (la orice stare: mesaj fix, „Sună la 112” și „Am nevoie de ajutor”), apoi subiectul (control, frică, somn, oboseală, bufeuri, singurătate; doar la Greu, Obosită, Liniștită), apoi lista stării. Căutarea ignoră diacriticele și literele mari.
+- După `verificare` (nimic blocant): „o singură dată” nu mai e luat drept singurătate; „frici” și „temeri” recunoscute; „Păstrează-o” scris corect.
+- Test nou `etapa5-mesaje.test.tsx`. `npm test` (174) și `npm run build` trec; verificat la 390px.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown, Flame, Check, Trash2
+  Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown, Flame, Check, Trash2, PhoneCall
 } from 'lucide-react';
 import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { formatDateRo } from './TreatmentTab';
-import { pickJournalResponse } from '../data/comfort';
+import { journalResponseFor } from '../data/comfort';
 import { weekSummary } from '../lib/summary';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
@@ -42,7 +42,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [note, setNote] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
   // Mesajul cald de după salvare (aprobat, docs/etapa1-texte.md)
-  const [response, setResponse] = useState<{ mood: number; text: string } | null>(null);
+  const [response, setResponse] = useState<{ mood: number; text: string; crisis: boolean } | null>(null);
   
   // Detailed form state
   const [showDetailedForm, setShowDetailedForm] = useState<boolean>(false);
@@ -152,7 +152,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       mood_state: moodLabels[effectiveMood] || 'Echilibrată',
       notes: note.trim() ? note.trim() : undefined
     });
-    setResponse({ mood: effectiveMood, text: pickJournalResponse(effectiveMood) });
+    setResponse({ mood: effectiveMood, ...journalResponseFor(effectiveMood, note) });
     setSaving(false);
     setSavedFlash('note');
   };
@@ -311,7 +311,12 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               <div>
                 <p className="text-[13px] font-semibold text-ink dark:text-gray-100">Am salvat nota de azi.</p>
                 <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed mt-0.5">{response.text}</p>
-                {response.mood === 1 && onOpenHelp && (
+                {response.crisis && (
+                  <a href="tel:112" className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold">
+                    <PhoneCall className="w-4 h-4" /> Sună la 112
+                  </a>
+                )}
+                {(response.mood === 1 || response.crisis) && onOpenHelp && (
                   <button type="button" onClick={onOpenHelp} className="mt-2 text-xs font-semibold text-sage-deep dark:text-sage-300 underline">
                     Am nevoie de ajutor
                   </button>
