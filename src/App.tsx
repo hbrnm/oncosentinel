@@ -182,6 +182,7 @@ export function App() {
             <DashboardTab
               profile={profile}
               doses={doses}
+              symptoms={symptoms}
               onTakeDose={handleTakeDose}
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
               onOpenBreathing={() => setIsBreathingOpen(true)}
@@ -317,6 +318,9 @@ export function App() {
         <DoctorVisitModal
           isOpen={isDoctorVisitOpen}
           onClose={() => setIsDoctorVisitOpen(false)}
+          profile={profile}
+          doses={doses}
+          symptoms={symptoms}
         />
 
         {/* 5-4-3-2-1 Sensory Grounding Modal */}

@@ -8,6 +8,7 @@ import { MoodPicker, getMood } from './MoodPicker';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { formatDateRo } from './TreatmentTab';
 import { pickJournalResponse } from '../data/comfort';
+import { weekSummary } from '../lib/summary';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
 const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
@@ -422,6 +423,20 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             </div>
           )}
         </div>
+
+        {/* Săptămâna ta: rezumat în cuvinte, doar din ce a notat pacienta */}
+        <section aria-labelledby="week-title" className="organic-card rounded-[28px] p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Leaf className="w-4 h-4 text-sage-deep dark:text-sage-400" />
+            <h2 id="week-title" className="font-heading text-lg text-ink dark:text-white">Săptămâna ta</h2>
+          </div>
+          <ul className="space-y-1.5">
+            {weekSummary(symptoms).map((line) => (
+              <li key={line} className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
+            ))}
+          </ul>
+          <p className="text-[11px] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
+        </section>
 
         {/* History Section */}
         <div>

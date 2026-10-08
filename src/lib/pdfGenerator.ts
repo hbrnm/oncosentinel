@@ -1,28 +1,11 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { useReadableText } from './pdfText';
+import { plural, takenInLastDays } from './summary';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 
-const localDay = (d: Date) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-
 // „1 zi”, „5 zile”, „30 de zile”
-const zile = (n: number) => (n === 1 ? '1 zi' : n % 100 === 0 || n % 100 >= 20 ? `${n} de zile` : `${n} zile`);
-
-// Zilele cu doza marcată ca luată, din ultimele 30 de zile (doar de la începutul tratamentului)
-const adherenceLast30Days = (doses: DoseLog[], startDate: string) => {
-  const today = new Date();
-  const days: string[] = [];
-  for (let i = 29; i >= 0; i--) {
-    const iso = localDay(new Date(today.getFullYear(), today.getMonth(), today.getDate() - i));
-    if (!startDate || iso >= startDate) days.push(iso);
-  }
-  const takenDays = new Set(
-    doses.filter(d => d.status === 'taken').map(d => localDay(new Date(d.taken_at || d.scheduled_for)))
-  );
-  const taken = days.filter(iso => takenDays.has(iso)).length;
-  return { taken, total: days.length };
-};
+const zile = (n: number) => plural(n, 'zi', 'zile');
 
 export function generateOncologyReport(
   profile: PatientProfile,
@@ -78,7 +61,7 @@ export function generateOncologyReport(
   doc.text('2. RAPORT ADERENȚĂ LA TAMOXIFEN (30 ZILE)', 14, 66);
   doc.line(14, 68, 196, 68);
 
-  const { taken, total } = adherenceLast30Days(doses, profile.tamoxifen_start_date);
+  const { taken, total } = takenInLastDays(doses, profile.tamoxifen_start_date, 30);
   const adherenceRate = total > 0 ? Math.round((taken / total) * 100) : 0;
 
   doc.setFont('helvetica', 'normal');
