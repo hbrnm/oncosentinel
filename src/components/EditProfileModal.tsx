@@ -22,6 +22,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const [prStatus, setPrStatus] = useState(profile.pr_status || 'Pozitiv (>80%)');
   const [her2Status, setHer2Status] = useState(profile.her2_status || 'Negativ');
   const [reminderTime, setReminderTime] = useState(profile.daily_reminder_time);
+  const [startDate, setStartDate] = useState(profile.tamoxifen_start_date || '');
   const [stock, setStock] = useState<number | ''>(profile.pill_stock_count ?? 30);
   const [email, setEmail] = useState(profile.email || '');
   const [oncologistEmail, setOncologistEmail] = useState(profile.oncologist_email || '');

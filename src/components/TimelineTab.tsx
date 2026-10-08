@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   CheckCircle2, FileText, Upload, Plus, ChevronDown, 
-  ChevronUp, ShieldCheck, Download, Calendar, Activity, Sparkles,
+  ChevronUp, ShieldCheck, Download, Calendar, Activity,
   Stethoscope, Clock, Check, Edit3, Trash2
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
@@ -28,7 +28,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [docName, setDocName] = useState<string>('');
   const [docCategory, setDocCategory] = useState<any>('buletin_histopatologic');
-  const [analyzingDoc, setAnalyzingDoc] = useState<string | null>(null);
   const [selectedRealFile, setSelectedRealFile] = useState<File | null>(null);
 
   // 6-Month Oncology & Imaging Surveillance Tracker
@@ -348,17 +347,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => handleAnalyzeDocument(doc)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-indigo-600 hover:text-white hover:bg-indigo-500 transition-colors bg-indigo-50 dark:bg-indigo-900/30"
-                    title="Adaugă rapid pe Cronologie"
-                  >
-                    {analyzingDoc === doc.id ? (
-                      <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Sparkles className="w-3.5 h-3.5" />
-                    )}
-                  </button>
                   <button
                     onClick={() => {
                       if (doc.file_data) {

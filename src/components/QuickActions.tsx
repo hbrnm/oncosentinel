@@ -2,7 +2,7 @@ import React from 'react';
 import { CalendarDays, FileText, Stethoscope, FolderHeart } from 'lucide-react';
 
 export interface QuickActionsProps {
-  onNavigateToTab?: (tab: string) => void;
+  onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenDoctorModal?: () => void;
   onOpenResources?: () => void;
 }

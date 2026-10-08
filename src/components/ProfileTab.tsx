@@ -4,7 +4,7 @@ import {
   ChevronRight, MapPin, Check, X, ShieldCheck, Heart, Clock, Camera, Trash2, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
-import { PatientProfile, DoseLog, SymptomLog } from '../types';
+import { PatientProfile, DoseLog } from '../types';
 import { generateOncologyReport } from '../lib/pdfGenerator';
 import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
@@ -22,7 +22,6 @@ interface AppointmentItem {
 interface ProfileTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
-  symptoms: SymptomLog[];
   onUpdateProfile: (updated: PatientProfile) => void;
   onNavigateToTab: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
   onOpenAuth?: () => void;

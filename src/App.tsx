@@ -114,20 +114,6 @@ export function App() {
     };
     setProfile(updatedProfile);
     storageService.saveProfile(updatedProfile);
-
-    // Optional background sync with Supabase
-    if (supabase) {
-      try {
-        await supabase.from('dose_logs').insert([{
-          medication_name: medName,
-          scheduled_for: todayStr,
-          taken_at: todayStr,
-          status: 'taken'
-        }]);
-      } catch (e) {
-        // Safe local fallback
-      }
-    }
   };
 
   const handleSnoozeDose = () => {

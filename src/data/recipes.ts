@@ -1,6 +1,6 @@
-import { ClinicalGuide } from '../types';
+import { ClinicalGuide } from './guides';
 
-export const RECIPES: ClinicalGuide[] = [
+export const RECIPES: Omit<ClinicalGuide, 'category'>[] = [
   {
     "id": "r1",
     "tag": "Mic Dejun",
