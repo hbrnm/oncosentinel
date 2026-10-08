@@ -63,7 +63,9 @@ export const weekSummary = (symptoms: SymptomLog[], today = new Date()): string[
     else lines.push('Somnul a fost cam la fel ca săptămâna trecută.');
   }
 
-  if (lastWeek.length > 0) {
+  // Bufeurile se compară doar din intrările cu simptome (notele simple nu le au)
+  const withFlashes = (logs: SymptomLog[]) => logs.filter(s => typeof s.hot_flashes_count === 'number');
+  if (withFlashes(thisWeek).length > 0 && withFlashes(lastWeek).length > 0) {
     const flashesNow = thisWeek.reduce((sum, s) => sum + (s.hot_flashes_count || 0), 0);
     const flashesBefore = lastWeek.reduce((sum, s) => sum + (s.hot_flashes_count || 0), 0);
     if (flashesNow < flashesBefore) lines.push('Ai notat mai puține bufeuri decât săptămâna trecută.');
@@ -88,13 +90,16 @@ const SYMPTOMS: { label: string; noted: (s: SymptomLog) => boolean }[] = [
 // „Pentru medic”: ultimele 4 săptămâni
 export const doctorSummary = (symptoms: SymptomLog[], doses: DoseLog[], startDate: string) => {
   const logs = logsIn(symptoms, lastDays(28));
+  // Notele (stare + gânduri) și simptomele sunt intrări separate; cele vechi le au pe amândouă
+  const notes = logs.filter(s => s.kind !== 'symptoms');
+  const symptomLogs = logs.filter(s => s.kind !== 'note');
   const top = SYMPTOMS
-    .map(({ label, noted }) => ({ label, count: logs.filter(noted).length }))
+    .map(({ label, noted }) => ({ label, count: symptomLogs.filter(noted).length }))
     .filter(s => s.count > 0)
     .sort((a, b) => b.count - a.count)
     .slice(0, 3)
     .map(s => `${s.label}: ${s.count === 1 ? 'într-o notă' : `în ${plural(s.count, 'notă', 'note')}`}`);
-  return { doses: takenInLastDays(doses, startDate, 28), notes: logs.length, top };
+  return { doses: takenInLastDays(doses, startDate, 28), notes: notes.length, top };
 };
 
 // „O mică victorie”: praguri pe total, nu pe zile la rând
@@ -110,7 +115,7 @@ const VICTORIES = [
 
 // Cea mai mare victorie atinsă și încă nevăzută, plus toate pragurile atinse din aceeași categorie (de marcat ca văzute)
 export const nextVictory = (doses: DoseLog[], symptoms: SymptomLog[], seen: string[]) => {
-  const totals = { doses: takenDays(doses).size, notes: symptoms.length };
+  const totals = { doses: takenDays(doses).size, notes: symptoms.filter(s => s.kind !== 'symptoms').length };
   const reached = VICTORIES.filter(v => totals[v.kind] >= v.at);
   const next = reached.find(v => !seen.includes(v.id));
   if (!next) return null;

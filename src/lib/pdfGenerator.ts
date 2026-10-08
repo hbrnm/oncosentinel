@@ -79,7 +79,7 @@ export function generateOncologyReport(
 
     const symptomRows = symptoms.slice(0, 15).map(s => {
     const dureri = [
-      s.joint_pain_level > 0 ? `Art:${s.joint_pain_level}` : '',
+      (s.joint_pain_level || 0) > 0 ? `Art:${s.joint_pain_level}` : '',
       (s.bone_pain_level || 0) > 0 ? `Os:${s.bone_pain_level}` : ''
     ].filter(Boolean).join(', ') || '-';
 
@@ -92,9 +92,10 @@ export function generateOncologyReport(
 
     return [
       new Date(s.logged_at).toLocaleDateString('ro-RO'),
-      `${s.hot_flashes_count} (Scor ${s.hot_flashes_intensity})`,
+      // Notele fără simptome (doar stare și gânduri) au „-” la simptome
+      s.kind === 'note' ? '-' : `${s.hot_flashes_count ?? 0} (Scor ${s.hot_flashes_intensity ?? 0})`,
       dureri,
-      `Ob:${s.fatigue_level} Smn:${s.sleep_quality}`,
+      s.kind === 'note' ? '-' : `Ob:${s.fatigue_level ?? '-'} Smn:${s.sleep_quality ?? '-'}`,
       altele,
       s.notes ? s.notes.substring(0, 40) + (s.notes.length > 40 ? '...' : '') : '-'
     ];

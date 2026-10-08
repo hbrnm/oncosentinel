@@ -28,11 +28,13 @@ describe('Testarea cu pacientele, runda 2', () => {
   });
 
   it('a doua salvare din aceeași zi actualizează nota, fără duplicate', () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
     openJournal();
     const note = screen.getByPlaceholderText(/Notează un gând/i);
     fireEvent.change(note, { target: { value: 'Sunt bine' } });
     fireEvent.click(screen.getByText('Salvează în jurnal'));
     expect(screen.getByText('Am salvat nota de azi.')).toBeInTheDocument();
+    act(() => { vi.advanceTimersByTime(2000); });
 
     fireEvent.change(note, { target: { value: 'Sunt foarte bine' } });
     fireEvent.click(screen.getByText('Actualizează nota de azi'));
@@ -61,8 +63,10 @@ describe('Testarea cu pacientele, runda 2', () => {
   });
 
   it('după o salvare nouă, „Anulează” dispare, ca să rămână o notă pe zi', () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
     openJournal();
     fireEvent.click(screen.getByText('Salvează în jurnal'));
+    act(() => { vi.advanceTimersByTime(2000); });
     fireEvent.click(screen.getByRole('button', { name: 'Șterge nota' }));
     fireEvent.click(screen.getByText('Salvează în jurnal'));
     expect(screen.queryByText('Nota a fost ștearsă.')).not.toBeInTheDocument();

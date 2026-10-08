@@ -64,8 +64,19 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [sleepQuality, setSleepQuality] = useState<number>(3);
 
   const todayStr = localDay(new Date());
-  // O notă pe zi: a doua salvare actualizează nota de azi
-  const todayLog = symptoms.find(s => localDay(new Date(s.logged_at)) === todayStr);
+  // Nota (stare + gânduri) și simptomele se salvează separat, câte una pe zi;
+  // a doua salvare din aceeași zi o actualizează pe cea existentă
+  const todayEntries = symptoms.filter(s => localDay(new Date(s.logged_at)) === todayStr);
+  const todayNote = todayEntries.find(s => s.kind === 'note');
+  const todaySymptoms = todayEntries.find(s => s.kind === 'symptoms');
+
+  // Efectul de pe buton după salvare: bifă și „Salvat” câteva secunde
+  const [savedFlash, setSavedFlash] = useState<'note' | 'symptoms' | null>(null);
+  useEffect(() => {
+    if (!savedFlash) return;
+    const timer = setTimeout(() => setSavedFlash(null), 2000);
+    return () => clearTimeout(timer);
+  }, [savedFlash]);
 
   // Ștergerea din Istoric se poate anula câteva secunde
   const [lastDeleted, setLastDeleted] = useState<SymptomLog | null>(null);
@@ -86,53 +97,74 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     setLastDeleted(null);
   };
 
-  useEffect(() => {
-    // Pre-fill form if there is already an entry for today (but don't block saving)
-    const todayLog = symptoms.find(s => localDay(new Date(s.logged_at)) === todayStr);
-    if (todayLog) {
-      if (todayLog.mood_state) {
-        const moodMap: Record<string, number> = {
-          'Foarte bine': 5,
-          'Bine': 4,
-          'Echilibrată': 3,
-          'Rău': 2,
-          'Foarte rău': 1
-        };
-        setMood(moodMap[todayLog.mood_state] || 3);
-      } else {
-        setMood(3);
-      }
-      setNote(todayLog.notes || '');
-      // Pre-fill symptom sliders from today's existing entry
-      if (todayLog.hot_flashes_count !== undefined) setHotFlashesCount(todayLog.hot_flashes_count);
-      if (todayLog.hot_flashes_intensity !== undefined) setHotFlashesIntensity(todayLog.hot_flashes_intensity);
-      if (todayLog.fatigue_level !== undefined) setFatigueLevel(todayLog.fatigue_level);
-      if (todayLog.joint_pain_level !== undefined) setJointPainLevel(todayLog.joint_pain_level);
-      if (todayLog.bone_pain_level !== undefined) setBonePainLevel(todayLog.bone_pain_level);
-      if (todayLog.nausea_level !== undefined) setNauseaLevel(todayLog.nausea_level);
-      if (todayLog.brain_fog !== undefined) setBrainFog(todayLog.brain_fog);
-      if (todayLog.headache !== undefined) setHeadache(todayLog.headache);
-      if (todayLog.sleep_quality !== undefined) setSleepQuality(todayLog.sleep_quality);
-      if (todayLog.mucosal_dryness !== undefined) setMucosalDryness(todayLog.mucosal_dryness);
-    }
-  }, [symptoms, todayStr]);
+  // Completează din ce ai salvat azi (intrările vechi au și nota, și simptomele).
+  // Fiecare parte se completează doar când apare intrarea ei, ca salvarea uneia
+  // să nu șteargă ce ai schimbat, nesalvat, în cealaltă.
+  const legacyToday = todayEntries.find(s => !s.kind);
+  const noteSource = todayNote || legacyToday;
+  const symptomSource = todaySymptoms || legacyToday;
 
+  useEffect(() => {
+    if (!noteSource) return;
+    const moodMap: Record<string, number> = {
+      'Foarte bine': 5,
+      'Bine': 4,
+      'Echilibrată': 3,
+      'Rău': 2,
+      'Foarte rău': 1
+    };
+    setMood(noteSource.mood_state ? moodMap[noteSource.mood_state] || 3 : 3);
+    setNote(noteSource.notes || '');
+  }, [noteSource?.id]);
+
+  useEffect(() => {
+    const log = symptomSource;
+    if (!log) return;
+    if (log.hot_flashes_count !== undefined) setHotFlashesCount(log.hot_flashes_count);
+    if (log.hot_flashes_intensity !== undefined) setHotFlashesIntensity(log.hot_flashes_intensity);
+    if (log.fatigue_level !== undefined) setFatigueLevel(log.fatigue_level);
+    if (log.joint_pain_level !== undefined) setJointPainLevel(log.joint_pain_level);
+    if (log.bone_pain_level !== undefined) setBonePainLevel(log.bone_pain_level);
+    if (log.nausea_level !== undefined) setNauseaLevel(log.nausea_level);
+    if (log.brain_fog !== undefined) setBrainFog(log.brain_fog);
+    if (log.headache !== undefined) setHeadache(log.headache);
+    if (log.sleep_quality !== undefined) setSleepQuality(log.sleep_quality);
+    if (log.mucosal_dryness !== undefined) setMucosalDryness(log.mucosal_dryness);
+  }, [symptomSource?.id]);
+
+  // Salvează sau actualizează intrarea de azi de tipul dat
+  const saveToday = (existing: SymptomLog | undefined, data: Omit<SymptomLog, 'id'>) => {
+    // După o salvare nouă, nota ștearsă nu mai poate fi readusă (rămâne una pe zi)
+    setLastDeleted(null);
+    if (existing && onUpdateSymptomLog) onUpdateSymptomLog(existing.id, data);
+    else onAddSymptomLog(data);
+  };
+
+  // „Salvează în jurnal”: doar starea și gândurile
   const handleSave = () => {
     setSaving(true);
-    // După o salvare nouă, nota ștearsă nu mai poate fi readusă (rămâne o notă pe zi)
-    setLastDeleted(null);
-    
     // Use a default mood level of 3 (Echilibrată) if none selected
     const effectiveMood = mood ?? 3;
-    
     const moodLabels: Record<number, string> = {
       1: 'Foarte rău', 2: 'Rău', 3: 'Echilibrată', 4: 'Bine', 5: 'Foarte bine'
     };
-    
-    const newLogData = {
+    saveToday(todayNote, {
       logged_at: new Date().toISOString(),
+      kind: 'note',
       mood_state: moodLabels[effectiveMood] || 'Echilibrată',
-      notes: note.trim() ? note.trim() : undefined,
+      notes: note.trim() ? note.trim() : undefined
+    });
+    setResponse({ mood: effectiveMood, text: pickJournalResponse(effectiveMood) });
+    setSaving(false);
+    setSavedFlash('note');
+  };
+
+  // „Salvează simptomele”: doar formularul de simptome
+  const handleSaveSymptoms = () => {
+    setSaving(true);
+    const symptomData: Omit<SymptomLog, 'id'> = {
+      logged_at: new Date().toISOString(),
+      kind: 'symptoms',
       hot_flashes_count: hotFlashesCount,
       hot_flashes_intensity: hotFlashesIntensity,
       night_sweats: nightSweats,
@@ -147,27 +179,22 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       headache: headache,
       water_intake_ml: waterIntake
     };
-    if (todayLog && onUpdateSymptomLog) {
-      onUpdateSymptomLog(todayLog.id, newLogData);
-    } else {
-      onAddSymptomLog(newLogData);
-    }
-    setResponse({ mood: effectiveMood, text: pickJournalResponse(effectiveMood) });
+    saveToday(todaySymptoms, symptomData);
     setSaving(false);
-    setShowDetailedForm(false);
-      
-      const hasSevere = 
-        hotFlashesIntensity >= 4 || 
-        jointPainLevel >= 4 || 
-        bonePainLevel >= 4 || 
-        nauseaLevel >= 4 || 
-        fatigueLevel >= 4 || 
-        brainFog >= 4;
+    setSavedFlash('symptoms');
 
-      if (hasSevere) {
-        // Rămâne pe ecran până o închide utilizatoarea
-        setSevereSymptomsAlert(newLogData);
-      }
+    const hasSevere =
+      hotFlashesIntensity >= 4 ||
+      jointPainLevel >= 4 ||
+      bonePainLevel >= 4 ||
+      nauseaLevel >= 4 ||
+      fatigueLevel >= 4 ||
+      brainFog >= 4;
+
+    if (hasSevere) {
+      // Rămâne pe ecran până o închide utilizatoarea
+      setSevereSymptomsAlert(symptomData);
+    }
   };
 
   const jointAreasList = ['genunchi', 'articulații mâini', 'șolduri', 'umeri', 'coloană'];
@@ -281,9 +308,13 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <button 
             onClick={handleSave}
             disabled={saving}
-            className="w-full mt-3 h-12 rounded-2xl bg-petal-600 hover:bg-petal-600/90 text-white font-semibold shadow-sm disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className={`w-full mt-3 h-12 rounded-2xl text-white font-semibold shadow-sm disabled:opacity-50 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
+              savedFlash === 'note' ? 'bg-sage-deep scale-[1.02]' : 'bg-petal-600 hover:bg-petal-600/90'
+            }`}
           >
-            {saving ? "Salvez..." : todayLog ? "Actualizează nota de azi" : "Salvează în jurnal"}
+            {savedFlash === 'note' ? (
+              <><Check className="w-5 h-5" strokeWidth={3} /> Salvat</>
+            ) : saving ? "Salvez..." : todayNote ? "Actualizează nota de azi" : "Salvează în jurnal"}
           </button>
           {response && (
             <div role="status" className="mt-3 p-4 rounded-2xl bg-white/80 dark:bg-darkbg-card border border-petal-200/60 dark:border-petal-900/40 flex items-start gap-2.5">
@@ -430,10 +461,14 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               </div>
 
               <button 
-                onClick={handleSave}
+                onClick={handleSaveSymptoms}
                 disabled={saving}
-                className="w-full h-12 rounded-2xl bg-sage-600 hover:bg-sage-700 disabled:opacity-50 text-white font-semibold flex items-center justify-center gap-2 transition-colors">
-                {saving ? 'Salvez...' : 'Salvează Toate Parametrii'}
+                className={`w-full h-12 rounded-2xl disabled:opacity-50 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 ${
+                  savedFlash === 'symptoms' ? 'bg-sage-deep scale-[1.02]' : 'bg-sage-600 hover:bg-sage-700'
+                }`}>
+                {savedFlash === 'symptoms' ? (
+                  <><Check className="w-5 h-5" strokeWidth={3} /> Salvat</>
+                ) : saving ? 'Salvez...' : 'Salvează simptomele'}
               </button>
             </div>
           )}
@@ -502,20 +537,21 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 <div className="space-y-3">
                   {historyGrouped[date].map((e) => {
                     const m = getMood(getMoodLevelFromState(e.mood_state));
+                    const isSymptoms = e.kind === 'symptoms';
                     return (
                       <div key={e.id} className="flex items-start gap-3">
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-sage-50 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300 flex items-center justify-center font-semibold text-xs border border-sage-200/60 dark:border-sage-800">
-                          {getMoodLevelFromState(e.mood_state)}/5
+                          {isSymptoms ? <ClipboardList className="w-4 h-4" aria-hidden="true" /> : `${getMoodLevelFromState(e.mood_state)}/5`}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-[12px] font-semibold text-gray-900 dark:text-gray-100">{m.label}</p>
+                            <p className="text-[12px] font-semibold text-gray-900 dark:text-gray-100">{isSymptoms ? 'Simptome' : m.label}</p>
                             {onDeleteSymptomLog && (
                               <button
                                 type="button"
                                 onClick={() => handleDelete(e)}
-                                aria-label="Șterge nota"
-                                title="Șterge nota"
+                                aria-label={isSymptoms ? 'Șterge simptomele' : 'Șterge nota'}
+                                title={isSymptoms ? 'Șterge simptomele' : 'Șterge nota'}
                                 className="tap-scale shrink-0 -mt-2.5 -mr-2 w-10 h-10 rounded-xl flex items-center justify-center text-ink-soft hover:text-blush-deep transition-colors"
                               >
                                 <Trash2 className="w-4 h-4" />
