@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapele 2, 3 și PIN-ul din 4 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
+**Stare:** în așteptare (proprietara): review pentru PR #8 (etapa 2), #9 (etapa 3), #10 (PIN, etapa 4) și testare cu pacientele; etapele 0 și 1 integrate (PR #5, #7)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -119,4 +119,4 @@ Deciziile proprietarei (2026-10-08):
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-PR-urile pentru etapele 2, 3 și PIN-ul din 4; apoi proprietara decide dacă și când facem memento-urile reale și sincronizarea (cer Supabase) și etapa 5; în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
+Decizia proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.
