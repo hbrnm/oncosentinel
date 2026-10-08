@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapele 2 și 3 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
+**Stare:** în așteptare (proprietara): review pentru PR #8 (etapa 2), #9 (etapa 3), #10 (PIN, etapa 4) și testare cu pacientele; etapele 0 și 1 integrate (PR #5, #7)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -19,7 +19,7 @@ Deciziile proprietarei (2026-10-08):
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
-| 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
+| 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | PIN gata (PR, ramura claude/etapa4); memento-uri și sincronizare de făcut | PR (ramura claude/etapa4) |
 | 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
 
 ## Etapa 0 — pașii
@@ -106,8 +106,17 @@ Deciziile proprietarei (2026-10-08):
 - Câmpul „Număr de telefon” scos (decizia proprietarei); numerele salvate se șterg la deschidere.
 - `npm test` (95) și `npm run build` trec; verificat la 390px.
 
+### Etapa 4, partea 1: PIN pe telefon (2026-10-08)
+- Deciziile proprietarei: întâi PIN-ul, fără server; 4 cifre; blocare la fiecare deschidere și după 5 minute în fundal; PIN uitat = ștergere și restaurare din copie. Textele aprobate: `docs/etapa4-texte.md` (cu nota despre limitele unui PIN de 4 cifre).
+- `src/lib/vault.ts`: cu PIN activ, în localStorage stă doar `oncosentinel_vault` (AES-GCM, cheie PBKDF2-SHA256, 310.000 de iterații); cât timp aplicația e deblocată, citirile și scrierile merg într-o copie din memorie și fiecare scriere se recriptează. Activare, deblocare, blocare, dezactivare, ștergere.
+- `VaultGate` (în `main.tsx`): ecranul de blocare înaintea aplicației, blocare după 5 minute în fundal, aplicația se remontează după deblocare. „Siguranța datelor”: „Protejează cu PIN” și textul despre criptare după starea PIN-ului.
+- Restaurarea dintr-o copie așteaptă scrierea criptată înainte de reîncărcare.
+- După verificare (2 probleme blocante găsite și reparate): conversia base64 pe bucăți (datele mari dădeau eroare și blocau scrierile următoare); activarea protejată de apăsare dublă; scrierile comasate printr-o coadă care nu rămâne blocată după o eroare; generații, ca o scriere veche să nu readucă seiful după ștergere sau blocare; interceptarea rămâne instalată și, cât e blocat, ignoră scrierile (nimic în clar); eroare clară la scoaterea PIN-ului cu spațiu plin; altă filă care schimbă seiful blochează fila curentă. A doua verificare: tratate și fila fără PIN când alta activează PIN-ul, fila blocată când alta scoate PIN-ul, ștergerea din altă filă și scrierile din timpul blocării.
+- Verificat în browser real: după activare, în localStorage rămâne doar seiful, fără date în clar; după reîncărcare cere PIN-ul; după deblocare datele sunt acolo.
+- `npm test` (118) și `npm run build` trec; verificat la 390px și în browser real.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-PR-urile pentru etapele 2 și 3, apoi proprietara alege pașii pentru etapa 4 (continuitate, cu server); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
+Decizia proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.

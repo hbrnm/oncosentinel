@@ -1,3 +1,5 @@
+import { vault } from './vault';
+
 export const backupService = {
   exportCompleteBackup() {
     const backupData = {
@@ -81,6 +83,8 @@ export const backupService = {
         localStorage.setItem('navimed_doctor_name', data.doctor_name);
       }
 
+      // Cu PIN activ, datele se criptează asincron: așteptăm scrierea înainte de reîncărcare
+      await vault.flush();
       alert('✅ Backup-ul a fost restaurat cu succes! Aplicația se va reîncărca pentru a aplica datele.');
       window.location.reload();
       return true;
