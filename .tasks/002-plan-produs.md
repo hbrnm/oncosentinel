@@ -163,6 +163,10 @@ Deciziile proprietarei (2026-10-08):
 - După `verificare` (nimic blocant): ora invalidă cade pe 08:00; fișierul se descarcă și pe iPhone (aplicația rămâne pe ecran); mesaj clar dacă fișierul nu se poate crea (text aprobat); eticheta „se deschide într-o filă nouă” pentru cititorul de ecran.
 - Test nou `memento-calendar.test.tsx`. `npm test` (158) și `npm run build` trec; verificat la 390px.
 
+### Dosar: scos cardul de control (2026-10-08)
+- Observația proprietarei: programarea din Dosarul medical nu își mai are locul acolo. Am scos cardul „Supraveghere Oncologică & Imagistică” (avea și „1 zile” / „1 de zile”). Controalele rămân în „Controale medicale”, pe Astăzi, în Profil și în calendarul din Tratament.
+- `npm test` (158) și `npm run build` trec.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 

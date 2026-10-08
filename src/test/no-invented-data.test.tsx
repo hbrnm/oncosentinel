@@ -27,7 +27,8 @@ describe('Fără date clinice inventate', () => {
     );
 
     expect(screen.getByText(/Încă nu ai adăugat nicio etapă/)).toBeInTheDocument();
-    expect(screen.getByText('nicio dată setată')).toBeInTheDocument();
+    // Programarea controlului nu mai e în Dosar (e în „Controale medicale”)
+    expect(screen.queryByText(/Următorul Control/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Curabil/)).not.toBeInTheDocument();
     expect(screen.getByText('Diagnostic necompletat')).toBeInTheDocument();
 
