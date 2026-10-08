@@ -130,12 +130,16 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     if (log.mucosal_dryness !== undefined) setMucosalDryness(log.mucosal_dryness);
   }, [symptomSource?.id]);
 
-  // Salvează sau actualizează intrarea de azi de tipul dat
+  // Salvează sau actualizează intrarea de azi de tipul dat. O intrare veche de azi
+  // (fără tip, cu notă și simptome) se actualizează pe partea salvată, ca să nu se dubleze.
   const saveToday = (existing: SymptomLog | undefined, data: Omit<SymptomLog, 'id'>) => {
     // După o salvare nouă, nota ștearsă nu mai poate fi readusă (rămâne una pe zi)
     setLastDeleted(null);
     if (existing && onUpdateSymptomLog) onUpdateSymptomLog(existing.id, data);
-    else onAddSymptomLog(data);
+    else if (legacyToday && onUpdateSymptomLog) {
+      const { id, ...legacy } = legacyToday;
+      onUpdateSymptomLog(id, { ...legacy, ...data, kind: undefined });
+    } else onAddSymptomLog(data);
   };
 
   // „Salvează în jurnal”: doar starea și gândurile
@@ -303,7 +307,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           >
             {savedFlash === 'note' ? (
               <><Check className="w-5 h-5" strokeWidth={3} /> Salvat</>
-            ) : saving ? "Salvez..." : todayNote ? "Actualizează nota de azi" : "Salvează în jurnal"}
+            ) : saving ? "Salvez..." : noteSource ? "Actualizează nota de azi" : "Salvează în jurnal"}
           </button>
           {response && (
             <div role="status" className="mt-3 p-4 rounded-2xl bg-white/80 dark:bg-darkbg-card border border-petal-200/60 dark:border-petal-900/40 flex items-start gap-2.5">

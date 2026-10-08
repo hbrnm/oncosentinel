@@ -7,6 +7,8 @@ import { useEffect, useRef } from 'react';
  * - Fiecare fereastră deschisă adaugă o intrare: Back o închide.
  * O fereastră închisă din butonul ei își scoate intrarea; dacă nu se poate
  * (s-a deschis între timp alta), intrarea rămasă e sărită la următorul Back.
+ * - Intrările rămase dinaintea unei reporniri (deblocare cu PIN, reîncărcare) sunt
+ *   sărite: de pe Astăzi, Back iese din aplicație.
  */
 
 const openWindows = new Map<number, () => void>();
@@ -15,6 +17,8 @@ let lastId = 0;
 const newId = () => (lastId = Math.max(Date.now(), lastId + 1));
 let ownBack = false;
 let onScreen: ((screen: string) => void) | null = null;
+// Marcajul pornirii curente; intrările cu alt marcaj sunt de dinainte
+let session = 0;
 
 const handlePop = (event: PopStateEvent) => {
   if (ownBack) {
@@ -22,6 +26,10 @@ const handlePop = (event: PopStateEvent) => {
     return;
   }
   const state = event.state || {};
+  if (state.session !== session) {
+    window.history.back();
+    return;
+  }
   const landedId = typeof state.window === 'number' ? state.window : 0;
   // Închide ferestrele deschise peste intrarea la care s-a ajuns, de sus în jos
   [...openWindows.keys()]
@@ -47,7 +55,8 @@ const handlePop = (event: PopStateEvent) => {
 /** Pornește urmărirea; `show` afișează ecranul la care duce Back. */
 export function startBackNavigation(firstScreen: string, show: (screen: string) => void): () => void {
   onScreen = show;
-  window.history.replaceState({ screen: firstScreen }, '');
+  session = newId();
+  window.history.replaceState({ screen: firstScreen, session }, '');
   window.addEventListener('popstate', handlePop);
   return () => {
     window.removeEventListener('popstate', handlePop);
@@ -58,7 +67,7 @@ export function startBackNavigation(firstScreen: string, show: (screen: string) 
 
 /** Un ecran nou deschis de utilizatoare. */
 export function pushScreen(screen: string): void {
-  window.history.pushState({ screen }, '');
+  window.history.pushState({ screen, session }, '');
 }
 
 /** Cât timp `isOpen` e adevărat, Back închide fereastra (apelează `onClose`). */
@@ -70,7 +79,7 @@ export function useBackToClose(isOpen: boolean, onClose: () => void): void {
     if (!isOpen) return;
     const id = newId();
     const screen = window.history.state?.screen;
-    window.history.pushState({ window: id, screen }, '');
+    window.history.pushState({ window: id, screen, session }, '');
     openWindows.set(id, () => closeRef.current());
     return () => {
       // Închisă cu Back: intrarea a fost deja consumată

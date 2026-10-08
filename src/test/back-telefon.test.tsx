@@ -35,7 +35,7 @@ describe('Back pe telefon', () => {
     await back();
     await waitFor(() => expect(onToday()).toBe(true));
     // Pe Astăzi nu mai e nimic în aplicație de întors: următorul Back iese
-    expect(window.history.state).toEqual({ screen: 'today' });
+    expect(window.history.state).toMatchObject({ screen: 'today' });
   });
 
   it('închide fereastra deschisă și rămâne pe același ecran', async () => {
@@ -46,7 +46,7 @@ describe('Back pe telefon', () => {
     await back();
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(onToday()).toBe(true);
-    expect(window.history.state).toEqual({ screen: 'today' });
+    expect(window.history.state).toMatchObject({ screen: 'today' });
   });
 
   it('după o fereastră închisă din butonul ei, Back nu are o apăsare „moartă”', async () => {
@@ -85,6 +85,29 @@ describe('Back pe telefon', () => {
 
     await back();
     await waitFor(() => expect(screen.queryByText(/Te simți puțin mai liniștită/)).not.toBeInTheDocument());
+    expect(onToday()).toBe(true);
+  });
+});
+
+describe('Back după blocarea cu PIN sau reîncărcare', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+  });
+
+  it('nu mai duce la ecranele vizitate înainte: de pe Astăzi iese din aplicație', async () => {
+    const first = render(<App />);
+    tab('Jurnal');
+    tab('Ghiduri');
+    // Aplicația se remontează după deblocare (sau pornește din nou după reîncărcare)
+    first.unmount();
+    render(<App />);
+    expect(onToday()).toBe(true);
+
+    await back();
+    await act(async () => { await new Promise(r => setTimeout(r, 100)); });
+    expect(onJournal()).toBe(false);
+    expect(onGuides()).toBe(false);
     expect(onToday()).toBe(true);
   });
 });
