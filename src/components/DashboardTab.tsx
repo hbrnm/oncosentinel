@@ -76,7 +76,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
   // 2. Control Date State (from localStorage or default)
   const [nextControlDate, setNextControlDate] = useState<string>(() => {
-    return localStorage.getItem('navimed_next_control_date') || '2026-11-18';
+    return localStorage.getItem('navimed_next_control_date') || '';
   });
 
   // Calculate days until control normalized to midnight
@@ -85,7 +85,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   todayDate.setHours(0, 0, 0, 0);
   const diffMs = targetDate.getTime() - todayDate.getTime();
   const daysUntilControl = isNaN(diffMs) ? 0 : Math.ceil(diffMs / (1000 * 3600 * 24));
-  const isUrgentControl = daysUntilControl >= 0 && daysUntilControl < 14;
+  const isUrgentControl = Boolean(nextControlDate) && daysUntilControl >= 0 && daysUntilControl < 14;
 
   // 3. Inspiration Banner Visibility State (Conditional + 7 days dismiss)
   const [showInspirationBanner, setShowInspirationBanner] = useState<boolean>(() => {
@@ -157,10 +157,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     return {
       id: 'default_appt',
       date: hasNextControl,
-      time: '10:00',
       specialty: 'Oncologie',
-      doctor: localStorage.getItem('navimed_doctor_name') || 'Dr. Maria Popescu',
-      center: 'Institutul Oncologic',
+      doctor: localStorage.getItem('navimed_doctor_name') || undefined,
       status: 'upcoming'
     };
   }, [nextControlDate, apptVersion]);
@@ -434,10 +432,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <Calendar className="w-3.5 h-3.5 text-sage-600" />
             </div>
             <h4 className="text-sm font-bold font-serif text-gray-900 dark:text-white leading-snug">
-              {formattedControlDate}
+              {nextControlDate ? formattedControlDate : 'Nicio dată setată'}
             </h4>
             <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-1 font-medium">
-              {daysUntilControl > 0 ? (
+              {!nextControlDate ? (
+                <span>Apasă ca să adaugi controlul</span>
+              ) : daysUntilControl > 0 ? (
                 <span className={isUrgentControl ? 'text-amber-800 dark:text-amber-300 font-bold' : 'text-sage-700 dark:text-sage-300'}>
                   peste {daysUntilControl} {daysUntilControl === 1 ? 'zi' : 'zile'}
                 </span>

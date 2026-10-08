@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- Migrare Supabase / PostgreSQL: Modulul de Aderență Tamoxifen (NaviMed)
--- Fișier: supabase/migrations/20261006_create_dose_logs.sql
+-- Fișier: supabase/migrations/20261007_create_dose_logs.sql
 -- ==============================================================================
 
 -- 1. Tip ENUM pentru starea administrării dozei

@@ -48,11 +48,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [nameVal, setNameVal] = useState(profile.full_name || '');
   const [reminderTimeVal, setReminderTimeVal] = useState(profile.daily_reminder_time || '08:00');
-  const [histologyVal, setHistologyVal] = useState(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-  const [stageVal, setStageVal] = useState(profile.stage || 'Grad 0 (TisN0M0, G2)');
-  const [erVal, setErVal] = useState(profile.er_status || 'Pozitiv (>90%)');
-  const [prVal, setPrVal] = useState(profile.pr_status || 'Pozitiv (>80%)');
-  const [her2Val, setHer2Val] = useState(profile.her2_status || 'Negativ');
+  const [histologyVal, setHistologyVal] = useState(profile.histology || '');
+  const [stageVal, setStageVal] = useState(profile.stage || '');
+  const [erVal, setErVal] = useState(profile.er_status || '');
+  const [prVal, setPrVal] = useState(profile.pr_status || '');
+  const [her2Val, setHer2Val] = useState(profile.her2_status || '');
   const [emailVal, setEmailVal] = useState(profile.email || '');
   const [oncologistEmailVal, setOncologistEmailVal] = useState(profile.oncologist_email || '');
   const [avatarVal, setAvatarVal] = useState(profile.avatar_url || '');
@@ -63,11 +63,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     setEmailVal(profile.email || '');
     setOncologistEmailVal(profile.oncologist_email || '');
     setReminderTimeVal(profile.daily_reminder_time || '08:00');
-    setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-    setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
-    setErVal(profile.er_status || 'Pozitiv (>90%)');
-    setPrVal(profile.pr_status || 'Pozitiv (>80%)');
-    setHer2Val(profile.her2_status || 'Negativ');
+    setHistologyVal(profile.histology || '');
+    setStageVal(profile.stage || '');
+    setErVal(profile.er_status || '');
+    setPrVal(profile.pr_status || '');
+    setHer2Val(profile.her2_status || '');
     setAvatarVal(profile.avatar_url || '');
   }, [profile]);
 
@@ -316,7 +316,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               {displayName}
             </h2>
             <span className="shrink-0 px-2 py-0.5 rounded-full bg-[#E8EDE7] dark:bg-sage-900/70 text-[#4A6354] dark:text-sage-300 text-[10px] font-semibold border border-sage-200/50">
-              {profile.histology?.includes('DCIS') ? 'DCIS' : (profile.stage || 'Grad 0')}
+              {profile.histology?.includes('DCIS') ? 'DCIS' : (profile.stage || 'Diagnostic necompletat')}
             </span>
           </div>
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400 truncate mt-0.5">
@@ -329,11 +329,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             setEmailVal(profile.email || '');
             setOncologistEmailVal(profile.oncologist_email || '');
             setReminderTimeVal(profile.daily_reminder_time || '08:00');
-            setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-            setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
-            setErVal(profile.er_status || 'Pozitiv (>90%)');
-            setPrVal(profile.pr_status || 'Pozitiv (>80%)');
-            setHer2Val(profile.her2_status || 'Negativ');
+            setHistologyVal(profile.histology || '');
+            setStageVal(profile.stage || '');
+            setErVal(profile.er_status || '');
+            setPrVal(profile.pr_status || '');
+            setHer2Val(profile.her2_status || '');
             setEditProfileOpen(true);
           }}
           className="tap-scale w-10 h-10 rounded-full bg-[#F5F2EB] dark:bg-darkbg-card flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer"
@@ -354,11 +354,11 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
           <button
             onClick={() => {
               setNameVal(profile.full_name || '');
-              setHistologyVal(profile.histology || 'Carcinom Ductal In Situ (DCIS)');
-              setStageVal(profile.stage || 'Grad 0 (TisN0M0, G2)');
-              setErVal(profile.er_status || 'Pozitiv (>90%)');
-              setPrVal(profile.pr_status || 'Pozitiv (>80%)');
-              setHer2Val(profile.her2_status || 'Negativ');
+              setHistologyVal(profile.histology || '');
+              setStageVal(profile.stage || '');
+              setErVal(profile.er_status || '');
+              setPrVal(profile.pr_status || '');
+              setHer2Val(profile.her2_status || '');
               setEditProfileOpen(true);
             }}
             className="text-[11px] font-semibold text-[#4A6354] dark:text-sage-300 hover:underline"
@@ -369,25 +369,25 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
 
         <div className="space-y-1">
           <p className="text-[13px] font-semibold text-[#3A332E] dark:text-gray-200">
-            {profile.histology || 'Carcinom Ductal In Situ (DCIS)'}
+            {profile.histology || 'Diagnostic necompletat'}
           </p>
           <p className="text-[12px] text-[#6B6259] dark:text-gray-400">
-            {profile.stage || 'Grad 0 (TisN0M0, G2)'}
+            {profile.stage || 'Stadiu necompletat'}
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#EAE5DE]/60 dark:border-darkbg-border text-center">
           <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
             <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor ER</span>
-            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.er_status || 'Pozitiv'}</span>
+            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.er_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
             <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Receptor PR</span>
-            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.pr_status || 'Pozitiv'}</span>
+            <span className="text-[11px] font-bold text-[#4A6354] dark:text-sage-300 truncate block">{profile.pr_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-[#F5F2EB]/60 dark:bg-darkbg-card/60">
             <span className="text-[10px] text-[#6B6259] dark:text-gray-400 block font-medium">Status HER2</span>
-            <span className="text-[11px] font-bold text-[#3A332E] dark:text-gray-200 truncate block">{profile.her2_status || 'Negativ'}</span>
+            <span className="text-[11px] font-bold text-[#3A332E] dark:text-gray-200 truncate block">{profile.her2_status || '—'}</span>
           </div>
         </div>
       </div>
@@ -547,14 +547,14 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
         </div>
       </div>
 
-      {/* 5. Acțiune Autentificare / Sincronizare Cloud */}
+      {/* 5. Siguranța datelor */}
       {onOpenAuth && (
         <button
           onClick={onOpenAuth}
           className="tap-scale w-full organic-card rounded-2xl p-4 flex items-center justify-center gap-2 text-[#4A6354] dark:text-sage-300 font-semibold text-[14px] hover:bg-gray-50 transition-colors cursor-pointer"
         >
           <ShieldCheck className="w-4 h-4" />
-          <span>Sincronizare Cloud & Siguranță Date</span>
+          <span>Siguranța datelor</span>
         </button>
       )}
       </div>
@@ -718,7 +718,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                     value={her2Val}
                     onChange={(e) => setHer2Val(e.target.value)}
                     className="w-full h-10 px-2 rounded-xl border border-[#EAE5DE] dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[12px] text-[#3A332E] dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#5E7A68]"
-                    placeholder="Negativ"
+                    placeholder="ex: Negativ"
                   />
                 </div>
               </div>

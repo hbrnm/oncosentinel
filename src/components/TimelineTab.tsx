@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';
+import { MilestoneModal } from './MilestoneModal';
 
 interface TimelineTabProps {
   profile: PatientProfile;
@@ -24,7 +25,8 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   onDeleteDocument,
   onUpdateMilestones
 }) => {
-  const [expandedMilestone, setExpandedMilestone] = useState<string | null>('m4');
+  const [expandedMilestone, setExpandedMilestone] = useState<string | null>(null);
+  const [editingMilestone, setEditingMilestone] = useState<ClinicalMilestone | 'new' | null>(null);
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [docName, setDocName] = useState<string>('');
   const [docCategory, setDocCategory] = useState<any>('buletin_histopatologic');
@@ -32,7 +34,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
   // 6-Month Oncology & Imaging Surveillance Tracker
   const [nextControlDate, setNextControlDate] = useState<string>(() => {
-    return localStorage.getItem('navimed_next_control_date') || '2027-03-15';
+    return localStorage.getItem('navimed_next_control_date') || '';
   });
   const [isEditingControlDate, setIsEditingControlDate] = useState<boolean>(false);
   const [tempDate, setTempDate] = useState<string>(nextControlDate);
@@ -49,6 +51,19 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
     setIsEditingControlDate(false);
   };
 
+  const handleSaveMilestone = (saved: ClinicalMilestone) => {
+    const others = milestones.filter(m => m.id !== saved.id);
+    const updated = [...others, saved].sort((a, b) => a.event_date.localeCompare(b.event_date));
+    onUpdateMilestones?.(updated);
+    setEditingMilestone(null);
+  };
+
+  const handleDeleteMilestone = (m: ClinicalMilestone) => {
+    if (confirm(`Sigur dorești să ștergi etapa "${m.title}" din cronologie?`)) {
+      onUpdateMilestones?.(milestones.filter(x => x.id !== m.id));
+    }
+  };
+
   // Calculate days until control normalized to midnight
   const targetDate = new Date(nextControlDate + 'T00:00:00');
   const todayDate = new Date();
@@ -58,45 +73,36 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
   const handleUploadFile = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!docName.trim() && !selectedRealFile) return;
+    if (!selectedRealFile) {
+      alert('Alege mai întâi fișierul (PDF sau poză) pe care vrei să-l păstrezi.');
+      return;
+    }
 
-    if (selectedRealFile) {
-      // Validate file size to prevent localStorage quota crash
-      if (selectedRealFile.size > 1.5 * 1024 * 1024) {
-        alert('Pentru performanță și stocare securizată pe dispozitiv, fișierul trebuie să fie sub 1.5 MB.');
-        return;
-      }
+    // Validate file size to prevent localStorage quota crash
+    if (selectedRealFile.size > 1.5 * 1024 * 1024) {
+      alert('Pentru performanță și stocare securizată pe dispozitiv, fișierul trebuie să fie sub 1.5 MB.');
+      return;
+    }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64Data = reader.result as string;
-        onAddDocument({
-          file_name: docName.trim() || selectedRealFile.name,
-          category: docCategory,
-          file_size_bytes: selectedRealFile.size,
-          file_data: base64Data,
-          uploaded_at: new Date().toISOString(),
-          is_demo: false
-        });
-        setSelectedRealFile(null);
-        setDocName('');
-        setShowUploadModal(false);
-      };
-      reader.onerror = () => {
-        alert('A apărut o problemă la citirea fișierului de pe dispozitiv.');
-      };
-      reader.readAsDataURL(selectedRealFile);
-    } else {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64Data = reader.result as string;
       onAddDocument({
-        file_name: docName.endsWith('.pdf') ? docName : `${docName}.pdf`,
+        file_name: docName.trim() || selectedRealFile.name,
         category: docCategory,
-        file_size_bytes: Math.floor(Math.random() * 500000) + 150000,
+        file_size_bytes: selectedRealFile.size,
+        file_data: base64Data,
         uploaded_at: new Date().toISOString(),
         is_demo: false
       });
+      setSelectedRealFile(null);
       setDocName('');
       setShowUploadModal(false);
-    }
+    };
+    reader.onerror = () => {
+      alert('A apărut o problemă la citirea fișierului de pe dispozitiv.');
+    };
+    reader.readAsDataURL(selectedRealFile);
   };
 
   const categoryBadges: Record<string, { label: string; color: string }> = {
@@ -133,11 +139,15 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               <h3 className="text-xs font-bold text-gray-900 dark:text-white mt-1">
                 Următorul Control (Mamografie / Eco & Oncolog):{' '}
                 <span className="text-blue-700 dark:text-blue-300 font-extrabold">
-                  {new Date(nextControlDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {nextControlDate
+                    ? new Date(nextControlDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })
+                    : 'nicio dată setată'}
                 </span>
               </h3>
               <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5">
-                {daysUntilControl > 0 ? (
+                {!nextControlDate ? (
+                  <>Apasă pe creion ca să adaugi data următorului control.</>
+                ) : daysUntilControl > 0 ? (
                   <>Au mai rămas <strong className="text-blue-700 dark:text-blue-300">{daysUntilControl} de zile</strong> până la investigația bilaterală de rutină.</>
                 ) : (
                   <span className="text-amber-700 font-bold">Controlul este programat astăzi sau în curs!</span>
@@ -146,9 +156,11 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
             </div>
           </div>
 
-          <span className="text-xs font-bold px-3 py-1.5 rounded-2xl bg-white dark:bg-darkbg-card text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-darkbg-border shadow-2xs shrink-0">
-            {daysUntilControl > 0 ? `${daysUntilControl} zile` : 'Azi'}
-          </span>
+          {nextControlDate && (
+            <span className="text-xs font-bold px-3 py-1.5 rounded-2xl bg-white dark:bg-darkbg-card text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-darkbg-border shadow-2xs shrink-0">
+              {daysUntilControl > 0 ? `${daysUntilControl} zile` : 'Azi'}
+            </span>
+          )}
         </div>
 
         {isEditingControlDate && (
@@ -184,30 +196,27 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               <span>Fișă Diagnostic Onco-Mamologie</span>
             </div>
             <h2 className="text-base font-bold text-gray-900 dark:text-white">
-              {profile.histology}
+              {profile.histology || 'Diagnostic necompletat'}
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Stadiu {profile.stage}
+              {profile.stage ? `Stadiu ${profile.stage}` : 'Stadiu necompletat'}
             </p>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-sage-500 text-white">
-            Curabil / Grad 0
-          </span>
         </div>
 
         {/* Receptor status badges */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-sage-100/80 dark:border-darkbg-border">
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
             <span className="text-[10px] text-gray-500 block">Receptor ER</span>
-            <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.er_status}</span>
+            <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.er_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
             <span className="text-[10px] text-gray-500 block">Receptor PR</span>
-            <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.pr_status}</span>
+            <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.pr_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
             <span className="text-[10px] text-gray-500 block">Status HER2</span>
-            <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{profile.her2_status}</span>
+            <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{profile.her2_status || '—'}</span>
           </div>
         </div>
       </div>
@@ -219,12 +228,20 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
             <Activity className="w-4 h-4 text-sage-600" />
             <span>Povestea Mea Medicală (Cronologie)</span>
           </h3>
-          <span className="text-xs text-sage-600 dark:text-sage-400 font-medium">
-            Toate etapele finalizate cu succes
-          </span>
+          <button
+            onClick={() => setEditingMilestone('new')}
+            className="text-xs text-sage-700 dark:text-sage-300 font-semibold flex items-center gap-1 hover:underline"
+          >
+            <Plus className="w-3.5 h-3.5" /> Adaugă etapă
+          </button>
         </div>
 
         <div className="relative pl-6 space-y-5 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-sage-200 dark:before:bg-darkbg-border">
+          {milestones.length === 0 && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Încă nu ai adăugat nicio etapă. Apasă „Adaugă etapă” ca să-ți notezi diagnosticul, operația sau tratamentele, cu data lor.
+            </p>
+          )}
           {milestones.map((m) => {
             const isExpanded = expandedMilestone === m.id;
             const badge = categoryBadges[m.category] || { label: m.title, color: 'bg-gray-100 text-gray-700' };
@@ -272,6 +289,20 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                           <span className="font-medium text-gray-800 dark:text-gray-200">{value}</span>
                         </div>
                       ))}
+                      <div className="flex justify-end gap-3 pt-1">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setEditingMilestone(m); }}
+                          className="text-[11px] font-semibold text-sage-700 dark:text-sage-300 flex items-center gap-1 hover:underline"
+                        >
+                          <Edit3 className="w-3 h-3" /> Modifică
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleDeleteMilestone(m); }}
+                          className="text-[11px] font-semibold text-rose-600 flex items-center gap-1 hover:underline"
+                        >
+                          <Trash2 className="w-3 h-3" /> Șterge
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -428,6 +459,14 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
         </div>
       </div>
 
+      {editingMilestone && (
+        <MilestoneModal
+          milestone={editingMilestone === 'new' ? undefined : editingMilestone}
+          onClose={() => setEditingMilestone(null)}
+          onSave={handleSaveMilestone}
+        />
+      )}
+
       {/* Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
@@ -436,7 +475,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               Încarcă Document Medical Propriu
             </h3>
             <p className="text-[11px] text-gray-500 mb-3">
-              Documentele sunt stocate în siguranță pe dispozitivul tău și pot fi sincronizate în Cloud.
+              Documentele sunt salvate doar pe acest dispozitiv.
             </p>
             <form onSubmit={handleUploadFile} className="space-y-3">
               <div>

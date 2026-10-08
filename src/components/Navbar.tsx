@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Moon, Sun, AlertTriangle, ShieldCheck, Settings, Wind, Cloud, Stethoscope, Sparkles } from 'lucide-react';
+import { Heart, Moon, Sun, AlertTriangle, ShieldCheck, Settings, Wind, Stethoscope, Sparkles } from 'lucide-react';
 import { PatientProfile } from '../types';
 
 interface NavbarProps {
@@ -62,13 +62,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Clean Action Controls */}
         <div className="flex items-center space-x-1.5">
-          {/* Cloud Sync Button */}
+          {/* Data Safety Button */}
           <button
             onClick={onOpenAuth}
-            title="Sincronizare Cloud & Siguranță Date"
+            title="Siguranța datelor"
+            aria-label="Siguranța datelor"
             className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-border transition-colors border border-transparent dark:border-darkbg-border"
           >
-            <Cloud className="w-4 h-4 text-sage-600 dark:text-sage-300" />
+            <ShieldCheck className="w-4 h-4 text-sage-600 dark:text-sage-300" />
           </button>
 
           {/* Text Size Toggle */}

@@ -12,71 +12,16 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
 export const DEFAULT_PROFILE: PatientProfile = {
   full_name: '',
   date_of_birth: '',
-  histology: 'Carcinom Ductal In Situ (DCIS)',
-  stage: 'Grad 0 (TisN0M0, G2)',
-  er_status: 'Pozitiv (>90%)',
-  pr_status: 'Pozitiv (>80%)',
-  her2_status: 'Negativ',
+  histology: '',
+  stage: '',
+  er_status: '',
+  pr_status: '',
+  her2_status: '',
   tamoxifen_start_date: new Date().toISOString().slice(0, 10),
   pill_stock_count: 30,
   daily_reminder_time: '08:30',
   oncologist_email: ''
 };
-
-export const DEFAULT_MILESTONES: ClinicalMilestone[] = [
-  {
-    id: 'm1',
-    category: 'diagnostic',
-    event_date: '2026-05-14',
-    title: 'Descoperire & Biopsie Mamara',
-    description: 'Mamografie screening: microcalcificări pleomorfe cadran supero-extern sân stâng. Biopsie stereotaxică confirmă DCIS.',
-    key_details: {
-      'Examinare': 'Mamografie digitală bilaterală',
-      'Histopatologie': 'Carcinom ductal in situ, pattern cribriform/solid',
-      'Receptori': 'ER+ 95%, PR+ 85%, Ki-67 12%'
-    },
-    documentsCount: 2
-  },
-  {
-    id: 'm2',
-    category: 'chirurgie',
-    event_date: '2026-06-25',
-    title: 'Sectorectomie (Chirurgie Conservatoare)',
-    description: 'Intervenție chirurgicală conservatoare cu reperaj harpon. Excizie completă cu margini de rezecție libere (>2mm - R0). Ganglion santinelă negativ.',
-    key_details: {
-      'Tip Operație': 'Sectorectomie sân stâng + Biopsie Ganglion Santinelă',
-      'Margini Rezecție': 'R0 (Libere microscopic, > 4 mm)',
-      'Evoluție': 'Vindecare per primam, fără complicații post-operatorii'
-    },
-    documentsCount: 2
-  },
-  {
-    id: 'm3',
-    category: 'radioterapie',
-    event_date: '2026-08-10',
-    title: 'Radioterapie Adjuvantă (15 Fracții)',
-    description: 'Protocol de hipofracționare: 40.05 Gy în 15 fracții pe tot volumul mamar stâng. Toleranță excelentă, eritem cutanat grad 1 rezolvat.',
-    key_details: {
-      'Doză Totală': '40.05 Gy / 15 fracții',
-      'Tehnică': 'VMAT cu inspirație profundă blocată (DIBH)',
-      'Îngrijire Piele': 'Cremă hidratantă fără parfum, protecție mecanică'
-    },
-    documentsCount: 1
-  },
-  {
-    id: 'm4',
-    category: 'terapie_adjuvanta',
-    event_date: '2026-09-01',
-    title: 'Start Tratament Adjuvant Tamoxifen (20 mg/zi)',
-    description: 'Inițierea hormonoterapiei adjuvante pentru reducerea riscului de recidivă locală și cancer contralateral. Durată planificată: 5 ani.',
-    key_details: {
-      'Medicament': 'Tamoxifen 20 mg/zi, oral, dimineața',
-      'Durată': '5 ani (2026 - 2031)',
-      'Monitorizare': 'Control ecografic/mamografic anual, ecografie transvaginală la 6-12 luni'
-    },
-    documentsCount: 1
-  }
-];
 
 // Helper functions for Local Storage & Supabase Sync
 export const storageService = {
@@ -136,7 +81,7 @@ export const storageService = {
 
   getMilestones(): ClinicalMilestone[] {
     const saved = localStorage.getItem('navimed_milestones');
-    return saved ? JSON.parse(saved) : DEFAULT_MILESTONES;
+    return saved ? JSON.parse(saved) : [];
   },
 
   getDocuments(): MedicalDocument[] {
