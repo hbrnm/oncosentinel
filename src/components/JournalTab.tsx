@@ -6,9 +6,10 @@ import {
 import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
-import { generateOncologyReport } from '../lib/pdfGenerator';
-import { generateWeeklyPlannerPDF } from '../lib/weeklyPdfGenerator';
 import { formatDateRo } from './TreatmentTab';
+
+// Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
+const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
 
 // Ziua locală (AAAA-LL-ZZ), nu cea din UTC
 const localDay = (d: Date) =>
@@ -232,7 +233,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               onClick={() => {
                 const list = JSON.parse(localStorage.getItem('navimed_shopping_list') || '[]');
                 const exercise = parseInt(localStorage.getItem('navimed_exercise_minutes') || '45', 10);
-                generateWeeklyPlannerPDF(profile, list, exercise);
+                import('../lib/weeklyPdfGenerator')
+                  .then(({ generateWeeklyPlannerPDF }) => generateWeeklyPlannerPDF(profile, list, exercise))
+                  .catch(() => alert(PDF_LOAD_ERROR));
               }}
               className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
@@ -241,7 +244,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             </button>
 
             <button
-              onClick={() => generateOncologyReport(profile, doses, symptoms)}
+              onClick={() => {
+                import('../lib/pdfGenerator')
+                  .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
+                  .catch(() => alert(PDF_LOAD_ERROR));
+              }}
               className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-sage-600" />

@@ -5,7 +5,6 @@ import {
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog } from '../types';
-import { generateOncologyReport } from '../lib/pdfGenerator';
 import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
 
