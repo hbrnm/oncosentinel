@@ -31,6 +31,24 @@ export function loadAppointments(): AppointmentItem[] {
 }
 
 /**
+ * Salvează lista și ține „următorul control” (cheia folosită pe Astăzi) pe cel mai
+ * apropiat control viitor; fără controale viitoare, cheia se șterge.
+ */
+export function saveAppointments(list: AppointmentItem[]): void {
+  localStorage.setItem(LIST_KEY, JSON.stringify(list));
+  const next = list
+    .filter(a => a.status === 'upcoming' && a.date >= todayIso())
+    .sort((a, b) => a.date.localeCompare(b.date))[0];
+  if (next) {
+    localStorage.setItem(NEXT_KEY, next.date);
+    if (next.doctor) localStorage.setItem('navimed_doctor_name', next.doctor);
+  } else {
+    localStorage.removeItem(NEXT_KEY);
+  }
+  window.dispatchEvent(new Event('storage'));
+}
+
+/**
  * Setează data următorului control: mută cel mai apropiat control viitor la noua dată
  * sau, dacă nu există niciunul, adaugă unul nou. Ține lista și data în acord.
  */
@@ -42,7 +60,5 @@ export function setNextControlDate(date: string): void {
   const updated: AppointmentItem[] = next
     ? list.map(a => (a.id === next.id ? { ...a, date } : a))
     : [...list, { id: `appt_${Date.now()}`, date, specialty: 'Oncologie', status: 'upcoming' }];
-  localStorage.setItem(LIST_KEY, JSON.stringify(updated));
-  localStorage.setItem(NEXT_KEY, date);
-  window.dispatchEvent(new Event('storage'));
+  saveAppointments(updated);
 }

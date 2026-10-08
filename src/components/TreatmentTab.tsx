@@ -64,6 +64,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   });
 
   const isTodayTaken = takenDates.has(todayStr);
+  const firstDoseDate = [...takenDates, ...missedDates].sort()[0];
 
   // Controalele viitoare din „Controale medicale”, marcate și în calendar
   const upcomingAppointments = loadAppointments()
@@ -112,7 +113,8 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
     let status: 'taken' | 'missed' | 'future' | 'empty' = 'future';
 
-    const startDate = profile.tamoxifen_start_date || '2000-01-01';
+    // Fără data de început, numărăm de la prima doză notată (sau de azi), nu din trecutul nelimitat
+    const startDate = profile.tamoxifen_start_date || firstDoseDate || todayStr;
 
     if (takenDates.has(iso)) {
       status = 'taken';

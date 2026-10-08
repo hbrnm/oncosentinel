@@ -122,7 +122,6 @@ Deciziile proprietarei (2026-10-08):
 - Cardul pastilei: numele întreg, doza și frecvența dedesubt. Profil: numele nu mai e ascuns de eticheta diagnosticului.
 - Jurnal: „Săptămâna ta” prima, apoi starea de azi, formularul de simptome (fără steluță), documentele la final.
 - „Controale medicale”: „Adaugă” nu mai iese din ecran, iar cardurile sunt aliniate. Planta din cardul roz are floare.
-- Rămas: în `ProfileTab`, lista de controale folosește alt tip de stare („done” față de „completed”); nu s-a atins.
 - `npm test` (127) și `npm run build` trec; verificat la 390px. Agentul `verificare`: nimic blocant; reparat și cazul unui control trecut rămas „viitor”.
 
 ### Reparații după testare, runda 2 (2026-10-08)
@@ -136,6 +135,11 @@ Deciziile proprietarei (2026-10-08):
 ### Aderența din Tratament (2026-10-08)
 - Bug: când luna nu avea încă nicio zi de numărat, cardul arăta 100% și „0 doze luate din 31 zile”. Aprobate: „—” cu „Încă nu sunt zile de numărat în această lună.”; rândul devine „Ai marcat 5 din 8 zile.” (acord corect: „1 din 1 zi”, „20 din 20 de zile”).
 - Test nou `aderenta.test.tsx` (pică pe codul vechi). `npm test` (138) și `npm run build` trec.
+
+### Două buguri mici (2026-10-08)
+- Profil: un control adăugat din Profil devenea „următorul control” chiar dacă în listă era unul mai vechi (se lua primul din listă, nu cel mai apropiat viitor). Acum Profilul folosește aceeași listă și aceeași regulă ca „Controale medicale” (`saveAppointments` în `src/lib/appointments.ts`) și se actualizează când lista se schimbă în altă parte. Tipul de stare duplicat („done”) a fost scos.
+- Tratament: fără data de început a tratamentului, calendarul socotea toate zilele trecute ca sărite (de la anul 2000). Acum se numără de la prima doză notată sau, dacă nu există nicio doză, de azi.
+- Test nou `controale-si-calendar.test.tsx` (pică pe codul vechi). `npm test` (142) și `npm run build` trec.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.

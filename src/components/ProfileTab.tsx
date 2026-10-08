@@ -7,16 +7,8 @@ import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog } from '../types';
 import { FileDown } from 'lucide-react';
 import { formatDateRo } from './TreatmentTab';
-
-interface AppointmentItem {
-  id: string;
-  date: string;
-  time?: string;
-  specialty: string;
-  doctor?: string;
-  center?: string;
-  status: 'upcoming' | 'done' | 'cancelled';
-}
+import type { AppointmentItem } from './DoctorVisitModal';
+import { loadAppointments, saveAppointments } from '../lib/appointments';
 
 interface ProfileTabProps {
   profile: PatientProfile;
@@ -134,16 +126,13 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
   };
 
   // 3. Appointments list state
-  const [appointments, setAppointments] = useState<AppointmentItem[]>(() => {
-    const saved = localStorage.getItem('navimed_appointments_list');
-    if (saved) {
-      try { 
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      } catch (e) {}
-    }
-    return [];
-  });
+  // Aceeași listă ca în „Controale medicale”; se recitește când aceasta se schimbă
+  const [appointments, setAppointments] = useState<AppointmentItem[]>(loadAppointments);
+  useEffect(() => {
+    const reload = () => setAppointments(loadAppointments());
+    window.addEventListener('storage', reload);
+    return () => window.removeEventListener('storage', reload);
+  }, []);
 
   // Add Appointment Dialog
   const [addAppt, setAddAppt] = useState(false);
@@ -167,12 +156,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
     };
     const updated = [...appointments, newAppt].sort((a, b) => a.date.localeCompare(b.date));
     setAppointments(updated);
-    localStorage.setItem('navimed_appointments_list', JSON.stringify(updated));
-    localStorage.setItem('navimed_next_control_date', updated[0].date);
-    if (updated[0].doctor) {
-      localStorage.setItem('navimed_doctor_name', updated[0].doctor);
-    }
-    window.dispatchEvent(new Event('storage'));
+    saveAppointments(updated);
     setAddAppt(false);
     setApptForm({ date: '', specialty: 'Oncologie', doctor: '', center: '' });
   };

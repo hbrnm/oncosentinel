@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { doctorSummary, plural } from '../lib/summary';
-import { loadAppointments } from '../lib/appointments';
+import { loadAppointments, saveAppointments } from '../lib/appointments';
 const daysUntil = (dateStr?: string) => {
   if (!dateStr) return null;
   const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
@@ -87,20 +87,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
   // Persist appointments and update legacy key for Dashboard sync
   useEffect(() => {
-    localStorage.setItem('navimed_appointments_list', JSON.stringify(appointments));
-    const nextUpcoming = appointments
-      .filter(a => a.status === 'upcoming' && (daysUntil(a.date) ?? 0) >= 0)
-      .sort((a, b) => a.date.localeCompare(b.date))[0];
-    if (nextUpcoming) {
-      localStorage.setItem('navimed_next_control_date', nextUpcoming.date);
-      if (nextUpcoming.doctor) {
-        localStorage.setItem('navimed_doctor_name', nextUpcoming.doctor);
-      }
-    } else {
-      // No upcoming appointment left
-      localStorage.removeItem('navimed_next_control_date');
-    }
-    window.dispatchEvent(new Event('storage'));
+    saveAppointments(appointments);
   }, [appointments]);
 
   // Persist questions
