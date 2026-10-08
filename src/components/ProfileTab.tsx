@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  User as UserIcon, Pill, CalendarHeart, LogOut, Pencil, Plus, 
-  ChevronRight, MapPin, Check, X, ShieldCheck, Clock, Camera, Trash2, FileText
+import {
+  User as UserIcon, Pill, CalendarHeart, Pencil, Plus, ChevronRight, MapPin, X, ShieldCheck, Camera, FileText
 } from 'lucide-react';
 import { PillIcon } from './Botanical';
 import { PatientProfile, DoseLog } from '../types';
-import { FileDown } from 'lucide-react';
-import { formatDateRo } from './TreatmentTab';
 import type { AppointmentItem } from './DoctorVisitModal';
 import { loadAppointments, saveAppointments } from '../lib/appointments';
 import { useBackToClose } from '../lib/backNavigation';

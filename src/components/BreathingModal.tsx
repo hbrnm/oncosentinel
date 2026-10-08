@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Wind, Heart, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { X, Wind } from 'lucide-react';
 
 interface BreathingModalProps {
   isOpen: boolean;

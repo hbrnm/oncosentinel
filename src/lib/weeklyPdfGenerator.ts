@@ -16,7 +16,6 @@ export function generateWeeklyPlannerPDF(
   useReadableText(doc);
 
   const sageDark: [number, number, number] = [77, 102, 91];
-  const sageLight: [number, number, number] = [234, 242, 238];
   const textColor: [number, number, number] = [40, 50, 45];
 
   // 1. Header

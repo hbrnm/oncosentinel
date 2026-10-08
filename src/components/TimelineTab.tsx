@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  CheckCircle2, FileText, Upload, Plus, ChevronDown, 
-  ChevronUp, ShieldCheck, Download, Calendar, Activity,
-  Clock, Check, Edit3, Trash2
+import {
+  CheckCircle2, FileText, Upload, Plus, ChevronDown, ChevronUp, ShieldCheck, Download, Calendar, Activity, Edit3, Trash2
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, HeartHandshake, Send, Check, ShieldCheck, Heart, User } from 'lucide-react';
+import { X, HeartHandshake, Send, Check } from 'lucide-react';
 import { PatientProfile } from '../types';
 import { MOOD_LINES, HELP_IDEAS, buildSupporterMessage, SHARE_COPIED, SHARE_FAILED } from '../data/circle';
 

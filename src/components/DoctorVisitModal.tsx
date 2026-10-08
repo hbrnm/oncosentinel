@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  X, Plus, Trash2, CheckCircle2, Circle, CalendarHeart, 
-  Clock, MapPin, Stethoscope, ChevronRight, MessageSquarePlus, Calendar,
-  Check, XCircle, History, FileDown, ClipboardList
+import {
+  X, Plus, Trash2, CheckCircle2, Circle, CalendarHeart, Clock, MapPin, MessageSquarePlus, Check, XCircle, History, FileDown, ClipboardList
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { doctorSummary, plural } from '../lib/summary';

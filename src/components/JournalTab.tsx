@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown,
-  Flame, Moon, Battery, Droplets, Check, Trash2
+import {
+  Heart, BookOpen, Leaf, ClipboardList, ChevronDown, ChevronUp, FileDown, Flame, Check, Trash2
 } from 'lucide-react';
 import { LeafSprig } from './Botanical';
 import { MoodPicker, getMood } from './MoodPicker';
@@ -41,7 +40,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 }) => {
   const [mood, setMood] = useState<number | null>(null);
   const [note, setNote] = useState<string>('');
-  const [savedToday, setSavedToday] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
   // Mesajul cald de după salvare (aprobat, docs/etapa1-texte.md)
   const [response, setResponse] = useState<{ mood: number; text: string } | null>(null);
@@ -50,12 +48,12 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [showDetailedForm, setShowDetailedForm] = useState<boolean>(false);
   const [hotFlashesCount, setHotFlashesCount] = useState<number>(0);
   const [hotFlashesIntensity, setHotFlashesIntensity] = useState<number>(0);
-  const [nightSweats, setNightSweats] = useState<boolean>(false);
+  const [nightSweats] = useState<boolean>(false);
   const [fatigueLevel, setFatigueLevel] = useState<number>(0);
   const [jointPainLevel, setJointPainLevel] = useState<number>(0);
-  const [selectedJointAreas, setSelectedJointAreas] = useState<string[]>([]);
+  const [selectedJointAreas] = useState<string[]>([]);
   const [mucosalDryness, setMucosalDryness] = useState<number>(0);
-  const [waterIntake, setWaterIntake] = useState<number>(2000);
+  const [waterIntake] = useState<number>(2000);
   const [severeSymptomsAlert, setSevereSymptomsAlert] = useState<Partial<SymptomLog> | null>(null);
   const [bonePainLevel, setBonePainLevel] = useState<number>(0);
   const [nauseaLevel, setNauseaLevel] = useState<number>(0);
@@ -194,15 +192,6 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     if (hasSevere) {
       // Rămâne pe ecran până o închide utilizatoarea
       setSevereSymptomsAlert(symptomData);
-    }
-  };
-
-  const jointAreasList = ['genunchi', 'articulații mâini', 'șolduri', 'umeri', 'coloană'];
-  const toggleJointArea = (area: string) => {
-    if (selectedJointAreas.includes(area)) {
-      setSelectedJointAreas(selectedJointAreas.filter(a => a !== area));
-    } else {
-      setSelectedJointAreas([...selectedJointAreas, area]);
     }
   };
 

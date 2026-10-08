@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  ArrowLeft, 
-  ChevronRight, 
-  FileText,
-  ShieldCheck,
-  Utensils,
-  Pill,
-  Search,
-  Ban,
-  MessageCircle
+import {
+  ArrowLeft, ChevronRight, ShieldCheck, Pill, Search, Ban, MessageCircle
 } from 'lucide-react';
 import { RenderMarkdown } from './Markdown';
 

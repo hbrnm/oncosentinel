@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Moon, Sun, AlertTriangle, ShieldCheck, Settings, Wind, Stethoscope, Sparkles } from 'lucide-react';
+import { Heart, ShieldCheck, Settings } from 'lucide-react';
 import { PatientProfile } from '../types';
 
 interface NavbarProps {
