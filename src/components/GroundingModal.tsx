@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sparkles, Eye, Hand, Ear, Smile, Heart, ArrowRight, ArrowLeft, Check } from 'lucide-react';
+import { X, Sparkles, Eye, Hand, Ear, Heart, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 
 interface GroundingModalProps {
   isOpen: boolean;

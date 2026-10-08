@@ -1,5 +1,3 @@
-import React from 'react';
-
 const parseInline = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
   return parts.map((part, i) => {

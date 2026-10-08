@@ -12,7 +12,7 @@ Decizia proprietarei (2026-10-08), după ce a terminat observațiile de la testa
 | 1 | Audit: toate ecranele și ferestrele la 390px, cu litere normale și A+; listă de probleme | gata (`docs/audit-2026-10-08.md`) | |
 | 2 | Reparațiile alese de proprietară din audit | gata | |
 | 3 | Copia de siguranță: o copie veche (dinainte de jurnalul separat și de lista de controale) se restaurează corect | gata | |
-| 4 | Curățenie de cod: importuri, variabile și funcții nefolosite | de făcut | |
+| 4 | Curățenie de cod: importuri, variabile și funcții nefolosite | gata | |
 | 5 | Viteză: împărțirea pachetului JS (avertismentul de la build); `vite.config.ts` doar la orchestrator | de făcut | |
 
 ## Rezumat pe etape
@@ -29,5 +29,9 @@ Decizia proprietarei (2026-10-08), după ce a terminat observațiile de la testa
 - Găsit în plus: pe Astăzi, zilele până la control se rotunjeau în sus, iar peste schimbarea orei (25 octombrie) apărea o zi în plus. Acum se rotunjesc corect.
 - Test nou `copie-veche.test.tsx` (pică pe codul vechi). `npm test` (167) și `npm run build` trec.
 
+### Etapa 4 (2026-10-08)
+- `tsc --noUnusedLocals` găsea 55 de nume nefolosite (mai ales iconuri importate, plus `isLowStock`, `moodSectionTitle`, `savedToday`, `toggleJointArea`, `sageLight`); acum 0. Fără schimbări vizibile.
+- `npm test` (167) și `npm run build` trec.
+
 ## Următorul pas
-Etapa 4: curățenie de cod.
+Etapa 5: viteză (împărțirea pachetului JS).

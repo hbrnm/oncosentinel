@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PillIcon } from './Botanical';
-import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, AlertCircle, BellRing } from 'lucide-react';
+import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, ChevronRight, BellRing } from 'lucide-react';
 import { downloadReminderIcs, googleCalendarUrl, REMINDER_TEXT } from '../lib/calendarReminder';
 import { loadAppointments } from '../lib/appointments';
 import { plural } from '../lib/summary';

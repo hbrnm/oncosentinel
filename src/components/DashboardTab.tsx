@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { 
-  CheckCircle2, Clock, Pill, Sparkles, BatteryCharging, 
-  Smile, ShieldAlert, AlertCircle, Calendar, RefreshCw, Wind, 
-  Stethoscope, Heart, BellRing, Check, Activity, Dumbbell,
-  ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake, CalendarHeart
+import {
+  Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
@@ -178,9 +175,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   };
 
 
-  // Stock status
-  const isLowStock = profile.pill_stock_count <= 7;
-
   // Handle Mood Selection
   const handleSelectMood = (mood: MoodLevel) => {
     setSelectedMood(mood);
@@ -260,12 +254,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
 
   const greeting = getGreetingData(currentHour);
-
-  const moodSectionTitle = selectedMood
-    ? 'Starea ta de azi'
-    : currentHour < 17
-    ? 'Cum te simți azi?'
-    : 'Cum a fost ziua ta?';
 
   // Format Control Date in Romanian
   const formattedControlDate = new Date(nextControlDate).toLocaleDateString('ro-RO', {
