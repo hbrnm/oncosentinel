@@ -152,7 +152,6 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     setQuoteOffset(prev => prev + 1);
   };
 
-  // Quick symptom states (preserved for test compatibility and full check-in)
 
   // Stock status
   const isLowStock = profile.pill_stock_count <= 7;

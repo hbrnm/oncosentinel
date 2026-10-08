@@ -27,6 +27,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
   const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(null);
   const [activeCategory, setActiveCategory] = useState<GuideCategory>('clinical');
   const [medicineQuery, setMedicineQuery] = useState<string>('');
+  const medicines = searchInteractions(medicineQuery);
 
   if (selectedGuide) {
     return (
@@ -246,12 +247,12 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                 className="w-full pl-10 pr-3 py-2.5 rounded-2xl text-[13px] bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:ring-2 focus:ring-sage"
               />
             </label>
-            {searchInteractions(medicineQuery).length === 0 && (
+            {medicines.length === 0 && (
               <p className="text-[12px] text-ink-soft dark:text-gray-400 px-1">
                 Nu am găsit „{medicineQuery}” în listă. Asta nu înseamnă că e sigur: întreabă medicul sau farmacistul.
               </p>
             )}
-            {searchInteractions(medicineQuery).map((item) => (
+            {medicines.map((item) => (
               <div key={item.substance} className="organic-card rounded-3xl p-4">
                 <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${item.level === 'avoid' ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300' : 'bg-blush text-ink dark:bg-petal-950/40 dark:text-petal-200'}`}>
                   {item.level === 'avoid' ? <Ban className="w-3 h-3" /> : <MessageCircle className="w-3 h-3" />}

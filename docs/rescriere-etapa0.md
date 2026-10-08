@@ -215,7 +215,7 @@ Pragul rămâne cum e: alerta apare când pacienta își notează singură un si
 
 # Partea a patra: verificarea interacțiunilor (`src/lib/interactions.ts`)
 
-Lista nu e folosită în aplicație. Propunerea de mai jos o înlocuiește; intră în aplicație doar după aprobarea proprietarei.
+Aprobată de proprietară (2026-10-08) și afișată în Ghiduri → „Medicamente”.
 
 | Ce | Nivel | Ce scrie în aplicație | Sursă |
 |---|---|---|---|

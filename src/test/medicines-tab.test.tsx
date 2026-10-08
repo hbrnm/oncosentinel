@@ -18,7 +18,7 @@ describe('Ghiduri → Medicamente', () => {
   it('caută și spune clar că lipsa din listă nu înseamnă siguranță', () => {
     render(<GuideTab onOpenRedFlags={vi.fn()} />);
     fireEvent.click(screen.getByText('Medicamente'));
-    const search = screen.getByPlaceholderText(/Caută/);
+    const search = screen.getByLabelText('Caută un medicament sau un supliment');
 
     fireEvent.change(search, { target: { value: 'sunătoare' } });
     expect(screen.getByText('Sunătoare (ceai, tinctură, capsule)')).toBeInTheDocument();
