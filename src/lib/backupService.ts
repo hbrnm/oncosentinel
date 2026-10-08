@@ -13,7 +13,10 @@ export const backupService = {
       supporter: localStorage.getItem('navimed_supporter'),
       shopping_list: localStorage.getItem('navimed_shopping_list'),
       exercise_minutes: localStorage.getItem('navimed_exercise_minutes'),
-      next_control_date: localStorage.getItem('navimed_next_control_date')
+      next_control_date: localStorage.getItem('navimed_next_control_date'),
+      doctor_questions_custom: localStorage.getItem('navimed_doctor_questions_custom'),
+      appointments: localStorage.getItem('navimed_appointments_list'),
+      doctor_name: localStorage.getItem('navimed_doctor_name')
     };
 
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -67,6 +70,15 @@ export const backupService = {
       }
       if (data.next_control_date) {
         localStorage.setItem('navimed_next_control_date', data.next_control_date);
+      }
+      if (data.doctor_questions_custom) {
+        try { JSON.parse(data.doctor_questions_custom); localStorage.setItem('navimed_doctor_questions_custom', data.doctor_questions_custom); } catch (_) {}
+      }
+      if (data.appointments) {
+        try { JSON.parse(data.appointments); localStorage.setItem('navimed_appointments_list', data.appointments); } catch (_) {}
+      }
+      if (data.doctor_name) {
+        localStorage.setItem('navimed_doctor_name', data.doctor_name);
       }
 
       alert('✅ Backup-ul a fost restaurat cu succes! Aplicația se va reîncărca pentru a aplica datele.');
