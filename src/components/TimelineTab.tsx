@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { 
   CheckCircle2, FileText, Upload, Plus, ChevronDown, 
   ChevronUp, ShieldCheck, Download, Calendar, Activity,
-  Stethoscope, Clock, Check, Edit3, Trash2
+  Clock, Check, Edit3, Trash2
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';
-import { setNextControlDate as saveNextControlDate } from '../lib/appointments';
 import { MilestoneModal } from './MilestoneModal';
 import { useBackToClose } from '../lib/backNavigation';
 
@@ -36,25 +35,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   const [docCategory, setDocCategory] = useState<any>('buletin_histopatologic');
   const [selectedRealFile, setSelectedRealFile] = useState<File | null>(null);
 
-  // 6-Month Oncology & Imaging Surveillance Tracker
-  const [nextControlDate, setNextControlDate] = useState<string>(() => {
-    return localStorage.getItem('navimed_next_control_date') || '';
-  });
-  const [isEditingControlDate, setIsEditingControlDate] = useState<boolean>(false);
-  const [tempDate, setTempDate] = useState<string>(nextControlDate);
-
-  const handleSaveControlDate = () => {
-    if (!tempDate) return;
-    setNextControlDate(tempDate);
-    saveNextControlDate(tempDate);
-    setIsEditingControlDate(false);
-  };
-
-  const handleCancelControlDate = () => {
-    setTempDate(nextControlDate);
-    setIsEditingControlDate(false);
-  };
-
   const handleSaveMilestone = (saved: ClinicalMilestone) => {
     const others = milestones.filter(m => m.id !== saved.id);
     const updated = [...others, saved].sort((a, b) => a.event_date.localeCompare(b.event_date));
@@ -67,13 +47,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
       onUpdateMilestones?.(milestones.filter(x => x.id !== m.id));
     }
   };
-
-  // Calculate days until control normalized to midnight
-  const targetDate = new Date(nextControlDate + 'T00:00:00');
-  const todayDate = new Date();
-  todayDate.setHours(0, 0, 0, 0);
-  const diffMs = targetDate.getTime() - todayDate.getTime();
-  const daysUntilControl = isNaN(diffMs) ? 0 : Math.ceil(diffMs / (1000 * 3600 * 24));
 
   const handleUploadFile = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,78 +91,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
   return (
     <div className="space-y-4 animate-fade-in">
-
-      {/* 0. 6-Month Oncology & Imaging Surveillance Countdown Card */}
-      <div className="bg-gradient-to-r from-blue-50/90 to-sage-50/90 dark:from-darkbg-card dark:to-darkbg-surface rounded-3xl p-4 border border-blue-100/80 dark:border-darkbg-border shadow-xs">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs mt-0.5">
-              <Stethoscope className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-blue-800 dark:text-blue-300 bg-blue-100 dark:bg-blue-950/60 px-2 py-0.5 rounded-md">
-                  Supraveghere Oncologică & Imagistică
-                </span>
-                
-                <button
-                  onClick={() => setIsEditingControlDate(!isEditingControlDate)}
-                  className="text-gray-400 hover:text-blue-600 transition-colors"
-                  title="Schimbă data controlului"
-                >
-                  <Edit3 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              <h3 className="text-xs font-bold text-gray-900 dark:text-white mt-1">
-                Următorul Control (Mamografie / Eco & Oncolog):{' '}
-                <span className="text-blue-700 dark:text-blue-300 font-extrabold">
-                  {nextControlDate
-                    ? new Date(nextControlDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })
-                    : 'nicio dată setată'}
-                </span>
-              </h3>
-              <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5">
-                {!nextControlDate ? (
-                  <>Apasă pe creion ca să adaugi data următorului control.</>
-                ) : daysUntilControl > 0 ? (
-                  <>Au mai rămas <strong className="text-blue-700 dark:text-blue-300">{daysUntilControl} de zile</strong> până la investigația bilaterală de rutină.</>
-                ) : (
-                  <span className="text-amber-700 font-bold">Controlul este programat astăzi sau în curs!</span>
-                )}
-              </p>
-            </div>
-          </div>
-
-          {nextControlDate && (
-            <span className="text-xs font-bold px-3 py-1.5 rounded-2xl bg-white dark:bg-darkbg-card text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-darkbg-border shadow-2xs shrink-0">
-              {daysUntilControl > 0 ? `${daysUntilControl} zile` : 'Azi'}
-            </span>
-          )}
-        </div>
-
-        {isEditingControlDate && (
-          <div className="mt-3 pt-3 border-t border-blue-200/60 dark:border-darkbg-border flex items-center gap-2 animate-fade-in">
-            <input
-              type="date"
-              value={tempDate}
-              onChange={(e) => setTempDate(e.target.value)}
-              className="px-3 py-1.5 rounded-xl text-xs bg-white dark:bg-darkbg-card border border-blue-200 dark:border-darkbg-border text-gray-900 dark:text-white"
-            />
-            <button
-              onClick={handleSaveControlDate}
-              className="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-2xs"
-            >
-              Salvează
-            </button>
-            <button
-              onClick={handleCancelControlDate}
-              className="px-2 py-1.5 text-xs text-gray-500 hover:text-gray-700"
-            >
-              Anulează
-            </button>
-          </div>
-        )}
-      </div>
 
       {/* 1. Clinical Diagnosis Profile Card */}
       <div className="bg-gradient-to-br from-white to-sage-50/50 dark:from-darkbg-card dark:to-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-sm">

@@ -108,7 +108,8 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     const timelineNavBtn = screen.getAllByText(/Dosar/i)[0];
     fireEvent.click(timelineNavBtn);
 
-    expect(screen.getByText(/Supraveghere Oncologică & Imagistică/i)).toBeInTheDocument();
+    // Controlul nu mai apare în Dosar: e în „Controale medicale” și pe Astăzi
+    expect(screen.queryByText(/Supraveghere Oncologică & Imagistică/i)).not.toBeInTheDocument();
     expect(screen.getByText(/Seif Documente Medicale/i)).toBeInTheDocument();
     expect(screen.getByText(/Nu ai încărcat niciun document/i)).toBeInTheDocument();
 
