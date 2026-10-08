@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapa 2 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
+**Stare:** în lucru (etapele 2 și 3 în PR); etapele 0 și 1 integrate (PR #5, #7), cu confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -18,7 +18,7 @@ Deciziile proprietarei (2026-10-08):
 | 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
-| 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
+| 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
 | 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
 | 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
 
@@ -99,8 +99,15 @@ Deciziile proprietarei (2026-10-08):
 - Reparat: copia de siguranță pierdea întrebările pentru medic, programările și numele medicului.
 - `npm test` (84) și `npm run build` trec; verificat la 390px.
 
+### Etapa 3 (2026-10-08)
+- Deciziile proprietarei: mesaj scurt ales de pacientă; trimitere prin meniul de partajare al telefonului; lista „Cum mă poți ajuta”; pacienta vede textul exact, îl poate modifica și apasă ea „Trimite”. Textele aprobate: `docs/etapa3-texte.md`.
+- `SupporterModal`: „Cum mă simt azi” (5 stări), „Cum mă poți ajuta” (10 idei de bifat), mesajul editabil, „Trimite” (`navigator.share`; altfel copiere, cu mesaj clar; altfel instrucțiuni). Datele în `src/data/circle.ts`.
+- Scos: bifa „Reamintește-i discret dacă omit pastila 2 zile la rând” (promisiune neținută), mesajul fix „azi am o stare bună” și butoanele WhatsApp/SMS.
+- De decis: câmpul „Număr de telefon” nu mai e folosit la trimitere.
+- `npm test` (90) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-PR-urile pentru etapele 1 și 2, apoi proprietara alege pașii pentru etapa 3 („Cercul tău”); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
+PR-urile pentru etapele 2 și 3, apoi proprietara alege pașii pentru etapa 4 (continuitate, cu server); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
