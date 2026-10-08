@@ -112,10 +112,10 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <div className="p-3 rounded-2xl bg-sage-50 dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/60 text-xs text-gray-600 dark:text-gray-300">
               <div className="flex items-center gap-1.5 font-bold text-sage-800 dark:text-sage-300 mb-0.5">
                 <ShieldCheck className="w-4 h-4 text-sage-600" />
-                <span>Protocol DCIS (ER+/PR+)</span>
+                <span>Pentru tine, după DCIS</span>
               </div>
               <p className="text-[11px]">
-                Aplicația este optimizată special pentru pacienta post-chirurgie și radioterapie, aflată sub Tamoxifen 20mg.
+                Aplicația este optimizată special pentru pacienta post-chirurgie și radioterapie, aflată în tratament cu tamoxifen.
               </p>
             </div>
 
@@ -139,7 +139,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               </div>
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-                  Programare Tamoxifen 20mg
+                  Tratamentul cu tamoxifen
                 </h3>
                 <p className="text-[11px] text-gray-500">Ora și stocul de pastile</p>
               </div>
@@ -160,7 +160,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 />
               </div>
               <p className="text-[10px] text-gray-500 mt-0.5">
-                Recomandare clinică: aceeași oră în fiecare dimineață pentru nivel sanguin constant.
+                Ia-l la aceeași oră în fiecare zi: e mai ușor să nu uiți.
               </p>
             </div>
 

@@ -65,32 +65,54 @@ Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, dec
   {
     id: 'g2',
     tag: 'STIL DE VIAȚĂ & CONFORT',
-    title: 'Managementul bufeurilor și transpirațiilor nocturne',
-    summary: 'Strategii practice non-hormonale: îmbrăcăminte în straturi, igiena somnului, respirație ritmată și răcorire.',
+    title: 'Bufeurile și transpirațiile de noapte',
+    summary: 'Ce ajută cu adevărat, după studii, și ce poți încerca pentru confort.',
     category: 'stil_viata',
-    content: `### Înțelegerea Bufeurilor
+    content: `### De ce apar
 
-Bufeurile sunt cauzate de o ușoară dereglare temporară a centrului de termoreglare din hipotalamus, cauzată de blocarea estrogenilor.
+Bufeurile sunt printre cele mai frecvente efecte ale tamoxifenului. Nu înseamnă că tratamentul nu merge și nu sunt periculoase, dar pot obosi și pot strica somnul. Merită să vorbești despre ele cu medicul.
 
-#### Tehnici validate de control:
-* **Îmbrăcăminte în straturi (layering)**: Folosește materiale naturale (bumbac, in, bambus) pe care le poți îndepărta ușor la debutul unui val de căldură.
-* **Respirație ghidată paced breathing**: 6 respirații lente pe minut (inspiri 5 secunde, expiri 5 secunde) reduc frecvența și severitatea bufeului cu până la 50%.
-* **Evitarea triggerilor**: Condimentele iuți, alcoolul, cofeina și stresul acut sunt declanșatori cunoscuți. Menține un jurnal pentru a identifica proprii tăi triggeri.`
+### Ce a funcționat în studii
+
+* **Terapia cognitiv-comportamentală (TCC)**, cu un psiholog: face bufeurile mai ușor de purtat și mai puțin deranjante.
+* **Hipnoza clinică**, cu un specialist: a redus numărul și intensitatea bufeurilor.
+* **Tratamente fără hormoni, prescrise de medic.** Unele antidepresive nu se potrivesc cu tamoxifenul, așa că alegerea e a medicului oncolog.
+
+### Pentru confort
+
+Măsurile de mai jos nu au redus bufeurile în studii, dar multe femei le găsesc plăcute:
+
+* haine în straturi, din bumbac sau in, pe care le poți scoate repede;
+* un ventilator, o cameră răcoroasă noaptea, o băutură rece la îndemână;
+* jurnalul din aplicație, ca să vezi dacă anumite momente le declanșează.
+
+### Plante și suplimente
+
+Suplimentele din plante și cele cu soia nu sunt recomandate pentru bufeuri, iar unele pot interacționa cu tamoxifenul. Întreabă medicul înainte să iei ceva.
+
+*Sursa: The Menopause Society (NAMS), „The 2023 nonhormone therapy position statement”, Menopause 2023; 30(6):573–590.*`
   },
   {
     id: 'g3',
     tag: 'SUPRAVEGHERE & IMAGISTICĂ',
-    title: 'Protocolul de control la 6 luni și mamografie anuală',
-    summary: 'Calendarul recomandat de societățile internaționale (ESMO / NCCN) pentru supravegherea oncologică post-operatorie.',
+    title: 'Controalele după tratament',
+    summary: 'Ce controale urmează de obicei după DCIS. Calendarul tău îl stabilește medicul.',
     category: 'monitorizare',
-    content: `### Protocolul de Supraveghere în DCIS
+    content: `### Mamografia
 
-După finalizarea tratamentului local (chirurgie conservatoare și radioterapie), supravegherea este cheia liniștii tale pe termen lung.
+După operația care păstrează sânul, ghidurile recomandă **mamografie o dată pe an**. Ghidul britanic NICE o recomandă anual cel puțin 5 ani, inclusiv după DCIS. Prima mamografie se face, de obicei, la 6–12 luni după tratament.
 
-#### Etapele recomandate:
-1. **Control clinic oncologic**: la fiecare 6 luni în primii 2-3 ani, apoi anual.
-2. **Imagistică anuală**: Mamografie și/sau RMN de sân (în funcție de densitatea mamară), de obicei la 12 luni de la intervenția chirurgicală.
-3. **Control ginecologic**: Foarte important în timpul tratamentului cu Tamoxifen (ecografie transvaginală anuală).`
+### Vizitele la medic
+
+Ghidul european ESMO recomandă vizite mai dese în primii ani (la 3–6 luni), apoi tot mai rar, până la o dată pe an. Medicul adaptează ritmul după riscul tău și după ce simți tu.
+
+### Controlul ginecologic
+
+În timpul tratamentului cu tamoxifen, mergi la controalele ginecologice obișnuite și raportează orice sângerare neobișnuită (vezi ghidul despre tamoxifen).
+
+> Notează datele în aplicație: îți arată câte zile mai sunt și te ajută să pregătești întrebările pentru medic.
+
+*Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management”; ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*`
   }
 ];
 

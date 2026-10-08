@@ -48,7 +48,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
 
   const currentMessage = messageType === 'stare_buna'
     ? `${supporterSalutation} Sunt în ziua ${diffDays} de tratament și azi am o stare bună. Îți mulțumesc din suflet că îmi ești aproape! 🌸 - ${patientFirstName}`
-    : `${supporterSalutation} Te rog să-mi amintești să iau doza de Tamoxifen (20mg) de astăzi dacă nu am luat-o încă. Mulțumesc că ai grijă de mine! 💊🌸 - ${patientFirstName}`;
+    : `${supporterSalutation} Te rog să-mi amintești să iau doza de ${profile.medication_name || 'Tamoxifen'}${profile.medication_dose ? ` (${profile.medication_dose})` : ''} de astăzi dacă nu am luat-o încă. Mulțumesc că ai grijă de mine! 💊🌸 - ${patientFirstName}`;
 
   const handleOpenWhatsApp = () => {
     const cleanPhone = supporter.phone.replace(/[^0-9]/g, '');

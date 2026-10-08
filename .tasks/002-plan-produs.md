@@ -15,7 +15,7 @@ Deciziile proprietarei (2026-10-08):
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1–2 parțial: PDF, Noutăți, g1) | |
+| 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | în lucru (pașii 1–2: PDF, Noutăți, ghiduri, ecrane, rețete) | |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | de făcut | |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
@@ -51,8 +51,14 @@ Deciziile proprietarei (2026-10-08):
 - DE COMPLETAT: verificarea lui g1 cu prospectul aprobat în România (ANMDMR).
 - Paginile NHS, ASCO Post și ascopubs sunt blocate de rețeaua mediului; sursele au fost citite prin rezultatele căutării.
 
+### Etapa 0, pasul 2, a doua parte (2026-10-08)
+- Aprobate și puse în aplicație: g2 „Bufeurile și transpirațiile de noapte” (NAMS 2023: TCC, hipnoză clinică, tratament prescris; respirația ritmată nu mai e prezentată ca tratament); g3 „Controalele după tratament” (NICE NG101, ESMO 2024); textele din ecrane (respirație, ancorare, pornire, persoana de sprijin cu doza din profil).
+- Rețete: 20 rămase, ca idei de mese, fără afirmații terapeutice; scoase infuzia de salvie și atribuirile neverificate.
+- `npm test` (50) și `npm run build` trec.
+- Rămase în etapa 0: semnalele de alarmă (`RedFlagsModal`) și pragul „sever” din jurnal, de verificat; verificarea interacțiunilor (pasul 5); pagina „Ajutor” cu resurse din România (pasul 4); ghidul de testare (pasul 6); sursa vizibilă sub fiecare ghid (pasul 3, parțial: sursa e deja în text).
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Etapa 0, pasul 2, continuare: ghidurile g2 (bufeuri) și g3 (controale), apoi textele din ecrane (respirație, pornire), apoi rețetele.
+Etapa 0, pasul 4: pagina „Ajutor” cu resurse verificate din România; apoi semnalele de alarmă.

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
+import { RECIPES } from '../data/recipes';
 
 // Conținut rescris din surse și aprobat de proprietară (docs/rescriere-etapa0.md)
 describe('Conținutul medical rescris', () => {
@@ -16,5 +17,20 @@ describe('Conținutul medical rescris', () => {
     expect(NEWS_PROTOCOLS[0].content).toMatch(/\*Sursa: Gandini/);
     expect(NEWS_PROTOCOLS[0].content).toMatch(/După menopauză/);
     expect(NEWS_PROTOCOLS[0].summary).not.toMatch(/extrem de eficiente/);
+  });
+
+  it('ghidurile despre bufeuri și controale au surse și nu mai promit ce nu e dovedit', () => {
+    const g2 = CLINICAL_GUIDES.find(g => g.id === 'g2')!;
+    const g3 = CLINICAL_GUIDES.find(g => g.id === 'g3')!;
+    expect(g2.content).toMatch(/\*Sursa: The Menopause Society/);
+    expect(g2.content).not.toMatch(/50%|validate/);
+    expect(g3.content).toMatch(/\*Surse: NICE NG101/);
+    expect(g3.content).not.toMatch(/ecografie transvaginală anuală/);
+  });
+
+  it('rețetele sunt idei de mese, fără promisiuni terapeutice sau surse neverificate', () => {
+    const all = JSON.stringify(RECIPES);
+    expect(RECIPES.find(r => r.title.includes('Salvie'))).toBeUndefined();
+    expect(all).not.toMatch(/Sursă|antitumoral|detoxifiere|anti-estrogenic|Antibufeuri|Tamoxifen/);
   });
 });

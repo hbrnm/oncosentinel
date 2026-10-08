@@ -187,7 +187,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
             </h3>
 
             <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed max-w-xs mx-auto">
-              Ai redus ritmul cardiac și ai oferit corpului tău un moment de respiro. Amintește-ți că poți reveni oricând la această tehnică.
+              Ți-ai oferit un moment de respiro. Amintește-ți că poți reveni oricând la această tehnică.
             </p>
 
             <button

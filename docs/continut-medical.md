@@ -48,14 +48,14 @@ Raportul ajunge la medic, deci aici o greșeală poate influența o decizie clin
 | bufeuri „până la 80% dintre paciente”; gabapentina | DE VERIFICAT |
 | „Ai uitat o doză? … nu lua niciodată doză dublă” | DE VERIFICAT în prospectul aprobat în România |
 
-### g2 „Managementul bufeurilor”
+### g2 „Managementul bufeurilor” — REZOLVAT (2026-10-08): rescris după NAMS 2023, aprobat
 | Afirmație | Stare |
 |---|---|
 | cauza: termoreglarea din hipotalamus | DE VERIFICAT |
 | straturi de haine, declanșatori (condimente, alcool, cofeină) | DE VERIFICAT (sfat general) |
 | respirația ritmată „reduce frecvența și severitatea cu până la 50%” | DE VERIFICAT: cifră precisă fără sursă |
 
-### g3 „Protocolul de control”
+### g3 „Protocolul de control” — REZOLVAT (2026-10-08): rescris după NICE NG101 și ESMO 2024, aprobat
 | Afirmație | Stare |
 |---|---|
 | „recomandat de ESMO / NCCN” | DE VERIFICAT: atribuire directă unor societăți |
@@ -71,7 +71,7 @@ Toate cele 11 intrări sunt DE VERIFICAT. De urmărit în special:
 - **magneziu, D3+K2**: marcate „Recomandat & Benefic”. Sunt recomandări de suplimente, nu interacțiuni.
 - **gheara diavolului / curcumina**: „ușor efect antiplachetar” e o afirmație fără sursă.
 
-## Prioritate 5: rețetele (`src/data/recipes.ts`, fila Ghiduri → Nutriție)
+## Prioritate 5: rețetele (`src/data/recipes.ts`, fila Ghiduri → Nutriție) — REZOLVAT (2026-10-08): idei de mese fără afirmații terapeutice; infuzia de salvie scoasă; scoase și atribuirile neverificate (Breast Cancer UK, WCRF, PCRM)
 Fiecare rețetă are „Sursă: General”, adică nicio sursă. Afirmațiile de sănătate sunt DE VERIFICAT, iar unele sunt formulate ca efecte terapeutice:
 - in: „efect anti-estrogenic la nivelul receptorilor mamari”; ovăz: „leagă metaboliții estrogenici din bilă”;
 - zmeură: „acid elagic antitumoral”; broccoli: „faza a II-a de detoxifiere hepatică”;
@@ -84,7 +84,7 @@ Fiecare rețetă are „Sursă: General”, adică nicio sursă. Afirmațiile de
 
 Propunere pentru pasul 2: rețetele rămân ca idei de mese echilibrate, fără afirmații terapeutice, iar salvia trece prin verificarea interacțiunilor înainte de a fi recomandată.
 
-## Prioritate 6: alte ecrane
+## Prioritate 6: alte ecrane — REZOLVAT pentru respirație, ancorare, pornire și persoana de sprijin (2026-10-08); rămân semnalele de alarmă și pragul „sever” din jurnal
 | Fișier | Text | Stare |
 |---|---|---|
 | `BreathingModal.tsx:73` | „Validat clinic pentru calmarea rapidă a bufeurilor și reducerea stimulului adrenergic.” | DE VERIFICAT: „validat clinic” fără sursă |
