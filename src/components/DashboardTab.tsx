@@ -6,17 +6,19 @@ import {
   Stethoscope, Heart, BellRing, Check, Activity, Dumbbell,
   ArrowRight, X, PhoneCall, ChevronRight, BookOpen, AlertOctagon, HeartHandshake, CalendarHeart
 } from 'lucide-react';
-import { PatientProfile, DoseLog } from '../types';
+import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
+import { nextVictory } from '../lib/summary';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 
 interface DashboardTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
+  symptoms?: SymptomLog[];
   onTakeDose: (dateIso?: string) => void;
   onOpenRedFlags: () => void;
   onOpenBreathing: () => void;
@@ -32,6 +34,7 @@ export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau'
 export const DashboardTab: React.FC<DashboardTabProps> = ({
   profile,
   doses,
+  symptoms = [],
   onTakeDose,
   onOpenRedFlags,
   onOpenBreathing,
@@ -74,6 +77,22 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const [nextControlDate, setNextControlDate] = useState<string>(() => {
     return localStorage.getItem('navimed_next_control_date') || '';
   });
+
+  // „O mică victorie”: pragurile văzute se țin minte pe dispozitiv
+  const [seenVictories, setSeenVictories] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('oncosentinel_victories_seen') || '[]');
+    } catch {
+      return [];
+    }
+  });
+  const victory = nextVictory(doses, symptoms, seenVictories);
+  const handleThanksVictory = () => {
+    if (!victory) return;
+    const updated = [...new Set([...seenVictories, ...victory.reachedIds])];
+    setSeenVictories(updated);
+    localStorage.setItem('oncosentinel_victories_seen', JSON.stringify(updated));
+  };
 
   // Calculate days until control normalized to midnight
   const targetDate = new Date(nextControlDate + 'T00:00:00');
@@ -308,6 +327,19 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </button>
             <button type="button" onClick={onOpenBreathing} className="tap-scale py-2.5 px-2 rounded-2xl bg-sage-deep text-white text-[12px] font-semibold">
               Un moment de liniște
+            </button>
+          </div>
+        </section>
+      )}
+
+      {victory && (
+        <section aria-label="O mică victorie" className="rounded-[28px] p-5 bg-sage-soft dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/40 flex items-start gap-3">
+          <Sparkles className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <h2 className="micro-label text-sage-deep dark:text-sage-300">O mică victorie</h2>
+            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">{victory.text}</p>
+            <button type="button" onClick={handleThanksVictory} className="tap-scale mt-3 px-4 py-2 rounded-xl bg-sage-deep text-white text-xs font-semibold">
+              Mulțumesc
             </button>
           </div>
         </section>

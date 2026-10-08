@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** în lucru (etapa 1 în PR); etapa 0 integrată (PR #5), cu confirmări care țin de proprietară
+**Stare:** în lucru (etapele 1 și 2 în PR); etapa 0 integrată (PR #5), cu confirmări care țin de proprietară
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -17,7 +17,7 @@ Deciziile proprietarei (2026-10-08):
 |---|---|---|---|
 | 0 | Încredere: conținut medical cu surse, resurse de ajutor reale, ghid de testare | implementată și integrată; așteaptă confirmările proprietarei | PR #5 |
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | gata, de testat cu pacientele | PR (ramura claude/etapa1) |
-| 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | de făcut | |
+| 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | de făcut | |
 | 4 | Continuitate (server): memento-uri reale, sincronizare criptată opțională, PIN | de făcut | |
 | 5 | Mesaje AI cu limite stricte (vezi mai jos) | de făcut | |
@@ -91,8 +91,16 @@ Deciziile proprietarei (2026-10-08):
 - De urmărit la testare: în jurnal, selectorul de stare are deja o propoziție caldă; cu mesajul nou, pacienta vede două.
 - `npm test` (72) și `npm run build` trec; verificat la 390px.
 
+### Etapa 2 (2026-10-08)
+- Deciziile proprietarei: rezumat în Jurnal, în cuvinte; pagina „Pentru medic”; victorii pentru doze și note; textele le scrie Claude și le aprobă proprietara (`docs/etapa2-texte.md`).
+- „Săptămâna ta” (Jurnal): zilele notate, starea cea mai des, somnul și bufeurile comparate cu săptămâna trecută, doar când există date în ambele săptămâni (`src/lib/summary.ts`).
+- „Pentru medic” (fereastra vizitei): doze marcate în 28 de zile, note, cele mai dese 3 simptome, întrebări nediscutate și descărcarea raportului PDF.
+- „O mică victorie” (Astăzi): praguri pe total (doze 7/30/100/365, note 1/10/50), fără „ai pierdut seria”; „Mulțumesc” o ascunde și ține minte.
+- Reparat: copia de siguranță pierdea întrebările pentru medic, programările și numele medicului.
+- `npm test` (81) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-PR pentru etapa 1, apoi proprietara alege pașii pentru etapa 2 („Te înțeleg”); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.
+PR-urile pentru etapele 1 și 2, apoi proprietara alege pașii pentru etapa 3 („Cercul tău”); în paralel, confirmările rămase din etapa 0 și testarea cu pacientele.

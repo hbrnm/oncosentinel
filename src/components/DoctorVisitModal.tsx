@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, Plus, Trash2, CheckCircle2, Circle, CalendarHeart, 
   Clock, MapPin, Stethoscope, ChevronRight, MessageSquarePlus, Calendar,
-  Check, XCircle, History
+  Check, XCircle, History, FileDown, ClipboardList
 } from 'lucide-react';
+import { PatientProfile, DoseLog, SymptomLog } from '../types';
+import { doctorSummary, plural } from '../lib/summary';
 const daysUntil = (dateStr?: string) => {
   if (!dateStr) return null;
   const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
@@ -36,12 +38,18 @@ interface DoctorVisitModalProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigateToTab?: (tab: 'today' | 'timeline' | 'symptoms' | 'guide') => void;
+  profile?: PatientProfile;
+  doses?: DoseLog[];
+  symptoms?: SymptomLog[];
 }
 
 export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({ 
   isOpen, 
   onClose,
-  onNavigateToTab
+  onNavigateToTab,
+  profile,
+  doses = [],
+  symptoms = []
 }) => {
   // Tab within appointments: 'upcoming' or 'history'
   const [apptTab, setApptTab] = useState<'upcoming' | 'history'>('upcoming');
@@ -205,6 +213,15 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
   const upcomingAppts = appointments.filter(a => a.status === 'upcoming' && (daysUntil(a.date) ?? 0) >= 0);
   const historyAppts = appointments.filter(a => a.status === 'completed' || a.status === 'missed' || (a.status === 'upcoming' && (daysUntil(a.date) ?? 0) < 0));
   const answeredCount = questions.filter(q => q.isAnswered).length;
+  // „Pentru medic”: ultimele 4 săptămâni (texte aprobate, docs/etapa2-texte.md)
+  const forDoctor = doctorSummary(symptoms, doses, profile?.tamoxifen_start_date || '');
+
+  const handleDownloadReport = () => {
+    if (!profile) return;
+    import('../lib/pdfGenerator')
+      .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
+      .catch(() => alert('Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.'));
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
@@ -626,6 +643,40 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
               )}
             </div>
           </div>
+
+          {/* SECȚIUNEA 3: PENTRU MEDIC */}
+          {profile && (
+            <section aria-labelledby="for-doctor-title" className="organic-card rounded-[28px] p-5 border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card shadow-xs space-y-3">
+              <div className="flex items-center gap-2">
+                <ClipboardList className="w-4 h-4 text-sage-deep dark:text-sage-300" />
+                <h3 id="for-doctor-title" className="micro-label">Pentru medic</h3>
+              </div>
+              <p className="text-[12px] text-ink-soft dark:text-gray-400">Ce ai notat în ultimele 4 săptămâni. Poți arăta ecranul sau descărca raportul.</p>
+              <ul className="space-y-1.5 text-[13px] text-ink dark:text-gray-100">
+                <li>Doza marcată ca luată: {forDoctor.doses.taken} din {plural(forDoctor.doses.total, 'zi', 'zile')}.</li>
+                <li>Note în jurnal: {forDoctor.notes}.</li>
+                <li>
+                  {forDoctor.top.length > 0 ? (
+                    <>
+                      Ce ai notat cel mai des:
+                      <ul className="mt-1 ml-4 list-disc space-y-0.5">
+                        {forDoctor.top.map((line) => <li key={line}>{line}</li>)}
+                      </ul>
+                    </>
+                  ) : 'Nu ai notat simptome.'}
+                </li>
+                <li>Întrebări încă nediscutate: {questions.length - answeredCount}.</li>
+              </ul>
+              <button
+                type="button"
+                onClick={handleDownloadReport}
+                className="tap-scale w-full py-2.5 rounded-xl bg-sage-deep hover:bg-sage-800 text-white text-xs font-semibold flex items-center justify-center gap-2"
+              >
+                <FileDown className="w-4 h-4" /> Descarcă raportul PDF
+              </button>
+              <p className="text-[11px] text-ink-soft dark:text-gray-400 italic">Datele sunt cele notate de tine; o zi nemarcată nu înseamnă neapărat doză omisă.</p>
+            </section>
+          )}
 
         </div>
 
