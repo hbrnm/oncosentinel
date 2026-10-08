@@ -125,10 +125,19 @@ Deciziile proprietarei (2026-10-08):
 - Rămas: în `ProfileTab`, lista de controale folosește alt tip de stare („done” față de „completed”); nu s-a atins.
 - `npm test` (127) și `npm run build` trec; verificat la 390px. Agentul `verificare`: nimic blocant; reparat și cazul unui control trecut rămas „viitor”.
 
+### Reparații după testare, runda 2 (2026-10-08)
+- Deciziile proprietarei: o notă pe zi în Jurnal (a doua salvare o actualizează: „Actualizează nota de azi”, apoi „Am salvat nota de azi.”); butonul în roz mai intens (petal-600); ștergerea din Istoric cu „Nota a fost ștearsă.” și „Anulează” timp de 5 secunde; în calendarul din Tratament, ziua controlului marcată („Control la medic” în legendă) și lista „Programările următoare”, din „Controale medicale”.
+- „Salvează în jurnal” funcționa, dar părea inactiv și nu arăta clar că a salvat, așa că pacienta a apăsat de mai multe ori (4 note la fel). Duplicatele vechi se pot șterge acum din Istoric.
+- Cardul verde de jos de pe Astăzi: doar inima, fără plantă. Alerta de simptom puternic din Jurnal urcă deasupra barei.
+- Lista „Programările următoare” nu apare când nu există controale viitoare.
+- Observat, neatins: în Tratament, aderența arată 100% chiar și la „0 doze luate din 31 zile”.
+- După `verificare` (nimic blocant): „Anulează” dispare după o salvare nouă (fără două note pe zi); mesajul de ștergere și alerta de simptom stau una sub alta; buton de ștergere mai mare.
+- `npm test` (134) și `npm run build` trec; verificat la 390px.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
 ## Următorul pas
-Reparațiile după prima testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
+Reparațiile după primele două runde de testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
 
 Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Rămân deschise și confirmările din etapa 0: numerele de ajutor și cele trei puncte din prospectul de pe anm.ro.

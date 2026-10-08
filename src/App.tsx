@@ -115,6 +115,22 @@ export function App() {
     if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
   };
 
+  const handleUpdateSymptomLog = (id: string, logData: Omit<SymptomLog, 'id'>) => {
+    const updated = symptoms.map(s => (s.id === id ? { ...logData, id } : s));
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
+  };
+
+  const handleDeleteSymptomLog = (id: string) => {
+    const updated = symptoms.filter(s => s.id !== id);
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
+  };
+
+  const handleRestoreSymptomLog = (log: SymptomLog) => {
+    const updated = [...symptoms.filter(s => s.id !== log.id), log]
+      .sort((a, b) => b.logged_at.localeCompare(a.logged_at));
+    if (storageService.saveSymptomLogs(updated)) setSymptoms(updated);
+  };
+
   const handleAddDocument = (docData: Partial<MedicalDocument>) => {
     const newDoc: MedicalDocument = {
       id: `doc_${Date.now()}`,
@@ -223,6 +239,9 @@ export function App() {
               symptoms={symptoms}
               doses={doses}
               onAddSymptomLog={handleAddSymptomLog}
+              onUpdateSymptomLog={handleUpdateSymptomLog}
+              onDeleteSymptomLog={handleDeleteSymptomLog}
+              onRestoreSymptomLog={handleRestoreSymptomLog}
               onOpenHelp={() => setIsHelpOpen(true)}
             />
           )}
