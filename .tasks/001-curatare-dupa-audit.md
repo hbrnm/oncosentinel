@@ -35,10 +35,10 @@ Deciziile proprietarei: memento fără promisiune; stocarea explicată + mesaj l
 3. `.env` scos din git (+ `.env.example`); migrație nouă `20261008_set_search_path_updated_at.sql`, **neaplicată** (57ce807).
 4. jsPDF încărcat la cerere: pachetul principal 1,13 MB → 0,70 MB (23125b1).
 5. Scoase clopoțelul, cardul „Notificări”, cererea de permisiune la pornire și mesajul „Alarma a fost amânată” (6f3c30d).
-6. Salvările locale prind spațiul plin cu mesaj clar; documentul care nu încape nu mai apare fals în listă; „Siguranța datelor” explică necriptarea și limita (d951378).
+6. Salvările locale prind spațiul plin cu mesaj clar; datele care nu încap (documente, jurnal, doze, profil, etape) nu mai apar fals pe ecran; „Siguranța datelor” explică necriptarea și limita (d951378).
 7. NaviMed → OncoSentinel în texte, copie de siguranță (copiile vechi se restaurează), cache SW; cheile `navimed_*` rămân (d43054d).
 8. 405 culori hex → tokeni din design system (c10f29b); verificat vizual la 390px.
-- `npm test` (38) și `npm run build` trec.
+- `npm test` (39) și `npm run build` trec.
 
 **De aplicat de proprietară:** migrația `20261008_set_search_path_updated_at.sql`, dacă tabela `dose_logs` există în proiectul Supabase.
 

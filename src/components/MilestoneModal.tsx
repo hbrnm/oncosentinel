@@ -39,7 +39,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
       <div className="w-full max-w-sm bg-white dark:bg-darkbg-card rounded-3xl p-5 shadow-2xl relative animate-fade-in">
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-darkbg-body text-gray-500 hover:bg-gray-200 transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-darkbg-surface text-gray-500 hover:bg-gray-200 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -61,7 +61,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
               placeholder="Ex: Operație conservatoare" 
-              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-body border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
             />
           </div>
 
@@ -72,7 +72,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
             <select 
               value={category} 
               onChange={(e) => setCategory(e.target.value as MilestoneCategory)} 
-              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-body border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
             >
               {categories.map(c => (
                 <option key={c.value} value={c.value}>{c.label}</option>
@@ -89,7 +89,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
                 type="date" 
                 value={date} 
                 onChange={(e) => setDate(e.target.value)} 
-                className="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-darkbg-body border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
+                className="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white"
               />
               <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
             </div>
@@ -104,7 +104,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
               onChange={(e) => setDescription(e.target.value)} 
               placeholder="Detalii despre eveniment..." 
               rows={3}
-              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-body border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white resize-none"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-gray-900 dark:text-white resize-none"
             />
           </div>
 

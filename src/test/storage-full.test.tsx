@@ -7,10 +7,10 @@ import { storageService, STORAGE_FULL_MESSAGE } from '../lib/supabase';
 
 const originalSetItem = Storage.prototype.setItem;
 
-// Simulează un dispozitiv fără spațiu doar pentru documente
-const fillDocumentsStorage = () => {
+// Simulează un dispozitiv fără spațiu pentru o singură cheie
+const fillStorage = (fullKey: string) => {
   vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function (this: Storage, key: string, value: string) {
-    if (key === 'navimed_docs') throw new DOMException('Quota exceeded', 'QuotaExceededError');
+    if (key === fullKey) throw new DOMException('Quota exceeded', 'QuotaExceededError');
     return originalSetItem.call(this, key, value);
   });
 };
@@ -26,7 +26,7 @@ describe('Spațiu plin pe dispozitiv', () => {
   });
 
   it('salvarea spune ce s-a întâmplat și ce poate face utilizatoarea', () => {
-    fillDocumentsStorage();
+    fillStorage('navimed_docs');
 
     expect(storageService.saveDocuments([])).toBe(false);
     expect(window.alert).toHaveBeenCalledWith(STORAGE_FULL_MESSAGE);
@@ -34,7 +34,7 @@ describe('Spațiu plin pe dispozitiv', () => {
 
   it('un document care nu a încăput nu apare în listă', async () => {
     localStorage.setItem('oncosentinel_onboarded', 'true');
-    fillDocumentsStorage();
+    fillStorage('navimed_docs');
     render(<App />);
 
     fireEvent.click(screen.getByRole('button', { name: /Dosar\s*medical/i }));
@@ -46,6 +46,19 @@ describe('Spațiu plin pe dispozitiv', () => {
 
     await waitFor(() => expect(window.alert).toHaveBeenCalledWith(STORAGE_FULL_MESSAGE));
     expect(screen.queryByText('Analize_octombrie.pdf')).not.toBeInTheDocument();
+  });
+
+  it('o notă de jurnal care nu a încăput nu apare în istoric', () => {
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    fillStorage('navimed_symptoms');
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Jurnal/ }));
+    fireEvent.change(screen.getByPlaceholderText(/Notează un gând/), { target: { value: 'Notă care nu încape' } });
+    fireEvent.click(screen.getByText('Salvează în jurnal'));
+
+    expect(window.alert).toHaveBeenCalledWith(STORAGE_FULL_MESSAGE);
+    expect(screen.getByText(/Încă nu ai înregistrări/)).toBeInTheDocument();
   });
 });
 
