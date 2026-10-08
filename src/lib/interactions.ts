@@ -31,6 +31,13 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
     source: 'RCP tamoxifen, secțiunea 4.5'
   },
   {
+    substance: 'Rifampicină (medicament pentru tuberculoză)',
+    level: 'tell',
+    levelLabel: 'Spune medicului',
+    advice: 'Poate scădea nivelul tamoxifenului din sânge.',
+    source: 'Prospectul Tamoxifen Sandoz (ANMDMR)'
+  },
+  {
     substance: 'Sunătoare (ceai, tinctură, capsule)',
     level: 'avoid',
     levelLabel: 'De evitat',

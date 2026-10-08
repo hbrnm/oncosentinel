@@ -76,9 +76,11 @@ Deciziile proprietarei (2026-10-08):
 - Ghid de testare (pasul 6): `docs/ghid-testare.md`, cu 7 sarcini, întrebări de final și șablon de notițe fără date personale.
 - Sursa vizibilă sub fiecare ghid (pasul 3): fiecare ghid, știre, semnal de alarmă și interacțiune își afișează sursa.
 - Scos containerul `sr-only` de pe Astăzi (butoane ascunse „pentru teste”) și codul rămas fără folos; testele folosesc drumurile reale.
-- `npm test` (61) și `npm run build` trec; verificat la 390px.
+- `npm test` (62) și `npm run build` trec; verificat la 390px.
 
-**Rămâne deschis în etapa 0:** numerele de ajutor (`docs/resurse-de-verificat.md`, de confirmat de proprietară); verificarea textelor cu prospectul aprobat în România (ANMDMR); testarea cu pacientele, după `docs/ghid-testare.md`.
+- Verificarea cu prospectul românesc (Tamoxifen Sandoz, ANMDMR), prin rezultatele căutării: confirmate lista CYP2D6, anticoagulantele, „nu luați doză dublă”; rifampicina adăugată (aprobată). Neconfirmate în textul românesc: pașii exacți la doza uitată, estrogenii, letrozolul (detalii în `docs/rescriere-etapa0.md`).
+
+**Rămâne deschis în etapa 0 (doar la proprietară):** numerele de ajutor (`docs/resurse-de-verificat.md`); citirea directă a prospectului de pe anm.ro pentru cele trei puncte neconfirmate; testarea cu pacientele, după `docs/ghid-testare.md`; review și merge pentru PR #5.
 
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.

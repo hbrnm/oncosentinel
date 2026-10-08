@@ -227,7 +227,13 @@ Aprobată de proprietară (2026-10-08) și afișată în Ghiduri → „Medicame
 | Suplimente concentrate de soia sau izoflavone | Întreabă medicul | Siguranța lor pe termen lung nu e stabilită. Alimentele obișnuite cu soia (tofu, edamame) nu intră aici. | Aceeași recenzie |
 | Grepfrut și suc de grepfrut | Întreabă medicul | Dovezile sunt foarte slabe; unele spitale recomandă evitarea sucului de grepfrut. | Bază de date de interacțiuni (Medscape); fișa MGH pentru tamoxifen |
 
-**DE COMPLETAT:** rifampicina și alți inductori puternici ai CYP3A4 (o singură sursă, un protocol de studiu; de verificat în RCP-ul aprobat în România).
+**Rifampicină** (aprobată 2026-10-08): „Spune medicului: poate scădea nivelul tamoxifenului din sânge.” Sursa: prospectul Tamoxifen Sandoz (ANMDMR).
+
+## Verificarea cu prospectul aprobat în România (2026-10-08)
+Prospectul și RCP-ul Tamoxifen Sandoz de pe anm.ro (pro_2715, rcp_2715), citite prin rezultatele căutării (anm.ro e blocat din mediul de lucru):
+- **Confirmat:** inhibitorii puternici CYP2D6 de evitat pe cât posibil (paroxetină, fluoxetină, bupropion, chinidină, cinacalcet); anticoagulantele orale ca interacțiune; „Nu luați o doză dublă pentru a compensa doza uitată”; rifampicina scade concentrațiile tamoxifenului.
+- **Neconfirmat în textul românesc (rămâne din prospectul UK):** „ia doza uitată când îți amintești; dacă se apropie următoarea, sari peste”; formularea despre estrogeni; letrozolul (prospectul românesc numește anastrozolul).
+- **Găsit în plus, neintrodus:** citostaticele cresc riscul de tromboză (relevant mai ales în chimioterapie; de discutat cu un medic).
 
 **Scos față de varianta veche:**
 - „Contraindicație: evită complet” pentru grepfrut (dovezi foarte slabe);

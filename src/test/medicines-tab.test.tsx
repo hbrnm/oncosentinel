@@ -28,6 +28,12 @@ describe('Ghiduri → Medicamente', () => {
     expect(screen.getByText(/Asta nu înseamnă că e sigur/)).toBeInTheDocument();
   });
 
+  it('include rifampicina, confirmată în prospectul românesc', () => {
+    const r = INTERACTIONS_DB.find(i => i.substance.startsWith('Rifampicină'))!;
+    expect(r).toMatchObject({ levelLabel: 'Spune medicului', advice: 'Poate scădea nivelul tamoxifenului din sânge.' });
+    expect(r.source).toMatch(/ANMDMR/);
+  });
+
   it('nu mai conține afirmațiile scoase', () => {
     const all = JSON.stringify(INTERACTIONS_DB);
     expect(all).not.toMatch(/70%|Vitamina D|Magneziu|Curcumin|Venlafaxin|Contraindicație/i);
