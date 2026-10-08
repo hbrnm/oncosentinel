@@ -36,6 +36,8 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 
 **Rămân la orchestrator, niciodată delegate:** deciziile proprietarului (chestionar), conținutul medical, migrațiile și orice SQL pe Supabase, politicile RLS/Storage, `vite.config.ts`, dependențele noi, workflow-urile CI, commit, push, PR, merge. Tot ce atinge producția.
 
+**Integrarea PR-urilor:** proprietara a aprobat ca orchestratorul să deschidă și să integreze singur PR-urile utile, fără revizuirea ei, după ce trec `npm test`, `npm run build`, agentul `verificare` și verificările din GitHub. Textele noi și conținutul medical se aprobă în continuare prin chestionar înainte de PR; SQL-ul pe Supabase de producție tot cu acordul ei.
+
 **Când nu deleg:** modificări mici sau legate între ele, unde explicația pentru agent ar fi mai lungă decât lucrul în sine.
 
 **Cum deleg:** sarcina pentru agent conține tot ce îi trebuie (agentul pornește fără contextul conversației): ce să facă, fișierele exacte, fișierul-model, ce să NU atingă, cum arată „gata”. Agenții independenți (fără fișiere comune) pot rula în paralel. Ce întoarce un agent se verifică înainte de folosire: orchestratorul citește diff-ul și rulează testele. O greșeală a agentului o repară orchestratorul sau o retrimite cu instrucțiuni mai clare.
