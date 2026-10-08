@@ -1,6 +1,6 @@
 # 002 — Planul aplicației: încredere, apoi căldură
 
-**Stare:** etapele 0–4 integrate în main (PR #5, #7, #8, #11); primele observații de la paciente reparate; în așteptare: restul testării și deciziile pentru lucrul pe server (memento-uri push, sincronizare criptată, etapa 5)
+**Stare:** gata. Etapele 0–5 integrate în main; ce a rămas în plan a fost scos (decizia proprietarei, 2026-10-08)
 **Ramura:** claude/plan-produs (etapa 0, PR #5); fiecare etapă următoare pe ramura ei
 
 ## Scop
@@ -19,7 +19,7 @@ Deciziile proprietarei (2026-10-08):
 | 1 | „Nu ești singură”: buton „Am nevoie de liniște acum”, jurnal care răspunde (mesaje scrise de om), sprijin înaintea controalelor | integrată, de testat cu pacientele | PR #7 |
 | 2 | „Te înțeleg”: rezumatul săptămânii, pregătirea vizitei la medic, mici victorii | gata, de testat cu pacientele | PR (ramura claude/etapa2) |
 | 3 | „Cercul tău”: rezumat și idei pentru familie, doar cu acordul pacientei | gata, de testat cu pacientele | PR (ramura claude/etapa3) |
-| 4 | Continuitate: memento-uri, sincronizare criptată opțională, PIN | PIN gata; memento în calendarul telefonului gata (fără server, decizia proprietarei); sincronizarea de făcut | PR (ramura claude/etapa4) |
+| 4 | Continuitate: memento-uri, sincronizare criptată opțională, PIN | gata: PIN și memento în calendarul telefonului; sincronizarea criptată și memento-urile push scoase din plan (decizia proprietarei) | PR (ramura claude/etapa4) |
 | 5 | Mesaje mai bogate după nota din Jurnal (fără AI, decizia proprietarei) | gata | PR #29 |
 
 ## Etapa 0 — pașii
@@ -191,7 +191,11 @@ Deciziile proprietarei (2026-10-08):
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
-## Următorul pas
-Reparațiile după primele două runde de testare sunt făcute; proprietara continuă testarea și trimite observațiile noi.
+### Back după PIN și nota dublată; planul închis (2026-10-08)
+- Back: după deblocarea cu PIN sau după reîncărcare, intrările rămase în istoricul browserului de dinainte sunt sărite (fiecare pornire are marcajul ei în `src/lib/backNavigation.ts`); de pe Astăzi, Back iese din aplicație.
+- Jurnal: o intrare veche de azi (fără tip, cu notă și simptome) se actualizează pe partea salvată, în loc să apară o a doua intrare lângă ea; butonul arată „Actualizează nota de azi”.
+- Scoase din plan (decizia proprietarei): sincronizarea criptată, memento-urile push, diacriticele în PDF și testarea programată cu pacientele (`docs/ghid-testare.md` rămâne, pentru când e nevoie).
+- Teste noi în `back-telefon.test.tsx` și `jurnal-separat.test.tsx` (pică pe codul vechi). `npm test` (178) și `npm run build` trec.
 
-Decizia anterioară a proprietarei (2026-10-08): pauză. Ea integrează PR-urile #8, #9 și #10 (în această ordine) și testează etapele 1–4 cu pacientele, după `docs/ghid-testare.md`. Abia apoi decidem memento-urile reale, sincronizarea (amândouă cer Supabase) și etapa 5 (mesaje AI). Etapa 0 e încheiată (prospectul verificat; liniile de sprijin scoase din aplicație, decizia proprietarei).
+## Următorul pas
+Planul 002 e încheiat. Pentru lucrul următor: decizia proprietarei.

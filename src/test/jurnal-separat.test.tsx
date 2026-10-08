@@ -142,6 +142,24 @@ describe('Starea zilei: cazuri vechi și conversii', () => {
     expect(logs[0]).toMatchObject({ mood_state: 'Foarte rău', notes: 'Text vechi', fatigue_level: 2 });
   });
 
+  it('în Jurnal, o intrare veche de azi (fără tip) se actualizează, nu se dublează', () => {
+    storageService.saveSymptomLogs([{ id: 'vechi', logged_at: new Date().toISOString(), mood_state: 'Bine', notes: 'Text vechi', fatigue_level: 2 }]);
+    openJournal();
+    expect(screen.getByText('Actualizează nota de azi')).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText(/Notează un gând/i), { target: { value: 'Text nou' } });
+    fireEvent.click(screen.getByText('Actualizează nota de azi'));
+    let logs = storageService.getSymptomLogs();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toMatchObject({ id: 'vechi', notes: 'Text nou', fatigue_level: 2 });
+
+    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Salvează simptomele'));
+    logs = storageService.getSymptomLogs();
+    expect(logs).toHaveLength(1);
+    expect(logs[0]).toMatchObject({ id: 'vechi', notes: 'Text nou' });
+  });
+
   it('fără notă azi, Astăzi nu arată o stare veche', () => {
     localStorage.setItem('navimed_today_mood', 'bine');
     localStorage.setItem('navimed_today_mood_date', new Date().toISOString().slice(0, 10));
