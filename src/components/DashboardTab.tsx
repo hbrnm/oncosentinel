@@ -14,6 +14,7 @@ import { controlSupportText } from '../data/comfort';
 import { nextVictory } from '../lib/summary';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
+import { useBackToClose } from '../lib/backNavigation';
 
 interface DashboardTabProps {
   profile: PatientProfile;
@@ -121,6 +122,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
   const [apptVersion, setApptVersion] = useState<number>(0);
   const [showPhotoModal, setShowPhotoModal] = useState<boolean>(false);
+  useBackToClose(showPhotoModal, () => setShowPhotoModal(false));
 
 
   useEffect(() => {

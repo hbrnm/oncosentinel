@@ -4,6 +4,7 @@ import { Check, Pencil, CalendarDays, CalendarHeart, Clock, X, ChevronLeft, Chev
 import { loadAppointments } from '../lib/appointments';
 import { plural } from '../lib/summary';
 import { PatientProfile, DoseLog } from '../types';
+import { useBackToClose } from '../lib/backNavigation';
 
 interface TreatmentTabProps {
   profile: PatientProfile;
@@ -31,6 +32,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   onUpdateProfile
 }) => {
   const [editing, setEditing] = useState(false);
+  useBackToClose(editing, () => setEditing(false));
   const [medName, setMedName] = useState(profile.medication_name || 'Tamoxifen');
   const [medDose, setMedDose] = useState(profile.medication_dose || '20 mg');
   const [medFrequency, setMedFrequency] = useState(profile.medication_frequency || '1 comprimat/zi');

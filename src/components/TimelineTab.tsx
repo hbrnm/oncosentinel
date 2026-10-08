@@ -8,6 +8,7 @@ import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
 import { backupService } from '../lib/backupService';
 import { setNextControlDate as saveNextControlDate } from '../lib/appointments';
 import { MilestoneModal } from './MilestoneModal';
+import { useBackToClose } from '../lib/backNavigation';
 
 interface TimelineTabProps {
   profile: PatientProfile;
@@ -29,6 +30,8 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
   const [expandedMilestone, setExpandedMilestone] = useState<string | null>(null);
   const [editingMilestone, setEditingMilestone] = useState<ClinicalMilestone | 'new' | null>(null);
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
+  useBackToClose(editingMilestone !== null, () => setEditingMilestone(null));
+  useBackToClose(showUploadModal, () => setShowUploadModal(false));
   const [docName, setDocName] = useState<string>('');
   const [docCategory, setDocCategory] = useState<any>('buletin_histopatologic');
   const [selectedRealFile, setSelectedRealFile] = useState<File | null>(null);

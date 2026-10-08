@@ -141,6 +141,14 @@ Deciziile proprietarei (2026-10-08):
 - Tratament: fără data de început a tratamentului, calendarul socotea toate zilele trecute ca sărite (de la anul 2000). Acum se numără de la prima doză notată sau, dacă nu există nicio doză, de azi.
 - Test nou `controale-si-calendar.test.tsx` (pică pe codul vechi). `npm test` (142) și `npm run build` trec.
 
+### Butonul Back al telefonului (2026-10-08)
+- Observația proprietarei: Back ieșea din aplicație de pe orice ecran. Deciziile ei: Back duce la ecranul anterior, până la Astăzi, și de acolo iese; o fereastră deschisă se închide cu Back.
+- `src/lib/backNavigation.ts`: fiecare ecran deschis adaugă o intrare în istoricul browserului (`pushScreen`), iar fiecare fereastră adaugă una (`useBackToClose`). Dacă închizi o fereastră din butonul ei, intrarea ei se scoate, ca să nu rămână o apăsare de Back fără efect. Acoperă ferestrele din App (Ajutor, semnale de alarmă, liniște, respirație, 5-4-3-2-1, controale, profil, cont, cercul tău), ghidurile și știrile deschise, fotografia de pe Astăzi, editarea tratamentului, ferestrele din Profil și din Dosar. Configurarea inițială nu se închide cu Back.
+- Verificat în Chromium: fereastră → ecranul anterior → Astăzi → ieșire din aplicație.
+- După `verificare` (nimic blocant): reparate o apăsare Back pierdută după blocarea cu PIN, cursa respirație → „Te simți mai liniștită?” și coliziunea id-urilor după reîncărcare (id-uri pe timp).
+- După reblocarea cu PIN sau reîncărcare, Back poate duce încă la ecranele vizitate înainte (istoricul browserului rămâne).
+- Test nou `back-telefon.test.tsx` (pică pe codul vechi). `npm test` (147) și `npm run build` trec.
+
 ## În toate etapele
 Testare cu pacientele după fiecare etapă; litere mari și cititor de ecran; fără overflow la 390px; limbaj simplu, fără termeni neexplicați; `npm test` și `npm run build` înainte de push.
 
