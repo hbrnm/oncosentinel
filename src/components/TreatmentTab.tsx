@@ -6,6 +6,7 @@ import { loadAppointments } from '../lib/appointments';
 import { plural } from '../lib/summary';
 import { PatientProfile, DoseLog } from '../types';
 import { useBackToClose } from '../lib/backNavigation';
+import { OtherMedicines } from './OtherMedicines';
 
 interface TreatmentTabProps {
   profile: PatientProfile;
@@ -245,6 +246,11 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           )}
         </div>
       </div>
+
+      {/* Medicamentele mele: celelalte medicamente, doar notate */}
+      <OtherMedicines
+        treatmentLine={`${[profile.medication_name || 'Tamoxifen', profile.medication_dose].filter(Boolean).join(' ')}${profile.tamoxifen_start_date ? ` din ${formatDateRo(profile.tamoxifen_start_date)}` : ''}`}
+      />
 
       {/* Memento zilnic în calendarul telefonului (fără server) */}
       <section aria-labelledby="reminder-title" className="organic-card rounded-3xl p-5">

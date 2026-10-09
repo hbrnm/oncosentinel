@@ -85,6 +85,17 @@ export interface DrugInteraction {
   levelLabel: string;
   advice: string;
   source: string;
+  /** Cuvintele (fără diacritice) după care se recunoaște în „Medicamentele mele”, doar din `substance` */
+  match: string[];
+}
+
+/** „Medicamentele mele”: celelalte medicamente, doar notate (fără bifă zilnică) */
+export interface OtherMedicine {
+  id: string;
+  name: string;
+  dose?: string;
+  when?: string;
+  reason?: string;
 }
 
 export interface ShoppingItem {

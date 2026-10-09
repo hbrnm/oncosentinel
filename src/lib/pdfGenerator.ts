@@ -3,6 +3,7 @@ import autoTable from 'jspdf-autotable';
 import { useReadableText } from './pdfText';
 import { plural, doctorSummary, periodDays, controlDateLabel, localDay } from './summary';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
+import { loadMedicines, medicineLabel } from './myMedicines';
 
 // „1 zi”, „5 zile”, „30 de zile”
 const zile = (n: number) => plural(n, 'zi', 'zile');
@@ -147,8 +148,14 @@ export function generateOncologyReport(
 
   // 5. Safety & Red Flags Assessment
   let finalY = ((doc as any).lastAutoTable?.finalY || 160) + 10;
+  doc.setFontSize(9);
+  const medicines = loadMedicines();
+  const medicineLines: string[] = medicines.length > 0
+    ? doc.splitTextToSize(`Alte medicamente: ${medicines.map(m => medicineLabel(m)).join('; ')}.`, 182)
+    : [];
   // Cu multe note, tabelul se poate termina jos pe pagină: secțiunea următoare trece pe o pagină nouă
-  if (finalY > 250) {
+  // (titlul, cel puțin un rând de medicamente și cele două rânduri despre semnalele de alarmă, deasupra subsolului)
+  if (finalY + 9 + Math.min(Math.max(medicineLines.length, 1), 3) * 5 + 2 + 15 > 266) {
     doc.addPage();
     finalY = 20;
   }
@@ -160,8 +167,24 @@ export function generateOncologyReport(
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  doc.text('Aplicația nu înregistrează semnale de alarmă (ex. tromboză, sângerări, dispnee) și nici alte medicamente', 14, finalY + 9);
-  doc.text('luate de pacientă. Vă rugăm să le discutați direct cu ea.', 14, finalY + 15);
+  // Medicamentele notate de pacientă în Tratament, apoi semnalele de alarmă
+  // O listă lungă continuă pe pagina următoare
+  let y = finalY + 9;
+  for (const line of medicineLines.length > 0 ? medicineLines : ['Pacienta nu a notat alte medicamente în aplicație.']) {
+    if (y > 266) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.text(line, 14, y);
+    y += 5;
+  }
+  y += 2;
+  if (y + 6 > 266) {
+    doc.addPage();
+    y = 20;
+  }
+  doc.text('Aplicația nu înregistrează semnale de alarmă (ex. tromboză, sângerări, dispnee). Vă rugăm să le discutați', 14, y);
+  doc.text('direct cu pacienta.', 14, y + 6);
 
   // 6. Footer Notes, pe fiecare pagină
   const pages = doc.getNumberOfPages() || 1;

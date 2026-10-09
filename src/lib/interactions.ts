@@ -4,6 +4,7 @@ import { DrugInteraction } from '../types';
 export const INTERACTIONS_DB: DrugInteraction[] = [
   {
     substance: 'Paroxetină, fluoxetină, bupropion, chinidină, cinacalcet',
+    match: ['paroxetin', 'fluoxetin', 'bupropion', 'chinidin', 'cinacalcet'],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Pot scădea forma activă a tamoxifenului. Prospectul recomandă să fie evitate, pe cât posibil. Nu le opri singură: vorbește cu medicul.',
@@ -11,6 +12,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Anticoagulante de tip warfarină (acenocumarol, warfarină)',
+    match: ['acenocumarol', 'warfarin'],
     level: 'tell',
     levelLabel: 'Spune medicului',
     advice: 'Tamoxifenul poate modifica efectul lor asupra coagulării. Medicul poate cere analize mai dese.',
@@ -18,6 +20,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Medicamente cu estrogen (de exemplu anticoncepționale orale, tratamente hormonale pentru menopauză)',
+    match: ['estrogen', 'anticonceptional'],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Prospectul spune să nu fie luate în timpul tratamentului. Dacă ai nevoie de contracepție, folosește o metodă fără hormoni (de exemplu prezervativul) în timpul tratamentului și încă 2 luni după. Medicul te ajută să alegi.',
@@ -25,6 +28,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Anastrozol, letrozol și alți inhibitori de aromatază',
+    match: ['anastrozol', 'letrozol', 'inhibitor de aromataza', 'inhibitori de aromataza'],
     level: 'tell',
     levelLabel: 'Doar la indicația medicului',
     advice: 'Nu se iau împreună cu tamoxifenul. Prospectul românesc o spune explicit pentru anastrozol.',
@@ -32,6 +36,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Rifampicină (medicament pentru tuberculoză)',
+    match: ['rifampicin'],
     level: 'tell',
     levelLabel: 'Spune medicului',
     advice: 'Poate scădea nivelul tamoxifenului din sânge.',
@@ -39,6 +44,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Sunătoare (ceai, tinctură, capsule)',
+    match: ['sunatoare'],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Poate scădea nivelul tamoxifenului din sânge.',
@@ -46,6 +52,7 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Suplimente concentrate de soia sau izoflavone',
+    match: ['soia', 'izoflavon'],
     level: 'ask',
     levelLabel: 'Întreabă medicul',
     advice: 'Siguranța lor pe termen lung nu e stabilită. Alimentele obișnuite cu soia (tofu, edamame) nu intră aici.',
@@ -53,12 +60,24 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Grepfrut și suc de grepfrut',
+    match: ['grepfrut'],
     level: 'ask',
     levelLabel: 'Întreabă medicul',
     advice: 'Dovezile sunt foarte slabe; unele spitale recomandă evitarea sucului de grepfrut.',
     source: 'Medscape (baza de interacțiuni); fișa MGH pentru tamoxifen'
   }
 ];
+
+// Fără diacritice și fără majuscule: „Fluoxetină” → „fluoxetina”
+export const normalizeName = (text: string) =>
+  text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+// Intrarea din lista aprobată care se potrivește cu numele scris de pacientă; lipsa nu înseamnă siguranță
+export const findInteraction = (name: string): DrugInteraction | undefined => {
+  const n = normalizeName(name);
+  if (!n) return undefined;
+  return INTERACTIONS_DB.find(item => item.match.some(word => n.includes(word)));
+};
 
 export function searchInteractions(query: string): DrugInteraction[] {
   const q = query.trim().toLowerCase();
