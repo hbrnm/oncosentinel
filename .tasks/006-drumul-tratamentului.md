@@ -1,30 +1,34 @@
 # 006 — Drumul tratamentului
 
-**Stare:** de început (într-o sesiune nouă)
-**Ramura:** câte o ramură `claude/…` pe etapă, din `main`
+**Stare:** gata
+**Ramura:** claude/plan-006, din `main`
 
 ## Scop
 O vedere caldă a drumului parcurs cu tratamentul, din data de început din profil (`tamoxifen_start_date`). Fără conținut medical nou.
 
 Deciziile proprietarei (2026-10-09):
-- doar **timpul parcurs** („8 luni de tratament”), fără durata totală (o stabilește medicul: 5 sau 10 ani);
+- doar **timpul parcurs**, fără durata totală (o stabilește medicul: 5 sau 10 ani);
 - planul se face după confirmarea textelor din 004 și 005 (confirmate);
 - „Medicamentele mele” rămâne idee: înainte de cod trebuie decis cum tratăm numele comerciale (o potrivire lipsă poate liniști pe nedrept).
+
+Din chestionarul etapei 1 (2026-10-09):
+- locul: pe Astăzi, rând mic sub salut, fără card nou;
+- conținutul: doar timpul parcurs (fără doze, fără etapele din cronologie);
+- formatul: ani și luni, rotunjit în jos („3 săptămâni”, „5 luni”, „1 an și 3 luni”); sub o săptămână, zile („de 4 zile”);
+- reperele: doar aniversarea la fiecare an împlinit, separat de „O mică victorie”: „Azi se împlinește 1 an de când ai început tratamentul. Felicitări din inimă.”
 
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 1 | Drumul tratamentului: timpul parcurs și repere | de făcut | |
-
-## Etapa 1 — de decis la început (un singur chestionar)
-- Unde apare: pe Astăzi (cardul pastilei sau card separat), în Tratament sau în Profil.
-- Reperele: 1, 3, 6 luni, 1 an, apoi în fiecare an? Legate de „O mică victorie” (`nextVictory` în `src/lib/summary.ts`, cu „Mulțumesc”) sau separate.
-- Textele (timpul parcurs și mesajele de la repere); ce arătăm fără dată de început sau cu dată în viitor.
-
-## De făcut pe parcurs
-- `src/components/DoctorVisitModal.tsx`: blocul `sr-only` „Hidden legacy anchor for backwards compatibility in tests”, de scos cu testele adaptate (ca pe Astăzi, în planul 002).
+| 1 | Rândul „Ești pe drum de …” pe Astăzi, cu aniversarea anuală | gata | ramura claude/plan-006 |
 
 ## Rezumat pe etape
+### Etapa 1 (2026-10-09)
+- `src/lib/summary.ts`: `treatmentJourneyText(startDate, today)`; fără dată, cu data de azi sau din viitor nu arată nimic; pentru o dată greșită, nici atât. Formulate de Claude după decizii: „Ești pe drum de 1 zi.” și „Azi se împlinesc 3 ani…” (pluralul).
+- Început pe 29–31: în lunile mai scurte luna se împlinește în ultima zi (29 februarie → aniversare pe 28 februarie în anii nebisecți).
+- `src/components/DashboardTab.tsx`: rândul sub salut, `text-sage-700` / `dark:text-sage-300`.
+- Pe parcurs: scos blocul `sr-only` „Hidden legacy anchor” din `DoctorVisitModal.tsx`; `complete-flow.test.tsx` verifică acum titlul vizibil „Controale Medicale”.
+- Test nou `drumul-tratamentului.test.tsx` (pică pe codul vechi). `npm test` (216) și `npm run build` trec; verificat la 390px, fără overflow. Agentul `verificare`: nimic blocant; reparate cazurile 29–31 și data greșită.
 
 ## Următorul pas
-Sesiune nouă: citește acest fișier, apoi chestionarul de la „Etapa 1 — de decis la început”.
+Planul 006 e încheiat. Lucrul următor: decizia proprietarei („Medicamentele mele” rămâne idee).
