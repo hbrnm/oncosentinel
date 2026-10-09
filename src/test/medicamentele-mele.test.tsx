@@ -50,6 +50,8 @@ describe('Potrivirea cu lista aprobată', () => {
     // grafia internațională, de pe unele cutii
     expect(findInteraction('Warfarin')?.levelLabel).toBe('Spune medicului');
     expect(findInteraction('Fluoxetine')?.levelLabel).toBe('De evitat');
+    expect(findInteraction('Etinilestradiol')?.substance).toMatch(/estrogen/);
+    expect(findInteraction('comprimate contraceptive')?.substance).toMatch(/estrogen/);
   });
 
   it('un medicament care nu e în listă nu se potrivește', () => {
@@ -57,11 +59,12 @@ describe('Potrivirea cu lista aprobată', () => {
     expect(findInteraction('')).toBeUndefined();
   });
 
-  it('cuvintele de potrivire vin doar din numele aprobat al substanței', () => {
+  it('cuvintele de potrivire vin din numele aprobat al substanței sau sunt aprobate separat', () => {
+    const approvedExtra = ['estradiol', 'contraceptiv']; // proprietara, 2026-10-09
     for (const item of INTERACTIONS_DB) {
       expect(item.match.length).toBeGreaterThan(0);
       const words = normalizeName(item.substance);
-      for (const word of item.match) expect(words).toContain(word.split(' ')[0]);
+      for (const word of item.match.filter(w => !approvedExtra.includes(w))) expect(words).toContain(word.split(' ')[0]);
     }
   });
 });
