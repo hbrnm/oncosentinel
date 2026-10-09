@@ -41,7 +41,7 @@ describe('Jurnal: notă și simptome separate', () => {
     fireEvent.click(screen.getByText('Salvează în jurnal'));
     act(() => { vi.advanceTimersByTime(2000); });
 
-    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Formular detaliat simptome'));
     fireEvent.click(screen.getByText('Salvează simptomele'));
     act(() => { vi.advanceTimersByTime(2000); });
     fireEvent.click(screen.getByText('Salvează simptomele'));
@@ -62,14 +62,14 @@ describe('Jurnal: notă și simptome separate', () => {
     expect(screen.queryByText('Salvat')).not.toBeInTheDocument();
     expect(screen.getByText('Actualizează nota de azi')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Formular detaliat simptome'));
     fireEvent.click(screen.getByText('Salvează simptomele'));
     expect(screen.getByText('Salvat')).toBeInTheDocument();
   });
 
   it('salvarea notei nu resetează simptomele schimbate și nesalvate', () => {
     openJournal();
-    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Formular detaliat simptome'));
     const fatigue = document.querySelector('input[aria-label="Nivel oboseală"]') as HTMLInputElement;
     fireEvent.change(fatigue, { target: { value: '4' } });
     fireEvent.click(screen.getByText('Salvează în jurnal'));
@@ -153,7 +153,7 @@ describe('Starea zilei: cazuri vechi și conversii', () => {
     expect(logs).toHaveLength(1);
     expect(logs[0]).toMatchObject({ id: 'vechi', notes: 'Text nou', fatigue_level: 2 });
 
-    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Formular detaliat simptome'));
     fireEvent.click(screen.getByText('Salvează simptomele'));
     logs = storageService.getSymptomLogs();
     expect(logs).toHaveLength(1);

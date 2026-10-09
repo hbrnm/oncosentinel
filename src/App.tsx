@@ -36,6 +36,19 @@ export function App() {
     setActiveTab(tab);
   };
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  // Butonul de liniște se ascunde cât derulezi în jos (să nu acopere textul) și revine când urci
+  const [calmButtonHidden, setCalmButtonHidden] = useState<boolean>(false);
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > lastY + 8 && y > 80) setCalmButtonHidden(true);
+      else if (y < lastY - 8) setCalmButtonHidden(false);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   
   // Modals state
   const [isRedFlagsOpen, setIsRedFlagsOpen] = useState<boolean>(false);
@@ -326,7 +339,11 @@ export function App() {
           onClick={() => setCalmStep('welcome')}
           aria-label="Am nevoie de liniște acum"
           title="Am nevoie de liniște acum"
-          className="tap-scale fixed bottom-[7.5rem] left-[max(1rem,calc(50%-204px))] z-40 w-12 h-12 rounded-full bg-sage-deep text-white shadow-lg flex items-center justify-center"
+          onFocus={() => setCalmButtonHidden(false)}
+          data-hidden={calmButtonHidden}
+          className={`fixed bottom-[7.5rem] left-[max(1rem,calc(50%-204px))] z-40 w-12 h-12 rounded-full bg-sage-deep text-white shadow-lg ring-4 ring-cream flex items-center justify-center transition-[opacity,transform] duration-300 active:scale-95 ${
+            calmButtonHidden ? 'opacity-0 translate-y-3 pointer-events-none' : ''
+          }`}
         >
           <Heart className="w-5 h-5" />
         </button>

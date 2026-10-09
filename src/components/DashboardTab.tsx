@@ -632,7 +632,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleSelectMood(item.id)}
-                className={`flex flex-col items-center justify-center p-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
+                className={`flex flex-col items-center justify-start px-0.5 py-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
                   isSelected
                     ? 'bg-sage-600 text-white shadow-sm scale-105'
                     : 'bg-cream dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
@@ -643,7 +643,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 }`}>
                   {item.level}
                 </span>
-                <span className={`text-[10px] mt-1 text-center font-medium leading-tight ${
+                <span className={`text-[10px] mt-1 text-center font-medium leading-tight tracking-tight ${
                   isSelected ? 'text-white font-bold' : 'text-gray-500 dark:text-gray-400'
                 }`}>
                   {item.label}

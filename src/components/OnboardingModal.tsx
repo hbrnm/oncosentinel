@@ -70,9 +70,9 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         {/* Step Indicator */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1.5">
-            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 1 ? 'bg-sage-500' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
-            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 2 ? 'bg-sage-500' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
-            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 3 ? 'bg-sage-500' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
+            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 1 ? 'bg-sage' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
+            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 2 ? 'bg-sage' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
+            <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 3 ? 'bg-sage' : 'bg-gray-200 dark:bg-gray-700'}`}></div>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-wider text-sage-600 dark:text-sage-400">
             Pasul {step} din 3
@@ -87,8 +87,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white leading-tight">
-                Bine ai venit în OncoSentinel 🌸
+              <h3 className="font-serif text-xl font-medium text-ink dark:text-white leading-tight">
+                Bine ai venit în OncoSentinel
               </h3>
               <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
                 Ghidul tău personalizat pentru protecție, aderență la tratament și supraveghere medicală activă.
@@ -125,7 +125,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="w-full py-3 rounded-2xl bg-sage-500 hover:bg-sage-600 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sage-200 dark:shadow-none transition-all"
+              className="w-full py-3 rounded-2xl bg-sage hover:bg-sage-deep active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sage-200 dark:shadow-none transition-all"
             >
               <span>Continuă spre Alerte & Orar</span>
               <ArrowRight className="w-4 h-4" />
@@ -141,7 +141,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <Pill className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+                <h3 className="font-serif text-lg font-medium text-ink dark:text-white leading-tight">
                   Tratamentul cu tamoxifen
                 </h3>
                 <p className="text-[11px] text-gray-500">Ora și stocul de pastile</p>
@@ -225,7 +225,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="w-2/3 py-2.5 rounded-2xl bg-sage-500 hover:bg-sage-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sage-200 dark:shadow-none"
+                className="w-2/3 py-2.5 rounded-2xl bg-sage hover:bg-sage-deep text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-sage-200 dark:shadow-none"
               >
                 <span>Spre Supraveghere</span>
                 <ArrowRight className="w-4 h-4" />
@@ -242,7 +242,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <Calendar className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+                <h3 className="font-serif text-lg font-medium text-ink dark:text-white leading-tight">
                   Supraveghere Imagistică (6 Luni)
                 </h3>
                 <p className="text-[11px] text-gray-500">Mamografie bilaterală & Ecografie</p>
@@ -285,7 +285,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               <button
                 type="button"
                 onClick={handleFinish}
-                className="w-2/3 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all"
+                className="w-2/3 py-3 rounded-2xl bg-sage hover:bg-sage-deep active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Pornește OncoSentinel</span>
