@@ -3,7 +3,6 @@ import {
   CheckCircle2, FileText, Upload, Plus, ChevronDown, ChevronUp, ShieldCheck, Download, Calendar, Activity, Edit3, Trash2
 } from 'lucide-react';
 import { ClinicalMilestone, MedicalDocument, PatientProfile } from '../types';
-import { backupService } from '../lib/backupService';
 import { MilestoneModal } from './MilestoneModal';
 import { useBackToClose } from '../lib/backNavigation';
 
@@ -316,49 +315,6 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               </div>
             ))
           )}
-        </div>
-      </div>
-
-      {/* 4. Complete Backup & Restore Card */}
-      <div className="bg-white dark:bg-darkbg-card rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-8 h-8 rounded-xl bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300 flex items-center justify-center shrink-0">
-            <Download className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-              Salvare & Portabilitate Dosar (Backup)
-            </h3>
-            <p className="text-[11px] text-gray-600 dark:text-gray-300">
-              Descarcă o copie completă a istoricului tău sau restaurează datele pe alt dispozitiv.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-2.5 mt-3">
-          <button
-            onClick={() => backupService.exportCompleteBackup()}
-            className="flex-1 py-2.5 px-3 rounded-2xl bg-sage-600 text-white hover:bg-sage-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-2xs"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Exportă Backup Complet (JSON)</span>
-          </button>
-
-          <label className="flex-1 py-2.5 px-3 rounded-2xl bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border hover:bg-gray-50 dark:hover:bg-darkbg-card text-gray-700 dark:text-gray-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs">
-            <Upload className="w-3.5 h-3.5 text-sage-600" />
-            <span>Restaurează din Fișier</span>
-            <input
-              type="file"
-              accept=".json"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  backupService.importBackupFromFile(file);
-                }
-              }}
-            />
-          </label>
         </div>
       </div>
 

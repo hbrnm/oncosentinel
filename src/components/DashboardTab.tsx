@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import {
-  Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart
+  Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart, ShieldCheck
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
@@ -9,6 +9,7 @@ import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
 import { nextVictory } from '../lib/summary';
+import { shouldRemindBackup, lastBackupText, snoozeBackupReminder } from '../lib/backupReminder';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 import { moodLevelFromState } from '../lib/mood';
@@ -25,6 +26,7 @@ interface DashboardTabProps {
   onOpenGrounding: () => void;
   onOpenSupporter: () => void;
   onOpenHelp?: () => void;
+  onOpenDataSafety?: () => void;
   /** Starea aleasă aici se salvează ca nota de azi din Jurnal (treapta 1–5) */
   onSaveMood?: (level: number) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
@@ -43,6 +45,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenGrounding,
   onOpenSupporter,
   onOpenHelp,
+  onOpenDataSafety,
   onSaveMood,
   onNavigateToTab
 }) => {
@@ -87,6 +90,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
     }
   });
   const victory = nextVictory(doses, symptoms, seenVictories);
+
+  // Copia amintită: se recalculează la fiecare afișare, ca să dispară după o copie făcută din „Siguranța datelor”
+  const [, setBackupSnoozed] = useState(0);
+  const showBackupReminder = !!onOpenDataSafety && shouldRemindBackup(doses, symptoms);
+  const handleSnoozeBackup = () => {
+    snoozeBackupReminder();
+    setBackupSnoozed(n => n + 1);
+  };
   const handleThanksVictory = () => {
     if (!victory) return;
     const updated = [...new Set([...seenVictories, ...victory.reachedIds])];
@@ -322,6 +333,26 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <button type="button" onClick={onOpenBreathing} className="tap-scale py-2.5 px-2 rounded-2xl bg-sage-deep text-white text-[12px] font-semibold">
               Un moment de liniște
             </button>
+          </div>
+        </section>
+      )}
+
+      {showBackupReminder && (
+        <section aria-label="O copie pentru liniștea ta" className="rounded-[28px] p-5 bg-sage-soft dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/40 flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <h2 className="micro-label text-sage-deep dark:text-sage-300">O copie pentru liniștea ta</h2>
+            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">
+              Datele tale stau doar pe acest telefon. {lastBackupText()}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button type="button" onClick={onOpenDataSafety} className="tap-scale px-4 py-2 rounded-xl bg-sage-deep text-white text-xs font-semibold">
+                Fac copia acum
+              </button>
+              <button type="button" onClick={handleSnoozeBackup} className="tap-scale px-4 py-2 rounded-xl border border-sage-200 dark:border-sage-800/60 text-sage-deep dark:text-sage-300 text-xs font-semibold">
+                Mai târziu
+              </button>
+            </div>
           </div>
         </section>
       )}
