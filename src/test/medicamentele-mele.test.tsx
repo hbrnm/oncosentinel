@@ -4,7 +4,7 @@ import React from 'react';
 import { TreatmentTab } from '../components/TreatmentTab';
 import { DoctorVisitModal } from '../components/DoctorVisitModal';
 import { DEFAULT_PROFILE } from '../lib/supabase';
-import { INTERACTIONS_DB, findInteraction, normalizeName } from '../lib/interactions';
+import { INTERACTIONS_DB, findInteraction, normalizeName, searchInteractions } from '../lib/interactions';
 import { MEDICINES_KEY } from '../lib/myMedicines';
 import { backupService } from '../lib/backupService';
 import { generateOncologyReport } from '../lib/pdfGenerator';
@@ -50,8 +50,23 @@ describe('Potrivirea cu lista aprobată', () => {
     // grafia internațională, de pe unele cutii
     expect(findInteraction('Warfarin')?.levelLabel).toBe('Spune medicului');
     expect(findInteraction('Fluoxetine')?.levelLabel).toBe('De evitat');
+    // nume comerciale aprobate (etapa 2b)
+    expect(findInteraction('Prozac 20 mg')?.substance).toMatch(/fluoxetină/);
+    expect(findInteraction('SEROXAT')?.levelLabel).toBe('De evitat');
+    expect(findInteraction('Trombostop 2 mg')?.levelLabel).toBe('Spune medicului');
+    expect(findInteraction('Arimidex')?.substance).toMatch(/Anastrozol/);
+    expect(findInteraction('Sinerdol 300')?.substance).toMatch(/Rifampicină/);
     expect(findInteraction('Etinilestradiol')?.substance).toMatch(/estrogen/);
     expect(findInteraction('comprimate contraceptive')?.substance).toMatch(/estrogen/);
+  });
+
+  it('fiecare nume comercial aprobat duce la substanța lui, și în căutarea din Ghiduri', () => {
+    const brands = INTERACTIONS_DB.flatMap(item => (item.brands || []).map(brand => ({ brand, item })));
+    expect(brands).toHaveLength(17);
+    for (const { brand, item } of brands) {
+      expect(findInteraction(brand.toUpperCase())).toBe(item);
+      expect(searchInteractions(brand)).toContain(item);
+    }
   });
 
   it('un medicament care nu e în listă nu se potrivește', () => {

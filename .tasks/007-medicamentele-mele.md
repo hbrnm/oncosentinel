@@ -1,6 +1,6 @@
 # 007 — Medicamentele mele
 
-**Stare:** în așteptare (proprietara: accesul la ANMDMR în rețeaua mediului)
+**Stare:** gata
 **Ramura:** câte o ramură `claude/…` pe etapă, din `main`
 
 ## Scop
@@ -18,7 +18,7 @@ Deciziile proprietarei (2026-10-09):
 |---|---|---|---|
 | 1 | Lista „Medicamentele mele” în Tratament, comparată cu substanțele din lista aprobată, în „Pentru medic”, în PDF și în copie; „Arată farmacistului” | gata | ramura claude/plan-007 |
 | 2a | Cuvinte în plus la estrogen („estradiol”, „contraceptiv”) | gata | ramura claude/plan-007-etapa2 |
-| 2b | Numele comerciale: lista aprobată de proprietară, legată de substanțele din `interactions.ts` | în așteptare (accesul la ANMDMR) | |
+| 2b | Numele comerciale: lista aprobată de proprietară, legată de substanțele din `interactions.ts` | gata | ramura claude/plan-007-etapa2b |
 
 ## Etapa 1 — de decis la început (un singur chestionar)
 - Câmpurile: nume (obligatoriu), doză, când se ia (text liber sau alegeri), pentru ce, cine l-a prescris?
@@ -42,5 +42,12 @@ Deciziile proprietarei (2026-10-09):
 - Rețeaua sesiunii blochează `nomenclator.anm.ro` și `www.anm.ro`; căutarea pe web găsește doar documente ANM răzlețe (ex. fluoxetină: Prozac, Fluoxin, Fluoxetină Arena, autorizații 2018–2019), fără confirmarea că lista e completă. Decizia proprietarei: deblochează accesul la ANMDMR în rețeaua mediului; lista se face apoi din Nomenclator.
 - Aprobat de proprietară: „estradiol” și „contraceptiv” la „Medicamente cu estrogen” (prind și „Etinilestradiol”, „comprimate contraceptive”); testul le permite explicit. `npm test` (230) și `npm run build` trec. Agentul `verificare`: nimic blocant.
 
+### Etapa 2b (2026-10-09)
+- Meniul de rețea al mediului nu e disponibil pe iPhone (nici în Safari); decizia proprietarei: listă parțială din căutarea pe web, doar din documente ANM (RCP/PRO/AMB), fiecare nume cu sursa.
+- Aprobate de proprietară (17 nume): Seroxat, Paxetin, Prozac, Fluoxin, Magrilan, Elontril, Zyban, Axabal (paroxetină/fluoxetină/bupropion); Sintrom, Trombostop (acenocumarol); Arimidex, Kyaresta, Loosyn, Elozora, Etruzil, Zequipra (anastrozol/letrozol); Sinerdol (rifampicină). Sursele sunt în comentariile din `interactions.ts`. Pentru warfarină nu s-a găsit niciun produs românesc; Mimpara și Femara nu au apărut în documente ANM.
+- Numele care conțin deja substanța (Paroxetină Atb, Anastrozol Teva, Rifampicină Arena, Chinidină Arena…) erau deja recunoscute.
+- `brands` pe `DrugInteraction`; `findInteraction` și căutarea din Ghiduri → Medicamente le folosesc. Lista rămâne incompletă; textul „Lista nu e completă” rămâne.
+- `npm test` (231) și `npm run build` trec. Agentul `verificare`: nimic blocant; adăugate căutarea în Ghiduri și testul pentru toate numele.
+
 ## Următorul pas
-Etapa 2b, într-o sesiune nouă, după ce proprietara adaugă `nomenclator.anm.ro` și `www.anm.ro` la Allowed domains: Claude ia din Nomenclatorul ANMDMR produsele autorizate pentru fiecare substanță din `INTERACTIONS_DB` (cu sursa) și le dă la aprobat prin chestionar, apoi le adaugă la `match`.
+Planul 007 e încheiat. Lista de nume comerciale se poate completa din Nomenclatorul ANMDMR dacă accesul la `nomenclator.anm.ro` devine posibil (de pe un calculator).

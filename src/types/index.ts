@@ -87,6 +87,8 @@ export interface DrugInteraction {
   source: string;
   /** Cuvintele (fără diacritice) după care se recunoaște în „Medicamentele mele”, doar din `substance` */
   match: string[];
+  /** Nume comerciale (fără diacritice), doar din lista aprobată de proprietară, cu sursa ANM în comentariu */
+  brands?: string[];
 }
 
 /** „Medicamentele mele”: celelalte medicamente, doar notate (fără bifă zilnică) */
