@@ -81,7 +81,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-modal">
       <div role="dialog" aria-modal="true" aria-labelledby="supporter-title" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl relative max-h-[90vh] overflow-y-auto">
         
         {/* Soft decorative glow */}

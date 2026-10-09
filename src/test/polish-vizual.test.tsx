@@ -7,6 +7,8 @@ import { JournalTab } from '../components/JournalTab';
 import { GuideTab } from '../components/GuideTab';
 import { DEFAULT_PROFILE } from '../lib/supabase';
 import { DoseLog } from '../types';
+import { BottomNav } from '../components/BottomNav';
+import confetti from 'canvas-confetti';
 
 describe('Calendarul dozelor: zilele nebifate', () => {
   beforeEach(() => {
@@ -81,5 +83,80 @@ describe('Griurile reci', () => {
         .map((cls) => `${file}: ${cls}`),
     );
     expect(found).toEqual([]);
+  });
+});
+
+describe('Mișcarea discretă', () => {
+  const readCss = async () => {
+    // Vitest nu încarcă CSS-ul, deci îl citim de pe disc
+    const nodeFs = 'node:fs';
+    const { readFileSync } = await import(/* @vite-ignore */ nodeFs);
+    return readFileSync('src/index.css', 'utf8') as string;
+  };
+
+  it('nicio animație nu păstrează starea finală pe ferestre sau pe cardurile din taburi', async () => {
+    const css = (await readCss()).replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const selector of ['\\.animate-modal', '\\.animate-modal > \\*', '\\.animate-cascade > :not\\(\\.animate-modal\\)', '\\.animate-pop', '\\.animate-draw-check path', '\\.animate-sway']) {
+      const rule = css.match(new RegExp(`${selector}\\s*{([^}]*)}`))![1];
+      expect(rule).toMatch(/animation:/);
+      expect(rule).not.toMatch(/\b(forwards|both)\b/);
+    }
+  });
+
+  it('se oprește când telefonul cere „Reduce mișcarea”', async () => {
+    const css = await readCss();
+    const block = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+    expect(block).toMatch(/animation-duration:\s*0\.01ms !important/);
+    expect(block).toMatch(/transition-duration:\s*0\.01ms !important/);
+  });
+
+  it('ferestrele din Astăzi nu așteaptă după cascadă', async () => {
+    const css = (await readCss()).replace(/\/\*[\s\S]*?\*\//g, '');
+    const selectors = css.match(/\.animate-cascade[^{]*/g)!;
+    expect(selectors.length).toBeGreaterThan(1);
+    for (const selector of selectors) expect(selector).toContain(':not(.animate-modal)');
+  });
+
+  it('toate ferestrele urcă de jos (animate-modal pe fundal)', async () => {
+    const nodeFs = 'node:fs';
+    const { readdirSync, readFileSync } = await import(/* @vite-ignore */ nodeFs);
+    const overlays = (readdirSync('src/components') as string[]).flatMap((file) =>
+      ((readFileSync(`src/components/${file}`, 'utf8') as string).match(/className=[{"`]+fixed inset-0[^"`]*/g) ?? [])
+        .filter((cls) => !cls.includes('animate-modal'))
+        .map((cls) => `${file}: ${cls}`),
+    );
+    expect(overlays).toEqual([]);
+  });
+
+  it('cercul tabului activ alunecă în bara de jos', () => {
+    const { rerender } = render(<BottomNav activeTab="today" setActiveTab={() => {}} />);
+    const indicator = screen.getByTestId('nav-indicator');
+    expect(indicator.style.transform).toBe('translateX(0%)');
+    rerender(<BottomNav activeTab="guide" setActiveTab={() => {}} />);
+    expect(indicator.style.transform).toBe('translateX(300%)');
+    expect(indicator.className).toContain('transition-transform');
+  });
+});
+
+describe('Astăzi: cascadă, plantă și bifarea dozei', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    vi.mocked(confetti).mockClear();
+  });
+
+  it('cardurile apar în cascadă și planta se leagănă', () => {
+    const { container } = render(<App />);
+    expect(container.querySelector('.animate-cascade')).not.toBeNull();
+    expect(container.querySelector('.animate-cascade .animate-sway')).not.toBeNull();
+  });
+
+  it('la bifare, „Luat azi” crește ușor, bifa se desenează, iar confetti rămâne (oprit la „Reduce mișcarea”)', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /Bifat ca luat/ }));
+    const badge = screen.getByText('Luat azi').parentElement!;
+    expect(badge.className).toContain('animate-pop');
+    expect(badge.querySelector('svg')!.getAttribute('class')).toContain('animate-draw-check');
+    expect(confetti).toHaveBeenCalledWith(expect.objectContaining({ disableForReducedMotion: true }));
   });
 });

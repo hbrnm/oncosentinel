@@ -160,6 +160,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const [apptBannerDismissed, setApptBannerDismissed] = useState<boolean>(false);
   const [apptVersion, setApptVersion] = useState<number>(0);
   const [showPhotoModal, setShowPhotoModal] = useState<boolean>(false);
+  // Doar după bifarea de acum: animația nu rulează la fiecare deschidere a paginii
+  const [justTaken, setJustTaken] = useState(false);
   useBackToClose(showPhotoModal, () => setShowPhotoModal(false));
 
 
@@ -265,8 +267,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       spread: 60,
       origin: { y: 0.7 },
       // canvas-confetti cere culori literale: sage-light, petal-500, peach-600
-      colors: ['#7A9A8B', '#CA868C', '#D97746']
+      colors: ['#7A9A8B', '#CA868C', '#D97746'],
+      disableForReducedMotion: true
     });
+    setJustTaken(true);
     onTakeDose();
   };
 
@@ -303,10 +307,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   });
 
   return (
-    <div className="space-y-4 animate-fade-in relative">
+    <div className="space-y-4 animate-cascade relative">
       {/* Botanical branch background accent in top right (shifted slightly left/down to frame the avatar gracefully) */}
       <div className="absolute top-6 right-1 w-36 h-48 pointer-events-none opacity-60 z-0 overflow-visible text-sage-light">
-        <BotanicalBranch className="w-full h-full" />
+        <BotanicalBranch className="w-full h-full animate-sway" />
       </div>
 
       {/* Top Empathetic Header Banner (Style faithfully inspired by mockup & Base44) */}
@@ -418,7 +422,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       )}
 
       {addingPills && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-modal">
           <form role="dialog" aria-labelledby="new-box-title" onSubmit={handleAddPills} className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
             <label id="new-box-title" htmlFor="new-box-count" className="block font-serif text-lg text-ink dark:text-white mb-3">
               Câte pastile are cutia nouă?
@@ -478,8 +482,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </div>
           </div>
           {isTakenToday ? (
-            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[11px] font-semibold shadow-xs">
-              <Check className="w-3.5 h-3.5" strokeWidth={3} />
+            <span className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[11px] font-semibold shadow-xs ${justTaken ? 'animate-pop' : ''}`}>
+              <Check className={`w-3.5 h-3.5 ${justTaken ? 'animate-draw-check' : ''}`} strokeWidth={3} />
               <span>Luat azi</span>
             </span>
           ) : (
@@ -632,9 +636,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleSelectMood(item.id)}
-                className={`flex flex-col items-center justify-start px-0.5 py-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
+                className={`flex flex-col items-center justify-start px-0.5 py-2 rounded-2xl min-h-[58px] transition-all duration-300 ease-out transform active:scale-95 ${
                   isSelected
-                    ? 'bg-sage-600 text-white shadow-sm scale-105'
+                    ? 'bg-sage-600 text-white shadow-sm scale-110'
                     : 'bg-cream dark:bg-darkbg-card hover:bg-sage-50 text-ink dark:text-gray-300 border border-warmborder dark:border-darkbg-border'
                 }`}
               >
@@ -784,7 +788,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {showPhotoModal && profile.avatar_url && (
         <div 
           onClick={() => setShowPhotoModal(false)}
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-modal"
         >
           <div 
             onClick={(e) => e.stopPropagation()}

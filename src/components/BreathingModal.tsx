@@ -49,7 +49,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
   }[phase];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-modal">
       <div role="dialog" aria-modal="true" aria-labelledby="breathing-title" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl flex flex-col items-center text-center relative overflow-hidden">
         
         {/* Soft background glow */}
