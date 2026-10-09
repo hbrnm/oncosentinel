@@ -29,7 +29,7 @@ Ce a ieșit curat: `npm audit` fără vulnerabilități; nicio cheie secretă ș
 - Toate cele 293 de clase `text-[Npx]` din `src/components` → `text-[N/16 rem]` (ex. 11px → 0.6875rem), deci aceeași mărime la text normal; `.micro-label` din `src/index.css`: 10px → 0.625rem.
 - Verificat cu Playwright la 390px, pe cele 5 taburi: la text normal 11px rămâne 11px; cu A+ devine 12,98px (118%); fără overflow orizontal.
 - Test: în `src/test/accesibilitate.test.tsx`, niciun `text-[Npx]` în componente. `npm test` 268/268, `npm run build` ok. Agentul `verificare`: nimic blocant.
-- Rămas, în afara etapei: `src/App.tsx` mai pune `text-[110%]` pe containerul principal la text mare; afectează doar textul fără mărime proprie (moștenit), deci acela crește ~130%.
+- După etapă, cu acordul proprietarei (chestionar): scos `text-[110%]` de pe containerul principal din `src/App.tsx`, care mărea încă o dată textul fără mărime proprie (~130% în loc de 118%); acum A+ mărește tot textul la fel, cu 18%. Test în `src/test/accesibilitate.test.tsx`; `npm test` 269/269.
 
 ## Următorul pas
 Nimic; sarcina e încheiată.

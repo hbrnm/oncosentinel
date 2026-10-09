@@ -237,9 +237,7 @@ export function App() {
   useBackToClose(isSupporterOpen, () => setIsSupporterOpen(false));
 
   return (
-    <div className={`min-h-screen bg-cream dark:bg-darkbg flex justify-center transition-colors ${
-      fontSize === 'large' ? 'text-[110%]' : ''
-    }`}>
+    <div className="min-h-screen bg-cream dark:bg-darkbg flex justify-center transition-colors">
       <div className="w-full max-w-md min-h-screen flex flex-col bg-cream/90 dark:bg-darkbg/90 shadow-xl shadow-sage-900/5 relative border-x border-warmborder dark:border-darkbg-border">
         
         {/* Top App Header (Displayed on secondary tabs to keep Astăzi clean like Base44) */}
