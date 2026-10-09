@@ -91,7 +91,7 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
                 onChange={(e) => setDate(e.target.value)} 
                 className="w-full pl-9 pr-3 py-2 bg-cream dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border rounded-xl text-sm focus:outline-none focus:border-sage text-ink dark:text-white"
               />
-              <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-ink-soft/70" />
+              <Calendar className="absolute left-3 top-2.5 w-4 h-4 text-ink-soft" />
             </div>
           </div>
 

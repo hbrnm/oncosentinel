@@ -100,7 +100,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 Cum dorești să te numim în aplicație?
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-ink-soft/70 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-ink-soft absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={name}
@@ -153,7 +153,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 La ce oră iei de obicei pastila?
               </label>
               <div className="relative">
-                <Clock className="w-4 h-4 text-ink-soft/70 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Clock className="w-4 h-4 text-ink-soft absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="time"
                   value={reminderTime}

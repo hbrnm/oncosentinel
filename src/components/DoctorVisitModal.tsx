@@ -354,7 +354,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     <p className="text-[13px] text-ink-soft dark:text-gray-400">
                       Niciun control viitor.
                     </p>
-                    <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
+                    <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
                       Apasă pe butonul + de mai sus pentru a adăuga următoarea programare.
                     </p>
                   </div>
@@ -386,7 +386,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                                 {a.doctor}
                               </p>
                             )}
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-ink-soft/80 dark:text-gray-400">
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-ink-soft dark:text-gray-400">
                               {a.time && (
                                 <span className="inline-flex items-center gap-1">
                                   <Clock className="w-3 h-3 text-sage-light" /> {a.time}
@@ -415,7 +415,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                             )}
                             <button
                               onClick={() => handleDeleteAppt(a.id)}
-                              className="text-ink-soft/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
+                              className="text-ink-soft hover:text-rose-500 p-1 transition-colors cursor-pointer"
                               title="Șterge definitiv controlul"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -460,7 +460,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     <p className="text-[13px] text-ink-soft dark:text-gray-400">
                       Nu există încă controale în istoric.
                     </p>
-                    <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
+                    <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
                       Când marchezi o programare ca efectuată sau ratată, va fi salvată aici.
                     </p>
                   </div>
@@ -510,7 +510,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                           </button>
                           <button
                             onClick={() => handleDeleteAppt(a.id)}
-                            className="text-ink-soft/50 hover:text-rose-500 p-1 transition-colors cursor-pointer"
+                            className="text-ink-soft hover:text-rose-500 p-1 transition-colors cursor-pointer"
                             title="Șterge din istoric"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -563,7 +563,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                   <p className="text-xs text-ink-soft dark:text-gray-400">
                     Nu ai adăugat încă întrebări pentru medic.
                   </p>
-                  <p className="text-[11px] text-ink-soft/70 dark:text-gray-500 mt-1">
+                  <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
                     Notează aici tot ce vrei să discuți la următoarea consultație (efecte secundare, analize etc.).
                   </p>
                 </div>
@@ -586,14 +586,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                         {item.isAnswered ? (
                           <CheckCircle2 className="w-4 h-4 text-sage fill-sage-soft dark:fill-sage-950" />
                         ) : (
-                          <Circle className="w-4 h-4 text-ink-soft/70" />
+                          <Circle className="w-4 h-4 text-ink-soft" />
                         )}
                       </button>
 
                       <div className="flex-1 min-w-0">
                         <p className={`text-xs font-medium leading-relaxed ${
                           item.isAnswered
-                            ? 'line-through text-ink-soft/70 dark:text-gray-500'
+                            ? 'line-through text-ink-soft dark:text-gray-500'
                             : 'text-ink dark:text-white'
                         }`}>
                           {item.question}
@@ -602,7 +602,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
                       <button
                         onClick={() => handleDeleteQuestion(item.id)}
-                        className="text-ink-soft/70 hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0 cursor-pointer"
+                        className="text-ink-soft hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0 cursor-pointer"
                         title="Șterge întrebarea"
                       >
                         <Trash2 className="w-3.5 h-3.5" />

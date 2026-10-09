@@ -124,7 +124,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                 <Icon className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-bold text-ink-soft/70 uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
+                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
                 <h3 className="text-sm font-bold text-ink dark:text-white leading-tight">
                   {current.title}
                 </h3>

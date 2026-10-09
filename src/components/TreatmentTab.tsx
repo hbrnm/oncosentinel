@@ -387,7 +387,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         {/* Day of Week Header: L, M, M, J, V, S, D */}
         <div className="grid grid-cols-7 gap-1.5 text-center mb-1">
           {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, idx) => (
-            <span key={idx} className="text-[10px] text-ink-soft/70 dark:text-gray-400 font-semibold py-0.5">
+            <span key={idx} className="text-[10px] text-ink-soft dark:text-gray-400 font-semibold py-0.5">
               {d}
             </span>
           ))}
@@ -488,7 +488,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             );
           })}
           {recentTakenDoses.length === 0 && (
-            <p className="text-[13px] text-ink-soft/70 dark:text-gray-400 text-center py-4">
+            <p className="text-[13px] text-ink-soft dark:text-gray-400 text-center py-4">
               Nicio doză marcată încă.
             </p>
           )}

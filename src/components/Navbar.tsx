@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, ShieldCheck, Settings } from 'lucide-react';
 import { PatientProfile } from '../types';
+import { clickable } from '../lib/clickable';
 
 interface NavbarProps {
   profile: PatientProfile;
@@ -33,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         
         {/* App Title & Patient Info */}
         <div 
-          onClick={onOpenProfile}
+          {...clickable(onOpenProfile)}
           className="flex items-center space-x-2.5 cursor-pointer group"
           title="Editează profilul și setările de tratament"
         >
@@ -55,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <p className="text-xs text-ink-soft dark:text-gray-400 mt-0.5 font-normal flex items-center gap-1">
               <span>{profile.full_name?.trim() ? `Bună, ${profile.full_name.trim().split(' ')[0]}` : 'Bună!'}</span>
-              <Settings className="w-3 h-3 text-ink-soft/70 group-hover:text-sage-500" />
+              <Settings className="w-3 h-3 text-ink-soft group-hover:text-sage-500" />
             </p>
           </div>
         </div>

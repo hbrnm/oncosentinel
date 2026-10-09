@@ -156,7 +156,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                   <div className="p-4 flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       {!g.image_url && <p className="micro-label mb-1 text-sage-deep dark:text-sage-400">{g.tag}</p>}
-                      <h3 className="font-serif text-[16px] text-ink dark:text-white leading-snug">{g.title}</h3>
+                      <h2 className="font-serif text-[16px] text-ink dark:text-white leading-snug">{g.title}</h2>
                       <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-1.5 leading-relaxed line-clamp-2">{g.summary}</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-ink-soft/50 dark:text-gray-500 flex-shrink-0 mt-1" />
@@ -182,8 +182,8 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="micro-label text-sage-deep dark:text-sage-400">Noutăți</span>
-                      <span className="text-[10px] text-ink-soft/70 dark:text-gray-500">• </span>
-                      <span className="text-[10px] text-ink-soft/70 dark:text-gray-500">{n.date}</span>
+                      <span className="text-[10px] text-ink-soft dark:text-gray-500">• </span>
+                      <span className="text-[10px] text-ink-soft dark:text-gray-500">{n.date}</span>
                     </div>
                     <p className="text-[13px] font-semibold text-ink dark:text-white mt-1 leading-snug">{n.title}</p>
                     {n.summary && <p className="text-[11.5px] text-ink-soft dark:text-gray-400 mt-1 leading-relaxed line-clamp-2">{n.summary}</p>}
@@ -216,7 +216,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                   <div className="p-4 flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       {!g.image_url && <p className="micro-label mb-1 text-sage-deep dark:text-sage-400">{g.tag}</p>}
-                      <h3 className="font-serif text-[16px] text-ink dark:text-white leading-snug">{g.title}</h3>
+                      <h2 className="font-serif text-[16px] text-ink dark:text-white leading-snug">{g.title}</h2>
                       <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-1.5 leading-relaxed line-clamp-2">{g.summary}</p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-ink-soft/50 dark:text-gray-500 flex-shrink-0 mt-1" />
@@ -259,7 +259,7 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
                   {item.substance}
                 </h3>
                 <p className="text-[12.5px] text-ink-soft dark:text-gray-300 mt-1.5 leading-relaxed">{item.advice}</p>
-                <p className="text-[10.5px] text-ink-soft/80 dark:text-gray-500 mt-2 italic">Sursa: {item.source}</p>
+                <p className="text-[10.5px] text-ink-soft dark:text-gray-500 mt-2 italic">Sursa: {item.source}</p>
               </div>
             ))}
           </section>

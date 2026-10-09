@@ -15,6 +15,7 @@ import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 import { moodLevelFromState } from '../lib/mood';
 import { useBackToClose } from '../lib/backNavigation';
+import { clickable } from '../lib/clickable';
 
 interface DashboardTabProps {
   profile: PatientProfile;
@@ -473,9 +474,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <PillIcon className="w-9 h-9" />
             </div>
             <div>
-              <h3 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight break-words">
+              <h2 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight break-words">
                 {profile.medication_name || 'Tamoxifen'}
-              </h3>
+              </h2>
               <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-0.5">
                 {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat / zi'}
               </p>
@@ -540,7 +541,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       <div className="grid grid-cols-2 gap-3">
         {/* Card Stânga: Următorul Control */}
         <div
-          onClick={onOpenDoctorVisit}
+          {...clickable(onOpenDoctorVisit)}
           className={`cursor-pointer p-4 rounded-3xl border transition-all flex flex-col justify-between shadow-xs ${
             isUrgentControl
               ? 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-300 dark:border-amber-900/60'
@@ -555,9 +556,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               </span>
               <Calendar className="w-3.5 h-3.5 text-sage-600" />
             </div>
-            <h4 className="text-sm font-bold font-serif text-ink dark:text-white leading-snug">
+            <h3 className="text-sm font-bold font-serif text-ink dark:text-white leading-snug">
               {nextControlDate ? formattedControlDate : 'Nicio dată setată'}
-            </h4>
+            </h3>
             <p className="text-[11px] text-ink-soft dark:text-gray-300 mt-1 font-medium">
               {!nextControlDate ? (
                 <span>Apasă ca să adaugi controlul</span>
@@ -570,23 +571,23 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               )}
             </p>
           </div>
-          <span className="text-[10px] text-ink-soft/70 hover:text-sage-600 pt-2 flex items-center gap-0.5">
+          <span className="text-[10px] text-ink-soft hover:text-sage-600 pt-2 flex items-center gap-0.5">
             Oncologie • Modifică &rarr;
           </span>
         </div>
 
         {/* Card Dreapta: Citat Empatic Roz-Pudrat (Base44 blush-card with LeafSprig & Dynamic rotation) */}
         <div 
-          onClick={handleNextQuote}
+          {...clickable(handleNextQuote)}
           title="Apasă pentru alt gând de susținere"
           className="tap-scale blush-card rounded-3xl p-4 flex flex-col justify-between min-h-[145px] relative overflow-hidden cursor-pointer select-none group"
         >
           <LeafSprig className="absolute -bottom-2 -right-2 w-16 h-16 opacity-50 pointer-events-none group-hover:scale-110 transition-transform duration-300" />
-          <p className="font-serif italic text-xs leading-relaxed text-blush-deep dark:text-petal-300 pr-3 z-10 transition-opacity">
+          <p className="font-serif italic text-xs leading-relaxed text-petal-700 dark:text-petal-300 pr-3 z-10 transition-opacity">
             {currentQuote.text}
           </p>
           <div className="flex items-center justify-between pt-2 z-10">
-            <span className="text-[10px] text-blush-deep dark:text-petal-300 font-semibold tracking-wide">
+            <span className="text-[10px] text-petal-700 dark:text-petal-300 font-semibold tracking-wide">
               {currentQuote.author}
             </span>
           </div>
@@ -695,7 +696,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
         {/* Card 1 Ghid: from CLINICAL_GUIDES */}
         <div
-          onClick={() => onNavigateToTab?.('guide')}
+          {...clickable(() => onNavigateToTab?.('guide'))}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sage-100 to-sage-200 dark:bg-darkbg-card text-sage-800 dark:text-sage-200 flex items-center justify-center shrink-0 font-serif font-bold text-xs">
@@ -705,7 +706,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
               <span>{CLINICAL_GUIDES[0].tag}</span>
               <span>•</span>
-              <span className="text-ink-soft/70">Recomandare</span>
+              <span className="text-ink-soft">Recomandare</span>
             </div>
             <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5">
               {CLINICAL_GUIDES[0].title}
@@ -714,12 +715,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               {CLINICAL_GUIDES[0].summary}
             </p>
           </div>
-          <ChevronRight className="w-4 h-4 text-ink-soft/70 shrink-0 self-center" />
+          <ChevronRight className="w-4 h-4 text-ink-soft shrink-0 self-center" />
         </div>
 
         {/* Card 2 Noutăți: from NEWS_PROTOCOLS */}
         <div
-          onClick={() => onNavigateToTab?.('guide')}
+          {...clickable(() => onNavigateToTab?.('guide'))}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
           <div className="w-12 h-12 rounded-2xl bg-sage-soft dark:bg-darkbg-card text-sage-800 dark:text-sage-300 flex items-center justify-center shrink-0">
@@ -728,8 +729,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
               <span className="micro-label text-sage-deep">NOUTĂȚI</span>
-              <span className="text-ink-soft/70">•</span>
-              <span className="text-ink-soft/70">{NEWS_PROTOCOLS[0].date}</span>
+              <span className="text-ink-soft">•</span>
+              <span className="text-ink-soft">{NEWS_PROTOCOLS[0].date}</span>
             </div>
             <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5 leading-snug">
               {NEWS_PROTOCOLS[0].title}
@@ -738,7 +739,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               {NEWS_PROTOCOLS[0].summary}
             </p>
           </div>
-          <ChevronRight className="w-4 h-4 text-ink-soft/70 shrink-0 self-center" />
+          <ChevronRight className="w-4 h-4 text-ink-soft shrink-0 self-center" />
         </div>
       </div>
 
@@ -757,7 +758,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             type="button"
             onClick={handleDismissBanner}
             title="Închide pentru 7 zile"
-            className="absolute top-3 right-3 text-ink-soft/70 hover:text-ink-soft dark:hover:text-gray-200 p-1"
+            className="absolute top-3 right-3 text-ink-soft hover:text-ink dark:hover:text-gray-200 p-1"
           >
             <X className="w-3.5 h-3.5" />
           </button>

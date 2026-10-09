@@ -280,7 +280,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <LeafSprig className="absolute -bottom-3 -right-3 w-20 h-20 opacity-40 text-petal-300 dark:text-petal-900/50" />
           <div className="flex items-center gap-2 mb-1">
             <Heart className="w-4 h-4 text-blush-deep dark:text-petal-400" />
-            <p className="text-[10px] font-bold uppercase tracking-wider text-blush-deep dark:text-petal-400">Cum te simți azi?</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-petal-700 dark:text-petal-400">Cum te simți azi?</p>
           </div>
           <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
@@ -302,7 +302,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             onClick={handleSave}
             disabled={saving}
             className={`w-full mt-3 h-12 rounded-2xl text-white font-semibold shadow-sm disabled:opacity-50 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
-              savedFlash === 'note' ? 'bg-sage-deep scale-[1.02]' : 'bg-petal-600 hover:bg-petal-600/90'
+              savedFlash === 'note' ? 'bg-sage-deep scale-[1.02]' : 'bg-petal-700 hover:bg-petal-700/90'
             }`}
           >
             {savedFlash === 'note' ? (
@@ -332,27 +332,29 @@ export const JournalTab: React.FC<JournalTabProps> = ({
 
         {/* Detailed Form Toggle */}
         <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs">
-          <div 
+          <button
+            type="button"
             onClick={() => setShowDetailedForm(!showDetailedForm)}
-            className="flex items-center justify-between cursor-pointer select-none group"
+            aria-expanded={showDetailedForm}
+            className="w-full text-left flex items-center justify-between cursor-pointer select-none group"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-sage-50 dark:bg-sage-900/40 text-sage-600 dark:text-sage-300 flex items-center justify-center transition-transform group-hover:scale-105">
-                <ClipboardList className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-ink dark:text-white">
+            <span className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-2xl bg-sage-50 dark:bg-sage-900/40 text-sage-600 dark:text-sage-300 flex items-center justify-center transition-transform group-hover:scale-105">
+                <ClipboardList className="w-5 h-5" aria-hidden="true" />
+              </span>
+              <span className="block">
+                <span className="block text-sm font-bold text-ink dark:text-white">
                   Formular detaliat simptome
-                </h3>
-                <p className="text-[11px] text-ink-soft">
+                </span>
+                <span className="block text-[11px] text-ink-soft">
                   Bufeuri, dureri articulare, mucoase
-                </p>
-              </div>
-            </div>
-            <button type="button" className="text-ink-soft/70 group-hover:text-sage-600 transition-colors">
+                </span>
+              </span>
+            </span>
+            <span className="text-ink-soft group-hover:text-sage-600 transition-colors" aria-hidden="true">
               {showDetailedForm ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-            </button>
-          </div>
+            </span>
+          </button>
 
           {showDetailedForm && (
             <div className="mt-5 pt-5 border-t border-warmborder dark:border-darkbg-border space-y-4 animate-fade-in">
