@@ -40,11 +40,11 @@ describe('Raportul PDF pentru medic', () => {
     expect(report()).not.toContain('20mg');
   });
 
-  it('calculează aderența pe zilele reale din ultimele 30, nu 100% din dozele marcate', () => {
+  it('calculează aderența pe zilele reale din ultimele 28, nu 100% din dozele marcate', () => {
     const doses = ['2026-10-01', '2026-10-02', '2026-10-03'].map(taken);
     generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-01-01' }, doses, []);
 
-    expect(report()).toContain('3 din 30 de zile (10%)');
+    expect(report()).toContain('3 din 28 de zile (11%)');
     expect(report()).not.toMatch(/Aderență optimă/);
   });
 
@@ -57,13 +57,13 @@ describe('Raportul PDF pentru medic', () => {
   it('spune clar când tratamentul nu a început încă', () => {
     generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-11-01' }, [], []);
 
-    expect(report()).toContain('Tratamentul nu a început înca în ultimele 30 de zile.');
+    expect(report()).toContain('Tratamentul nu a început înca în perioada raportului (ultimele 28 de zile).');
   });
 
-  it('fără dată de start numără toate cele 30 de zile', () => {
+  it('fără dată de start numără toate cele 28 de zile', () => {
     generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '' }, ['2026-10-08'].map(taken), []);
 
-    expect(report()).toContain('1 din 30 de zile (3%)');
+    expect(report()).toContain('1 din 28 de zile (4%)');
     expect(report()).toContain('Start: necompletat');
   });
 

@@ -3,8 +3,8 @@ import {
   X, Plus, Trash2, CheckCircle2, Circle, CalendarHeart, Clock, MapPin, MessageSquarePlus, Check, XCircle, History, FileDown, ClipboardList
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
-import { doctorSummary, plural } from '../lib/summary';
-import { loadAppointments, saveAppointments } from '../lib/appointments';
+import { doctorSummary, plural, controlDateLabel } from '../lib/summary';
+import { loadAppointments, saveAppointments, lastControlDate } from '../lib/appointments';
 const daysUntil = (dateStr?: string) => {
   if (!dateStr) return null;
   const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
@@ -55,6 +55,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
   // 1. Appointments list state
   const [appointments, setAppointments] = useState<AppointmentItem[]>(loadAppointments);
+  const [fromLastControl, setFromLastControl] = useState<boolean>(false);
 
   // 2. Questions list state (Empty by default per user request - no preset questions)
   const [questions, setQuestions] = useState<QuestionItem[]>(() => {
@@ -183,12 +184,15 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
   const historyAppts = appointments.filter(a => a.status === 'completed' || a.status === 'missed' || (a.status === 'upcoming' && (daysUntil(a.date) ?? 0) < 0));
   const answeredCount = questions.filter(q => q.isAnswered).length;
   // „Pentru medic”: ultimele 4 săptămâni (texte aprobate, docs/etapa2-texte.md)
-  const forDoctor = doctorSummary(symptoms, doses, profile?.tamoxifen_start_date || '');
+  // sau de la ultimul control (planul 005, texte aprobate 2026-10-09)
+  const lastControl = lastControlDate(appointments);
+  const since = fromLastControl && lastControl ? lastControl : undefined;
+  const forDoctor = doctorSummary(symptoms, doses, profile?.tamoxifen_start_date || '', since);
 
   const handleDownloadReport = () => {
     if (!profile) return;
     import('../lib/pdfGenerator')
-      .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
+      .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms, since))
       .catch(() => alert('Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.'));
   };
 
@@ -621,10 +625,40 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 <ClipboardList className="w-4 h-4 text-sage-deep dark:text-sage-300" />
                 <h3 id="for-doctor-title" className="micro-label">Pentru medic</h3>
               </div>
-              <p className="text-[12px] text-ink-soft dark:text-gray-400">Ce ai notat în ultimele 4 săptămâni. Poți arăta ecranul sau descărca raportul.</p>
+              {lastControl ? (
+                <div role="group" aria-label="Perioada" className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-sage-soft dark:bg-darkbg-surface">
+                  {[
+                    { value: false, label: 'Ultimele 4 săptămâni' },
+                    { value: true, label: 'De la ultimul control' }
+                  ].map(option => (
+                    <button
+                      key={option.label}
+                      type="button"
+                      aria-pressed={fromLastControl === option.value}
+                      onClick={() => setFromLastControl(option.value)}
+                      className={`tap-scale py-2 px-2 rounded-xl text-[12px] font-semibold ${fromLastControl === option.value ? 'bg-sage-deep text-white' : 'text-ink dark:text-gray-200'}`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+              <p className="text-[12px] text-ink-soft dark:text-gray-400">
+                {since
+                  ? `Ce ai notat de la controlul din ${controlDateLabel(since)} (${plural(forDoctor.days, 'zi', 'zile')}). Poți arăta ecranul sau descărca raportul.`
+                  : 'Ce ai notat în ultimele 4 săptămâni. Poți arăta ecranul sau descărca raportul.'}
+              </p>
+              {!lastControl && (
+                <p className="text-[11px] text-ink-soft dark:text-gray-400">
+                  După primul control trecut în „Controale medicale”, vei putea alege și perioada de la ultimul control.
+                </p>
+              )}
               <ul className="space-y-1.5 text-[13px] text-ink dark:text-gray-100">
                 <li>Doza marcată ca luată: {forDoctor.doses.taken} din {plural(forDoctor.doses.total, 'zi', 'zile')}.</li>
                 <li>Note în jurnal: {forDoctor.notes}.</li>
+                {forDoctor.mood && (
+                  <li>Starea notată cel mai des: {forDoctor.mood.label} ({plural(forDoctor.mood.count, 'notă', 'note')}).</li>
+                )}
                 <li>
                   {forDoctor.top.length > 0 ? (
                     <>

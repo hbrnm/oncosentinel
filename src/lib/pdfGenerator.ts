@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { useReadableText } from './pdfText';
-import { plural, takenInLastDays } from './summary';
+import { plural, doctorSummary, periodDays, controlDateLabel, localDay } from './summary';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 
 // „1 zi”, „5 zile”, „30 de zile”
@@ -10,7 +10,9 @@ const zile = (n: number) => plural(n, 'zi', 'zile');
 export function generateOncologyReport(
   profile: PatientProfile,
   doses: DoseLog[],
-  symptoms: SymptomLog[]
+  symptoms: SymptomLog[],
+  // Data ultimului control: raportul acoperă perioada de după el; fără ea, ultimele 28 de zile
+  since?: string
 ) {
   const doc = new jsPDF({
     orientation: 'portrait',
@@ -58,26 +60,41 @@ export function generateOncologyReport(
   // 3. Adherence Summary
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('2. RAPORT ADERENȚĂ LA TAMOXIFEN (30 ZILE)', 14, 66);
+  const days = periodDays(since);
+  const period = since
+    ? `de la controlul din ${controlDateLabel(since)} (${zile(days.length)})`
+    : 'ultimele 28 de zile';
+  const heading = since
+    ? `de la controlul din ${controlDateLabel(since)}, ${zile(days.length)}`
+    : 'ultimele 28 de zile';
+  doc.text(`2. RAPORT ADERENȚĂ LA TAMOXIFEN (${heading.toUpperCase()})`, 14, 66);
   doc.line(14, 68, 196, 68);
 
-  const { taken, total } = takenInLastDays(doses, profile.tamoxifen_start_date, 30);
+  const summary = doctorSummary(symptoms, doses, profile.tamoxifen_start_date, since);
+  const { taken, total } = summary.doses;
   const adherenceRate = total > 0 ? Math.round((taken / total) * 100) : 0;
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.text(total > 0
     ? `Zile cu doza marcată ca luată: ${taken} din ${zile(total)} (${adherenceRate}%)`
-    : 'Tratamentul nu a început încă în ultimele 30 de zile.', 14, 75);
+    : `Tratamentul nu a început încă în perioada raportului (${period}).`, 14, 75);
   doc.text('Dozele sunt marcate de pacientă în aplicație; o zi nemarcată nu înseamnă neapărat doză omisă.', 14, 81);
+  if (summary.mood) {
+    doc.text(`Starea notată cel mai des: ${summary.mood.label} (${plural(summary.mood.count, 'notă', 'note')}).`, 14, 87);
+  }
 
-  // 4. Symptoms Evolution Table
+  // 4. Symptoms Evolution Table: toate intrările din perioadă, cele mai noi primele
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('3. JURNAL DE SIMPTOME RECENTE', 14, 93);
-  doc.line(14, 95, 196, 95);
+  doc.text('3. JURNAL DIN PERIOADA RAPORTULUI', 14, 99);
+  doc.line(14, 101, 196, 101);
 
-    const symptomRows = symptoms.slice(0, 15).map(s => {
+  const inPeriod = new Set(days);
+  const symptomRows = symptoms
+    .filter(s => inPeriod.has(localDay(new Date(s.logged_at))))
+    .sort((a, b) => new Date(b.logged_at).getTime() - new Date(a.logged_at).getTime())
+    .map(s => {
     const dureri = [
       (s.joint_pain_level || 0) > 0 ? `Art:${s.joint_pain_level}` : '',
       (s.bone_pain_level || 0) > 0 ? `Os:${s.bone_pain_level}` : ''
@@ -102,10 +119,12 @@ export function generateOncologyReport(
   });
 
   autoTable(doc, {
-    startY: 99,
+    startY: 105,
     head: [['Data', 'Bufeuri', 'Dureri(Art/Os)', 'Obos/Somn', 'Altele (Ceață, Greață, etc)', 'Observații']],
-    body: symptomRows.length > 0 ? symptomRows : [['-', 'Fără date recente', '-', '-', '-', '-']],
+    body: symptomRows.length > 0 ? symptomRows : [['-', 'Fără note în perioadă', '-', '-', '-', '-']],
     theme: 'striped',
+    // Loc pentru subsol pe fiecare pagină
+    margin: { bottom: 30 },
     headStyles: {
       fillColor: primaryColor,
       textColor: [255, 255, 255],
@@ -117,18 +136,23 @@ export function generateOncologyReport(
       cellPadding: 2.5
     },
     columnStyles: {
-      0: { cellWidth: 18 },
+      0: { cellWidth: 20 },
       1: { cellWidth: 27 },
       2: { cellWidth: 30 },
       3: { cellWidth: 25 },
-      4: { cellWidth: 45 },
+      4: { cellWidth: 43 },
       5: { cellWidth: 40 }
     }
   });
 
   // 5. Safety & Red Flags Assessment
-  const finalY = ((doc as any).lastAutoTable?.finalY || 160) + 10;
-  
+  let finalY = ((doc as any).lastAutoTable?.finalY || 160) + 10;
+  // Cu multe note, tabelul se poate termina jos pe pagină: secțiunea următoare trece pe o pagină nouă
+  if (finalY > 250) {
+    doc.addPage();
+    finalY = 20;
+  }
+
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.text('4. SEMNALE DE ALARMĂ ȘI ALTE MEDICAMENTE', 14, finalY);
@@ -139,13 +163,17 @@ export function generateOncologyReport(
   doc.text('Aplicația nu înregistrează semnale de alarmă (ex. tromboză, sângerări, dispnee) și nici alte medicamente', 14, finalY + 9);
   doc.text('luate de pacientă. Vă rugăm să le discutați direct cu ea.', 14, finalY + 15);
 
-  // 6. Footer Notes
-  doc.setDrawColor(200, 200, 200);
-  doc.line(14, 272, 196, 272);
-  doc.setFontSize(8);
-  doc.setTextColor(120, 120, 120);
-  doc.text('Raport generat din datele notate de pacientă în OncoSentinel; are scop informativ.', 14, 277);
-  doc.text('Pagina 1 / 1 • Confidențial Medical (GDPR)', 150, 277);
+  // 6. Footer Notes, pe fiecare pagină
+  const pages = doc.getNumberOfPages() || 1;
+  for (let page = 1; page <= pages; page++) {
+    doc.setPage(page);
+    doc.setDrawColor(200, 200, 200);
+    doc.line(14, 272, 196, 272);
+    doc.setFontSize(8);
+    doc.setTextColor(120, 120, 120);
+    doc.text('Raport generat din datele notate de pacientă în OncoSentinel; are scop informativ.', 14, 277);
+    doc.text(`Pagina ${page} / ${pages} • Confidențial Medical (GDPR)`, 150, 277);
+  }
 
   // Save/Download
   doc.save(`Raport_OncoSentinel_${profile.full_name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`);

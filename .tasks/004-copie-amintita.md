@@ -1,6 +1,6 @@
 # 004 — Rămășițele din audit, apoi copia amintită
 
-**Stare:** în așteptare (testarea cu pacientele, etapa 3)
+**Stare:** gata (etapa 3 sărită, decizia proprietarei, 2026-10-09)
 **Ramura:** câte o ramură `claude/…` pe etapă, din `main`
 
 ## Scop
@@ -17,8 +17,8 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
 | 1 | Rămășițele din audit: butoanele cu A+ (2), imaginea Unsplash din primul ghid (3), „Medici și centre” (4), textul „Zilele neutre…” la „Liniștită” | gata | PR #32 |
-| 2 | Copia amintită: data ultimei copii, memento discret când e veche, un singur loc pentru copie | gata | ramura claude/plan-004-etapa2 |
-| 3 | Testare cu pacientele (`docs/ghid-testare.md`) și observațiile într-un singur PR | de făcut | |
+| 2 | Copia amintită: data ultimei copii, memento discret când e veche, un singur loc pentru copie | gata | PR #33 |
+| 3 | Testare cu pacientele (`docs/ghid-testare.md`) și observațiile într-un singur PR | sărită (decizia proprietarei) | |
 
 ## Etapa 1 — de decis la început (un singur chestionar)
 - A+: cât cresc butoanele față de text.
@@ -44,4 +44,4 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 - Test nou `copia-amintita.test.tsx`. `npm test` (194) și `npm run build` trec; verificat la 390px, cu litere normale și cu A+. Agentul `verificare`: nimic blocant; reparată data veche din „Siguranța datelor” după miezul nopții.
 
 ## Următorul pas
-Etapa 3: testarea cu pacientele, după `docs/ghid-testare.md`; observațiile într-un singur PR.
+Planul 004 e încheiat. Lucrul următor: planul 005.

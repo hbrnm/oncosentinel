@@ -19,11 +19,30 @@ const lastDays = (days: number, from = 0, startDate = '', today = new Date()) =>
 const takenDays = (doses: DoseLog[]) =>
   new Set(doses.filter(d => d.status === 'taken').map(d => localDay(new Date(d.taken_at || d.scheduled_for))));
 
-// Zile cu doza marcată ca luată, din ultimele `days` zile de la începutul tratamentului
-export const takenInLastDays = (doses: DoseLog[], startDate: string, days: number) => {
-  const window = lastDays(days, 0, startDate);
+// Zile cu doza marcată ca luată, din zilele date, de la începutul tratamentului
+const takenIn = (doses: DoseLog[], startDate: string, days: string[]) => {
+  const window = days.filter(iso => !startDate || iso >= startDate);
   const taken = takenDays(doses);
   return { taken: window.filter(iso => taken.has(iso)).length, total: window.length };
+};
+
+// Perioada din „Pentru medic” și din raportul PDF: ultimele 28 de zile sau,
+// cu `since` (data ultimului control), de a doua zi după control până azi
+export const periodDays = (since?: string, today = new Date()) => {
+  if (!since) return lastDays(28, 0, '', today);
+  const [y, m, d] = since.split('-').map(Number);
+  const start = new Date(y, m - 1, d);
+  const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const count = Math.round((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000));
+  return lastDays(Math.max(count, 0), 0, '', today);
+};
+
+// „12 iulie”; cu anul, dacă nu e anul curent
+export const controlDateLabel = (iso: string, today = new Date()) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('ro-RO', y === today.getFullYear()
+    ? { day: 'numeric', month: 'long' }
+    : { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
 // „1 zi”, „5 zile”, „30 de zile”; la fel pentru note
@@ -88,9 +107,18 @@ const SYMPTOMS: { label: string; noted: (s: SymptomLog) => boolean }[] = [
   { label: 'Uscăciune a mucoaselor', noted: s => (s.mucosal_dryness || 0) > 0 }
 ];
 
-// „Pentru medic”: ultimele 4 săptămâni
-export const doctorSummary = (symptoms: SymptomLog[], doses: DoseLog[], startDate: string) => {
-  const logs = logsIn(symptoms, lastDays(28));
+// Starea notată cel mai des în note, cu numărul de note
+const topMood = (notes: SymptomLog[]) => {
+  const counts = new Map<string, number>();
+  notes.forEach(s => { if (s.mood_state) counts.set(s.mood_state, (counts.get(s.mood_state) || 0) + 1); });
+  const top = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+  return top ? { label: moodLabelFromState(top[0]), count: top[1] } : null;
+};
+
+// „Pentru medic”: ultimele 4 săptămâni sau, cu `since`, de la ultimul control
+export const doctorSummary = (symptoms: SymptomLog[], doses: DoseLog[], startDate: string, since?: string) => {
+  const days = periodDays(since);
+  const logs = logsIn(symptoms, days);
   // Notele (stare + gânduri) și simptomele sunt intrări separate; cele vechi le au pe amândouă
   const notes = logs.filter(s => s.kind !== 'symptoms');
   const symptomLogs = logs.filter(s => s.kind !== 'note');
@@ -100,7 +128,7 @@ export const doctorSummary = (symptoms: SymptomLog[], doses: DoseLog[], startDat
     .sort((a, b) => b.count - a.count)
     .slice(0, 3)
     .map(s => `${s.label}: ${s.count === 1 ? 'într-o notă' : `în ${plural(s.count, 'notă', 'note')}`}`);
-  return { doses: takenInLastDays(doses, startDate, 28), notes: notes.length, top };
+  return { days: days.length, doses: takenIn(doses, startDate, days), notes: notes.length, mood: topMood(notes), top };
 };
 
 // „O mică victorie”: praguri pe total, nu pe zile la rând

@@ -62,3 +62,15 @@ export function setNextControlDate(date: string): void {
     : [...list, { id: `appt_${Date.now()}`, date, specialty: 'Oncologie', status: 'upcoming' }];
   saveAppointments(updated);
 }
+
+/**
+ * „Ultimul control” pentru „Pentru medic”: cel mai recent control cu data trecută,
+ * efectuat sau rămas „programat”; fără cele ratate sau anulate.
+ */
+export function lastControlDate(list: AppointmentItem[]): string | null {
+  const past = list
+    .filter(a => (a.status === 'completed' || a.status === 'upcoming') && a.date < todayIso())
+    .map(a => a.date)
+    .sort();
+  return past.length > 0 ? past[past.length - 1] : null;
+}
