@@ -20,7 +20,6 @@ export const CLINICAL_GUIDES: ClinicalGuide[] = [
   {
     id: 'g1',
     tag: 'GHIDURI & INFORMAȚII',
-    image_url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&fit=crop',
     title: 'Tamoxifen: ce face și cum îl iei',
     summary: 'Cum acționează, cum îl iei, ce faci dacă ai uitat o doză și când suni la medic.',
     category: 'tratament',

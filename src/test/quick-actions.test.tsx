@@ -10,9 +10,8 @@ describe('Base44 QuickActions Component', () => {
     expect(screen.getByText(/Calendar/i)).toBeInTheDocument();
     expect(screen.getByText(/tratament/i)).toBeInTheDocument();
     expect(screen.getByText(/Ghiduri/i)).toBeInTheDocument();
-    expect(screen.getByText(/medicale/i)).toBeInTheDocument();
-    expect(screen.getByText(/Medici și/i)).toBeInTheDocument();
-    expect(screen.getByText(/centre/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/medicale/i).length).toBe(2);
+    expect(screen.getByText(/Controale/i)).toBeInTheDocument();
     expect(screen.getByText(/Dosar/i)).toBeInTheDocument();
     expect(screen.getAllByText(/medical/i).length).toBeGreaterThan(0);
   });
@@ -42,8 +41,8 @@ describe('Base44 QuickActions Component', () => {
     fireEvent.click(guidesBtn!);
     expect(handleNavigate).toHaveBeenCalledWith('guide');
 
-    // 3. Medici și centre -> opens doctor visit modal or profile
-    const doctorBtn = screen.getByText(/Medici și/i).closest('button');
+    // 3. Controale medicale -> opens doctor visit modal or profile
+    const doctorBtn = screen.getByText(/Controale/i).closest('button');
     expect(doctorBtn).toBeTruthy();
     fireEvent.click(doctorBtn!);
     expect(handleDoctor).toHaveBeenCalled();
