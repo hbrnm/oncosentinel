@@ -9,10 +9,22 @@
   "theme_color": "#7A9A8B",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%237A9A8B'><rect width='512' height='512' rx='128' fill='%23EAF2EE'/><path d='M256 416l-28-26C128 300 64 242 64 170c0-58 46-106 106-106 34 0 66 16 86 41 20-25 52-41 86-41 60 0 106 48 106 106 0 72-64 130-164 220l-28 26z' fill='%237A9A8B'/></svg>",
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
