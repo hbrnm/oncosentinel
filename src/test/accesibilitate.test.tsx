@@ -39,6 +39,12 @@ describe('„Text mare”', () => {
     const fixed = files.flatMap(({ file, text }) => (text.match(/text-\[[\d.]+px\]/g) ?? []).map((cls) => `${file}: ${cls}`));
     expect(fixed).toEqual([]);
   });
+
+  it('cu A+ textul crește o singură dată (118% pe html), fără o mărire în plus pe container', async () => {
+    const nodeFs = 'node:fs';
+    const { readFileSync } = await import(/* @vite-ignore */ nodeFs);
+    expect(readFileSync('src/App.tsx', 'utf8') as string).not.toMatch(/text-\[\d+%\]/);
+  });
 });
 
 describe('Cardurile apăsabile', () => {
