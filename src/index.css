@@ -163,10 +163,3 @@ body {
 html.font-large {
   font-size: 118%;
 }
-
-html.font-large button,
-html.font-large input,
-html.font-large select,
-html.font-large textarea {
-  font-size: inherit;
-}

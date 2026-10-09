@@ -5,7 +5,7 @@ import { MOOD_LABELS } from '../lib/mood';
 export const MOODS = [
   { level: 1, label: MOOD_LABELS[1], emoji: "😢", feedback: "E ok să nu fie ok. Te auzim și te sprijinim. Nu ești singură în asta." },
   { level: 2, label: MOOD_LABELS[2], emoji: "😔", feedback: "Îmi pare rău că azi e mai greu. Fii blândă cu tine — și mâine e o nouă zi." },
-  { level: 3, label: MOOD_LABELS[3], emoji: "😐", feedback: "Zilele neutre sunt și ele normale. Nu trebuie să simți mereu ceva deosebit." },
+  { level: 3, label: MOOD_LABELS[3], emoji: "😐", feedback: "Mă bucur că azi e o zi liniștită. Liniștea e și ea un fel de putere — păstrează-o cât poți." },
   { level: 4, label: MOOD_LABELS[4], emoji: "🙂", feedback: "E bine să te simți bine. Micile bucurii contează enorm în fiecare zi." },
   { level: 5, label: MOOD_LABELS[5], emoji: "😊", feedback: "Mă bucur că te simți bine. Continuă să ai grijă de tine cu aceeași blândețe." },
 ];

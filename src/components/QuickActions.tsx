@@ -30,8 +30,8 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       onClick: () => onNavigateToTab?.('guide'),
     },
     {
-      label1: 'Medici și',
-      label2: 'centre',
+      label1: 'Controale',
+      label2: 'medicale',
       icon: Stethoscope,
       tint: 'bg-sage-soft text-sage-deep dark:bg-sage-950/60 dark:text-sage-300',
       onClick: () => {

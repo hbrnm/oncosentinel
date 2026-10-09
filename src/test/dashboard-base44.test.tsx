@@ -27,13 +27,12 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
     // 3. Medication Hero Card (Tamoxifen 20 mg)
     expect(screen.getByText(/20 mg • 1 comprimat/i)).toBeInTheDocument();
 
-    // 4. 4 Quick Actions (Calendar tratament, Ghiduri medicale, Medici și centre, Resurse utile)
+    // 4. 4 Quick Actions (Calendar tratament, Ghiduri medicale, Controale medicale, Resurse utile)
     expect(screen.getByText(/Calendar/i)).toBeInTheDocument();
     expect(screen.getAllByText(/tratament/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Ghiduri/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/medicale/i)).toBeInTheDocument();
-    expect(screen.getByText(/Medici și/i)).toBeInTheDocument();
-    expect(screen.getByText(/centre/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/medicale/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Controale/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Dosar/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/medical/i).length).toBeGreaterThan(0);
 

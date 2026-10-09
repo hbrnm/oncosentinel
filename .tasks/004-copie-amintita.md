@@ -1,6 +1,6 @@
 # 004 — Rămășițele din audit, apoi copia amintită
 
-**Stare:** de început
+**Stare:** în lucru (etapa 1 gata)
 **Ramura:** câte o ramură `claude/…` pe etapă, din `main`
 
 ## Scop
@@ -16,7 +16,7 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 1 | Rămășițele din audit: butoanele cu A+ (2), imaginea Unsplash din primul ghid (3), „Medici și centre” (4), textul „Zilele neutre…” la „Liniștită” | de făcut | |
+| 1 | Rămășițele din audit: butoanele cu A+ (2), imaginea Unsplash din primul ghid (3), „Medici și centre” (4), textul „Zilele neutre…” la „Liniștită” | gata | ramura claude/plan-004 |
 | 2 | Copia amintită: data ultimei copii, memento discret când e veche, un singur loc pentru copie | de făcut | |
 | 3 | Testare cu pacientele (`docs/ghid-testare.md`) și observațiile într-un singur PR | de făcut | |
 
@@ -31,6 +31,10 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 - Care dintre cele două locuri pentru copie rămâne (Dosar sau „Siguranța datelor”).
 
 ## Rezumat pe etape
+### Etapa 1 (2026-10-09)
+- Deciziile proprietarei: ghidul g1 fără imagine; „Medici și centre” devine „Controale medicale” (aceeași destinație); la „Liniștită”: „Mă bucur că azi e o zi liniștită. Liniștea e și ea un fel de putere — păstrează-o cât poți.”
+- A+ (reparație tehnică, fără decizie): regula din `src/index.css` care punea `font-size: inherit` pe butoane și câmpuri bătea clasele de text, așa că butoanele luau mărimea textului din jur. Scoasă; preflight-ul Tailwind moștenește deja fontul în câmpurile fără clasă.
+- Test nou `ramasite-audit.test.tsx` (pică pe codul vechi). `npm test` (182) și `npm run build` trec; verificat la 390px, cu litere normale și cu A+, fără overflow. Agentul `verificare`: nimic.
 
 ## Următorul pas
-Etapa 1, într-o sesiune nouă: chestionarul cu cele patru decizii, apoi reparațiile.
+Etapa 2 (copia amintită), într-o sesiune nouă: chestionarul de la „Etapa 2 — de decis la început”.
