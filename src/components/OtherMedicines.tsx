@@ -133,7 +133,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
       </div>
 
       {adding && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <div role="dialog" aria-labelledby="add-medicine-title" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
               <h3 id="add-medicine-title" className="font-serif text-lg font-normal text-ink dark:text-white">
@@ -188,7 +188,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
       )}
 
       {showPharmacist && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <div role="dialog" aria-label="Arată farmacistului" className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl max-h-[92vh] overflow-y-auto">
             <div className="flex justify-end -mt-2 -mr-2">
               <button

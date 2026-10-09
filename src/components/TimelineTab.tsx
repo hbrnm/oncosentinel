@@ -328,7 +328,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-xl">
             <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">
               Încarcă Document Medical Propriu
