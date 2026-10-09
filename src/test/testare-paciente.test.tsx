@@ -101,7 +101,7 @@ describe('Testarea cu pacientele', () => {
     const text = document.body.textContent || '';
     const week = text.indexOf('Săptămâna ta');
     const mood = text.indexOf('Cum te simți azi?');
-    const form = text.indexOf('Formular Detaliat Simptome');
+    const form = text.indexOf('Formular detaliat simptome');
     const docs = text.indexOf('Documente Medicale');
     expect(week).toBeGreaterThan(-1);
     expect(week).toBeLessThan(mood);

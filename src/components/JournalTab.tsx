@@ -256,7 +256,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
     <div className="min-h-screen animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
         <LeafSprig className="absolute top-0 right-0 w-14 h-14 text-sage-200 dark:text-sage-900/50 opacity-50" />
-        <h1 className="font-heading text-2xl text-gray-900 dark:text-white">Jurnal</h1>
+        <h1 className="font-serif text-2xl text-gray-900 dark:text-white">Jurnal</h1>
         <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Un spațiu blând pentru emoțiile tale.</p>
       </header>
 
@@ -265,7 +265,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         <section aria-labelledby="week-title" className="organic-card rounded-[28px] p-5">
           <div className="flex items-center gap-2 mb-3">
             <Leaf className="w-4 h-4 text-sage-deep dark:text-sage-400" />
-            <h2 id="week-title" className="font-heading text-lg text-ink dark:text-white">Săptămâna ta</h2>
+            <h2 id="week-title" className="font-serif text-lg text-ink dark:text-white">Săptămâna ta</h2>
           </div>
           <ul className="space-y-1.5">
             {weekSummary(symptoms).map((line) => (
@@ -342,7 +342,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               </div>
               <div>
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white">
-                  Formular Detaliat Simptome
+                  Formular detaliat simptome
                 </h3>
                 <p className="text-[11px] text-gray-500">
                   Bufeuri, dureri articulare, mucoase
@@ -498,7 +498,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-emerald-600" />
-              <span>Fișă Frigider</span>
+              <span>Fișă frigider</span>
             </button>
 
             <button
@@ -510,7 +510,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-sage-600" />
-              <span>Raport Oncolog</span>
+              <span>Raport oncolog</span>
             </button>
           </div>
         </div>
@@ -519,7 +519,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-3 mt-2">
             <BookOpen className="w-4 h-4 text-sage-600 dark:text-sage-400" />
-            <h2 className="font-heading text-lg text-gray-900 dark:text-white">Istoric</h2>
+            <h2 className="font-serif text-lg text-gray-900 dark:text-white">Istoric</h2>
           </div>
           <div className="space-y-3">
             {sortedDates.length === 0 && (

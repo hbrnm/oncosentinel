@@ -13,10 +13,10 @@ describe('PDF-urile din Jurnal se încarcă la cerere', () => {
   it('butoanele generează raportul și fișa săptămânală', async () => {
     render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} />);
 
-    fireEvent.click(screen.getByText('Raport Oncolog'));
+    fireEvent.click(screen.getByText('Raport oncolog'));
     await waitFor(() => expect(generateOncologyReport).toHaveBeenCalledWith(DEFAULT_PROFILE, [], []));
 
-    fireEvent.click(screen.getByText('Fișă Frigider'));
+    fireEvent.click(screen.getByText('Fișă frigider'));
     await waitFor(() => expect(generateWeeklyPlannerPDF).toHaveBeenCalled());
   });
 });

@@ -350,11 +350,11 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 py-1.5 px-2 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[11px] text-ink-soft dark:text-gray-300">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-sage" />
-            <span>Luat (verde)</span>
+            <span>Luat</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
-            <span>Sărit (roșu)</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-peach-300" />
+            <span>Nebifat</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-warmborder dark:bg-gray-600" />
@@ -394,7 +394,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                   </span>
                 )}
                 <button onClick={() => { if (status === "missed") onTakeDose(cell.iso); }}
-                  className={`w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-red-700 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
+                  className={`relative w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-peach-200 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
                     isToday
                       ? 'ring-2 ring-sage dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
                       : ''
@@ -402,17 +402,21 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                     status === 'taken'
                       ? 'bg-sage text-white shadow-xs'
                       : status === 'missed'
-                      ? 'bg-red-600 text-white shadow-xs'
+                      ? 'bg-peach-100 text-peach-800 ring-1 ring-inset ring-peach-300'
                       : 'bg-cream-deep/60 dark:bg-darkbg-card text-ink dark:text-gray-300'
                   }`}
                   title={`${dayNumber} ${monthLabelRo} - ${
-                    status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză sărită (Apasă pentru a bifa retroactiv)' : 'Viitoare / De luat'
+                    status === 'taken' ? 'Doză luată' : status === 'missed' ? 'Doză nebifată (Apasă pentru a bifa retroactiv)' : 'Viitoare / De luat'
                   }`}
                 >
                   {status === 'taken' ? (
                     <Check className="w-3.5 h-3.5" strokeWidth={3} />
                   ) : status === 'missed' ? (
-                    <X className="w-3.5 h-3.5" strokeWidth={3} />
+                    <>
+                      {dayNumber}
+                      <span className="absolute bottom-0.5 w-1 h-1 rounded-full bg-peach-600" aria-hidden="true" />
+                      <span className="sr-only">, nebifat</span>
+                    </>
                   ) : (
                     dayNumber
                   )}

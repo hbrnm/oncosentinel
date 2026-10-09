@@ -14,7 +14,7 @@ describe('Alerta pentru simptome severe', () => {
     window.addEventListener('navimed_open_red_flags', onRedFlags);
     const { container } = render(<JournalTab profile={DEFAULT_PROFILE} symptoms={[]} doses={[]} onAddSymptomLog={vi.fn()} />);
 
-    fireEvent.click(screen.getByText('Formular Detaliat Simptome'));
+    fireEvent.click(screen.getByText('Formular detaliat simptome'));
     const fatigue = container.querySelector('input[aria-label="Nivel oboseală"]')!;
     fireEvent.change(fatigue, { target: { value: '5' } });
     fireEvent.click(screen.getByText('Salvează simptomele'));

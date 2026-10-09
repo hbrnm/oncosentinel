@@ -48,7 +48,7 @@ describe('Calendarul fără data de început', () => {
   it('fără doze, zilele trecute nu sunt socotite sărite', () => {
     render(<TreatmentTab profile={noStart} doses={[]} onTakeDose={() => {}} />);
     expect(screen.getByText('—')).toBeInTheDocument();
-    expect(screen.queryByTitle(/Doză sărită/)).not.toBeInTheDocument();
+    expect(screen.queryByTitle(/Doză nebifată/)).not.toBeInTheDocument();
   });
 
   it('numără de la prima doză notată', () => {
@@ -56,6 +56,6 @@ describe('Calendarul fără data de început', () => {
     const dose: DoseLog = { id: 'd8', medication_name: 'Tamoxifen 20 mg', scheduled_for: iso, taken_at: iso, status: 'taken' };
     render(<TreatmentTab profile={noStart} doses={[dose]} onTakeDose={() => {}} />);
     expect(screen.getByText('Ai marcat 1 din 2 zile.')).toBeInTheDocument();
-    expect(screen.getAllByTitle(/Doză sărită/)).toHaveLength(1);
+    expect(screen.getAllByTitle(/Doză nebifată/)).toHaveLength(1);
   });
 });
