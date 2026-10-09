@@ -81,6 +81,15 @@ describe('Cardul de memento după ce e pus', () => {
     expect(screen.getByText(/în fiecare zi la 08:00/)).toBeInTheDocument();
   });
 
+  it('se poate ascunde cu X (memento pus pe altă cale) și rămâne ascuns la redeschidere', () => {
+    const { unmount } = render(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '21:30' }} doses={[]} onTakeDose={() => {}} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Ascunde memento-ul' }));
+    expect(screen.queryByRole('heading', { name: 'Memento zilnic' })).not.toBeInTheDocument();
+    unmount();
+    render(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '21:30' }} doses={[]} onTakeDose={() => {}} />);
+    expect(screen.queryByRole('heading', { name: 'Memento zilnic' })).not.toBeInTheDocument();
+  });
+
   it('nu dispare dacă fișierul de calendar nu s-a putut crea', () => {
     Object.assign(URL, { createObjectURL: () => { throw new Error('nu'); } });
     render(<TreatmentTab profile={DEFAULT_PROFILE} doses={[]} onTakeDose={() => {}} />);

@@ -273,6 +273,15 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         <div className="flex items-center gap-2 mb-2">
           <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
           <h2 id="reminder-title" className="micro-label">Memento zilnic</h2>
+          <button
+            type="button"
+            onClick={markReminderSet}
+            aria-label="Ascunde memento-ul"
+            title="Ascunde memento-ul"
+            className="ml-auto -m-3 p-3 rounded-full text-ink-soft hover:text-ink dark:hover:text-gray-200"
+          >
+            <X className="w-4 h-4" aria-hidden="true" />
+          </button>
         </div>
         <p className="text-[0.8125rem] text-ink dark:text-gray-200 leading-relaxed">
           Pune un memento în calendarul telefonului, în fiecare zi la {reminderTime}. În memento scrie doar „{REMINDER_TEXT}”, fără numele medicamentului.
