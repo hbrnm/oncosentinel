@@ -36,7 +36,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-darkbg-surface w-full max-w-lg rounded-3xl shadow-2xl border border-gray-200 dark:border-darkbg-border overflow-hidden max-h-[90vh] flex flex-col">
+      <div className="bg-white dark:bg-darkbg-surface w-full max-w-lg rounded-3xl shadow-2xl border border-warmborder dark:border-darkbg-border overflow-hidden max-h-[90vh] flex flex-col">
         
         {/* Header */}
         <div className="bg-rose-50/90 dark:bg-darkbg-card p-5 border-b border-rose-100 dark:border-darkbg-border flex items-start justify-between">
@@ -45,17 +45,17 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
               <AlertCircle className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
+              <h2 className="text-lg font-bold text-ink dark:text-white leading-tight">
                 Semnale de alarmă
               </h2>
-              <p className="text-xs text-gray-600 dark:text-gray-300 mt-0.5">
+              <p className="text-xs text-ink-soft dark:text-gray-300 mt-0.5">
                 Când suni la 112 și când anunți repede medicul
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white dark:bg-darkbg-surface flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white transition-colors border border-gray-100 dark:border-darkbg-border"
+            className="w-8 h-8 rounded-full bg-white dark:bg-darkbg-surface flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white transition-colors border border-warmborder dark:border-darkbg-border"
           >
             <X className="w-5 h-5" />
           </button>
@@ -63,7 +63,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
 
         {/* Content */}
         <div className="p-5 overflow-y-auto space-y-3.5 flex-1">
-          <p className="text-xs text-gray-700 dark:text-gray-200 bg-sage-50 dark:bg-sage-900/30 p-3 rounded-2xl border border-sage-200/80 dark:border-sage-800/40">
+          <p className="text-xs text-ink dark:text-gray-200 bg-sage-50 dark:bg-sage-900/30 p-3 rounded-2xl border border-sage-200/80 dark:border-sage-800/40">
             <strong>Notă de liniște:</strong> lista e aici ca să știi ce să faci, dacă va fi nevoie. Nu înseamnă că ți se va întâmpla.
           </p>
 
@@ -76,10 +76,10 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
               {group.flags.map((flag) => (
                 <div
                   key={flag.title}
-                  className={`p-3.5 rounded-2xl border ${group.tone === 'urgent' ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900/60' : 'bg-gray-50 dark:bg-darkbg-card border-gray-200/80 dark:border-darkbg-border'}`}
+                  className={`p-3.5 rounded-2xl border ${group.tone === 'urgent' ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900/60' : 'bg-cream dark:bg-darkbg-card border-warmborder/80 dark:border-darkbg-border'}`}
                 >
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{flag.title}</p>
-                  {flag.note && <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mt-0.5">{flag.note}</p>}
+                  <p className="text-sm font-semibold text-ink dark:text-white">{flag.title}</p>
+                  {flag.note && <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed mt-0.5">{flag.note}</p>}
                 </div>
               ))}
             </section>
@@ -91,7 +91,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
         </div>
 
         {/* Footer Contact Actions */}
-        <div className="p-4 bg-gray-50 dark:bg-darkbg-card border-t border-gray-100 dark:border-darkbg-border grid grid-cols-2 gap-2.5">
+        <div className="p-4 bg-cream dark:bg-darkbg-card border-t border-warmborder dark:border-darkbg-border grid grid-cols-2 gap-2.5">
           <a
             href="tel:112"
             className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-2xl bg-petal-700 hover:bg-petal-800 text-white font-semibold text-xs transition-colors shadow-xs"

@@ -74,23 +74,23 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
       <div className="bg-white dark:bg-darkbg-surface w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl p-5 sm:p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl my-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-darkbg-border mb-4">
+        <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-sage-100 dark:bg-sage-900/50 text-sage-700 dark:text-sage-300 flex items-center justify-center">
               <User className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+              <h3 className="text-sm font-bold text-ink dark:text-white">
                 Date Pacientă & Situație Medicală
               </h3>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              <p className="text-[11px] text-ink-soft dark:text-gray-400">
                 Configurează datele tale reale și situația clinică
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-gray-100 dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white"
+            className="w-7 h-7 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
           >
             <X className="w-4 h-4" />
           </button>
@@ -99,34 +99,34 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 1. Date Personale */}
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-gray-700 dark:text-gray-300 block">
+            <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block">
               Nume și prenume:
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <User className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Introdu numele tău..."
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>
           </div>
 
           {/* Adresa ta de E-mail */}
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-gray-700 dark:text-gray-300 block">
+            <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block">
               Adresa ta de e-mail:
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ex: pacient@exemplu.ro"
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>
           </div>
@@ -140,7 +140,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block">
+              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block">
                 Diagnostic / Histopatologie:
               </label>
               <input
@@ -148,12 +148,12 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 value={histology}
                 onChange={(e) => setHistology(e.target.value)}
                 placeholder="ex: Carcinom Ductal In Situ (DCIS)"
-                className="w-full px-3 py-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full px-3 py-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block">
+              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block">
                 Stadiu clinic:
               </label>
               <input
@@ -161,14 +161,14 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 value={stage}
                 onChange={(e) => setStage(e.target.value)}
                 placeholder="ex: Grad 0 (TisN0M0, G2)"
-                className="w-full px-3 py-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full px-3 py-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>
 
             {/* Receptori hormonali */}
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 block mb-0.5">
+                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Receptor ER:
                 </label>
                 <input
@@ -176,11 +176,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={erStatus}
                   onChange={(e) => setErStatus(e.target.value)}
                   placeholder="ex: Pozitiv (>90%)"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 block mb-0.5">
+                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Receptor PR:
                 </label>
                 <input
@@ -188,11 +188,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={prStatus}
                   onChange={(e) => setPrStatus(e.target.value)}
                   placeholder="ex: Pozitiv (>80%)"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-gray-600 dark:text-gray-400 block mb-0.5">
+                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Status HER2:
                 </label>
                 <input
@@ -200,7 +200,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={her2Status}
                   onChange={(e) => setHer2Status(e.target.value)}
                   placeholder="ex: Negativ"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
             </div>
@@ -209,27 +209,27 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           {/* 3. Programare & Tratament */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
+              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
                 Ora administrării:
               </label>
               <div className="relative">
-                <Clock className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Clock className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="time"
                   value={reminderTime}
                   onChange={(e) => setReminderTime(e.target.value)}
-                  className="w-full pl-9 pr-2 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full pl-9 pr-2 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
+              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
                 Stoc pastile în cutie:
               </label>
               <div className="relative">
-                <Pill className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Pill className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="number"
                   min="0"
@@ -239,7 +239,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     const val = e.target.value;
                     setStock(val === '' ? '' : Math.max(0, parseInt(val, 10) || 0));
                   }}
-                  className="w-full pl-9 pr-2 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full pl-9 pr-2 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                   required
                 />
               </div>
@@ -247,33 +247,33 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
+            <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
               Data de începere a Tamoxifenului:
             </label>
             <div className="relative">
-              <Calendar className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Calendar className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-gray-600 dark:text-gray-400 block mb-1">
+            <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
               E-mail medic oncolog (pentru rapoarte):
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 value={oncologistEmail}
                 onChange={(e) => setOncologistEmail(e.target.value)}
                 placeholder="dr.oncolog@exemplu.ro"
-                className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full pl-9 pr-3 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               />
             </div>
           </div>
@@ -299,7 +299,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         </form>
 
         {/* SOS Emergency Guide prominent button in Profile Modal */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-darkbg-border">
+        <div className="mt-4 pt-3 border-t border-warmborder dark:border-darkbg-border">
           <button
             type="button"
             onClick={() => {

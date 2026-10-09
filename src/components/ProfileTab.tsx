@@ -298,7 +298,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
             setHer2Val(profile.her2_status || '');
             setEditProfileOpen(true);
           }}
-          className="tap-scale w-10 h-10 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer"
+          className="tap-scale w-10 h-10 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center hover:bg-cream-deep transition-colors cursor-pointer"
           title="Modifică profilul"
           aria-label="Modifică profilul"
         >
@@ -450,7 +450,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
       {onOpenAuth && (
         <button
           onClick={onOpenAuth}
-          className="tap-scale w-full organic-card rounded-2xl p-4 flex items-center justify-center gap-2 text-sage-deep dark:text-sage-300 font-semibold text-[14px] hover:bg-gray-50 transition-colors cursor-pointer"
+          className="tap-scale w-full organic-card rounded-2xl p-4 flex items-center justify-center gap-2 text-sage-deep dark:text-sage-300 font-semibold text-[14px] hover:bg-cream transition-colors cursor-pointer"
         >
           <ShieldCheck className="w-4 h-4" />
           <span>Siguranța datelor</span>
@@ -494,7 +494,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               <button
                 type="button"
                 onClick={() => setEditProfileOpen(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -622,7 +622,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditProfileOpen(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-cream-deep transition-colors"
                 >
                   Anulează
                 </button>
@@ -649,7 +649,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
               <button
                 type="button"
                 onClick={() => setAddAppt(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 transition-colors"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -709,7 +709,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setAddAppt(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-xl text-[13px] text-ink-soft hover:bg-cream-deep transition-colors"
                 >
                   Anulează
                 </button>

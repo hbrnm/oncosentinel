@@ -97,10 +97,10 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               <ShieldCheck className="w-4 h-4" />
               <span>Fișă Diagnostic Onco-Mamologie</span>
             </div>
-            <h2 className="text-base font-bold text-gray-900 dark:text-white">
+            <h2 className="text-base font-bold text-ink dark:text-white">
               {profile.histology || 'Diagnostic necompletat'}
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-ink-soft dark:text-gray-400 mt-0.5">
               {profile.stage || 'Stadiu necompletat'}
             </p>
           </div>
@@ -108,17 +108,17 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
         {/* Receptor status badges */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-sage-100/80 dark:border-darkbg-border">
-          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-gray-500 block">Receptor ER</span>
+          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
+            <span className="text-[10px] text-ink-soft block">Receptor ER</span>
             <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.er_status || '—'}</span>
           </div>
-          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-gray-500 block">Receptor PR</span>
+          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
+            <span className="text-[10px] text-ink-soft block">Receptor PR</span>
             <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.pr_status || '—'}</span>
           </div>
-          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-gray-100 dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-gray-500 block">Status HER2</span>
-            <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{profile.her2_status || '—'}</span>
+          <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
+            <span className="text-[10px] text-ink-soft block">Status HER2</span>
+            <span className="text-xs font-bold text-ink dark:text-gray-300">{profile.her2_status || '—'}</span>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
       {/* 2. Interactive Clinical Timeline */}
       <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h3 className="text-sm font-bold text-ink dark:text-white flex items-center gap-2">
             <Activity className="w-4 h-4 text-sage-600" />
             <span>Povestea Mea Medicală (Cronologie)</span>
           </h3>
@@ -140,13 +140,13 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
         <div className="relative pl-6 space-y-5 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-sage-200 dark:before:bg-darkbg-border">
           {milestones.length === 0 && (
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-ink-soft dark:text-gray-400">
               Încă nu ai adăugat nicio etapă. Apasă „Adaugă etapă” ca să-ți notezi diagnosticul, operația sau tratamentele, cu data lor.
             </p>
           )}
           {milestones.map((m) => {
             const isExpanded = expandedMilestone === m.id;
-            const badge = categoryBadges[m.category] || { label: m.title, color: 'bg-gray-100 text-gray-700' };
+            const badge = categoryBadges[m.category] || { label: m.title, color: 'bg-cream-deep text-ink' };
 
             return (
               <div key={m.id} className="relative group">
@@ -161,34 +161,34 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
 
                 <div 
                   onClick={() => setExpandedMilestone(isExpanded ? null : m.id)}
-                  className="cursor-pointer bg-gray-50/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-gray-100 dark:border-darkbg-border hover:border-sage-200 transition-all"
+                  className="cursor-pointer bg-cream/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border hover:border-sage-200 transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${badge.color}`}>
                       {badge.label}
                     </span>
-                    <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                    <span className="text-[11px] text-ink-soft/70 flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {new Date(m.event_date).toLocaleDateString('ro-RO', { month: 'short', year: 'numeric' })}
                     </span>
                   </div>
 
-                  <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-1.5 flex items-center justify-between">
+                  <h4 className="text-xs font-bold text-ink dark:text-white mt-1.5 flex items-center justify-between">
                     <span>{m.title}</span>
-                    {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                    {isExpanded ? <ChevronUp className="w-4 h-4 text-ink-soft/70" /> : <ChevronDown className="w-4 h-4 text-ink-soft/70" />}
                   </h4>
 
-                  <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                  <p className="text-xs text-ink-soft dark:text-gray-300 mt-1 leading-relaxed">
                     {m.description}
                   </p>
 
                   {/* Expanded clinical details */}
                   {isExpanded && (
-                    <div className="mt-3 pt-3 border-t border-gray-200/60 dark:border-darkbg-border space-y-1.5 animate-fade-in">
+                    <div className="mt-3 pt-3 border-t border-warmborder/60 dark:border-darkbg-border space-y-1.5 animate-fade-in">
                       {Object.entries(m.key_details).map(([key, value]) => (
                         <div key={key} className="flex justify-between text-[11px]">
-                          <span className="text-gray-500">{key}:</span>
-                          <span className="font-medium text-gray-800 dark:text-gray-200">{value}</span>
+                          <span className="text-ink-soft">{key}:</span>
+                          <span className="font-medium text-ink dark:text-gray-200">{value}</span>
                         </div>
                       ))}
                       <div className="flex justify-end gap-3 pt-1">
@@ -222,10 +222,10 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+              <h3 className="text-sm font-bold text-ink dark:text-white">
                 Seif Documente Medicale
               </h3>
-              <p className="text-[11px] text-gray-500">Stocare privată și securizată pe dispozitivul tău</p>
+              <p className="text-[11px] text-ink-soft">Stocare privată și securizată pe dispozitivul tău</p>
             </div>
           </div>
 
@@ -241,10 +241,10 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
         {/* Documents list */}
         <div className="space-y-2">
           {documents.length === 0 ? (
-            <div className="text-center py-6 px-4 bg-gray-50/50 dark:bg-darkbg-card/50 rounded-2xl border border-dashed border-gray-200 dark:border-darkbg-border">
-              <FileText className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
-              <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Nu ai încărcat niciun document</p>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+            <div className="text-center py-6 px-4 bg-cream/50 dark:bg-darkbg-card/50 rounded-2xl border border-dashed border-warmborder dark:border-darkbg-border">
+              <FileText className="w-8 h-8 text-ink-soft/50 dark:text-gray-600 mx-auto mb-2" />
+              <p className="text-xs font-semibold text-ink dark:text-gray-300">Nu ai încărcat niciun document</p>
+              <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-0.5">
                 Apasă butonul „Încarcă PDF” de mai sus pentru a salva primul bilet de ieșire, mamografie sau raport histopatologic.
               </p>
             </div>
@@ -252,7 +252,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
             documents.map((doc) => (
               <div
                 key={doc.id}
-                className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/80 dark:bg-darkbg-card border border-gray-100 dark:border-darkbg-border hover:bg-sage-50/40 transition-colors"
+                className="flex items-center justify-between p-3 rounded-2xl bg-cream/80 dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border hover:bg-sage-50/40 transition-colors"
               >
                 <div className="flex items-center space-x-2.5 min-w-0">
                   <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
@@ -264,7 +264,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white truncate">
+                      <p className="text-xs font-semibold text-ink dark:text-white truncate">
                         {doc.file_name}
                       </p>
                       {doc.is_demo && (
@@ -273,7 +273,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] text-gray-500">
+                    <p className="text-[10px] text-ink-soft">
                       {new Date(doc.uploaded_at).toLocaleDateString('ro-RO')} • {Math.round((doc.file_size_bytes || 200000) / 1024)} KB
                     </p>
                   </div>
@@ -293,7 +293,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                         alert(`Descărcare document: ${doc.file_name}`);
                       }
                     }}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-500 hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-ink-soft hover:text-sage-600 hover:bg-white dark:hover:bg-darkbg-surface transition-colors"
                     title="Descarcă documentul"
                   >
                     <Download className="w-4 h-4" />
@@ -305,7 +305,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                           onDeleteDocument(doc.id);
                         }
                       }}
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-ink-soft/70 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
                       title="Șterge documentul din dosar"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -330,15 +330,15 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
       {showUploadModal && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-xl">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">
+            <h3 className="text-sm font-bold text-ink dark:text-white mb-1">
               Încarcă Document Medical Propriu
             </h3>
-            <p className="text-[11px] text-gray-500 mb-3">
+            <p className="text-[11px] text-ink-soft mb-3">
               Documentele sunt salvate doar pe acest dispozitiv.
             </p>
             <form onSubmit={handleUploadFile} className="space-y-3">
               <div>
-                <label className="text-xs text-gray-600 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-ink-soft dark:text-gray-400 block mb-1">
                   Alege fișierul (PDF sau Poză):
                 </label>
                 <input
@@ -353,12 +353,12 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                       }
                     }
                   }}
-                  className="w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-100 file:text-sage-800 dark:file:bg-sage-900/40 dark:file:text-sage-300 hover:file:bg-sage-200 cursor-pointer"
+                  className="w-full text-xs text-ink-soft file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-100 file:text-sage-800 dark:file:bg-sage-900/40 dark:file:text-sage-300 hover:file:bg-sage-200 cursor-pointer"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-gray-600 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-ink-soft dark:text-gray-400 block mb-1">
                   Denumire fișier / descriere:
                 </label>
                 <input
@@ -366,19 +366,19 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                   placeholder="ex: Mamografie_Control_Octombrie.pdf"
                   value={docName}
                   onChange={(e) => setDocName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border focus:outline-none focus:border-sage-500"
+                  className="w-full px-3 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border focus:outline-none focus:border-sage-500"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs text-gray-600 dark:text-gray-400 block mb-1">
+                <label className="text-xs text-ink-soft dark:text-gray-400 block mb-1">
                   Categorie document:
                 </label>
                 <select
                   value={docCategory}
                   onChange={(e) => setDocCategory(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border focus:outline-none focus:border-sage-500"
+                  className="w-full px-3 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border focus:outline-none focus:border-sage-500"
                 >
                   <option value="buletin_histopatologic">Buletin Histopatologic</option>
                   <option value="bilet_iesire">Bilet de Externare</option>
@@ -395,7 +395,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                     setSelectedRealFile(null);
                     setShowUploadModal(false);
                   }}
-                  className="w-1/2 py-2 rounded-xl bg-gray-100 dark:bg-darkbg-card text-gray-700 dark:text-gray-300 text-xs font-medium"
+                  className="w-1/2 py-2 rounded-xl bg-cream-deep dark:bg-darkbg-card text-ink dark:text-gray-300 text-xs font-medium"
                 >
                   Anulează
                 </button>

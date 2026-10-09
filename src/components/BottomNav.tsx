@@ -30,7 +30,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
               className={`tap-scale flex flex-col items-center justify-center gap-0.5 rounded-2xl px-2 py-2.5 transition-all duration-300 cursor-pointer ${
                 isActive
                   ? 'text-sage-deep dark:text-sage-300 font-semibold'
-                  : 'text-ink-soft/70 dark:text-gray-400 hover:text-gray-700'
+                  : 'text-ink-soft/70 dark:text-gray-400 hover:text-ink'
               }`}
             >
               <span className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${

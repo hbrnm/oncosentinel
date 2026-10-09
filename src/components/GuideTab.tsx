@@ -102,8 +102,8 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
   return (
     <div className="min-h-screen animate-fade-in">
       <header className="px-2 pt-1 pb-4 relative">
-        <h1 className="font-serif text-2xl text-gray-900 dark:text-white">Ghiduri</h1>
-        <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1">Informații clinice, nutriție și medicamente.</p>
+        <h1 className="font-serif text-2xl text-ink dark:text-white">Ghiduri</h1>
+        <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-1">Informații clinice, nutriție și medicamente.</p>
         
         {/* Horizontal Navigation Tabs */}
         <div className="flex items-center gap-2 mt-5 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
