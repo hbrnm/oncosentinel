@@ -25,4 +25,4 @@ Deciziile proprietarei (2026-10-09):
 - Agentul `verificare`: nimic blocant; reparate confirmarea doar după salvarea reușită, stocul lipsă dintr-un profil vechi (0, nu NaN, `safeStock`), confirmarea care dispare la următoarea doză și limita de 365 de pastile pe cutie.
 
 ## Următorul pas
-Planul 008 e încheiat. Lucrul următor: decizia proprietarei.
+Planul 008 e încheiat. Decizia proprietarei (2026-10-09): nu se mai face nimic din celelalte propuneri (testarea cu pacientele, „Medicamentele mele” ca text de copiat, întrebări pentru medic din „Medicamentele mele”). Lucrul următor: doar la cererea proprietarei.
