@@ -7,7 +7,9 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
     match: ['paroxetin', 'fluoxetin', 'bupropion', 'chinidin', 'cinacalcet'],
     // Nume comerciale aprobate de proprietară (2026-10-09), din documente ANM: Seroxat (RCP 601/2008), Paxetin (RCP 12940/2020),
     // Prozac (PRO 11794/2019), Fluoxin (RCP 10964/2018), Magrilan (AMB 12058/2019), Elontril (RCP 4430/2012), Zyban (AMB 12478/2019), Axabal (rezumat PMR)
-    brands: ['seroxat', 'paxetin', 'prozac', 'fluoxin', 'magrilan', 'elontril', 'zyban', 'axabal'],
+    // Din Nomenclatorul ANMDMR (actualizat 08.10.26), aprobate de proprietară: Arketis (APP 9667/2017), Mysimba (naltrexonă + bupropion, APP 988/2015).
+    // Prozac, Magrilan și Zyban nu mai sunt în Nomenclator; rămân (cutii vechi sau din străinătate), decizia proprietarei.
+    brands: ['seroxat', 'paxetin', 'prozac', 'fluoxin', 'magrilan', 'elontril', 'zyban', 'axabal', 'arketis', 'mysimba'],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Pot scădea forma activă a tamoxifenului. Prospectul recomandă să fie evitate, pe cât posibil. Nu le opri singură: vorbește cu medicul.',
@@ -27,6 +29,14 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
     substance: 'Medicamente cu estrogen (de exemplu anticoncepționale orale, tratamente hormonale pentru menopauză)',
     // „estradiol” și „contraceptiv”: aprobate de proprietară (2026-10-09), deși nu sunt în numele substanței
     match: ['estrogen', 'anticonceptional', 'estradiol', 'contraceptiv'],
+    // Produsele cu estrogen din Nomenclatorul ANMDMR (actualizat 08.10.26), aprobate de proprietară, inclusiv cele cu estriol vaginal (Ovestin, Viviflor);
+    // fără cele doar cu progestativ (Cerazette, Mirena, Postinor…), care nu conțin estrogen
+    brands: [
+      'belara', 'desorelle', 'laurina', 'marvelon', 'mercilon', 'novynette', 'qlaira', 'diane-35', 'diane35', 'belusha', 'midiana', 'varena',
+      'veyann', 'yasmin', 'yaz', 'nuvaring', 'artizia', 'harmonet', 'karissa', 'logest', 'milligest', 'microgynon',
+      'rigevidon', 'seasonique', 'tri-regol', 'triregol', 'zoely',
+      'femoston', 'progynova', 'lenzetto', 'ryeqo', 'ovestin', 'viviflor'
+    ],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Prospectul spune să nu fie luate în timpul tratamentului. Dacă ai nevoie de contracepție, folosește o metodă fără hormoni (de exemplu prezervativul) în timpul tratamentului și încă 2 luni după. Medicul te ajută să alegi.',
@@ -34,9 +44,11 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Anastrozol, letrozol și alți inhibitori de aromatază',
-    match: ['anastrozol', 'letrozol', 'inhibitor de aromataza', 'inhibitori de aromataza'],
+    // „exemestan”: inhibitor de aromatază, aprobat de proprietară (2026-10-09)
+    match: ['anastrozol', 'letrozol', 'inhibitor de aromataza', 'inhibitori de aromataza', 'exemestan'],
     // Arimidex (AMB 7053/2014), Kyaresta (AMB 12683/2019); Loosyn, Elozora, Etruzil, Zequipra (etichete ANM, AMB 5815, 6664, 6961, 7778)
-    brands: ['arimidex', 'kyaresta', 'loosyn', 'elozora', 'etruzil', 'zequipra'],
+    // Din Nomenclatorul ANMDMR (actualizat 08.10.26): Anastelb (APP 10058/2017); exemestan: Aromasin (6157/2014), Memelin (11053/2018), Xanepra (12495/2019)
+    brands: ['arimidex', 'kyaresta', 'loosyn', 'elozora', 'etruzil', 'zequipra', 'anastelb', 'aromasin', 'memelin', 'xanepra'],
     level: 'tell',
     levelLabel: 'Doar la indicația medicului',
     advice: 'Nu se iau împreună cu tamoxifenul. Prospectul românesc o spune explicit pentru anastrozol.',
@@ -46,7 +58,8 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
     substance: 'Rifampicină (medicament pentru tuberculoză)',
     match: ['rifampicin'],
     // Sinerdol (AMB 9186/2016, 9187/2016)
-    brands: ['sinerdol'],
+    // Din Nomenclatorul ANMDMR (actualizat 08.10.26): MDT-Combi (rifampicină + clofazimină + dapsonă, APP 1161/2025)
+    brands: ['sinerdol', 'mdt-combi'],
     level: 'tell',
     levelLabel: 'Spune medicului',
     advice: 'Poate scădea nivelul tamoxifenului din sânge.',
@@ -86,7 +99,12 @@ export const normalizeName = (text: string) =>
 export const findInteraction = (name: string): DrugInteraction | undefined => {
   const n = normalizeName(name);
   if (!n) return undefined;
-  return INTERACTIONS_DB.find(item => [...item.match, ...(item.brands || [])].some(word => n.includes(word)));
+  // Numele comerciale se potrivesc doar de la începutul unui cuvânt („yaz” nu prinde „mayazol”); cratimele contează ca spații
+  const spaced = (t: string) => ` ${t.replace(/[^a-z0-9]+/g, ' ').trim()}`;
+  const words = spaced(n);
+  return INTERACTIONS_DB.find(item =>
+    item.match.some(word => n.includes(word)) || (item.brands || []).some(brand => words.includes(spaced(brand)))
+  );
 };
 
 export function searchInteractions(query: string): DrugInteraction[] {
