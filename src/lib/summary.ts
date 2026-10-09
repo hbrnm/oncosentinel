@@ -49,6 +49,31 @@ export const controlDateLabel = (iso: string, today = new Date()) => {
 export const plural = (n: number, one: string, few: string) =>
   n === 1 ? `1 ${one}` : n > 0 && (n % 100 === 0 || n % 100 >= 20) ? `${n} de ${few}` : `${n} ${few}`;
 
+// „Drumul tratamentului” pe Astăzi: doar timpul parcurs de la `startDate`, rotunjit în jos, fără durată totală
+export const treatmentJourneyText = (startDate: string, today = new Date()): string | null => {
+  if (!startDate) return null;
+  const [y, m, d] = startDate.split('-').map(Number);
+  const start = new Date(y, m - 1, d);
+  const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const days = Math.round((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000));
+  if (!Number.isFinite(days) || days < 1) return null;
+  // Început pe 29–31: în lunile mai scurte, luna se împlinește în ultima zi
+  const day = Math.min(d, new Date(end.getFullYear(), end.getMonth() + 1, 0).getDate());
+  const months = (end.getFullYear() - y) * 12 + end.getMonth() - (m - 1) - (end.getDate() < day ? 1 : 0);
+  const years = Math.floor(months / 12);
+  if (years > 0 && months % 12 === 0 && end.getDate() === day) {
+    return `Azi se ${years === 1 ? 'împlinește' : 'împlinesc'} ${plural(years, 'an', 'ani')} de când ai început tratamentul. Felicitări din inimă.`;
+  }
+  const time = months < 1
+    ? (days < 7 ? plural(days, 'zi', 'zile') : plural(Math.floor(days / 7), 'săptămână', 'săptămâni'))
+    : years < 1
+      ? plural(months, 'lună', 'luni')
+      : months % 12 === 0
+        ? plural(years, 'an', 'ani')
+        : `${plural(years, 'an', 'ani')} și ${plural(months % 12, 'lună', 'luni')}`;
+  return `Ești pe drum de ${time}.`;
+};
+
 const logsIn = (symptoms: SymptomLog[], days: string[]) => {
   const set = new Set(days);
   return symptoms.filter(s => set.has(localDay(new Date(s.logged_at))));

@@ -8,7 +8,7 @@ import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
-import { nextVictory } from '../lib/summary';
+import { nextVictory, treatmentJourneyText } from '../lib/summary';
 import { shouldRemindBackup, lastBackupText, snoozeBackupReminder } from '../lib/backupReminder';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
@@ -265,6 +265,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
 
 
   const greeting = getGreetingData(currentHour);
+  const journeyText = treatmentJourneyText(profile.tamoxifen_start_date || '', now);
 
   // Format Control Date in Romanian
   const formattedControlDate = new Date(nextControlDate).toLocaleDateString('ro-RO', {
@@ -293,6 +294,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <p className="text-xs sm:text-[13px] text-ink-soft dark:text-gray-400 mt-1 font-normal leading-relaxed">
             {greeting.sub}
           </p>
+          {journeyText && (
+            <p className="text-xs sm:text-[13px] text-sage-700 dark:text-sage-300 mt-1 font-medium leading-relaxed">
+              {journeyText}
+            </p>
+          )}
         </div>
         
         <div className="flex items-center gap-2 shrink-0">

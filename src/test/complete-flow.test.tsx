@@ -80,8 +80,8 @@ describe('Test Complet de Flow Utilizator pe Noul Design Organic (End-to-End Sim
     fireEvent.click(controlCard!);
 
     // Se deschide modalul de pregătire a consultației cu editorul de dată și medic
-    expect(screen.getByText(/Pregătire pentru Consultația Oncologică/i)).toBeInTheDocument();
-    expect(screen.getByText(/Programare Următorul Control/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Controale Medicale' })).toBeInTheDocument();
+    expect(screen.getByText('Programările tale și întrebările pentru medic')).toBeInTheDocument();
 
     // Închidem modalul de consult
     const closeBtns = screen.getAllByRole('button');

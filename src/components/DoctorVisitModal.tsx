@@ -198,12 +198,6 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      {/* Hidden legacy anchor for backwards compatibility in tests */}
-      <div className="sr-only" aria-hidden="true">
-        <span>Pregătire pentru Consultația Oncologică</span>
-        <span>Programare Următorul Control</span>
-      </div>
-
       <div className="bg-cream dark:bg-darkbg-surface w-full max-w-md rounded-[32px] shadow-2xl border border-warmborder dark:border-darkbg-border overflow-hidden max-h-[92vh] flex flex-col">
         
         {/* Header - Base44 Calm Warm Style */}

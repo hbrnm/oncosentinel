@@ -38,7 +38,7 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 
 ### Etapa 2 (2026-10-09)
 - Deciziile proprietarei: copia rămâne doar în „Siguranța datelor” (cardul din Dosar scos); memento la 30 de zile de la ultima copie sau, fără nicio copie, când prima doză/notă are peste 7 zile; card mic pe Astăzi cu „Fac copia acum” (deschide „Siguranța datelor”) și „Mai târziu” (ascunde 7 zile); texte: „O copie pentru liniștea ta”, „Datele tale stau doar pe acest telefon. Ultima copie: acum 42 de zile.” / „Nu ai făcut încă nicio copie.”
-- Adăugate de Claude, de confirmat: „Ultima copie: azi.” și „Ultima copie: ieri.”
+- Adăugate de Claude: „Ultima copie: azi.” și „Ultima copie: ieri.” (confirmate de proprietară, 2026-10-09)
 - `src/lib/backupReminder.ts`: data ultimei copii (`oncosentinel_last_backup`, scrisă la descărcare și, la restaurare, data copiei) și „Mai târziu” (`oncosentinel_backup_snooze_until`). Cu PIN, cheile intră în seif ca restul datelor.
 - Știut și acceptat: data se scrie la apăsarea descărcării (aplicația nu poate afla dacă fișierul a fost salvat); după restaurarea unei copii mai vechi de 30 de zile, memento-ul apare imediat.
 - Test nou `copia-amintita.test.tsx`. `npm test` (194) și `npm run build` trec; verificat la 390px, cu litere normale și cu A+. Agentul `verificare`: nimic blocant; reparată data veche din „Siguranța datelor” după miezul nopții.
