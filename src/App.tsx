@@ -35,6 +35,11 @@ export function App() {
     pushScreen(tab);
     setActiveTab(tab);
   };
+  // Noutatea deschisă din cardul „Vestea bună a zilei”; se uită când ieși din Ghid
+  const [guideNewsId, setGuideNewsId] = useState<string | null>(null);
+  useEffect(() => {
+    if (activeTab !== 'guide') setGuideNewsId(null);
+  }, [activeTab]);
   const [darkMode, setDarkMode] = useState<boolean>(false);
   // Butonul de liniște se ascunde cât derulezi în jos (să nu acopere textul) și revine când urci
   const [calmButtonHidden, setCalmButtonHidden] = useState<boolean>(false);
@@ -277,6 +282,10 @@ export function App() {
               onNavigateToTab={(tab) => {
                 goToTab(tab);
               }}
+              onOpenNews={(id) => {
+                setGuideNewsId(id);
+                goToTab('guide');
+              }}
             />
           )}
 
@@ -316,6 +325,7 @@ export function App() {
           {activeTab === 'guide' && (
             <GuideTab
               onOpenRedFlags={() => setIsRedFlagsOpen(true)}
+              initialNewsId={guideNewsId}
             />
           )}
 

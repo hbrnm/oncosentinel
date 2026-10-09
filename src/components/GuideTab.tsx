@@ -11,14 +11,18 @@ import { useBackToClose } from '../lib/backNavigation';
 
 export interface GuideTabProps {
   onOpenRedFlags: () => void;
+  /** Noutatea de deschis direct (din cardul „Vestea bună a zilei” de pe Astăzi) */
+  initialNewsId?: string | null;
 }
 
 type GuideCategory = 'clinical' | 'news' | 'nutrition' | 'medicines';
 
-export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
+export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags, initialNewsId }) => {
   const [selectedGuide, setSelectedGuide] = useState<Omit<ClinicalGuide, 'category'> | null>(null);
-  const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(null);
-  const [activeCategory, setActiveCategory] = useState<GuideCategory>('clinical');
+  const [selectedNews, setSelectedNews] = useState<NewsProtocol | null>(
+    () => CLINICAL_NEWS.find(n => n.id === initialNewsId) ?? null
+  );
+  const [activeCategory, setActiveCategory] = useState<GuideCategory>(initialNewsId ? 'news' : 'clinical');
   const [medicineQuery, setMedicineQuery] = useState<string>('');
   // Back pe telefon închide ghidul sau știrea deschisă
   useBackToClose(selectedGuide !== null, () => setSelectedGuide(null));
@@ -91,8 +95,8 @@ export const GuideTab: React.FC<GuideTabProps> = ({ onOpenRedFlags }) => {
             {selectedNews.summary}
           </p>
           <div className="h-px bg-warmborder/60 dark:bg-darkbg-border my-5" />
-          <div className="text-[0.8125rem] text-ink dark:text-gray-200 leading-relaxed whitespace-pre-line">
-            {selectedNews.content}
+          <div className="text-[0.875rem]">
+            <RenderMarkdown content={selectedNews.content} />
           </div>
         </div>
       </div>
