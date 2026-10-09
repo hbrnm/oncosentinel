@@ -21,7 +21,8 @@ Deciziile proprietarei (2026-10-09):
 ### Etapa 1 (2026-10-09)
 - `src/lib/pillStock.ts` (prag, „Mai târziu” în localStorage `oncosentinel_stock_snooze_until`, texte); `DashboardTab.tsx` (cardul, fereastra, confirmarea `role="status"`); `App.tsx` (`handleAddPills`); `TreatmentTab.tsx` (rândul cu stocul). Numele medicamentului vine din profil.
 - Formulat de Claude după decizii: în Tratament, la 0 pastile, „Pastilele notate s-au terminat.”; la 1, „Mai ai o pastilă.”.
-- Test nou `pastile-se-termina.test.tsx`. `npm test` (238) și `npm run build` trec; verificat în aplicație la 390px (stocul 6 → 36, cardul dispare), fără overflow.
+- Test nou `pastile-se-termina.test.tsx`. `npm test` (241) și `npm run build` trec; verificat în aplicație la 390px (stocul 6 → 36, cardul dispare), fără overflow.
+- Agentul `verificare`: nimic blocant; reparate confirmarea doar după salvarea reușită, stocul lipsă dintr-un profil vechi (0, nu NaN, `safeStock`), confirmarea care dispare la următoarea doză și limita de 365 de pastile pe cutie.
 
 ## Următorul pas
 Planul 008 e încheiat. Lucrul următor: decizia proprietarei.

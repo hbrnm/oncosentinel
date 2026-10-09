@@ -2,6 +2,10 @@ import { plural } from './summary';
 
 // „Pastilele se termină” (planul 008): pragul și „Mai târziu” se țin pe dispozitiv
 export const LOW_STOCK = 7;
+export const MAX_BOX = 365;
+
+// Un profil vechi poate să nu aibă stocul: îl socotim 0, nu NaN
+export const safeStock = (stock: unknown) => (typeof stock === 'number' && Number.isFinite(stock) ? Math.max(0, stock) : 0);
 export const STOCK_SNOOZE_KEY = 'oncosentinel_stock_snooze_until';
 const SNOOZE_DAYS = 2;
 const DAY = 24 * 60 * 60 * 1000;
@@ -9,7 +13,7 @@ const DAY = 24 * 60 * 60 * 1000;
 export const shouldRemindStock = (stock: number, now: Date = new Date()) => {
   const until = Date.parse(localStorage.getItem(STOCK_SNOOZE_KEY) || '');
   if (!Number.isNaN(until) && until > now.getTime()) return false;
-  return stock <= LOW_STOCK;
+  return safeStock(stock) <= LOW_STOCK;
 };
 
 export const snoozeStockReminder = (now: Date = new Date()) => {

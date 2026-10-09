@@ -10,7 +10,7 @@ import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
 import { nextVictory, treatmentJourneyText } from '../lib/summary';
 import { shouldRemindBackup, lastBackupText, snoozeBackupReminder } from '../lib/backupReminder';
-import { shouldRemindStock, snoozeStockReminder, clearStockSnooze, lowStockText, addedPillsText } from '../lib/pillStock';
+import { shouldRemindStock, snoozeStockReminder, clearStockSnooze, lowStockText, addedPillsText, safeStock, MAX_BOX } from '../lib/pillStock';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 import { moodLevelFromState } from '../lib/mood';
@@ -28,8 +28,8 @@ interface DashboardTabProps {
   onOpenSupporter: () => void;
   onOpenHelp?: () => void;
   onOpenDataSafety?: () => void;
-  /** „Am o cutie nouă”: adaugă pastilele la stoc */
-  onAddPills?: (count: number) => void;
+  /** „Am o cutie nouă”: adaugă pastilele la stoc; false dacă salvarea n-a reușit */
+  onAddPills?: (count: number) => boolean;
   /** Starea aleasă aici se salvează ca nota de azi din Jurnal (treapta 1–5) */
   onSaveMood?: (level: number) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
@@ -109,18 +109,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const [newBoxCount, setNewBoxCount] = useState('30');
   const [stockMessage, setStockMessage] = useState<string | null>(null);
   useBackToClose(addingPills, () => setAddingPills(false));
-  const showStockReminder = !!onAddPills && shouldRemindStock(profile.pill_stock_count);
+  const stock = safeStock(profile.pill_stock_count);
+  const showStockReminder = !!onAddPills && shouldRemindStock(stock);
+  // Confirmarea dispare la următoarea doză marcată
+  useEffect(() => setStockMessage(null), [doses.length]);
   const handleSnoozeStock = () => {
     snoozeStockReminder();
     setStockSnoozed(n => n + 1);
   };
   const handleAddPills = (e: React.FormEvent) => {
     e.preventDefault();
-    const count = parseInt(newBoxCount, 10);
-    if (!onAddPills || !(count > 0)) return;
-    onAddPills(count);
+    const count = Number(newBoxCount);
+    if (!onAddPills || !Number.isInteger(count) || count < 1 || count > MAX_BOX) return;
+    if (!onAddPills(count)) return;
     clearStockSnooze();
-    setStockMessage(addedPillsText(count, Math.max(0, profile.pill_stock_count) + count));
+    setStockMessage(addedPillsText(count, stock + count));
     setAddingPills(false);
   };
   const handleThanksVictory = () => {
@@ -394,7 +397,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <div className="flex-1 min-w-0">
             <h2 className="micro-label text-sage-deep dark:text-sage-300">Pastilele se termină curând</h2>
             <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">
-              {lowStockText(profile.pill_stock_count, profile.medication_name || 'Tamoxifen')}
+              {lowStockText(stock, profile.medication_name || 'Tamoxifen')}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <button type="button" onClick={() => { setNewBoxCount('30'); setAddingPills(true); }} className="tap-scale px-4 py-2 rounded-xl bg-sage-deep text-white text-xs font-semibold">
@@ -425,6 +428,8 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               type="number"
               inputMode="numeric"
               min={1}
+              max={MAX_BOX}
+              step={1}
               value={newBoxCount}
               onChange={(e) => setNewBoxCount(e.target.value)}
               className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
