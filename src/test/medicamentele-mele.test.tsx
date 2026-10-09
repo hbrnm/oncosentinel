@@ -56,13 +56,28 @@ describe('Potrivirea cu lista aprobată', () => {
     expect(findInteraction('Trombostop 2 mg')?.levelLabel).toBe('Spune medicului');
     expect(findInteraction('Arimidex')?.substance).toMatch(/Anastrozol/);
     expect(findInteraction('Sinerdol 300')?.substance).toMatch(/Rifampicină/);
+    // din Nomenclatorul ANMDMR (08.10.26)
+    expect(findInteraction('Yasmin 0,03 mg/3 mg')?.substance).toMatch(/estrogen/);
+    expect(findInteraction('Ovestin crema')?.levelLabel).toBe('De evitat');
+    expect(findInteraction('Aromasin 25 mg')?.substance).toMatch(/inhibitori de aromatază/);
+    expect(findInteraction('Exemestan Accord')?.substance).toMatch(/inhibitori de aromatază/);
+    expect(findInteraction('Arketis')?.levelLabel).toBe('De evitat');
+    expect(findInteraction('MDT-Combi')?.substance).toMatch(/Rifampicină/);
+    // doar progestativ: nu e un medicament cu estrogen
+    expect(findInteraction('Cerazette')).toBeUndefined();
+    // numele comerciale doar de la început de cuvânt
+    expect(findInteraction('Mayazol')).toBeUndefined();
+    expect(findInteraction('Diane 35')?.substance).toMatch(/estrogen/);
+    // soluția de dializă Dianeal nu e Diane-35
+    expect(findInteraction('Dianeal PD4')).toBeUndefined();
+    expect(findInteraction('TRI - REGOL')?.substance).toMatch(/estrogen/);
     expect(findInteraction('Etinilestradiol')?.substance).toMatch(/estrogen/);
     expect(findInteraction('comprimate contraceptive')?.substance).toMatch(/estrogen/);
   });
 
   it('fiecare nume comercial aprobat duce la substanța lui, și în căutarea din Ghiduri', () => {
     const brands = INTERACTIONS_DB.flatMap(item => (item.brands || []).map(brand => ({ brand, item })));
-    expect(brands).toHaveLength(17);
+    expect(brands).toHaveLength(57);
     for (const { brand, item } of brands) {
       expect(findInteraction(brand.toUpperCase())).toBe(item);
       expect(searchInteractions(brand)).toContain(item);
@@ -75,7 +90,7 @@ describe('Potrivirea cu lista aprobată', () => {
   });
 
   it('cuvintele de potrivire vin din numele aprobat al substanței sau sunt aprobate separat', () => {
-    const approvedExtra = ['estradiol', 'contraceptiv']; // proprietara, 2026-10-09
+    const approvedExtra = ['estradiol', 'contraceptiv', 'exemestan']; // proprietara, 2026-10-09
     for (const item of INTERACTIONS_DB) {
       expect(item.match.length).toBeGreaterThan(0);
       const words = normalizeName(item.substance);

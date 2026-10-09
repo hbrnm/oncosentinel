@@ -19,6 +19,7 @@ Deciziile proprietarei (2026-10-09):
 | 1 | Lista „Medicamentele mele” în Tratament, comparată cu substanțele din lista aprobată, în „Pentru medic”, în PDF și în copie; „Arată farmacistului” | gata | ramura claude/plan-007 |
 | 2a | Cuvinte în plus la estrogen („estradiol”, „contraceptiv”) | gata | ramura claude/plan-007-etapa2 |
 | 2b | Numele comerciale: lista aprobată de proprietară, legată de substanțele din `interactions.ts` | gata | ramura claude/plan-007-etapa2b |
+| 2c | Numele comerciale din Nomenclatorul ANMDMR (fișierul trimis de proprietară) | gata | ramura claude/plan-007-nomenclator |
 
 ## Etapa 1 — de decis la început (un singur chestionar)
 - Câmpurile: nume (obligatoriu), doză, când se ia (text liber sau alegeri), pentru ce, cine l-a prescris?
@@ -49,5 +50,12 @@ Deciziile proprietarei (2026-10-09):
 - `brands` pe `DrugInteraction`; `findInteraction` și căutarea din Ghiduri → Medicamente le folosesc. Lista rămâne incompletă; textul „Lista nu e completă” rămâne.
 - `npm test` (231) și `npm run build` trec. Agentul `verificare`: nimic blocant; adăugate căutarea în Ghiduri și testul pentru toate numele.
 
+### Etapa 2c (2026-10-09)
+- Proprietara a trimis Nomenclatorul ANMDMR (xlsx, 32.690 de rânduri, actualizat 08.10.26). Prozac, Magrilan și Zyban nu mai sunt în el; rămân în listă (decizia proprietarei). Warfarina nu are produs autorizat; sunătoarea și soia nu sunt în Nomenclator.
+- Aprobate de proprietară: Arketis, Mysimba (naltrexonă + bupropion), Anastelb, MDT-Combi; exemestan (cuvânt + Aromasin, Memelin, Xanepra); toate cele 33 de produse cu estrogen, inclusiv estriol vaginal (Ovestin, Viviflor); fără cele doar cu progestativ.
+- Numele comerciale se potrivesc doar de la început de cuvânt (cratima contează ca spațiu), ca „yaz” să nu prindă alt text; 57 de nume în total.
+- Verificat pe tot Nomenclatorul: fiecare produs cu una dintre substanțe e recunoscut și niciun alt produs nu primește avertisment (reparat „Diane” care prindea soluția de dializă Dianeal).
+- `npm test` (231) și `npm run build` trec. Agentul `verificare`: nimic blocant; adăugate potrivirea la început de cuvânt și numărul exact de nume în test.
+
 ## Următorul pas
-Planul 007 e încheiat. Lista de nume comerciale se poate completa din Nomenclatorul ANMDMR dacă accesul la `nomenclator.anm.ro` devine posibil (de pe un calculator).
+Planul 007 e încheiat. La o versiune nouă a Nomenclatorului se poate reface verificarea (produse noi pentru substanțele din `INTERACTIONS_DB`).
