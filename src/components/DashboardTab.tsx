@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import {
-  Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart, ShieldCheck
+  Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart, ShieldCheck, Pill
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
@@ -10,6 +10,7 @@ import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
 import { nextVictory, treatmentJourneyText } from '../lib/summary';
 import { shouldRemindBackup, lastBackupText, snoozeBackupReminder } from '../lib/backupReminder';
+import { shouldRemindStock, snoozeStockReminder, clearStockSnooze, lowStockText, addedPillsText, safeStock, MAX_BOX } from '../lib/pillStock';
 import { AppointmentBanner } from './AppointmentBanner';
 import { getMindfulQuoteForHour } from '../data/quotes';
 import { moodLevelFromState } from '../lib/mood';
@@ -27,6 +28,8 @@ interface DashboardTabProps {
   onOpenSupporter: () => void;
   onOpenHelp?: () => void;
   onOpenDataSafety?: () => void;
+  /** „Am o cutie nouă”: adaugă pastilele la stoc; false dacă salvarea n-a reușit */
+  onAddPills?: (count: number) => boolean;
   /** Starea aleasă aici se salvează ca nota de azi din Jurnal (treapta 1–5) */
   onSaveMood?: (level: number) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
@@ -46,6 +49,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenSupporter,
   onOpenHelp,
   onOpenDataSafety,
+  onAddPills,
   onSaveMood,
   onNavigateToTab
 }) => {
@@ -97,6 +101,30 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   const handleSnoozeBackup = () => {
     snoozeBackupReminder();
     setBackupSnoozed(n => n + 1);
+  };
+
+  // Pastilele se termină: cardul apare la 7 pastile sau mai puțin; „Mai târziu” îl ascunde 2 zile
+  const [, setStockSnoozed] = useState(0);
+  const [addingPills, setAddingPills] = useState(false);
+  const [newBoxCount, setNewBoxCount] = useState('30');
+  const [stockMessage, setStockMessage] = useState<string | null>(null);
+  useBackToClose(addingPills, () => setAddingPills(false));
+  const stock = safeStock(profile.pill_stock_count);
+  const showStockReminder = !!onAddPills && shouldRemindStock(stock);
+  // Confirmarea dispare la următoarea doză marcată
+  useEffect(() => setStockMessage(null), [doses.length]);
+  const handleSnoozeStock = () => {
+    snoozeStockReminder();
+    setStockSnoozed(n => n + 1);
+  };
+  const handleAddPills = (e: React.FormEvent) => {
+    e.preventDefault();
+    const count = Number(newBoxCount);
+    if (!onAddPills || !Number.isInteger(count) || count < 1 || count > MAX_BOX) return;
+    if (!onAddPills(count)) return;
+    clearStockSnooze();
+    setStockMessage(addedPillsText(count, stock + count));
+    setAddingPills(false);
   };
   const handleThanksVictory = () => {
     if (!victory) return;
@@ -361,6 +389,62 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             </div>
           </div>
         </section>
+      )}
+
+      {showStockReminder && (
+        <section aria-label="Pastilele se termină curând" className="rounded-[28px] p-5 bg-sage-soft dark:bg-sage-900/30 border border-sage-200/80 dark:border-sage-800/40 flex items-start gap-3">
+          <Pill className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" aria-hidden="true" />
+          <div className="flex-1 min-w-0">
+            <h2 className="micro-label text-sage-deep dark:text-sage-300">Pastilele se termină curând</h2>
+            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">
+              {lowStockText(stock, profile.medication_name || 'Tamoxifen')}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button type="button" onClick={() => { setNewBoxCount('30'); setAddingPills(true); }} className="tap-scale px-4 py-2 rounded-xl bg-sage-deep text-white text-xs font-semibold">
+                Am o cutie nouă
+              </button>
+              <button type="button" onClick={handleSnoozeStock} className="tap-scale px-4 py-2 rounded-xl border border-sage-200 dark:border-sage-800/60 text-sage-deep dark:text-sage-300 text-xs font-semibold">
+                Mai târziu
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {stockMessage && (
+        <p role="status" className="rounded-2xl px-4 py-3 bg-sage-soft dark:bg-sage-900/30 text-[13px] text-sage-deep dark:text-sage-300 font-medium flex items-center gap-2">
+          <Check className="w-4 h-4 shrink-0" aria-hidden="true" /> {stockMessage}
+        </p>
+      )}
+
+      {addingPills && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+          <form role="dialog" aria-labelledby="new-box-title" onSubmit={handleAddPills} className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
+            <label id="new-box-title" htmlFor="new-box-count" className="block font-serif text-lg text-ink dark:text-white mb-3">
+              Câte pastile are cutia nouă?
+            </label>
+            <input
+              id="new-box-count"
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={MAX_BOX}
+              step={1}
+              value={newBoxCount}
+              onChange={(e) => setNewBoxCount(e.target.value)}
+              className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+              required
+            />
+            <div className="flex items-center justify-end gap-2 mt-4">
+              <button type="button" onClick={() => setAddingPills(false)} className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card">
+                Anulează
+              </button>
+              <button type="submit" className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs">
+                Adaugă
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
       {victory && (

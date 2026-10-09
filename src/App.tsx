@@ -20,6 +20,7 @@ import { SupporterModal } from './components/SupporterModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { storageService } from './lib/supabase';
 import { setNextControlDate } from './lib/appointments';
+import { safeStock } from './lib/pillStock';
 import { moodStateFromLevel } from './lib/mood';
 import { localDay } from './lib/summary';
 import { startBackNavigation, pushScreen, useBackToClose } from './lib/backNavigation';
@@ -111,9 +112,17 @@ export function App() {
     // Update pill stock count
     const updatedProfile = {
       ...profile,
-      pill_stock_count: Math.max(0, profile.pill_stock_count - 1)
+      pill_stock_count: Math.max(0, safeStock(profile.pill_stock_count) - 1)
     };
     if (storageService.saveProfile(updatedProfile)) setProfile(updatedProfile);
+  };
+
+  // „Am o cutie nouă” de pe Astăzi: pastilele se adaugă la stoc
+  const handleAddPills = (count: number) => {
+    const updated = { ...profile, pill_stock_count: safeStock(profile.pill_stock_count) + count };
+    if (!storageService.saveProfile(updated)) return false;
+    setProfile(updated);
+    return true;
   };
 
   const handleAddSymptomLog = (logData: Omit<SymptomLog, 'id'>) => {
@@ -252,6 +261,7 @@ export function App() {
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
               onOpenDataSafety={() => setIsAuthOpen(true)}
+              onAddPills={handleAddPills}
               onSaveMood={handleSaveTodayMood}
               onNavigateToTab={(tab) => {
                 goToTab(tab);
