@@ -141,7 +141,8 @@ body {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s ease-out forwards;
+  /* Fără „forwards”: un transform rămas pe tab ar ține ferestrele „fixed” din el în tab, nu pe ecran */
+  animation: fadeIn 0.25s ease-out;
 }
 
 ::-webkit-scrollbar {

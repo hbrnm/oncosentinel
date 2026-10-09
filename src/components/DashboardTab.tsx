@@ -418,7 +418,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       )}
 
       {addingPills && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <form role="dialog" aria-labelledby="new-box-title" onSubmit={handleAddPills} className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
             <label id="new-box-title" htmlFor="new-box-count" className="block font-serif text-lg text-ink dark:text-white mb-3">
               Câte pastile are cutia nouă?
@@ -784,7 +784,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {showPhotoModal && profile.avatar_url && (
         <div 
           onClick={() => setShowPhotoModal(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in"
         >
           <div 
             onClick={(e) => e.stopPropagation()}

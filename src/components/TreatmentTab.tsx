@@ -475,7 +475,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
       {/* Modal Editare Tratament */}
       {editing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
           <div className="bg-white dark:bg-darkbg-surface w-full max-w-sm rounded-3xl p-5 border border-sage-200 dark:border-darkbg-border shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-warmborder dark:border-darkbg-border mb-4">
               <h3 className="font-serif text-lg font-normal text-ink dark:text-white">
