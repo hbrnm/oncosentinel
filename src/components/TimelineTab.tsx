@@ -109,15 +109,15 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
         {/* Receptor status badges */}
         <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-sage-100/80 dark:border-darkbg-border">
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-ink-soft block">Receptor ER</span>
+            <span className="text-[0.625rem] text-ink-soft block">Receptor ER</span>
             <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.er_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-ink-soft block">Receptor PR</span>
+            <span className="text-[0.625rem] text-ink-soft block">Receptor PR</span>
             <span className="text-xs font-bold text-sage-700 dark:text-sage-300">{profile.pr_status || '—'}</span>
           </div>
           <div className="p-2 rounded-xl bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-center">
-            <span className="text-[10px] text-ink-soft block">Status HER2</span>
+            <span className="text-[0.625rem] text-ink-soft block">Status HER2</span>
             <span className="text-xs font-bold text-ink dark:text-gray-300">{profile.her2_status || '—'}</span>
           </div>
         </div>
@@ -163,10 +163,10 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                   className="bg-cream/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border hover:border-sage-200 transition-all"
                 >
                   <div className="flex items-center justify-between">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${badge.color}`}>
+                    <span className={`text-[0.625rem] font-bold px-2 py-0.5 rounded-lg ${badge.color}`}>
                       {badge.label}
                     </span>
-                    <span className="text-[11px] text-ink-soft flex items-center gap-1">
+                    <span className="text-[0.6875rem] text-ink-soft flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {new Date(m.event_date).toLocaleDateString('ro-RO', { month: 'short', year: 'numeric' })}
                     </span>
@@ -192,7 +192,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                   {isExpanded && (
                     <div className="mt-3 pt-3 border-t border-warmborder/60 dark:border-darkbg-border space-y-1.5 animate-fade-in">
                       {Object.entries(m.key_details).map(([key, value]) => (
-                        <div key={key} className="flex justify-between text-[11px]">
+                        <div key={key} className="flex justify-between text-[0.6875rem]">
                           <span className="text-ink-soft">{key}:</span>
                           <span className="font-medium text-ink dark:text-gray-200">{value}</span>
                         </div>
@@ -200,13 +200,13 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                       <div className="flex justify-end gap-3 pt-1">
                         <button
                           onClick={(e) => { e.stopPropagation(); setEditingMilestone(m); }}
-                          className="text-[11px] font-semibold text-sage-700 dark:text-sage-300 flex items-center gap-1 hover:underline"
+                          className="text-[0.6875rem] font-semibold text-sage-700 dark:text-sage-300 flex items-center gap-1 hover:underline"
                         >
                           <Edit3 className="w-3 h-3" /> Modifică
                         </button>
                         <button
                           onClick={(e) => { e.stopPropagation(); handleDeleteMilestone(m); }}
-                          className="text-[11px] font-semibold text-rose-600 flex items-center gap-1 hover:underline"
+                          className="text-[0.6875rem] font-semibold text-rose-600 flex items-center gap-1 hover:underline"
                         >
                           <Trash2 className="w-3 h-3" /> Șterge
                         </button>
@@ -231,7 +231,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
               <h3 className="text-sm font-bold text-ink dark:text-white">
                 Seif Documente Medicale
               </h3>
-              <p className="text-[11px] text-ink-soft">Stocare privată și securizată pe dispozitivul tău</p>
+              <p className="text-[0.6875rem] text-ink-soft">Stocare privată și securizată pe dispozitivul tău</p>
             </div>
           </div>
 
@@ -250,7 +250,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
             <div className="text-center py-6 px-4 bg-cream/50 dark:bg-darkbg-card/50 rounded-2xl border border-dashed border-warmborder dark:border-darkbg-border">
               <FileText className="w-8 h-8 text-ink-soft/50 dark:text-gray-600 mx-auto mb-2" />
               <p className="text-xs font-semibold text-ink dark:text-gray-300">Nu ai încărcat niciun document</p>
-              <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-0.5">
+              <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mt-0.5">
                 Apasă butonul „Încarcă PDF” de mai sus pentru a salva primul bilet de ieșire, mamografie sau raport histopatologic.
               </p>
             </div>
@@ -274,12 +274,12 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                         {doc.file_name}
                       </p>
                       {doc.is_demo && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
+                        <span className="text-[0.5625rem] font-bold px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
                           Demo
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] text-ink-soft">
+                    <p className="text-[0.625rem] text-ink-soft">
                       {new Date(doc.uploaded_at).toLocaleDateString('ro-RO')} • {Math.round((doc.file_size_bytes || 200000) / 1024)} KB
                     </p>
                   </div>
@@ -339,7 +339,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
             <h3 className="text-sm font-bold text-ink dark:text-white mb-1">
               Încarcă Document Medical Propriu
             </h3>
-            <p className="text-[11px] text-ink-soft mb-3">
+            <p className="text-[0.6875rem] text-ink-soft mb-3">
               Documentele sunt salvate doar pe acest dispozitiv.
             </p>
             <form onSubmit={handleUploadFile} className="space-y-3">

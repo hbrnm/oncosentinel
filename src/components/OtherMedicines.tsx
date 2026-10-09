@@ -10,8 +10,8 @@ interface OtherMedicinesProps {
   treatmentLine: string;
 }
 
-const inputClass = 'w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage';
-const labelClass = 'block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1';
+const inputClass = 'w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage';
+const labelClass = 'block text-[0.75rem] font-semibold text-ink-soft dark:text-gray-300 mb-1';
 
 // „Medicamentele mele” (planul 007): celelalte medicamente, doar notate, comparate cu lista aprobată de interacțiuni
 export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine }) => {
@@ -59,7 +59,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
       <h2 id="other-medicines-title" className="micro-label mb-2">Alte medicamente pe care le iau</h2>
 
       {medicines.length === 0 ? (
-        <p className="text-[13px] text-ink-soft dark:text-gray-300 leading-relaxed">
+        <p className="text-[0.8125rem] text-ink-soft dark:text-gray-300 leading-relaxed">
           Nu ai notat alte medicamente. Adaugă-le aici, ca să le ai la îndemână la medic și la farmacie.
         </p>
       ) : (
@@ -70,11 +70,11 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
               <li key={m.id} className="rounded-2xl bg-white/70 dark:bg-darkbg-card/70 border border-warmborder dark:border-darkbg-border p-3.5">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[14px] font-semibold text-ink dark:text-white break-words">
+                    <p className="text-[0.875rem] font-semibold text-ink dark:text-white break-words">
                       {[m.name, m.dose].filter(Boolean).join(' ')}
                     </p>
                     {(m.when || m.reason) && (
-                      <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 break-words">
+                      <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5 break-words">
                         {[m.when, m.reason].filter(Boolean).join(' · ')}
                       </p>
                     )}
@@ -92,17 +92,17 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
 
                 {match ? (
                   <div className="mt-2.5 pt-2.5 border-t border-warmborder dark:border-darkbg-border">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${match.level === 'avoid' ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300' : 'bg-blush text-ink dark:bg-petal-950/40 dark:text-petal-200'}`}>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.625rem] font-bold uppercase tracking-wide ${match.level === 'avoid' ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300' : 'bg-blush text-ink dark:bg-petal-950/40 dark:text-petal-200'}`}>
                       {match.level === 'avoid' ? <Ban className="w-3 h-3" aria-hidden="true" /> : <MessageCircle className="w-3 h-3" aria-hidden="true" />}
                       {match.levelLabel}
                     </span>
-                    <p className="text-[13px] text-ink dark:text-gray-200 mt-1.5 leading-relaxed">{match.advice}</p>
-                    <p className="text-[13px] text-ink dark:text-gray-200 mt-1 leading-relaxed font-medium">
+                    <p className="text-[0.8125rem] text-ink dark:text-gray-200 mt-1.5 leading-relaxed">{match.advice}</p>
+                    <p className="text-[0.8125rem] text-ink dark:text-gray-200 mt-1 leading-relaxed font-medium">
                       Vorbește cu medicul înainte să schimbi ceva.
                     </p>
                   </div>
                 ) : (
-                  <p className="mt-2.5 pt-2.5 border-t border-warmborder dark:border-darkbg-border text-[12px] text-ink-soft dark:text-gray-400 leading-relaxed flex gap-1.5">
+                  <p className="mt-2.5 pt-2.5 border-t border-warmborder dark:border-darkbg-border text-[0.75rem] text-ink-soft dark:text-gray-400 leading-relaxed flex gap-1.5">
                     <Info className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden="true" />
                     <span>Nu e în lista noastră scurtă de interacțiuni cu tamoxifenul. Lista nu e completă: întreabă farmacistul sau medicul.</span>
                   </p>
@@ -117,7 +117,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
         <button
           type="button"
           onClick={openForm}
-          className="tap-scale px-4 py-2.5 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
+          className="tap-scale px-4 py-2.5 rounded-xl text-[0.8125rem] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
         >
           <Plus className="w-4 h-4" aria-hidden="true" /> Adaugă un medicament
         </button>
@@ -125,7 +125,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
           <button
             type="button"
             onClick={() => setShowPharmacist(true)}
-            className="tap-scale px-4 py-2.5 rounded-xl text-[13px] font-semibold bg-white/70 dark:bg-darkbg-card/70 text-sage-deep dark:text-sage-300 border border-sage-200 dark:border-sage-800 transition-colors cursor-pointer flex items-center gap-1.5"
+            className="tap-scale px-4 py-2.5 rounded-xl text-[0.8125rem] font-semibold bg-white/70 dark:bg-darkbg-card/70 text-sage-deep dark:text-sage-300 border border-sage-200 dark:border-sage-800 transition-colors cursor-pointer flex items-center gap-1.5"
           >
             <Store className="w-4 h-4" aria-hidden="true" /> Arată farmacistului
           </button>
@@ -171,13 +171,13 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
                 <button
                   type="button"
                   onClick={() => setAdding(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-[0.8125rem] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 >
                   Anulează
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-xl text-[0.8125rem] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer"
                 >
                   Salvează
                 </button>
@@ -200,7 +200,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="space-y-4 text-[20px] leading-snug text-ink dark:text-white font-serif break-words">
+            <div className="space-y-4 text-[1.25rem] leading-snug text-ink dark:text-white font-serif break-words">
               <p>Iau {treatmentLine}.</p>
               <p>Iau și: {medicines.map(m => medicineLabel(m, false)).join(', ')}.</p>
               <p>Pot lua aceste medicamente împreună?</p>

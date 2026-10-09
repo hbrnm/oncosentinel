@@ -69,7 +69,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
           <span className={`flex items-center justify-center w-12 h-12 rounded-2xl ${tint} transition-transform`}>
             <Icon className="w-5 h-5" strokeWidth={2} />
           </span>
-          <span className="text-[10.5px] font-semibold text-ink dark:text-white leading-tight text-center">
+          <span className="text-[0.65625rem] font-semibold text-ink dark:text-white leading-tight text-center">
             {label1}
             <br />
             {label2}

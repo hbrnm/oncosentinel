@@ -212,7 +212,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
               <h2 className="font-serif text-lg font-bold text-ink dark:text-white leading-tight">
                 Controale Medicale
               </h2>
-              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5">
+              <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5">
                 Programările tale și întrebările pentru medic
               </p>
             </div>
@@ -250,7 +250,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 <h4 className="font-serif text-xs font-bold text-ink dark:text-white">Adaugă control nou</h4>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Data:</label>
+                    <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Data:</label>
                     <input
                       type="date"
                       value={apptForm.date}
@@ -260,7 +260,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Ora:</label>
+                    <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Ora:</label>
                     <input
                       type="time"
                       value={apptForm.time}
@@ -271,7 +271,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Specialitate:</label>
+                    <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Specialitate:</label>
                     <input
                       type="text"
                       placeholder="ex: Oncologie"
@@ -281,7 +281,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Medic:</label>
+                    <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Medic:</label>
                     <input
                       type="text"
                       placeholder="ex: Dr. Maria Popescu"
@@ -292,7 +292,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Centru / Spital:</label>
+                  <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">Centru / Spital:</label>
                   <input
                     type="text"
                     placeholder="ex: Institutul Oncologic"
@@ -351,10 +351,10 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
               <div className="space-y-2.5">
                 {upcomingAppts.length === 0 ? (
                   <div className="p-4 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/50 border border-dashed border-warmborder dark:border-darkbg-border text-center">
-                    <p className="text-[13px] text-ink-soft dark:text-gray-400">
+                    <p className="text-[0.8125rem] text-ink-soft dark:text-gray-400">
                       Niciun control viitor.
                     </p>
-                    <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
+                    <p className="text-[0.6875rem] text-ink-soft dark:text-gray-500 mt-1">
                       Apasă pe butonul + de mai sus pentru a adăuga următoarea programare.
                     </p>
                   </div>
@@ -369,7 +369,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                       <div key={a.id} className="p-3.5 rounded-2xl bg-cream-deep/60 dark:bg-darkbg-surface/50 border border-warmborder/60 dark:border-darkbg-border space-y-3">
                         <div className="flex items-start gap-3">
                           <div className="shrink-0 w-12 h-12 rounded-2xl bg-white dark:bg-darkbg-card flex flex-col items-center justify-center shadow-xs">
-                            <span className="text-[9.5px] text-ink-soft dark:text-gray-400 font-bold uppercase tracking-tight">
+                            <span className="text-[0.59375rem] text-ink-soft dark:text-gray-400 font-bold uppercase tracking-tight">
                               {monthName}
                             </span>
                             <span className="font-serif text-lg text-sage-deep dark:text-sage-300 font-bold leading-none mt-0.5">
@@ -378,15 +378,15 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <p className="text-[13px] font-semibold text-ink dark:text-white leading-tight">
+                            <p className="text-[0.8125rem] font-semibold text-ink dark:text-white leading-tight">
                               {a.specialty}
                             </p>
                             {a.doctor && (
-                              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 font-medium">
+                              <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5 font-medium">
                                 {a.doctor}
                               </p>
                             )}
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[11px] text-ink-soft dark:text-gray-400">
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 text-[0.6875rem] text-ink-soft dark:text-gray-400">
                               {a.time && (
                                 <span className="inline-flex items-center gap-1">
                                   <Clock className="w-3 h-3 text-sage-light" /> {a.time}
@@ -403,7 +403,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
                           <div className="flex flex-col items-end gap-1.5 shrink-0">
                             {d !== null && d >= 0 && (
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                              <span className={`px-2 py-0.5 rounded-full text-[0.625rem] font-semibold ${
                                 d === 0
                                   ? 'bg-petal-200 text-petal-700 dark:bg-rose-950/60 dark:text-rose-300 font-bold'
                                   : d === 1
@@ -425,12 +425,12 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
                         {/* Butoane de marcare respectare control */}
                         <div className="pt-2 border-t border-warmborder/60 dark:border-darkbg-border flex items-center justify-between gap-2">
-                          <span className="text-[10.5px] text-ink-soft dark:text-gray-400 font-medium">Ai fost la control?</span>
+                          <span className="text-[0.65625rem] text-ink-soft dark:text-gray-400 font-medium">Ai fost la control?</span>
                           <div className="flex items-center gap-1.5">
                             <button
                               type="button"
                               onClick={() => handleMarkCompleted(a.id)}
-                              className="tap-scale px-2.5 py-1 rounded-xl bg-sage hover:bg-sage-deep text-white text-[11px] font-semibold flex items-center gap-1 cursor-pointer shadow-xs transition-colors"
+                              className="tap-scale px-2.5 py-1 rounded-xl bg-sage hover:bg-sage-deep text-white text-[0.6875rem] font-semibold flex items-center gap-1 cursor-pointer shadow-xs transition-colors"
                               title="Marchează ca efectuat"
                             >
                               <Check className="w-3 h-3" /> Am fost
@@ -438,7 +438,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                             <button
                               type="button"
                               onClick={() => handleMarkMissed(a.id)}
-                              className="tap-scale px-2.5 py-1 rounded-xl bg-cream-deep dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-ink-soft hover:text-rose-600 dark:text-gray-300 text-[11px] font-semibold flex items-center gap-1 cursor-pointer border border-warmborder dark:border-darkbg-border transition-colors"
+                              className="tap-scale px-2.5 py-1 rounded-xl bg-cream-deep dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-ink-soft hover:text-rose-600 dark:text-gray-300 text-[0.6875rem] font-semibold flex items-center gap-1 cursor-pointer border border-warmborder dark:border-darkbg-border transition-colors"
                               title="Marchează ca ratat"
                             >
                               <XCircle className="w-3 h-3" /> Nu am ajuns
@@ -457,10 +457,10 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
               <div className="space-y-2.5">
                 {historyAppts.length === 0 ? (
                   <div className="p-4 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/50 border border-dashed border-warmborder dark:border-darkbg-border text-center">
-                    <p className="text-[13px] text-ink-soft dark:text-gray-400">
+                    <p className="text-[0.8125rem] text-ink-soft dark:text-gray-400">
                       Nu există încă controale în istoric.
                     </p>
-                    <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
+                    <p className="text-[0.6875rem] text-ink-soft dark:text-gray-500 mt-1">
                       Când marchezi o programare ca efectuată sau ratată, va fi salvată aici.
                     </p>
                   </div>
@@ -476,7 +476,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                       <div key={a.id} className="p-3 rounded-2xl bg-cream-deep/50 dark:bg-darkbg-surface/40 border border-warmborder/60 dark:border-darkbg-border flex items-center justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold flex items-center gap-1 ${
+                            <span className={`px-2 py-0.5 rounded-full text-[0.625rem] font-semibold flex items-center gap-1 ${
                               isCompleted
                                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
                                 : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300'
@@ -484,16 +484,16 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                               {isCompleted ? <Check className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
                               {isCompleted ? 'Efectuat' : 'Neefectuat'}
                             </span>
-                            <span className="text-[11px] text-ink-soft dark:text-gray-400 font-medium">
+                            <span className="text-[0.6875rem] text-ink-soft dark:text-gray-400 font-medium">
                               {formattedDate}
                             </span>
                           </div>
 
-                          <p className="text-[13px] font-semibold text-ink dark:text-white mt-1">
+                          <p className="text-[0.8125rem] font-semibold text-ink dark:text-white mt-1">
                             {a.specialty}
                           </p>
                           {(a.doctor || a.center) && (
-                            <p className="text-[11.5px] text-ink-soft dark:text-gray-400 mt-0.5">
+                            <p className="text-[0.71875rem] text-ink-soft dark:text-gray-400 mt-0.5">
                               {a.doctor ? `${a.doctor} • ` : ''}{a.center || ''}
                             </p>
                           )}
@@ -503,7 +503,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRestoreUpcoming(a.id)}
-                            className="text-[11px] text-sage-deep dark:text-sage-300 hover:underline px-2 py-1 cursor-pointer font-medium"
+                            className="text-[0.6875rem] text-sage-deep dark:text-sage-300 hover:underline px-2 py-1 cursor-pointer font-medium"
                             title="Mută înapoi la programări viitoare"
                           >
                             Reactivează
@@ -532,7 +532,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                 <p className="micro-label">ÎNTREBĂRI PENTRU MEDIC</p>
               </div>
               {questions.length > 0 && (
-                <span className="text-[11px] font-semibold text-sage-deep dark:text-sage-300">
+                <span className="text-[0.6875rem] font-semibold text-sage-deep dark:text-sage-300">
                   {answeredCount} din {questions.length} lămurite
                 </span>
               )}
@@ -563,7 +563,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                   <p className="text-xs text-ink-soft dark:text-gray-400">
                     Nu ai adăugat încă întrebări pentru medic.
                   </p>
-                  <p className="text-[11px] text-ink-soft dark:text-gray-500 mt-1">
+                  <p className="text-[0.6875rem] text-ink-soft dark:text-gray-500 mt-1">
                     Notează aici tot ce vrei să discuți la următoarea consultație (efecte secundare, analize etc.).
                   </p>
                 </div>
@@ -632,24 +632,24 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                       type="button"
                       aria-pressed={fromLastControl === option.value}
                       onClick={() => setFromLastControl(option.value)}
-                      className={`tap-scale py-2 px-2 rounded-xl text-[12px] font-semibold ${fromLastControl === option.value ? 'bg-sage-deep text-white' : 'text-ink dark:text-gray-200'}`}
+                      className={`tap-scale py-2 px-2 rounded-xl text-[0.75rem] font-semibold ${fromLastControl === option.value ? 'bg-sage-deep text-white' : 'text-ink dark:text-gray-200'}`}
                     >
                       {option.label}
                     </button>
                   ))}
                 </div>
               ) : null}
-              <p className="text-[12px] text-ink-soft dark:text-gray-400">
+              <p className="text-[0.75rem] text-ink-soft dark:text-gray-400">
                 {since
                   ? `Ce ai notat de la controlul din ${controlDateLabel(since)} (${plural(forDoctor.days, 'zi', 'zile')}). Poți arăta ecranul sau descărca raportul.`
                   : 'Ce ai notat în ultimele 4 săptămâni. Poți arăta ecranul sau descărca raportul.'}
               </p>
               {!lastControl && (
-                <p className="text-[11px] text-ink-soft dark:text-gray-400">
+                <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400">
                   După primul control trecut în „Controale medicale”, vei putea alege și perioada de la ultimul control.
                 </p>
               )}
-              <ul className="space-y-1.5 text-[13px] text-ink dark:text-gray-100">
+              <ul className="space-y-1.5 text-[0.8125rem] text-ink dark:text-gray-100">
                 <li>Doza marcată ca luată: {forDoctor.doses.taken} din {plural(forDoctor.doses.total, 'zi', 'zile')}.</li>
                 <li>Note în jurnal: {forDoctor.notes}.</li>
                 {forDoctor.mood && (
@@ -677,7 +677,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
               >
                 <FileDown className="w-4 h-4" /> Descarcă raportul PDF
               </button>
-              <p className="text-[11px] text-ink-soft dark:text-gray-400 italic">Datele sunt cele notate de tine; o zi nemarcată nu înseamnă neapărat doză omisă.</p>
+              <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 italic">Datele sunt cele notate de tine; o zi nemarcată nu înseamnă neapărat doză omisă.</p>
             </section>
           )}
 
@@ -685,7 +685,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
         {/* Footer */}
         <div className="p-4 bg-white/70 dark:bg-darkbg-card border-t border-warmborder dark:border-darkbg-border flex justify-between items-center text-xs text-ink-soft dark:text-gray-400">
-          <span className="text-[11px]">Se salvează automat în telefon.</span>
+          <span className="text-[0.6875rem]">Se salvează automat în telefon.</span>
           <button
             onClick={onClose}
             className="tap-scale px-4 py-2 rounded-xl bg-sage hover:bg-sage-deep text-white font-semibold text-xs cursor-pointer shadow-xs transition-colors"

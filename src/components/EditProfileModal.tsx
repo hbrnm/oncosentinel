@@ -83,7 +83,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               <h3 className="text-sm font-bold text-ink dark:text-white">
                 Date Pacientă & Situație Medicală
               </h3>
-              <p className="text-[11px] text-ink-soft dark:text-gray-400">
+              <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400">
                 Configurează datele tale reale și situația clinică
               </p>
             </div>
@@ -99,7 +99,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 1. Date Personale */}
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block">
+            <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block">
               Nume și prenume:
             </label>
             <div className="relative">
@@ -116,7 +116,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
           {/* Adresa ta de E-mail */}
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block">
+            <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block">
               Adresa ta de e-mail:
             </label>
             <div className="relative">
@@ -134,13 +134,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           {/* 2. Situație Clinică & Diagnostic */}
           <div className="p-3.5 rounded-2xl bg-cream-deep/60 dark:bg-darkbg-card/60 border border-sage-100 dark:border-darkbg-border space-y-3">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-sage-800 dark:text-sage-300">
+              <span className="text-[0.6875rem] font-bold uppercase tracking-wider text-sage-800 dark:text-sage-300">
                 Situație Clinică & Diagnostic
               </span>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block">
+              <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block">
                 Diagnostic / Histopatologie:
               </label>
               <input
@@ -153,7 +153,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block">
+              <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block">
                 Stadiu clinic:
               </label>
               <input
@@ -168,7 +168,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             {/* Receptori hormonali */}
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
+                <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Receptor ER:
                 </label>
                 <input
@@ -176,11 +176,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={erStatus}
                   onChange={(e) => setErStatus(e.target.value)}
                   placeholder="ex: Pozitiv (>90%)"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[0.6875rem] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
+                <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Receptor PR:
                 </label>
                 <input
@@ -188,11 +188,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={prStatus}
                   onChange={(e) => setPrStatus(e.target.value)}
                   placeholder="ex: Pozitiv (>80%)"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[0.6875rem] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
+                <label className="text-[0.625rem] font-semibold text-ink-soft dark:text-gray-400 block mb-0.5">
                   Status HER2:
                 </label>
                 <input
@@ -200,7 +200,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                   value={her2Status}
                   onChange={(e) => setHer2Status(e.target.value)}
                   placeholder="ex: Negativ"
-                  className="w-full px-2 py-1.5 rounded-lg text-[11px] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full px-2 py-1.5 rounded-lg text-[0.6875rem] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               </div>
             </div>
@@ -209,7 +209,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           {/* 3. Programare & Tratament */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
+              <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
                 Ora administrării:
               </label>
               <div className="relative">
@@ -225,7 +225,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
+              <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
                 Stoc pastile în cutie:
               </label>
               <div className="relative">
@@ -247,7 +247,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
+            <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
               Data de începere a Tamoxifenului:
             </label>
             <div className="relative">
@@ -263,7 +263,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[11px] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
+            <label className="text-[0.6875rem] font-semibold text-ink-soft dark:text-gray-400 block mb-1">
               E-mail medic oncolog (pentru rapoarte):
             </label>
             <div className="relative">

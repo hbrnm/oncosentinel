@@ -105,7 +105,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
             <h3 id="supporter-title" className="text-sm font-bold text-ink dark:text-white">
               Cercul de Sprijin
             </h3>
-            <p className="text-[11px] text-ink-soft dark:text-gray-400">
+            <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400">
               Conectează o persoană dragă de încredere
             </p>
           </div>
@@ -114,7 +114,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
         {/* Mesajul către persoana de sprijin: îl compune și îl trimite ea */}
         <div className="mb-4 space-y-3">
           <fieldset>
-            <legend className="text-[10px] font-bold text-ink-soft uppercase tracking-wider mb-1.5">Cum mă simt azi</legend>
+            <legend className="text-[0.625rem] font-bold text-ink-soft uppercase tracking-wider mb-1.5">Cum mă simt azi</legend>
             <div className="flex flex-wrap gap-1.5">
               {MOOD_LINES.map((m) => (
                 <button
@@ -122,7 +122,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
                   type="button"
                   aria-pressed={moodLine === m.line}
                   onClick={() => { setMoodLine(m.line); setEditedMessage(null); }}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold ${moodLine === m.line ? 'bg-sage-deep text-white' : 'bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-gray-200'}`}
+                  className={`px-2.5 py-1 rounded-lg text-[0.6875rem] font-semibold ${moodLine === m.line ? 'bg-sage-deep text-white' : 'bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-gray-200'}`}
                 >
                   {moodLine === m.line && <Check className="inline w-3 h-3 mr-1" />}
                   {m.label}
@@ -132,10 +132,10 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
           </fieldset>
 
           <fieldset>
-            <legend className="text-[10px] font-bold text-ink-soft uppercase tracking-wider mb-1.5">Cum mă poți ajuta</legend>
+            <legend className="text-[0.625rem] font-bold text-ink-soft uppercase tracking-wider mb-1.5">Cum mă poți ajuta</legend>
             <div className="space-y-1">
               {HELP_IDEAS.map((idea) => (
-                <label key={idea} className="flex items-start gap-2 text-[12px] text-ink dark:text-gray-200 cursor-pointer">
+                <label key={idea} className="flex items-start gap-2 text-[0.75rem] text-ink dark:text-gray-200 cursor-pointer">
                   <input type="checkbox" checked={ideas.includes(idea)} onChange={() => toggleIdea(idea)} className="mt-0.5 rounded" />
                   <span>{idea}</span>
                 </label>
@@ -144,7 +144,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
           </fieldset>
 
           <label className="block">
-            <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider block mb-1.5">Mesajul tău (îl poți schimba)</span>
+            <span className="text-[0.625rem] font-bold text-ink-soft uppercase tracking-wider block mb-1.5">Mesajul tău (îl poți schimba)</span>
             <textarea
               value={message}
               onChange={(e) => setEditedMessage(e.target.value)}
@@ -160,14 +160,14 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
           >
             <Send className="w-4 h-4" /> Trimite
           </button>
-          {shareNotice && <p role="status" className="text-[11px] text-ink dark:text-gray-200">{shareNotice}</p>}
+          {shareNotice && <p role="status" className="text-[0.6875rem] text-ink dark:text-gray-200">{shareNotice}</p>}
         </div>
 
         {/* Supporter Config Form */}
         <form onSubmit={handleSave} className="space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[10px] font-bold text-ink-soft uppercase block mb-1">
+              <label className="text-[0.625rem] font-bold text-ink-soft uppercase block mb-1">
                 Nume persoană:
               </label>
               <input
@@ -181,7 +181,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-ink-soft uppercase block mb-1">
+              <label className="text-[0.625rem] font-bold text-ink-soft uppercase block mb-1">
                 Relație:
               </label>
               <select

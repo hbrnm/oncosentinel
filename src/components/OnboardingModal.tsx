@@ -74,7 +74,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 2 ? 'bg-sage' : 'bg-warmborder dark:bg-gray-700'}`}></div>
             <div className={`w-6 h-1.5 rounded-full transition-all ${step >= 3 ? 'bg-sage' : 'bg-warmborder dark:bg-gray-700'}`}></div>
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-sage-600 dark:text-sage-400">
+          <span className="text-[0.625rem] font-bold uppercase tracking-wider text-sage-600 dark:text-sage-400">
             Pasul {step} din 3
           </span>
         </div>
@@ -96,7 +96,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+              <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                 Cum dorești să te numim în aplicație?
               </label>
               <div className="relative">
@@ -117,7 +117,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <ShieldCheck className="w-4 h-4 text-sage-600" />
                 <span>Pentru tine, după DCIS</span>
               </div>
-              <p className="text-[11px]">
+              <p className="text-[0.6875rem]">
                 Aplicația este optimizată special pentru pacienta post-chirurgie și radioterapie, aflată în tratament cu tamoxifen.
               </p>
             </div>
@@ -144,12 +144,12 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <h3 className="font-serif text-lg font-medium text-ink dark:text-white leading-tight">
                   Tratamentul cu tamoxifen
                 </h3>
-                <p className="text-[11px] text-ink-soft">Ora și stocul de pastile</p>
+                <p className="text-[0.6875rem] text-ink-soft">Ora și stocul de pastile</p>
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+              <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                 La ce oră iei de obicei pastila?
               </label>
               <div className="relative">
@@ -162,13 +162,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                   required
                 />
               </div>
-              <p className="text-[10px] text-ink-soft mt-0.5">
+              <p className="text-[0.625rem] text-ink-soft mt-0.5">
                 Ia-l la aceeași oră în fiecare zi: e mai ușor să nu uiți.
               </p>
             </div>
 
             <div>
-              <label htmlFor="onboarding-dose" className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+              <label htmlFor="onboarding-dose" className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                 Ce doză ți-a prescris medicul?
               </label>
               <input
@@ -178,14 +178,14 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 onChange={(e) => setDose(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500 font-bold"
               />
-              <p className="text-[10px] text-ink-soft mt-0.5">
+              <p className="text-[0.625rem] text-ink-soft mt-0.5">
                 Scrie cum apare pe rețetă.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+                <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                   Stoc pastile (cutie):
                 </label>
                 <input
@@ -202,7 +202,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               </div>
 
               <div>
-                <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+                <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                   Data de început:
                 </label>
                 <input
@@ -245,12 +245,12 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <h3 className="font-serif text-lg font-medium text-ink dark:text-white leading-tight">
                   Supraveghere Imagistică (6 Luni)
                 </h3>
-                <p className="text-[11px] text-ink-soft">Mamografie bilaterală & Ecografie</p>
+                <p className="text-[0.6875rem] text-ink-soft">Mamografie bilaterală & Ecografie</p>
               </div>
             </div>
 
             <div>
-              <label className="text-[11px] font-semibold text-ink dark:text-gray-300 block mb-1">
+              <label className="text-[0.6875rem] font-semibold text-ink dark:text-gray-300 block mb-1">
                 Data următorului control programat:
               </label>
               <input
@@ -259,7 +259,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 onChange={(e) => setControlDate(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-2xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white font-bold focus:outline-none focus:border-sage-500"
               />
-              <p className="text-[10px] text-ink-soft mt-1">
+              <p className="text-[0.625rem] text-ink-soft mt-1">
                 Aplicația va afișa automat numărătoarea inversă a zilelor rămase și te va ajuta să pregătești întrebările pentru medic.
               </p>
             </div>
@@ -269,7 +269,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span>Totul este configurat!</span>
               </div>
-              <p className="text-[11px] text-emerald-800 dark:text-emerald-300">
+              <p className="text-[0.6875rem] text-emerald-800 dark:text-emerald-300">
                 Toate aceste setări pot fi modificate oricând ulterior din profilul tău. Datele rămân private pe telefonul tău.
               </p>
             </div>

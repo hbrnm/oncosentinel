@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <h1 className="font-semibold text-ink dark:text-white text-base tracking-tight leading-none group-hover:text-sage-600 dark:group-hover:text-sage-400 transition-colors">
                 OncoSentinel
               </h1>
-              <span className="text-[10px] font-semibold bg-sage-100 dark:bg-sage-900/80 text-sage-800 dark:text-sage-300 border border-sage-200/60 dark:border-sage-800 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+              <span className="text-[0.625rem] font-semibold bg-sage-100 dark:bg-sage-900/80 text-sage-800 dark:text-sage-300 border border-sage-200/60 dark:border-sage-800 px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                 <ShieldCheck className="w-3 h-3 text-sage-600 dark:text-sage-400" /> DCIS
               </span>
             </div>

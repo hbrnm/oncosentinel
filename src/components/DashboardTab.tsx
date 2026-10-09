@@ -317,18 +317,18 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {/* Top Empathetic Header Banner (Style faithfully inspired by mockup & Base44) */}
       <div className="pt-2 pb-1 flex items-start justify-between relative z-10">
         <div>
-          <p className="text-[12px] text-ink-soft dark:text-gray-400 font-medium">
+          <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 font-medium">
             {greeting.hello},
           </p>
-          <h1 className="text-2xl sm:text-[26px] font-normal font-serif text-ink dark:text-cream-deep tracking-tight leading-tight mt-0.5 capitalize">
+          <h1 className="text-2xl sm:text-[1.625rem] font-normal font-serif text-ink dark:text-cream-deep tracking-tight leading-tight mt-0.5 capitalize">
             {patientFirstName.toLowerCase()}
           </h1>
           <span className="sr-only">Bună, {patientFirstName}</span>
-          <p className="text-xs sm:text-[13px] text-ink-soft dark:text-gray-400 mt-1 font-normal leading-relaxed">
+          <p className="text-xs sm:text-[0.8125rem] text-ink-soft dark:text-gray-400 mt-1 font-normal leading-relaxed">
             {greeting.sub}
           </p>
           {journeyText && (
-            <p className="text-xs sm:text-[13px] text-sage-700 dark:text-sage-300 mt-1 font-medium leading-relaxed">
+            <p className="text-xs sm:text-[0.8125rem] text-sage-700 dark:text-sage-300 mt-1 font-medium leading-relaxed">
               {journeyText}
             </p>
           )}
@@ -364,12 +364,12 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <CalendarHeart className="w-5 h-5 text-blush-deep" />
             {controlSupportText(daysUntilControl).title}
           </h2>
-          <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-1.5 leading-relaxed">{controlSupportText(daysUntilControl).text}</p>
+          <p className="text-[0.8125rem] text-ink-soft dark:text-gray-300 mt-1.5 leading-relaxed">{controlSupportText(daysUntilControl).text}</p>
           <div className="grid grid-cols-2 gap-2 mt-4">
-            <button type="button" onClick={onOpenDoctorVisit} className="tap-scale py-2.5 px-2 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[12px] font-semibold text-ink dark:text-gray-100">
+            <button type="button" onClick={onOpenDoctorVisit} className="tap-scale py-2.5 px-2 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[0.75rem] font-semibold text-ink dark:text-gray-100">
               Întrebările pentru medic
             </button>
-            <button type="button" onClick={onOpenBreathing} className="tap-scale py-2.5 px-2 rounded-2xl bg-sage-deep text-white text-[12px] font-semibold">
+            <button type="button" onClick={onOpenBreathing} className="tap-scale py-2.5 px-2 rounded-2xl bg-sage-deep text-white text-[0.75rem] font-semibold">
               Un moment de liniște
             </button>
           </div>
@@ -381,7 +381,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <ShieldCheck className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
             <h2 className="micro-label text-sage-deep dark:text-sage-300">O copie pentru liniștea ta</h2>
-            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">
+            <p className="text-[0.875rem] text-ink dark:text-white mt-1 leading-relaxed">
               Datele tale stau doar pe acest telefon. {lastBackupText()}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -401,7 +401,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <Pill className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" aria-hidden="true" />
           <div className="flex-1 min-w-0">
             <h2 className="micro-label text-sage-deep dark:text-sage-300">Pastilele se termină curând</h2>
-            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">
+            <p className="text-[0.875rem] text-ink dark:text-white mt-1 leading-relaxed">
               {lowStockText(stock, profile.medication_name || 'Tamoxifen')}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -417,7 +417,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       )}
 
       {stockMessage && (
-        <p role="status" className="rounded-2xl px-4 py-3 bg-sage-soft dark:bg-sage-900/30 text-[13px] text-sage-deep dark:text-sage-300 font-medium flex items-center gap-2">
+        <p role="status" className="rounded-2xl px-4 py-3 bg-sage-soft dark:bg-sage-900/30 text-[0.8125rem] text-sage-deep dark:text-sage-300 font-medium flex items-center gap-2">
           <Check className="w-4 h-4 shrink-0" aria-hidden="true" /> {stockMessage}
         </p>
       )}
@@ -437,14 +437,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               step={1}
               value={newBoxCount}
               onChange={(e) => setNewBoxCount(e.target.value)}
-              className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+              className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
               required
             />
             <div className="flex items-center justify-end gap-2 mt-4">
-              <button type="button" onClick={() => setAddingPills(false)} className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card">
+              <button type="button" onClick={() => setAddingPills(false)} className="px-4 py-2 rounded-xl text-[0.8125rem] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card">
                 Anulează
               </button>
-              <button type="submit" className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs">
+              <button type="submit" className="px-5 py-2 rounded-xl text-[0.8125rem] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs">
                 Adaugă
               </button>
             </div>
@@ -457,7 +457,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <Sparkles className="w-5 h-5 text-sage-deep dark:text-sage-300 shrink-0 mt-0.5" />
           <div className="flex-1">
             <h2 className="micro-label text-sage-deep dark:text-sage-300">O mică victorie</h2>
-            <p className="text-[14px] text-ink dark:text-white mt-1 leading-relaxed">{victory.text}</p>
+            <p className="text-[0.875rem] text-ink dark:text-white mt-1 leading-relaxed">{victory.text}</p>
             <button type="button" onClick={handleThanksVictory} className="tap-scale mt-3 px-4 py-2 rounded-xl bg-sage-deep text-white text-xs font-semibold">
               Mulțumesc
             </button>
@@ -477,20 +477,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <h2 className="font-serif text-xl text-sage-deep dark:text-sage-200 leading-tight break-words">
                 {profile.medication_name || 'Tamoxifen'}
               </h2>
-              <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-0.5">
+              <p className="text-[0.8125rem] text-ink-soft dark:text-gray-400 mt-0.5">
                 {profile.medication_dose || '20 mg'} • {profile.medication_frequency || '1 comprimat / zi'}
               </p>
             </div>
           </div>
           {isTakenToday ? (
-            <span className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[11px] font-semibold shadow-xs ${justTaken ? 'animate-pop' : ''}`}>
+            <span className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sage text-white text-[0.6875rem] font-semibold shadow-xs ${justTaken ? 'animate-pop' : ''}`}>
               <Check className={`w-3.5 h-3.5 ${justTaken ? 'animate-draw-check' : ''}`} strokeWidth={3} />
               <span>Luat azi</span>
             </span>
           ) : (
             <button
               onClick={handleTakeWithConfetti}
-              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-darkbg-surface text-sage-deep dark:text-sage-300 text-[11px] font-semibold border border-sage-300/60 hover:bg-sage-600 hover:text-white transition-all cursor-pointer active:scale-95"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 dark:bg-darkbg-surface text-sage-deep dark:text-sage-300 text-[0.6875rem] font-semibold border border-sage-300/60 hover:bg-sage-600 hover:text-white transition-all cursor-pointer active:scale-95"
             >
               <span>De luat</span>
               <span className="sr-only">În așteptare</span>
@@ -505,14 +505,14 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
         <div className="mt-4 pt-3.5 border-t border-sage/15 flex items-center justify-between">
           <div>
             <p className="micro-label">URMĂTOAREA DOZĂ</p>
-            <p className="text-[13px] font-semibold text-ink dark:text-white mt-0.5">
+            <p className="text-[0.8125rem] font-semibold text-ink dark:text-white mt-0.5">
               {isTakenToday ? `Mâine, ${profile.daily_reminder_time || '08:00'}` : `Azi, ${profile.daily_reminder_time || '08:00'}`}
             </p>
           </div>
           {!isTakenToday ? (
             <button
               onClick={handleTakeWithConfetti}
-              className="tap-scale inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-sage hover:bg-sage-deep text-white text-[12px] font-semibold shadow-xs transition-colors cursor-pointer"
+              className="tap-scale inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-sage hover:bg-sage-deep text-white text-[0.75rem] font-semibold shadow-xs transition-colors cursor-pointer"
             >
               <Check className="w-3.5 h-3.5" strokeWidth={2.5} /> 
               <span>Bifat ca luat</span>
@@ -520,7 +520,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           ) : (
             <button
               onClick={() => onNavigateToTab?.('treatment')}
-              className="tap-scale inline-flex items-center gap-0.5 text-sage-deep dark:text-sage-300 text-[12px] font-semibold hover:underline"
+              className="tap-scale inline-flex items-center gap-0.5 text-sage-deep dark:text-sage-300 text-[0.75rem] font-semibold hover:underline"
             >
               <span>Vezi detalii</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -559,7 +559,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <h3 className="text-sm font-bold font-serif text-ink dark:text-white leading-snug">
               {nextControlDate ? formattedControlDate : 'Nicio dată setată'}
             </h3>
-            <p className="text-[11px] text-ink-soft dark:text-gray-300 mt-1 font-medium">
+            <p className="text-[0.6875rem] text-ink-soft dark:text-gray-300 mt-1 font-medium">
               {!nextControlDate ? (
                 <span>Apasă ca să adaugi controlul</span>
               ) : daysUntilControl > 0 ? (
@@ -571,7 +571,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               )}
             </p>
           </div>
-          <span className="text-[10px] text-ink-soft hover:text-sage-600 pt-2 flex items-center gap-0.5">
+          <span className="text-[0.625rem] text-ink-soft hover:text-sage-600 pt-2 flex items-center gap-0.5">
             Oncologie • Modifică &rarr;
           </span>
         </div>
@@ -587,7 +587,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             {currentQuote.text}
           </p>
           <div className="flex items-center justify-between pt-2 z-10">
-            <span className="text-[10px] text-petal-700 dark:text-petal-300 font-semibold tracking-wide">
+            <span className="text-[0.625rem] text-petal-700 dark:text-petal-300 font-semibold tracking-wide">
               {currentQuote.author}
             </span>
           </div>
@@ -607,7 +607,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           <div className="flex items-center gap-1.5">
             {selectedMood && (
-              <span className="text-[10px] font-semibold text-sage-700 dark:text-sage-300 bg-sage-50 dark:bg-sage-950/60 px-2 py-0.5 rounded-full border border-sage-200 dark:border-sage-800/50">
+              <span className="text-[0.625rem] font-semibold text-sage-700 dark:text-sage-300 bg-sage-50 dark:bg-sage-950/60 px-2 py-0.5 rounded-full border border-sage-200 dark:border-sage-800/50">
                 Înregistrat azi
               </span>
             )}
@@ -648,7 +648,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 }`}>
                   {item.level}
                 </span>
-                <span className={`text-[10px] mt-1 text-center font-medium leading-tight tracking-tight ${
+                <span className={`text-[0.625rem] mt-1 text-center font-medium leading-tight tracking-tight ${
                   isSelected ? 'text-white font-bold' : 'text-ink-soft dark:text-gray-400'
                 }`}>
                   {item.label}
@@ -687,7 +687,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </h3>
           <button
             onClick={() => onNavigateToTab?.('guide')}
-            className="text-[11px] font-bold text-sage-700 dark:text-sage-300 hover:underline flex items-center gap-0.5"
+            className="text-[0.6875rem] font-bold text-sage-700 dark:text-sage-300 hover:underline flex items-center gap-0.5"
           >
             <span>Vezi toate ghidurile</span>
             <ChevronRight className="w-3 h-3" />
@@ -703,7 +703,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             GHID
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
+            <div className="flex items-center gap-1.5 text-[0.625rem] font-bold text-sage-700 dark:text-sage-300 uppercase">
               <span>{CLINICAL_GUIDES[0].tag}</span>
               <span>•</span>
               <span className="text-ink-soft">Recomandare</span>
@@ -711,7 +711,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5">
               {CLINICAL_GUIDES[0].title}
             </h4>
-            <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
+            <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
               {CLINICAL_GUIDES[0].summary}
             </p>
           </div>
@@ -727,7 +727,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <BookOpen className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
+            <div className="flex items-center gap-1.5 text-[0.625rem] font-bold uppercase">
               <span className="micro-label text-sage-deep">NOUTĂȚI</span>
               <span className="text-ink-soft">•</span>
               <span className="text-ink-soft">{NEWS_PROTOCOLS[0].date}</span>
@@ -735,7 +735,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5 leading-snug">
               {NEWS_PROTOCOLS[0].title}
             </h4>
-            <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
+            <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
               {NEWS_PROTOCOLS[0].summary}
             </p>
           </div>
@@ -750,7 +750,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <Heart className="w-5 h-5 text-sage-deep" strokeWidth={1.8} />
           </span>
           <div className="flex-1 min-w-0 pr-6">
-            <p className="font-serif italic text-[13px] leading-relaxed text-sage-deep dark:text-sage-200">
+            <p className="font-serif italic text-[0.8125rem] leading-relaxed text-sage-deep dark:text-sage-200">
               „Nu ești doar un pacient. Ești o persoană cu o viață întreagă în față.”
             </p>
           </div>
