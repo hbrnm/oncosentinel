@@ -70,7 +70,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-modal overflow-y-auto">
       <div className="bg-white dark:bg-darkbg-surface w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl p-5 sm:p-6 border border-sage-200 dark:border-darkbg-border shadow-2xl my-auto">
         
         {/* Header */}

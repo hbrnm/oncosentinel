@@ -35,8 +35,8 @@ export const MilestoneModal: React.FC<MilestoneModalProps> = ({ milestone, onClo
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-sm bg-white dark:bg-darkbg-card rounded-3xl p-5 shadow-2xl relative animate-fade-in">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-sm p-4 animate-modal">
+      <div className="w-full max-w-sm bg-white dark:bg-darkbg-card rounded-3xl p-5 shadow-2xl relative">
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-cream-deep dark:bg-darkbg-surface text-ink-soft hover:bg-warmborder transition-colors"

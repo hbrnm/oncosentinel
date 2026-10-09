@@ -36,7 +36,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({
     'tap-scale w-full flex items-center gap-3 p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-left hover:bg-sage-50 dark:hover:bg-darkbg-surface transition-colors';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-modal">
       <div
         role="dialog"
         aria-modal="true"

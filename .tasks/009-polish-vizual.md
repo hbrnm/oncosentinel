@@ -1,6 +1,6 @@
 # 009 — Audit vizual și polish
 
-**Stare:** în lucru
+**Stare:** gata
 **Ramura:** claude/polish-vizual
 
 ## Scop
@@ -17,7 +17,7 @@ Atenție (din #42): niciun `transform` rămas pe tab sau pe părinții ferestrel
 |---|---|---|---|
 | 1 | Reparații: buton liniște, Lora, „Foarte bine”, bun venit, majuscule, calendar piersică | gata | (vezi PR) |
 | 2 | Griurile Tailwind (`text-gray-*`, `bg-gray-*`, `stone-*`) → `ink`, `ink-soft`, `warmborder`, `cream-deep` | gata | (vezi PR) |
-| 3 | Animații: ferestre, bara de jos, bifarea dozei, cascadă, stare, plantă; `prefers-reduced-motion` | de făcut | |
+| 3 | Animații: ferestre, bara de jos, bifarea dozei, cascadă, stare, plantă; `prefers-reduced-motion` | gata | (vezi PR) |
 
 ## Rezumat pe etape
 ### Etapa 1 (2026-10-09)
@@ -37,5 +37,14 @@ Atenție (din #42): niciun `transform` rămas pe tab sau pe părinții ferestrel
 - Capturi înainte/după (Astăzi, Jurnal, Profil): schimbare subtilă, tonuri calde, fără probleme de aranjare.
 - Test: „Griurile reci” în `src/test/polish-vizual.test.tsx` (nicio clasă gri/stone fără `dark:` în `src/components`). `npm test` 248/248, `npm run build` ok.
 
+### Etapa 3 (2026-10-09)
+- Ferestrele: `animate-modal` pe toate fundalurile `fixed inset-0` (inclusiv MilestoneModal); fundalul apare (200 ms), fereastra urcă de jos (280 ms).
+- Bara de jos: un singur cerc (`nav-indicator`) alunecă între taburi (300 ms); ascuns pe Drumul tratamentului.
+- Astăzi: cascadă scurtă (`animate-cascade`, 40 ms între carduri, fără ferestrele din pagină); planta se leagănă (`animate-sway`, 9 s); starea aleasă crește la `scale-110`; la bifare „Luat azi” crește ușor (`animate-pop`) și bifa se desenează (`animate-draw-check`), doar după bifarea de acum; confetti rămâne, cu `disableForReducedMotion`.
+- `@media (prefers-reduced-motion: reduce)`: animațiile și tranzițiile reduse la 0,01 ms.
+- Nicio animație cu `forwards`/`both`; „backwards” doar pe cascadă și pe bifă (ține starea inițială cât așteaptă).
+- Verificat în browser la 390px: cercul aliniat pe icon, fereastra din Tratament centrată pe ecran după derulare, fără overflow.
+- Teste: „Mișcarea discretă” și „Astăzi: cascadă, plantă și bifarea dozei” în `src/test/polish-vizual.test.tsx`. `npm test` 255/255, `npm run build` ok.
+
 ## Următorul pas
-Etapa 3, într-o sesiune nouă: animațiile (ferestre, bara de jos, bifarea dozei, cascadă, stare, plantă) cu `prefers-reduced-motion`; atenție la regula din #42 (fără `forwards`/`both` pe taburi).
+Sarcina e încheiată.

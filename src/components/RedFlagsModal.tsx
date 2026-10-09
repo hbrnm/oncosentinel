@@ -35,7 +35,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-modal">
       <div className="bg-white dark:bg-darkbg-surface w-full max-w-lg rounded-3xl shadow-2xl border border-warmborder dark:border-darkbg-border overflow-hidden max-h-[90vh] flex flex-col">
         
         {/* Header */}
