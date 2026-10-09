@@ -251,6 +251,7 @@ export function App() {
               onOpenGrounding={() => setIsGroundingOpen(true)}
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
+              onOpenDataSafety={() => setIsAuthOpen(true)}
               onSaveMood={handleSaveTodayMood}
               onNavigateToTab={(tab) => {
                 goToTab(tab);

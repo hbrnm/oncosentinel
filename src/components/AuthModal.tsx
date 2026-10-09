@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, ShieldCheck, Download, Upload, Trash2, Lock } from 'lucide-react';
 import { backupService } from '../lib/backupService';
 import { vault } from '../lib/vault';
+import { lastBackupText } from '../lib/backupReminder';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,8 +17,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [pinAgain, setPinAgain] = useState<string>('');
   const [pinError, setPinError] = useState<string>('');
   const [pinBusy, setPinBusy] = useState<boolean>(false);
+  const [lastBackup, setLastBackup] = useState<string>(() => lastBackupText());
+
+  // Fereastra rămâne montată: data ultimei copii se recalculează la fiecare deschidere („azi” devine „ieri”)
+  useEffect(() => {
+    if (isOpen) setLastBackup(lastBackupText());
+  }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleExport = () => {
+    backupService.exportCompleteBackup();
+    setLastBackup(lastBackupText());
+  };
 
   const handleEnablePin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,8 +113,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             Spațiul e limitat (aproximativ 5 MB în total, documente de cel mult 1,5 MB fiecare). Dacă se umple, aplicația îți spune și poți șterge documente din Cronologie.
           </p>
 
+          <p className="text-xs font-semibold text-ink dark:text-white">{lastBackup}</p>
+
           <button
-            onClick={() => backupService.exportCompleteBackup()}
+            onClick={handleExport}
             className="w-full py-2.5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
           >
             <Download className="w-4 h-4" />
@@ -146,7 +160,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   Datele tale de pe acest telefon vor fi criptate cu un PIN de 4 cifre. Fără PIN nu le poate citi nimeni, nici tu. Dacă îl uiți, datele nu se pot recupera decât dintr-o copie de siguranță. Descarcă o copie înainte.
                 </p>
                 <div className="grid grid-cols-2 gap-2">
-                  <button type="button" onClick={() => backupService.exportCompleteBackup()} className="py-2 rounded-xl border border-sage-200 dark:border-darkbg-border text-xs font-semibold text-sage-800 dark:text-sage-200">
+                  <button type="button" onClick={handleExport} className="py-2 rounded-xl border border-sage-200 dark:border-darkbg-border text-xs font-semibold text-sage-800 dark:text-sage-200">
                     Descarcă o copie
                   </button>
                   <button type="button" onClick={() => setChoosingPin(true)} className="py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold">

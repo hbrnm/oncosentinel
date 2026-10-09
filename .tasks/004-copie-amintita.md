@@ -1,6 +1,6 @@
 # 004 — Rămășițele din audit, apoi copia amintită
 
-**Stare:** în lucru (etapa 1 gata)
+**Stare:** în așteptare (testarea cu pacientele, etapa 3)
 **Ramura:** câte o ramură `claude/…` pe etapă, din `main`
 
 ## Scop
@@ -16,8 +16,8 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 1 | Rămășițele din audit: butoanele cu A+ (2), imaginea Unsplash din primul ghid (3), „Medici și centre” (4), textul „Zilele neutre…” la „Liniștită” | gata | ramura claude/plan-004 |
-| 2 | Copia amintită: data ultimei copii, memento discret când e veche, un singur loc pentru copie | de făcut | |
+| 1 | Rămășițele din audit: butoanele cu A+ (2), imaginea Unsplash din primul ghid (3), „Medici și centre” (4), textul „Zilele neutre…” la „Liniștită” | gata | PR #32 |
+| 2 | Copia amintită: data ultimei copii, memento discret când e veche, un singur loc pentru copie | gata | ramura claude/plan-004-etapa2 |
 | 3 | Testare cu pacientele (`docs/ghid-testare.md`) și observațiile într-un singur PR | de făcut | |
 
 ## Etapa 1 — de decis la început (un singur chestionar)
@@ -36,5 +36,12 @@ Propuse, dar nealese acum: „Medicamentele mele” (comparate cu interacțiunil
 - A+ (reparație tehnică, fără decizie): regula din `src/index.css` care punea `font-size: inherit` pe butoane și câmpuri bătea clasele de text, așa că butoanele luau mărimea textului din jur. Scoasă; preflight-ul Tailwind moștenește deja fontul în câmpurile fără clasă.
 - Test nou `ramasite-audit.test.tsx` (pică pe codul vechi). `npm test` (182) și `npm run build` trec; verificat la 390px, cu litere normale și cu A+, fără overflow. Agentul `verificare`: nimic.
 
+### Etapa 2 (2026-10-09)
+- Deciziile proprietarei: copia rămâne doar în „Siguranța datelor” (cardul din Dosar scos); memento la 30 de zile de la ultima copie sau, fără nicio copie, când prima doză/notă are peste 7 zile; card mic pe Astăzi cu „Fac copia acum” (deschide „Siguranța datelor”) și „Mai târziu” (ascunde 7 zile); texte: „O copie pentru liniștea ta”, „Datele tale stau doar pe acest telefon. Ultima copie: acum 42 de zile.” / „Nu ai făcut încă nicio copie.”
+- Adăugate de Claude, de confirmat: „Ultima copie: azi.” și „Ultima copie: ieri.”
+- `src/lib/backupReminder.ts`: data ultimei copii (`oncosentinel_last_backup`, scrisă la descărcare și, la restaurare, data copiei) și „Mai târziu” (`oncosentinel_backup_snooze_until`). Cu PIN, cheile intră în seif ca restul datelor.
+- Știut și acceptat: data se scrie la apăsarea descărcării (aplicația nu poate afla dacă fișierul a fost salvat); după restaurarea unei copii mai vechi de 30 de zile, memento-ul apare imediat.
+- Test nou `copia-amintita.test.tsx`. `npm test` (194) și `npm run build` trec; verificat la 390px, cu litere normale și cu A+. Agentul `verificare`: nimic blocant; reparată data veche din „Siguranța datelor” după miezul nopții.
+
 ## Următorul pas
-Etapa 2 (copia amintită), într-o sesiune nouă: chestionarul de la „Etapa 2 — de decis la început”.
+Etapa 3: testarea cu pacientele, după `docs/ghid-testare.md`; observațiile într-un singur PR.

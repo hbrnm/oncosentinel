@@ -1,4 +1,5 @@
 import { vault } from './vault';
+import { markBackupDone } from './backupReminder';
 
 export const backupService = {
   exportCompleteBackup() {
@@ -31,6 +32,7 @@ export const backupService = {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    markBackupDone();
   },
 
   async importBackupFromFile(file: File): Promise<boolean> {
@@ -93,6 +95,10 @@ export const backupService = {
       if (data.victories_seen) {
         try { JSON.parse(data.victories_seen); localStorage.setItem('oncosentinel_victories_seen', data.victories_seen); } catch (_) {}
       }
+
+      // Datele restaurate au deja o copie: cea din care au venit
+      const exportedAt = new Date(data.exported_at);
+      if (!Number.isNaN(exportedAt.getTime())) markBackupDone(exportedAt);
 
       // Cu PIN activ, datele se criptează asincron: așteptăm scrierea înainte de reîncărcare
       await vault.flush();
