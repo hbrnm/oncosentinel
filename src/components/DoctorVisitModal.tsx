@@ -5,6 +5,7 @@ import {
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { doctorSummary, plural, controlDateLabel } from '../lib/summary';
 import { loadAppointments, saveAppointments, lastControlDate } from '../lib/appointments';
+import { loadMedicines, medicineLabel } from '../lib/myMedicines';
 const daysUntil = (dateStr?: string) => {
   if (!dateStr) return null;
   const target = new Date(dateStr + (dateStr.length <= 10 ? 'T00:00:00' : ''));
@@ -187,6 +188,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
   // sau de la ultimul control (planul 005, texte aprobate 2026-10-09)
   const lastControl = lastControlDate(appointments);
   const since = fromLastControl && lastControl ? lastControl : undefined;
+  const otherMedicines = loadMedicines();
   const forDoctor = doctorSummary(symptoms, doses, profile?.tamoxifen_start_date || '', since);
 
   const handleDownloadReport = () => {
@@ -664,6 +666,9 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                   ) : 'Nu ai notat simptome.'}
                 </li>
                 <li>Întrebări încă nediscutate: {questions.length - answeredCount}.</li>
+                {otherMedicines.length > 0 && (
+                  <li>Alte medicamente: {otherMedicines.map(m => medicineLabel(m)).join('; ')}.</li>
+                )}
               </ul>
               <button
                 type="button"

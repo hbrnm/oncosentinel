@@ -19,6 +19,7 @@ export const backupService = {
       next_control_date: localStorage.getItem('navimed_next_control_date'),
       doctor_questions_custom: localStorage.getItem('navimed_doctor_questions_custom'),
       appointments: localStorage.getItem('navimed_appointments_list'),
+      other_medicines: localStorage.getItem('navimed_other_medicines'),
       doctor_name: localStorage.getItem('navimed_doctor_name'),
       victories_seen: localStorage.getItem('oncosentinel_victories_seen')
     };
@@ -88,6 +89,9 @@ export const backupService = {
       }
       if (data.appointments) {
         try { JSON.parse(data.appointments); localStorage.setItem('navimed_appointments_list', data.appointments); } catch (_) {}
+      }
+      if (data.other_medicines) {
+        try { JSON.parse(data.other_medicines); localStorage.setItem('navimed_other_medicines', data.other_medicines); } catch (_) {}
       }
       if (data.doctor_name) {
         localStorage.setItem('navimed_doctor_name', data.doctor_name);
