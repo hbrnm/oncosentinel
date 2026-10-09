@@ -7,6 +7,7 @@ import { plural } from '../lib/summary';
 import { PatientProfile, DoseLog } from '../types';
 import { useBackToClose } from '../lib/backNavigation';
 import { OtherMedicines } from './OtherMedicines';
+import { stockLine } from '../lib/pillStock';
 
 interface TreatmentTabProps {
   profile: PatientProfile;
@@ -215,6 +216,9 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               </p>
               <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5" /> {profile.daily_reminder_time || medTime}
+              </p>
+              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5">
+                {stockLine(profile.pill_stock_count)}
               </p>
             </div>
           </div>

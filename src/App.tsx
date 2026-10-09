@@ -116,6 +116,12 @@ export function App() {
     if (storageService.saveProfile(updatedProfile)) setProfile(updatedProfile);
   };
 
+  // „Am o cutie nouă” de pe Astăzi: pastilele se adaugă la stoc
+  const handleAddPills = (count: number) => {
+    const updated = { ...profile, pill_stock_count: Math.max(0, profile.pill_stock_count) + count };
+    if (storageService.saveProfile(updated)) setProfile(updated);
+  };
+
   const handleAddSymptomLog = (logData: Omit<SymptomLog, 'id'>) => {
     const newLog: SymptomLog = {
       ...logData,
@@ -252,6 +258,7 @@ export function App() {
               onOpenSupporter={() => setIsSupporterOpen(true)}
               onOpenHelp={() => setIsHelpOpen(true)}
               onOpenDataSafety={() => setIsAuthOpen(true)}
+              onAddPills={handleAddPills}
               onSaveMood={handleSaveTodayMood}
               onNavigateToTab={(tab) => {
                 goToTab(tab);
