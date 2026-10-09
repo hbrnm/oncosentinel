@@ -20,7 +20,8 @@ export const INTERACTIONS_DB: DrugInteraction[] = [
   },
   {
     substance: 'Medicamente cu estrogen (de exemplu anticoncepționale orale, tratamente hormonale pentru menopauză)',
-    match: ['estrogen', 'anticonceptional'],
+    // „estradiol” și „contraceptiv”: aprobate de proprietară (2026-10-09), deși nu sunt în numele substanței
+    match: ['estrogen', 'anticonceptional', 'estradiol', 'contraceptiv'],
     level: 'avoid',
     levelLabel: 'De evitat',
     advice: 'Prospectul spune să nu fie luate în timpul tratamentului. Dacă ai nevoie de contracepție, folosește o metodă fără hormoni (de exemplu prezervativul) în timpul tratamentului și încă 2 luni după. Medicul te ajută să alegi.',

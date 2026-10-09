@@ -1,6 +1,6 @@
 # 007 — Medicamentele mele
 
-**Stare:** în așteptare (etapa 2: lista de nume comerciale, de aprobat de proprietară)
+**Stare:** în așteptare (proprietara: accesul la ANMDMR în rețeaua mediului)
 **Ramura:** câte o ramură `claude/…` pe etapă, din `main`
 
 ## Scop
@@ -17,7 +17,8 @@ Deciziile proprietarei (2026-10-09):
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
 | 1 | Lista „Medicamentele mele” în Tratament, comparată cu substanțele din lista aprobată, în „Pentru medic”, în PDF și în copie; „Arată farmacistului” | gata | ramura claude/plan-007 |
-| 2 | Numele comerciale: lista aprobată de proprietară, legată de substanțele din `interactions.ts` | de făcut (după aprobarea listei) | |
+| 2a | Cuvinte în plus la estrogen („estradiol”, „contraceptiv”) | gata | ramura claude/plan-007-etapa2 |
+| 2b | Numele comerciale: lista aprobată de proprietară, legată de substanțele din `interactions.ts` | în așteptare (accesul la ANMDMR) | |
 
 ## Etapa 1 — de decis la început (un singur chestionar)
 - Câmpurile: nume (obligatoriu), doză, când se ia (text liber sau alegeri), pentru ce, cine l-a prescris?
@@ -37,5 +38,9 @@ Deciziile proprietarei (2026-10-09):
 - Test nou `medicamentele-mele.test.tsx`. `npm test` (230) și `npm run build` trec; verificat la 390px, fără overflow. Agentul `verificare`: nimic blocant; reparate rădăcinile cuvintelor, paginarea secțiunii 4 și copia stricată.
 - Pentru etapa 2 (de aprobat): cuvinte în plus la estrogen, ca „estradiol”, „contraceptiv” (sugestia agentului `verificare`; nu sunt în textul aprobat). „soia” prinde și „lecitină de soia” (nivel „Întreabă medicul”, inofensiv).
 
+### Etapa 2a (2026-10-09)
+- Rețeaua sesiunii blochează `nomenclator.anm.ro` și `www.anm.ro`; căutarea pe web găsește doar documente ANM răzlețe (ex. fluoxetină: Prozac, Fluoxin, Fluoxetină Arena, autorizații 2018–2019), fără confirmarea că lista e completă. Decizia proprietarei: deblochează accesul la ANMDMR în rețeaua mediului; lista se face apoi din Nomenclator.
+- Aprobat de proprietară: „estradiol” și „contraceptiv” la „Medicamente cu estrogen” (prind și „Etinilestradiol”, „comprimate contraceptive”); testul le permite explicit. `npm test` (230) și `npm run build` trec. Agentul `verificare`: nimic blocant.
+
 ## Următorul pas
-Etapa 2, într-o sesiune nouă: Claude propune lista de nume comerciale din Nomenclatorul ANMDMR (cu sursa la fiecare nume) și cuvintele în plus la estrogen; proprietara le aprobă prin chestionar înainte de cod.
+Etapa 2b, într-o sesiune nouă, după ce proprietara adaugă `nomenclator.anm.ro` și `www.anm.ro` la Allowed domains: Claude ia din Nomenclatorul ANMDMR produsele autorizate pentru fiecare substanță din `INTERACTIONS_DB` (cu sursa) și le dă la aprobat prin chestionar, apoi le adaugă la `match`.
