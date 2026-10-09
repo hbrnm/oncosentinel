@@ -21,7 +21,7 @@ export const RenderMarkdown = ({ content }: { content: string }) => {
 
         if (trimmed.startsWith('### ')) {
           return (
-            <h3 key={i} className="font-serif text-[18px] text-ink dark:text-white mt-6 mb-2 leading-tight">
+            <h3 key={i} className="font-serif text-[1.125rem] text-ink dark:text-white mt-6 mb-2 leading-tight">
               {parseInline(trimmed.replace('### ', ''))}
             </h3>
           );
@@ -35,7 +35,7 @@ export const RenderMarkdown = ({ content }: { content: string }) => {
         }
         if (trimmed.startsWith('> ')) {
           return (
-            <div key={i} className="border-l-2 border-sage dark:border-sage-400 pl-4 py-1 my-4 italic text-ink-soft dark:text-gray-400 text-[13px]">
+            <div key={i} className="border-l-2 border-sage dark:border-sage-400 pl-4 py-1 my-4 italic text-ink-soft dark:text-gray-400 text-[0.8125rem]">
               {parseInline(trimmed.replace(/^> /gm, ''))}
             </div>
           );
@@ -66,7 +66,7 @@ export const RenderMarkdown = ({ content }: { content: string }) => {
         }
 
         return (
-          <p key={i} className="text-ink dark:text-gray-200 leading-relaxed text-[14px]">
+          <p key={i} className="text-ink dark:text-gray-200 leading-relaxed text-[0.875rem]">
             {parseInline(trimmed)}
           </p>
         );

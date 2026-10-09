@@ -85,7 +85,7 @@ export const RedFlagsModal: React.FC<RedFlagsModalProps> = ({ isOpen, onClose, p
             </section>
           ))}
 
-          <p className="text-[11px] text-ink-soft dark:text-gray-400 italic">
+          <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 italic">
             Surse: prospectul tamoxifenului; Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen.
           </p>
         </div>

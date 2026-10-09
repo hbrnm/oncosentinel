@@ -206,7 +206,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         <h1 className="font-serif text-3xl font-normal text-ink dark:text-white tracking-tight">
           Tratament
         </h1>
-        <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-1 font-sans">
+        <p className="text-[0.8125rem] text-ink-soft dark:text-gray-300 mt-1 font-sans">
           Planul tău zilnic și istoricul dozelor.
         </p>
       </header>
@@ -222,13 +222,13 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               <h2 className="font-serif text-xl font-normal text-sage-deep dark:text-sage-300">
                 {profile.medication_name || medName}
               </h2>
-              <p className="text-[13px] text-ink-soft dark:text-gray-300 mt-0.5">
+              <p className="text-[0.8125rem] text-ink-soft dark:text-gray-300 mt-0.5">
                 {profile.medication_dose || medDose} • {profile.medication_frequency || medFrequency}
               </p>
-              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
+              <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
                 <Clock className="w-3.5 h-3.5" /> {profile.daily_reminder_time || medTime}
               </p>
-              <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5">
+              <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5">
                 {stockLine(safeStock(profile.pill_stock_count))}
               </p>
             </div>
@@ -249,12 +249,12 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           {!isTodayTaken ? (
             <button
               onClick={() => onTakeDose()}
-              className="tap-scale w-full h-12 rounded-2xl bg-sage hover:bg-sage-deep text-white font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer text-[14px]"
+              className="tap-scale w-full h-12 rounded-2xl bg-sage hover:bg-sage-deep text-white font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer text-[0.875rem]"
             >
               <Check className="w-4 h-4" strokeWidth={2.5} /> Marchează doza de azi
             </button>
           ) : (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 text-sage-deep dark:text-sage-300 font-semibold text-[14px]">
+            <div className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 text-sage-deep dark:text-sage-300 font-semibold text-[0.875rem]">
               <Check className="w-5 h-5 text-sage-deep dark:text-sage-300" strokeWidth={2.5} />
               <span>Ai luat doza de azi. Felicitări!</span>
             </div>
@@ -274,7 +274,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
           <h2 id="reminder-title" className="micro-label">Memento zilnic</h2>
         </div>
-        <p className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">
+        <p className="text-[0.8125rem] text-ink dark:text-gray-200 leading-relaxed">
           Pune un memento în calendarul telefonului, în fiecare zi la {reminderTime}. În memento scrie doar „{REMINDER_TEXT}”, fără numele medicamentului.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
@@ -283,7 +283,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={markReminderSet}
-            className="tap-scale py-2.5 px-3 rounded-2xl bg-sage-deep text-white text-[13px] font-semibold text-center"
+            className="tap-scale py-2.5 px-3 rounded-2xl bg-sage-deep text-white text-[0.8125rem] font-semibold text-center"
           >
             Google Calendar
             <span className="sr-only"> (se deschide într-o filă nouă)</span>
@@ -295,17 +295,17 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               setReminderError(!ok);
               if (ok) markReminderSet();
             }}
-            className="tap-scale py-2.5 px-3 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[13px] font-semibold text-ink dark:text-gray-100"
+            className="tap-scale py-2.5 px-3 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[0.8125rem] font-semibold text-ink dark:text-gray-100"
           >
             Alt calendar (iPhone, Samsung…)
           </button>
         </div>
         {reminderError && (
-          <p role="alert" className="text-[12px] text-ink dark:text-gray-100 font-semibold mt-3 leading-relaxed">
+          <p role="alert" className="text-[0.75rem] text-ink dark:text-gray-100 font-semibold mt-3 leading-relaxed">
             Nu am putut crea fișierul de calendar. Încearcă din nou sau folosește Google Calendar.
           </p>
         )}
-        <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-3 leading-relaxed">
+        <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-3 leading-relaxed">
           Dacă schimbi ora, adaugă din nou memento-ul și șterge-l pe cel vechi din calendar.
         </p>
       </section>
@@ -325,7 +325,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             style={{ width: `${adherenceMonth ?? 0}%` }}
           />
         </div>
-        <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-2 font-medium">
+        <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mt-2 font-medium">
           {adherenceMonth === null
             ? 'Încă nu sunt zile de numărat în această lună.'
             : `Ai marcat ${takenInMonth} din ${plural(applicableDaysInMonth, 'zi', 'zile')}.`}
@@ -350,7 +350,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-[13px] font-semibold text-ink dark:text-gray-200 capitalize min-w-[110px] text-center">
+            <span className="text-[0.8125rem] font-semibold text-ink dark:text-gray-200 capitalize min-w-[110px] text-center">
               {monthLabelRo}
             </span>
             <button
@@ -365,7 +365,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 py-1.5 px-2 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[11px] text-ink-soft dark:text-gray-300">
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 py-1.5 px-2 mb-3 bg-cream dark:bg-darkbg-card/50 rounded-xl text-[0.6875rem] text-ink-soft dark:text-gray-300">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-sage" />
             <span>Luat</span>
@@ -387,7 +387,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         {/* Day of Week Header: L, M, M, J, V, S, D */}
         <div className="grid grid-cols-7 gap-1.5 text-center mb-1">
           {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, idx) => (
-            <span key={idx} className="text-[10px] text-ink-soft dark:text-gray-400 font-semibold py-0.5">
+            <span key={idx} className="text-[0.625rem] text-ink-soft dark:text-gray-400 font-semibold py-0.5">
               {d}
             </span>
           ))}
@@ -412,7 +412,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                   </span>
                 )}
                 <button onClick={() => { if (status === "missed") onTakeDose(cell.iso); }}
-                  className={`relative w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-peach-200 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all ${
+                  className={`relative w-8 h-8 ${status === "missed" ? "cursor-pointer hover:bg-peach-200 hover:scale-110" : ""} rounded-xl flex items-center justify-center text-[0.6875rem] font-semibold transition-all ${
                     isToday
                       ? 'ring-2 ring-sage dark:ring-sage-400 ring-offset-1 ring-offset-white dark:ring-offset-darkbg-surface font-bold'
                       : ''
@@ -455,10 +455,10 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           <ul className="space-y-2">
             {upcomingAppointments.map((a) => (
               <li key={a.id} className="py-2 border-b border-warmborder/60 dark:border-darkbg-border last:border-0">
-                <p className="text-[13px] font-semibold text-ink dark:text-gray-200">
+                <p className="text-[0.8125rem] font-semibold text-ink dark:text-gray-200">
                   {formatDateRo(a.date)}{a.time ? `, ${a.time}` : ''}
                 </p>
-                <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 break-words">
+                <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5 break-words">
                   {[a.specialty, a.doctor, a.center].filter(Boolean).join(' • ')}
                 </p>
               </li>
@@ -478,17 +478,17 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                 key={l.id}
                 className="flex items-center justify-between py-2 border-b border-warmborder/60 dark:border-darkbg-border last:border-0"
               >
-                <span className="text-[13px] text-ink dark:text-gray-200">
+                <span className="text-[0.8125rem] text-ink dark:text-gray-200">
                   {formatDateRo(dateStr)}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[12px] text-sage-deep dark:text-sage-300 font-semibold">
+                <span className="inline-flex items-center gap-1 text-[0.75rem] text-sage-deep dark:text-sage-300 font-semibold">
                   <Check className="w-3.5 h-3.5" strokeWidth={2.5} /> Luat
                 </span>
               </div>
             );
           })}
           {recentTakenDoses.length === 0 && (
-            <p className="text-[13px] text-ink-soft dark:text-gray-400 text-center py-4">
+            <p className="text-[0.8125rem] text-ink-soft dark:text-gray-400 text-center py-4">
               Nicio doză marcată încă.
             </p>
           )}
@@ -514,14 +514,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
             <form onSubmit={handleSaveEdit} className="space-y-3.5">
               <div>
-                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
+                <label className="block text-[0.75rem] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Denumire medicament
                 </label>
                 <input
                   type="text"
                   value={medName}
                   onChange={(e) => setMedName(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   placeholder="ex: Tamoxifen"
                   required
                 />
@@ -529,27 +529,27 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
+                  <label className="block text-[0.75rem] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Doză
                   </label>
                   <input
                     type="text"
                     value={medDose}
                     onChange={(e) => setMedDose(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: 20 mg"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
+                  <label className="block text-[0.75rem] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                     Frecvență
                   </label>
                   <input
                     type="text"
                     value={medFrequency}
                     onChange={(e) => setMedFrequency(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+                    className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                     placeholder="ex: 1 comprimat/zi"
                     required
                   />
@@ -557,14 +557,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               </div>
 
               <div>
-                <label className="block text-[12px] font-semibold text-ink-soft dark:text-gray-300 mb-1">
+                <label className="block text-[0.75rem] font-semibold text-ink-soft dark:text-gray-300 mb-1">
                   Ora administrării
                 </label>
                 <input
                   type="time"
                   value={medTime}
                   onChange={(e) => setMedTime(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[14px] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
+                  className="w-full h-11 px-3.5 rounded-xl border border-warmborder dark:border-darkbg-border bg-white dark:bg-darkbg-card text-[0.875rem] text-ink dark:text-white focus:outline-hidden focus:ring-2 focus:ring-sage"
                   required
                 />
               </div>
@@ -573,13 +573,13 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditing(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-[0.8125rem] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 >
                   Anulează
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer"
+                  className="px-5 py-2 rounded-xl text-[0.8125rem] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs transition-colors cursor-pointer"
                 >
                   Salvează
                 </button>

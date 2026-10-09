@@ -72,20 +72,20 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[11px] font-semibold text-petal-700 capitalize">
+            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[0.6875rem] font-semibold text-petal-700 capitalize">
               {label}
             </span>
           </div>
 
-          <p className="text-[14px] text-ink dark:text-gray-200 mt-1 font-semibold leading-tight">
+          <p className="text-[0.875rem] text-ink dark:text-gray-200 mt-1 font-semibold leading-tight">
             {appointment.specialty || 'Control Oncologic'}
           </p>
 
-          <p className="text-[12px] text-ink-soft dark:text-gray-300 font-medium capitalize mt-0.5">
+          <p className="text-[0.75rem] text-ink-soft dark:text-gray-300 font-medium capitalize mt-0.5">
             {formattedFullDate}
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-[11.5px] text-ink-soft dark:text-gray-400">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-[0.71875rem] text-ink-soft dark:text-gray-400">
             {appointment.time && (
               <span className="flex items-center gap-1 font-medium bg-white/50 dark:bg-darkbg-card/50 px-2 py-0.5 rounded-lg">
                 <Clock className="w-3 h-3 text-blush-deep" /> {appointment.time}
@@ -101,7 +101,7 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
             )}
           </div>
 
-          <p className="text-[11px] text-petal-700 font-medium mt-2">
+          <p className="text-[0.6875rem] text-petal-700 font-medium mt-2">
             Apasă pentru detalii și întrebări pentru medic →
           </p>
         </div>

@@ -1,7 +1,7 @@
 # 010 — Accesibilitate: contrast, tastatură, „Text mare”
 
-**Stare:** în lucru (etapa 2 de făcut, într-o sesiune nouă)
-**Ramura:** claude/accesibilitate-etapa-1 (etapa 1)
+**Stare:** gata
+**Ramura:** claude/accesibilitate-etapa-1 (etapa 1), claude/continuă-sarcina-010-339zwu (etapa 2)
 
 ## Scop
 O verificare de sănătate (2026-10-09), cerută de proprietară: dependențe, Supabase, securitatea codului, accesibilitate. Din raport, proprietara a ales: contrastul, cardurile apăsabile de la tastatură, ordinea titlurilor (etapa 1) și „Text mare” care mărește tot textul (etapa 2). Antetele de securitate pe Vercel nu se fac.
@@ -12,7 +12,7 @@ Ce a ieșit curat: `npm audit` fără vulnerabilități; nicio cheie secretă ș
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
 | 1 | Contrast, carduri apăsabile de la tastatură, ordinea titlurilor | gata | (vezi PR) |
-| 2 | „Text mare” pe tot: `text-[Npx]` (~280 de locuri) → mărimi relative, ca să crească cu `html.font-large` (118%) | de făcut | |
+| 2 | „Text mare” pe tot: `text-[Npx]` (~290 de locuri) → mărimi relative, ca să crească cu `html.font-large` (118%) | gata | (vezi PR) |
 
 ## Rezumat pe etape
 ### Etapa 1 (2026-10-09)
@@ -25,5 +25,11 @@ Ce a ieșit curat: `npm audit` fără vulnerabilități; nicio cheie secretă ș
 - Agentul `verificare`: nimic blocant; reparate `clickable` pus din greșeală pe un `<button>` nativ („Vezi toate ghidurile”) și pe `AppointmentBanner`, hover-ul fără efect de la X-ul cardului de copie, Cronologia.
 - Test: `src/test/accesibilitate.test.tsx`. `npm test` 267/267, `npm run build` ok.
 
+### Etapa 2 (2026-10-09)
+- Toate cele 293 de clase `text-[Npx]` din `src/components` → `text-[N/16 rem]` (ex. 11px → 0.6875rem), deci aceeași mărime la text normal; `.micro-label` din `src/index.css`: 10px → 0.625rem.
+- Verificat cu Playwright la 390px, pe cele 5 taburi: la text normal 11px rămâne 11px; cu A+ devine 12,98px (118%); fără overflow orizontal.
+- Test: în `src/test/accesibilitate.test.tsx`, niciun `text-[Npx]` în componente. `npm test` 268/268, `npm run build` ok. Agentul `verificare`: nimic blocant.
+- Rămas, în afara etapei: `src/App.tsx` mai pune `text-[110%]` pe containerul principal la text mare; afectează doar textul fără mărime proprie (moștenit), deci acela crește ~130%.
+
 ## Următorul pas
-Etapa 2, într-o sesiune nouă: textele cu mărime fixă în px trec pe mărimi relative (rem), cu aceeași mărime la text normal; verificat la 390px cu text mare.
+Nimic; sarcina e încheiată.

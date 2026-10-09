@@ -33,6 +33,14 @@ describe('Contrastul textului', () => {
   });
 });
 
+describe('„Text mare”', () => {
+  it('textul nu are mărimi fixe în px, ca să crească odată cu A+', async () => {
+    const files = await readComponents();
+    const fixed = files.flatMap(({ file, text }) => (text.match(/text-\[[\d.]+px\]/g) ?? []).map((cls) => `${file}: ${cls}`));
+    expect(fixed).toEqual([]);
+  });
+});
+
 describe('Cardurile apăsabile', () => {
   it('clickable() pornește cu Enter și Spațiu, dar lasă tastele butoanelor dinăuntru', () => {
     const onActivate = vi.fn();

@@ -44,7 +44,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ value, onChange, compact
               }`}>
                 {m.level}
               </span>
-              <span className={`text-[10px] font-semibold tracking-wide transition-colors ${
+              <span className={`text-[0.625rem] font-semibold tracking-wide transition-colors ${
                 active ? "text-sage-700 dark:text-sage-300" : "text-ink-soft"
               }`}>{m.label}</span>
             </button>
@@ -53,7 +53,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ value, onChange, compact
       </div>
       {selected && (
         <div className="mt-4 px-1">
-          <p className="text-[13px] leading-relaxed text-ink-soft font-body italic animate-fade-in">
+          <p className="text-[0.8125rem] leading-relaxed text-ink-soft font-body italic animate-fade-in">
             {selected.feedback}
           </p>
         </div>

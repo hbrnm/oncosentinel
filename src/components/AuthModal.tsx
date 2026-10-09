@@ -92,7 +92,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             <h3 className="text-sm font-bold text-ink dark:text-white">
               Siguranța datelor
             </h3>
-            <p className="text-[11px] text-ink-soft dark:text-gray-400">
+            <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400">
               Datele tale stau doar pe acest dispozitiv
             </p>
           </div>
@@ -152,7 +152,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 <button type="button" onClick={handleDisablePin} className="w-full py-2 rounded-xl border border-warmborder dark:border-darkbg-border text-xs font-semibold text-ink dark:text-gray-100">
                   Scoate PIN-ul
                 </button>
-                {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
+                {pinError && <p role="alert" className="text-[0.6875rem] text-rose-700 dark:text-rose-300">{pinError}</p>}
               </>
             ) : !choosingPin ? (
               <>
@@ -170,15 +170,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               </>
             ) : (
               <form onSubmit={handleEnablePin} className="space-y-2">
-                <label className="block text-[11px] font-semibold text-ink-soft">
+                <label className="block text-[0.6875rem] font-semibold text-ink-soft">
                   PIN nou (4 cifre)
                   <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
-                <label className="block text-[11px] font-semibold text-ink-soft">
+                <label className="block text-[0.6875rem] font-semibold text-ink-soft">
                   Scrie-l încă o dată
                   <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
-                {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
+                {pinError && <p role="alert" className="text-[0.6875rem] text-rose-700 dark:text-rose-300">{pinError}</p>}
                 <button type="submit" disabled={pinBusy} className="w-full py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold disabled:opacity-50">
                   Activează PIN-ul
                 </button>

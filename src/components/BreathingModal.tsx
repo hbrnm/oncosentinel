@@ -70,7 +70,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
           <span id="breathing-title">Respirație lentă</span>
         </div>
 
-        <p className="text-[11px] text-ink-soft dark:text-gray-400 mb-6 max-w-[240px]">
+        <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mb-6 max-w-[240px]">
           Câteva minute de respirație lentă, pentru un moment de liniște.
         </p>
 
@@ -90,7 +90,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
             }`}
           >
             <span className="text-3xl font-extrabold tracking-tight">{secondsLeft}</span>
-            <span className="text-[11px] font-medium tracking-wide opacity-90 uppercase mt-0.5">secunde</span>
+            <span className="text-[0.6875rem] font-medium tracking-wide opacity-90 uppercase mt-0.5">secunde</span>
           </div>
         </div>
 

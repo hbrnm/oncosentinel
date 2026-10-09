@@ -47,7 +47,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, setActiveTab })
               <span className="flex items-center justify-center w-10 h-10 rounded-full">
                 <Icon className={`w-[22px] h-[22px] sm:w-6 sm:h-6 ${isActive ? 'stroke-[2.4px]' : 'stroke-[1.8px]'}`} />
               </span>
-              <span className="text-[10px] font-semibold tracking-tight truncate max-w-full">{tab.label}</span>
+              <span className="text-[0.625rem] font-semibold tracking-tight truncate max-w-full">{tab.label}</span>
             </button>
           );
         })}

@@ -226,8 +226,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       <div className="fixed bottom-[11rem] left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-sm flex flex-col gap-2">
       {lastDeleted && (
         <div role="status" className="bg-ink text-white rounded-2xl px-4 py-3 shadow-lg flex items-center justify-between gap-3 animate-fade-in">
-          <p className="text-[13px]">Nota a fost ștearsă.</p>
-          <button type="button" onClick={handleUndoDelete} className="tap-scale text-[13px] font-bold underline shrink-0">
+          <p className="text-[0.8125rem]">Nota a fost ștearsă.</p>
+          <button type="button" onClick={handleUndoDelete} className="tap-scale text-[0.8125rem] font-bold underline shrink-0">
             Anulează
           </button>
         </div>
@@ -237,14 +237,14 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <span className="text-rose-500 text-lg">⚠️</span>
           <div className="flex-1">
             <p className="text-xs font-bold text-rose-700">Ai notat un simptom puternic</p>
-            <p className="text-[11px] text-rose-600 mt-0.5">Dacă nu trece sau te îngrijorează, spune-i medicului tău.</p>
-            <p className="text-[11px] text-rose-700 font-semibold mt-1">
+            <p className="text-[0.6875rem] text-rose-600 mt-0.5">Dacă nu trece sau te îngrijorează, spune-i medicului tău.</p>
+            <p className="text-[0.6875rem] text-rose-700 font-semibold mt-1">
               La simptome grave sau dacă te simți în pericol, sună la <a href="tel:112" className="underline">112</a>.
             </p>
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent('navimed_open_red_flags'))}
-              className="mt-1.5 text-[11px] font-bold text-rose-700 underline"
+              className="mt-1.5 text-[0.6875rem] font-bold text-rose-700 underline"
             >
               Vezi semnalele de alarmă
             </button>
@@ -257,7 +257,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       <header className="px-2 pt-1 pb-4 relative">
         <LeafSprig className="absolute top-0 right-0 w-14 h-14 text-sage-200 dark:text-sage-900/50 opacity-50" />
         <h1 className="font-serif text-2xl text-ink dark:text-white">Jurnal</h1>
-        <p className="text-[13px] text-ink-soft dark:text-gray-400 mt-1">Un spațiu blând pentru emoțiile tale.</p>
+        <p className="text-[0.8125rem] text-ink-soft dark:text-gray-400 mt-1">Un spațiu blând pentru emoțiile tale.</p>
       </header>
 
       <div className="space-y-5">
@@ -269,10 +269,10 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </div>
           <ul className="space-y-1.5">
             {weekSummary(symptoms).map((line) => (
-              <li key={line} className="text-[13px] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
+              <li key={line} className="text-[0.8125rem] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
             ))}
           </ul>
-          <p className="text-[11px] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
+          <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
         </section>
 
         {/* Mood Card */}
@@ -280,9 +280,9 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           <LeafSprig className="absolute -bottom-3 -right-3 w-20 h-20 opacity-40 text-petal-300 dark:text-petal-900/50" />
           <div className="flex items-center gap-2 mb-1">
             <Heart className="w-4 h-4 text-blush-deep dark:text-petal-400" />
-            <p className="text-[10px] font-bold uppercase tracking-wider text-petal-700 dark:text-petal-400">Cum te simți azi?</p>
+            <p className="text-[0.625rem] font-bold uppercase tracking-wider text-petal-700 dark:text-petal-400">Cum te simți azi?</p>
           </div>
-          <p className="text-[13px] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
+          <p className="text-[0.8125rem] text-ink-soft dark:text-petal-300/80 mb-4">Alege dispoziția de azi. Nu există răspuns greșit.</p>
           
           <MoodPicker value={mood} onChange={(m) => { setMood(m); setResponse(null); }} compact />
           
@@ -295,7 +295,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               value={note}
               onChange={(e) => { setNote(e.target.value); setResponse(null); }}
               placeholder="Notează un gând, un simptom, sau o bucurie de azi..."
-              className="w-full min-h-[120px] p-4 rounded-3xl bg-white/70 dark:bg-darkbg/50 border border-petal-200/60 dark:border-petal-900/40 text-[14px] resize-none text-ink dark:text-gray-200 placeholder:text-ink-soft/70 focus:outline-none focus:ring-2 focus:ring-petal-300 transition-all disabled:opacity-70 shadow-sm" 
+              className="w-full min-h-[120px] p-4 rounded-3xl bg-white/70 dark:bg-darkbg/50 border border-petal-200/60 dark:border-petal-900/40 text-[0.875rem] resize-none text-ink dark:text-gray-200 placeholder:text-ink-soft/70 focus:outline-none focus:ring-2 focus:ring-petal-300 transition-all disabled:opacity-70 shadow-sm" 
             />
           </div>
           <button 
@@ -313,8 +313,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             <div role="status" className="mt-3 p-4 rounded-2xl bg-white/80 dark:bg-darkbg-card border border-petal-200/60 dark:border-petal-900/40 flex items-start gap-2.5">
               <Heart className="w-4 h-4 text-blush-deep shrink-0 mt-0.5" />
               <div>
-                <p className="text-[13px] font-semibold text-ink dark:text-gray-100">Am salvat nota de azi.</p>
-                <p className="text-[13px] text-ink dark:text-gray-100 leading-relaxed mt-0.5">{response.text}</p>
+                <p className="text-[0.8125rem] font-semibold text-ink dark:text-gray-100">Am salvat nota de azi.</p>
+                <p className="text-[0.8125rem] text-ink dark:text-gray-100 leading-relaxed mt-0.5">{response.text}</p>
                 {response.crisis && (
                   <a href="tel:112" className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-petal-700 hover:bg-petal-800 text-white text-sm font-bold">
                     <PhoneCall className="w-4 h-4" /> Sună la 112
@@ -346,7 +346,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 <span className="block text-sm font-bold text-ink dark:text-white">
                   Formular detaliat simptome
                 </span>
-                <span className="block text-[11px] text-ink-soft">
+                <span className="block text-[0.6875rem] text-ink-soft">
                   Bufeuri, dureri articulare, mucoase
                 </span>
               </span>
@@ -371,7 +371,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 <div>
                   <input type="range" min="0" max="10" value={hotFlashesCount} onChange={(e) => setHotFlashesCount(parseInt(e.target.value))} className="w-full accent-sage-500 cursor-pointer" />
                 </div>
-                <div className="flex justify-between text-[11px] text-ink-soft mb-1">
+                <div className="flex justify-between text-[0.6875rem] text-ink-soft mb-1">
                   <span>Intensitate bufeu:</span>
                   <strong className="text-ink dark:text-gray-300">Scor {hotFlashesIntensity} / 5</strong>
                 </div>
@@ -477,13 +477,13 @@ export const JournalTab: React.FC<JournalTabProps> = ({
         {/* PDF Export Section */}
         <div className="bg-gradient-to-r from-sage-500 to-sage-600 dark:from-sage-600 dark:to-sage-700 text-white rounded-3xl p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="max-w-md">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-sage-100 block">
+            <span className="text-[0.625rem] font-semibold uppercase tracking-wider text-sage-100 block">
               Rapoarte & Fise
             </span>
             <h3 className="text-sm font-bold mt-0.5">
               Documente Medicale
             </h3>
-            <p className="text-[11px] text-sage-100 mt-1 leading-tight">
+            <p className="text-[0.6875rem] text-sage-100 mt-1 leading-tight">
               Descarcă rezumatul pentru medicul oncolog sau fișa săptămânală.
             </p>
           </div>
@@ -497,7 +497,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                   .then(({ generateWeeklyPlannerPDF }) => generateWeeklyPlannerPDF(profile, list, exercise))
                   .catch(() => alert(PDF_LOAD_ERROR));
               }}
-              className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
+              className="bg-white/90 hover:bg-white text-sage-900 active:scale-95 px-3 py-2.5 rounded-2xl text-[0.6875rem] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-emerald-600" />
               <span>Fișă frigider</span>
@@ -509,7 +509,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                   .then(({ generateOncologyReport }) => generateOncologyReport(profile, doses, symptoms))
                   .catch(() => alert(PDF_LOAD_ERROR));
               }}
-              className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[11px] font-bold flex items-center gap-1.5 shadow-md transition-all"
+              className="bg-white text-sage-800 hover:bg-sage-50 active:scale-95 px-3 py-2.5 rounded-2xl text-[0.6875rem] font-bold flex items-center gap-1.5 shadow-md transition-all"
             >
               <FileDown className="w-4 h-4 text-sage-600" />
               <span>Raport oncolog</span>
@@ -527,13 +527,13 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             {sortedDates.length === 0 && (
               <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-6 text-center border border-sage-100 dark:border-darkbg-border">
                 <Leaf className="w-8 h-8 text-sage-200 dark:text-sage-800 mx-auto mb-2" />
-                <p className="text-[13px] text-ink-soft">Încă nu ai înregistrări. Prima ta notă va apărea aici.</p>
+                <p className="text-[0.8125rem] text-ink-soft">Încă nu ai înregistrări. Prima ta notă va apărea aici.</p>
               </div>
             )}
             
             {sortedDates.map((date) => (
               <div key={date} className="bg-white dark:bg-darkbg-surface rounded-3xl p-4 border border-sage-100 dark:border-darkbg-border">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-sage-500 mb-3">{formatDateRo(date)}</p>
+                <p className="text-[0.625rem] font-bold uppercase tracking-wider text-sage-500 mb-3">{formatDateRo(date)}</p>
                 <div className="space-y-3">
                   {historyGrouped[date].map((e) => {
                     const m = getMood(getMoodLevelFromState(e.mood_state));
@@ -545,7 +545,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-[12px] font-semibold text-ink dark:text-gray-100">{isSymptoms ? 'Simptome' : m.label}</p>
+                            <p className="text-[0.75rem] font-semibold text-ink dark:text-gray-100">{isSymptoms ? 'Simptome' : m.label}</p>
                             {onDeleteSymptomLog && (
                               <button
                                 type="button"
@@ -558,52 +558,52 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                               </button>
                             )}
                           </div>
-                          {e.notes && <p className="text-[12px] text-ink-soft dark:text-gray-400 mt-0.5 leading-relaxed">{e.notes}</p>}
+                          {e.notes && <p className="text-[0.75rem] text-ink-soft dark:text-gray-400 mt-0.5 leading-relaxed">{e.notes}</p>}
                           
                           {/* Show additional symptoms if logged */}
                           <div className="mt-1.5 flex flex-wrap gap-1">
                             {(e.hot_flashes_count || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Bufeuri: {e.hot_flashes_count} (Intensitate {e.hot_flashes_intensity}/5)
                               </span>
                             )}
                             {(e.joint_pain_level || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Articulații: {e.joint_pain_level}/5
                               </span>
                             )}
                             {(e.bone_pain_level || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Oase: {e.bone_pain_level}/5
                               </span>
                             )}
                             {(e.fatigue_level || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Oboseală: {e.fatigue_level}/5
                               </span>
                             )}
                             {(e.nausea_level || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Greață: {e.nausea_level}/5
                               </span>
                             )}
                             {(e.brain_fog || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Ceață mentală: {e.brain_fog}/5
                               </span>
                             )}
                             {(e.mucosal_dryness || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Uscăciune mucoase: {e.mucosal_dryness}/5
                               </span>
                             )}
                             {(e.headache || 0) > 0 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Cefalee: {e.headache}/5
                               </span>
                             )}
                             {e.sleep_quality !== undefined && e.sleep_quality !== 3 && (
-                              <span className="text-[9px] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
+                              <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Somn: {e.sleep_quality}/5
                               </span>
                             )}

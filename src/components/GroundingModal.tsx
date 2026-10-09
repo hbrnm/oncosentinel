@@ -97,7 +97,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
         {!isCompleted ? (
           <>
             {/* Step Badge */}
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-sage-800 dark:text-sage-300 uppercase tracking-wider mb-3">
+            <div className="flex items-center gap-1.5 text-[0.6875rem] font-bold text-sage-800 dark:text-sage-300 uppercase tracking-wider mb-3">
               <Sparkles className="w-3.5 h-3.5 text-sage-600" />
               <span>Metoda de Ancorare 5-4-3-2-1</span>
             </div>
@@ -124,7 +124,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                 <Icon className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-bold text-ink-soft uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
+                <span className="text-[0.625rem] font-bold text-ink-soft uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
                 <h3 className="text-sm font-bold text-ink dark:text-white leading-tight">
                   {current.title}
                 </h3>
@@ -136,7 +136,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
               <p className="text-ink dark:text-gray-200">
                 {current.instruction}
               </p>
-              <p className="text-ink-soft dark:text-gray-400 italic text-[11px]">
+              <p className="text-ink-soft dark:text-gray-400 italic text-[0.6875rem]">
                 {current.prompt}
               </p>
 
