@@ -62,16 +62,13 @@ describe('Cardul de memento după ce e pus', () => {
   beforeEach(() => localStorage.clear());
   afterEach(() => vi.restoreAllMocks());
 
-  it('se strânge într-un rând după Google Calendar și se poate deschide din nou', () => {
+  it('dispare după Google Calendar', () => {
     render(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '21:30' }} doses={[]} onTakeDose={() => {}} />);
     fireEvent.click(screen.getByRole('link', { name: /^Google Calendar/ }));
-    expect(screen.getByText('Memento pus pentru 21:30')).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /^Google Calendar/ })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Pune din nou' }));
-    expect(screen.getByRole('link', { name: /^Google Calendar/ })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Memento zilnic' })).not.toBeInTheDocument();
   });
 
-  it('rămâne strâns la redeschidere, dar revine complet dacă se schimbă ora pastilei', () => {
+  it('rămâne ascuns la redeschidere, dar revine dacă se schimbă ora pastilei', () => {
     Object.assign(URL, { createObjectURL: () => 'blob:memento', revokeObjectURL: vi.fn() });
     vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
     const { unmount } = render(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '21:30' }} doses={[]} onTakeDose={() => {}} />);
@@ -79,15 +76,15 @@ describe('Cardul de memento după ce e pus', () => {
     unmount();
 
     const { rerender } = render(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '21:30' }} doses={[]} onTakeDose={() => {}} />);
-    expect(screen.getByText('Memento pus pentru 21:30')).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Memento zilnic' })).not.toBeInTheDocument();
     rerender(<TreatmentTab profile={{ ...DEFAULT_PROFILE, daily_reminder_time: '08:00' }} doses={[]} onTakeDose={() => {}} />);
     expect(screen.getByText(/în fiecare zi la 08:00/)).toBeInTheDocument();
   });
 
-  it('nu se strânge dacă fișierul de calendar nu s-a putut crea', () => {
+  it('nu dispare dacă fișierul de calendar nu s-a putut crea', () => {
     Object.assign(URL, { createObjectURL: () => { throw new Error('nu'); } });
     render(<TreatmentTab profile={DEFAULT_PROFILE} doses={[]} onTakeDose={() => {}} />);
     fireEvent.click(screen.getByRole('button', { name: 'Alt calendar (iPhone, Samsung…)' }));
-    expect(screen.queryByText(/Memento pus pentru/)).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Memento zilnic' })).toBeInTheDocument();
   });
 });
