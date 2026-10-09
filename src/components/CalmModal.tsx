@@ -32,7 +32,7 @@ export const CalmModal: React.FC<CalmModalProps> = ({ step, onClose, onBreathe, 
         <button
           onClick={close}
           aria-label="Închide"
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white border border-warmborder dark:border-darkbg-border"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white border border-warmborder dark:border-darkbg-border"
         >
           <X className="w-4 h-4" />
         </button>

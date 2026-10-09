@@ -326,7 +326,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           <div className="flex items-center gap-1.5">
             <button
               onClick={handlePrevMonth}
-              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
+              className="tap-scale p-1.5 rounded-full hover:bg-cream-deep dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
               title="Luna precedentă"
               aria-label="Luna precedentă"
             >
@@ -337,7 +337,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             </span>
             <button
               onClick={handleNextMonth}
-              className="tap-scale p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
+              className="tap-scale p-1.5 rounded-full hover:bg-cream-deep dark:hover:bg-darkbg-card text-ink-soft dark:text-gray-300 transition-colors"
               title="Luna următoare"
               aria-label="Luna următoare"
             >
@@ -488,7 +488,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
               <button
                 type="button"
                 onClick={() => setEditing(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -555,7 +555,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditing(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 >
                   Anulează
                 </button>

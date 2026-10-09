@@ -57,7 +57,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({
           <button
             onClick={onClose}
             aria-label="Închide"
-            className="w-8 h-8 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white border border-warmborder dark:border-darkbg-border"
+            className="w-8 h-8 rounded-full bg-white dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white border border-warmborder dark:border-darkbg-border"
           >
             <X className="w-5 h-5" />
           </button>

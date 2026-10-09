@@ -91,7 +91,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
         <button
           onClick={onClose}
           aria-label="Închide"
-          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-gray-100 dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white"
+          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
         >
           <X className="w-4 h-4" />
         </button>
@@ -102,10 +102,10 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
             <HeartHandshake className="w-5 h-5 text-petal-700 dark:text-petal-200" />
           </div>
           <div>
-            <h3 id="supporter-title" className="text-sm font-bold text-gray-900 dark:text-white">
+            <h3 id="supporter-title" className="text-sm font-bold text-ink dark:text-white">
               Cercul de Sprijin
             </h3>
-            <p className="text-[11px] text-gray-500 dark:text-gray-400">
+            <p className="text-[11px] text-ink-soft dark:text-gray-400">
               Conectează o persoană dragă de încredere
             </p>
           </div>
@@ -167,7 +167,7 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
         <form onSubmit={handleSave} className="space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">
+              <label className="text-[10px] font-bold text-ink-soft uppercase block mb-1">
                 Nume persoană:
               </label>
               <input
@@ -175,19 +175,19 @@ export const SupporterModal: React.FC<SupporterModalProps> = ({
                 value={supporter.name}
                 onChange={(e) => setSupporter({ ...supporter, name: e.target.value })}
                 placeholder="ex: Andrei"
-                className="w-full px-3 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full px-3 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 required
               />
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-gray-500 uppercase block mb-1">
+              <label className="text-[10px] font-bold text-ink-soft uppercase block mb-1">
                 Relație:
               </label>
               <select
                 value={supporter.relationship}
                 onChange={(e) => setSupporter({ ...supporter, relationship: e.target.value })}
-                className="w-full px-2 py-2 rounded-xl text-xs bg-gray-50 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                className="w-full px-2 py-2 rounded-xl text-xs bg-cream dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
               >
                 <option value="Soț">Soț / Partener</option>
                 <option value="Fiică">Fiică</option>

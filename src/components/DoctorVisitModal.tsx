@@ -305,7 +305,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowAddAppt(false)}
-                    className="px-3 py-1.5 rounded-xl text-xs text-ink-soft hover:bg-gray-200 transition-colors cursor-pointer"
+                    className="px-3 py-1.5 rounded-xl text-xs text-ink-soft hover:bg-warmborder transition-colors cursor-pointer"
                   >
                     Anulează
                   </button>
@@ -438,7 +438,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                             <button
                               type="button"
                               onClick={() => handleMarkMissed(a.id)}
-                              className="tap-scale px-2.5 py-1 rounded-xl bg-gray-100 dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-ink-soft hover:text-rose-600 dark:text-gray-300 text-[11px] font-semibold flex items-center gap-1 cursor-pointer border border-warmborder dark:border-darkbg-border transition-colors"
+                              className="tap-scale px-2.5 py-1 rounded-xl bg-cream-deep dark:bg-darkbg-card hover:bg-rose-50 dark:hover:bg-rose-950/30 text-ink-soft hover:text-rose-600 dark:text-gray-300 text-[11px] font-semibold flex items-center gap-1 cursor-pointer border border-warmborder dark:border-darkbg-border transition-colors"
                               title="Marchează ca ratat"
                             >
                               <XCircle className="w-3 h-3" /> Nu am ajuns
@@ -573,7 +573,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                     key={item.id}
                     className={`p-3 rounded-2xl border transition-all ${
                       item.isAnswered
-                        ? 'bg-gray-50/70 dark:bg-darkbg-surface/40 border-gray-200 dark:border-darkbg-border opacity-65'
+                        ? 'bg-cream/70 dark:bg-darkbg-surface/40 border-warmborder dark:border-darkbg-border opacity-65'
                         : 'bg-cream/70 dark:bg-darkbg-surface/70 border-warmborder dark:border-darkbg-border shadow-xs'
                     }`}
                   >
@@ -586,14 +586,14 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
                         {item.isAnswered ? (
                           <CheckCircle2 className="w-4 h-4 text-sage fill-sage-soft dark:fill-sage-950" />
                         ) : (
-                          <Circle className="w-4 h-4 text-gray-400" />
+                          <Circle className="w-4 h-4 text-ink-soft/70" />
                         )}
                       </button>
 
                       <div className="flex-1 min-w-0">
                         <p className={`text-xs font-medium leading-relaxed ${
                           item.isAnswered
-                            ? 'line-through text-gray-400 dark:text-gray-500'
+                            ? 'line-through text-ink-soft/70 dark:text-gray-500'
                             : 'text-ink dark:text-white'
                         }`}>
                           {item.question}
@@ -602,7 +602,7 @@ export const DoctorVisitModal: React.FC<DoctorVisitModalProps> = ({
 
                       <button
                         onClick={() => handleDeleteQuestion(item.id)}
-                        className="text-gray-400 hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0 cursor-pointer"
+                        className="text-ink-soft/70 hover:text-rose-500 p-1 rounded-lg transition-colors shrink-0 cursor-pointer"
                         title="Șterge întrebarea"
                       >
                         <Trash2 className="w-3.5 h-3.5" />

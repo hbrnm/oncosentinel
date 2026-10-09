@@ -82,7 +82,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
                   <button
                     type="button"
                     onClick={() => handleDelete(m)}
-                    className="tap-scale shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                    className="tap-scale shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-ink-soft hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                     aria-label={`Șterge ${m.name}`}
                     title={`Șterge ${m.name}`}
                   >
@@ -142,7 +142,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
               <button
                 type="button"
                 onClick={() => setAdding(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 aria-label="Închide"
               >
                 <X className="w-5 h-5" />
@@ -171,7 +171,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
                 <button
                   type="button"
                   onClick={() => setAdding(false)}
-                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 >
                   Anulează
                 </button>
@@ -194,7 +194,7 @@ export const OtherMedicines: React.FC<OtherMedicinesProps> = ({ treatmentLine })
               <button
                 type="button"
                 onClick={() => setShowPharmacist(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
                 aria-label="Închide"
               >
                 <X className="w-5 h-5" />

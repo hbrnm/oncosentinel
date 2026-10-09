@@ -69,3 +69,17 @@ describe('Butonul „Am nevoie de liniște acum”', () => {
     expect(button.dataset.hidden).toBe('false');
   });
 });
+
+describe('Griurile reci', () => {
+  it('nu mai apar în componente (în afară de dark:), locul lor l-au luat ink, ink-soft, warmborder, cream', async () => {
+    // Vitest nu încarcă fișierele ca text, deci le citim de pe disc
+    const nodeFs = 'node:fs';
+    const { readdirSync, readFileSync } = await import(/* @vite-ignore */ nodeFs);
+    const found = (readdirSync('src/components') as string[]).flatMap((file) =>
+      ((readFileSync(`src/components/${file}`, 'utf8') as string).match(/[\w:-]*(?:gray|stone|slate|zinc|neutral)-\d+/g) ?? [])
+        .filter((cls) => !cls.startsWith('dark:'))
+        .map((cls) => `${file}: ${cls}`),
+    );
+    expect(found).toEqual([]);
+  });
+});

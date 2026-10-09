@@ -89,7 +89,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-gray-100 dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white"
+          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
         >
           <X className="w-4 h-4" />
         </button>
@@ -112,7 +112,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                       ? 'bg-sage-600'
                       : idx < currentStep
                       ? 'bg-sage-300 dark:bg-sage-700'
-                      : 'bg-gray-200 dark:bg-darkbg-card'
+                      : 'bg-warmborder dark:bg-darkbg-card'
                   }`}
                 />
               ))}
@@ -124,19 +124,19 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                 <Icon className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
-                <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight">
+                <span className="text-[10px] font-bold text-ink-soft/70 uppercase tracking-wider">Pasul {currentStep + 1} din 5</span>
+                <h3 className="text-sm font-bold text-ink dark:text-white leading-tight">
                   {current.title}
                 </h3>
               </div>
             </div>
 
             {/* Instruction Body */}
-            <div className="space-y-2 mb-4 bg-gray-50/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-gray-100 dark:border-darkbg-border text-xs leading-relaxed">
-              <p className="text-gray-700 dark:text-gray-200">
+            <div className="space-y-2 mb-4 bg-cream/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border text-xs leading-relaxed">
+              <p className="text-ink dark:text-gray-200">
                 {current.instruction}
               </p>
-              <p className="text-gray-500 dark:text-gray-400 italic text-[11px]">
+              <p className="text-ink-soft dark:text-gray-400 italic text-[11px]">
                 {current.prompt}
               </p>
 
@@ -146,7 +146,7 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                   value={personalReflection}
                   onChange={(e) => setPersonalReflection(e.target.value)}
                   placeholder="Ex: Îi sunt recunoscătoare corpului meu că este puternic și se reface în fiecare zi..."
-                  className="w-full p-2.5 mt-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-gray-900 dark:text-white focus:outline-none focus:border-sage-500"
+                  className="w-full p-2.5 mt-2 rounded-xl text-xs bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white focus:outline-none focus:border-sage-500"
                 />
               )}
             </div>
@@ -158,8 +158,8 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
                 disabled={currentStep === 0}
                 className={`py-2 px-3 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all ${
                   currentStep === 0
-                    ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card'
+                    ? 'text-ink-soft/50 dark:text-gray-600 cursor-not-allowed'
+                    : 'text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card'
                 }`}
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
@@ -182,11 +182,11 @@ export const GroundingModal: React.FC<GroundingModalProps> = ({ isOpen, onClose 
               <Check className="w-7 h-7" />
             </div>
 
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-ink dark:text-white">
               Ești ancorată și în siguranță
             </h3>
 
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed max-w-xs mx-auto">
+            <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed max-w-xs mx-auto">
               Ți-ai oferit un moment de respiro. Amintește-ți că poți reveni oricând la această tehnică.
             </p>
 

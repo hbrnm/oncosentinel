@@ -59,7 +59,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
         <button
           onClick={onClose}
           aria-label="Închide"
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -70,7 +70,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
           <span id="breathing-title">Respirație lentă</span>
         </div>
 
-        <p className="text-[11px] text-gray-500 dark:text-gray-400 mb-6 max-w-[240px]">
+        <p className="text-[11px] text-ink-soft dark:text-gray-400 mb-6 max-w-[240px]">
           Câteva minute de respirație lentă, pentru un moment de liniște.
         </p>
 
@@ -96,17 +96,17 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
 
         {/* Instruction Text */}
         <div className="mt-6 mb-4 min-h-[50px]">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+          <h3 className="text-sm font-bold text-ink dark:text-white">
             {phaseInstruction.text}
           </h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          <p className="text-xs text-ink-soft dark:text-gray-400 mt-0.5">
             {phaseInstruction.subtitle}
           </p>
         </div>
 
         {/* Cycle Counter */}
-        <div className="w-full pt-3 border-t border-gray-100 dark:border-darkbg-border flex items-center justify-between text-xs text-gray-500">
-          <span>Cicluri completate: <strong className="text-gray-800 dark:text-gray-200">{cycleCount}</strong></span>
+        <div className="w-full pt-3 border-t border-warmborder dark:border-darkbg-border flex items-center justify-between text-xs text-ink-soft">
+          <span>Cicluri completate: <strong className="text-ink dark:text-gray-200">{cycleCount}</strong></span>
           <button
             onClick={() => setIsActive(!isActive)}
             className="text-sage-700 dark:text-sage-300 font-semibold hover:underline"

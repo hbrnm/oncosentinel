@@ -40,12 +40,12 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ value, onChange, compact
               } ${
                 active
                   ? "bg-sage-600 text-white scale-105 shadow-md ring-4 ring-sage-100 dark:ring-sage-900"
-                  : "bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 group-hover:bg-stone-50"
+                  : "bg-white dark:bg-stone-800 border border-warmborder dark:border-stone-700 text-ink dark:text-stone-300 group-hover:bg-cream"
               }`}>
                 {m.level}
               </span>
               <span className={`text-[10px] font-semibold tracking-wide transition-colors ${
-                active ? "text-sage-700 dark:text-sage-300" : "text-gray-500"
+                active ? "text-sage-700 dark:text-sage-300" : "text-ink-soft"
               }`}>{m.label}</span>
             </button>
           );
@@ -53,7 +53,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ value, onChange, compact
       </div>
       {selected && (
         <div className="mt-4 px-1">
-          <p className="text-[13px] leading-relaxed text-gray-500 font-body italic animate-fade-in">
+          <p className="text-[13px] leading-relaxed text-ink-soft font-body italic animate-fade-in">
             {selected.feedback}
           </p>
         </div>

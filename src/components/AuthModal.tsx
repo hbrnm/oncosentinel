@@ -78,7 +78,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         <button
           onClick={onClose}
           aria-label="Închide"
-          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-gray-100 dark:bg-darkbg-card flex items-center justify-center text-gray-500 hover:text-gray-800 dark:hover:text-white"
+          className="absolute top-4 right-4 w-7 h-7 rounded-full bg-cream-deep dark:bg-darkbg-card flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
         >
           <X className="w-4 h-4" />
         </button>
@@ -89,27 +89,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+            <h3 className="text-sm font-bold text-ink dark:text-white">
               Siguranța datelor
             </h3>
-            <p className="text-[11px] text-gray-500 dark:text-gray-400">
+            <p className="text-[11px] text-ink-soft dark:text-gray-400">
               Datele tale stau doar pe acest dispozitiv
             </p>
           </div>
         </div>
 
         <div className="space-y-3.5">
-          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
             Profilul, dozele, jurnalul și documentele sunt salvate doar în acest browser, nu în cloud. Dacă ștergi datele browserului sau schimbi telefonul, le pierzi. Descarcă din când în când o copie de siguranță și păstreaz-o într-un loc sigur: conține date medicale.
           </p>
 
-          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
             {pinEnabled
               ? 'Datele sunt criptate cu PIN-ul tău. Copia de siguranță pe care o descarci nu e criptată: păstreaz-o într-un loc sigur.'
               : 'Datele nu sunt criptate: oricine poate deschide acest browser le poate vedea. Folosește un telefon blocat cu parolă sau amprentă și nu folosi aplicația pe un dispozitiv comun.'}
           </p>
 
-          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
             Spațiul e limitat (aproximativ 5 MB în total, documente de cel mult 1,5 MB fiecare). Dacă se umple, aplicația îți spune și poți șterge documente din Cronologie.
           </p>
 
@@ -146,17 +146,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             </h4>
             {pinEnabled ? (
               <>
-                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
                   PIN-ul e activ. Aplicația îl cere la fiecare deschidere și după 5 minute în fundal.
                 </p>
-                <button type="button" onClick={handleDisablePin} className="w-full py-2 rounded-xl border border-gray-200 dark:border-darkbg-border text-xs font-semibold text-ink dark:text-gray-100">
+                <button type="button" onClick={handleDisablePin} className="w-full py-2 rounded-xl border border-warmborder dark:border-darkbg-border text-xs font-semibold text-ink dark:text-gray-100">
                   Scoate PIN-ul
                 </button>
                 {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
               </>
             ) : !choosingPin ? (
               <>
-                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-xs text-ink-soft dark:text-gray-300 leading-relaxed">
                   Datele tale de pe acest telefon vor fi criptate cu un PIN de 4 cifre. Fără PIN nu le poate citi nimeni, nici tu. Dacă îl uiți, datele nu se pot recupera decât dintr-o copie de siguranță. Descarcă o copie înainte.
                 </p>
                 <div className="grid grid-cols-2 gap-2">
@@ -172,11 +172,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <form onSubmit={handleEnablePin} className="space-y-2">
                 <label className="block text-[11px] font-semibold text-ink-soft">
                   PIN nou (4 cifre)
-                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pin} onChange={(e) => { setPin(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
                 <label className="block text-[11px] font-semibold text-ink-soft">
                   Scrie-l încă o dată
-                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-gray-200 dark:border-darkbg-border text-ink dark:text-white" />
+                  <input type="password" inputMode="numeric" autoComplete="off" maxLength={4} value={pinAgain} onChange={(e) => { setPinAgain(e.target.value.replace(/\D/g, '')); setPinError(''); }} className="mt-1 w-full px-3 py-2 rounded-xl text-sm tracking-[0.4em] bg-white dark:bg-darkbg-surface border border-warmborder dark:border-darkbg-border text-ink dark:text-white" />
                 </label>
                 {pinError && <p role="alert" className="text-[11px] text-rose-700 dark:text-rose-300">{pinError}</p>}
                 <button type="submit" disabled={pinBusy} className="w-full py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs font-semibold disabled:opacity-50">
@@ -188,7 +188,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
           <button
             onClick={handleDeleteAll}
-            className="w-full py-2 rounded-xl border border-gray-200 dark:border-darkbg-border hover:bg-gray-100 dark:hover:bg-darkbg-card text-rose-700 dark:text-rose-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+            className="w-full py-2 rounded-xl border border-warmborder dark:border-darkbg-border hover:bg-cream-deep dark:hover:bg-darkbg-card text-rose-700 dark:text-rose-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
             <span>Șterge toate datele de pe acest dispozitiv</span>

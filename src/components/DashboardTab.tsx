@@ -436,7 +436,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               required
             />
             <div className="flex items-center justify-end gap-2 mt-4">
-              <button type="button" onClick={() => setAddingPills(false)} className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkbg-card">
+              <button type="button" onClick={() => setAddingPills(false)} className="px-4 py-2 rounded-xl text-[13px] font-medium text-ink-soft dark:text-gray-300 hover:bg-cream-deep dark:hover:bg-darkbg-card">
                 Anulează
               </button>
               <button type="submit" className="px-5 py-2 rounded-xl text-[13px] font-semibold bg-sage hover:bg-sage-deep text-white shadow-xs">
@@ -551,10 +551,10 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               </span>
               <Calendar className="w-3.5 h-3.5 text-sage-600" />
             </div>
-            <h4 className="text-sm font-bold font-serif text-gray-900 dark:text-white leading-snug">
+            <h4 className="text-sm font-bold font-serif text-ink dark:text-white leading-snug">
               {nextControlDate ? formattedControlDate : 'Nicio dată setată'}
             </h4>
-            <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-1 font-medium">
+            <p className="text-[11px] text-ink-soft dark:text-gray-300 mt-1 font-medium">
               {!nextControlDate ? (
                 <span>Apasă ca să adaugi controlul</span>
               ) : daysUntilControl > 0 ? (
@@ -566,7 +566,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               )}
             </p>
           </div>
-          <span className="text-[10px] text-gray-400 hover:text-sage-600 pt-2 flex items-center gap-0.5">
+          <span className="text-[10px] text-ink-soft/70 hover:text-sage-600 pt-2 flex items-center gap-0.5">
             Oncologie • Modifică &rarr;
           </span>
         </div>
@@ -596,7 +596,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <span className="micro-label block">
               JURNAL
             </span>
-            <h3 className="text-sm font-bold font-serif text-gray-900 dark:text-white mt-0.5">
+            <h3 className="text-sm font-bold font-serif text-ink dark:text-white mt-0.5">
               Cum te simți azi?
             </h3>
           </div>
@@ -635,16 +635,16 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
                 className={`flex flex-col items-center justify-start px-0.5 py-2 rounded-2xl min-h-[58px] transition-all transform active:scale-95 ${
                   isSelected
                     ? 'bg-sage-600 text-white shadow-sm scale-105'
-                    : 'bg-cream dark:bg-darkbg-card hover:bg-sage-50 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-darkbg-border'
+                    : 'bg-cream dark:bg-darkbg-card hover:bg-sage-50 text-ink dark:text-gray-300 border border-warmborder dark:border-darkbg-border'
                 }`}
               >
                 <span className={`w-7 h-7 rounded-full flex items-center justify-center font-semibold text-xs ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
+                  isSelected ? 'bg-white/20 text-white' : 'bg-cream-deep dark:bg-stone-800 text-ink dark:text-stone-300'
                 }`}>
                   {item.level}
                 </span>
                 <span className={`text-[10px] mt-1 text-center font-medium leading-tight tracking-tight ${
-                  isSelected ? 'text-white font-bold' : 'text-gray-500 dark:text-gray-400'
+                  isSelected ? 'text-white font-bold' : 'text-ink-soft dark:text-gray-400'
                 }`}>
                   {item.label}
                 </span>
@@ -677,7 +677,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
       {/* 4. Maxim 2 Carduri Ghiduri / Noutăți + Buton „Vezi toate ghidurile” */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-ink-soft dark:text-gray-400">
             Ghiduri & Noutăți Clinice
           </h3>
           <button
@@ -701,16 +701,16 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             <div className="flex items-center gap-1.5 text-[10px] font-bold text-sage-700 dark:text-sage-300 uppercase">
               <span>{CLINICAL_GUIDES[0].tag}</span>
               <span>•</span>
-              <span className="text-gray-400">Recomandare</span>
+              <span className="text-ink-soft/70">Recomandare</span>
             </div>
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5">
+            <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5">
               {CLINICAL_GUIDES[0].title}
             </h4>
-            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+            <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
               {CLINICAL_GUIDES[0].summary}
             </p>
           </div>
-          <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />
+          <ChevronRight className="w-4 h-4 text-ink-soft/70 shrink-0 self-center" />
         </div>
 
         {/* Card 2 Noutăți: from NEWS_PROTOCOLS */}
@@ -724,17 +724,17 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase">
               <span className="micro-label text-sage-deep">NOUTĂȚI</span>
-              <span className="text-gray-400">•</span>
-              <span className="text-gray-400">{NEWS_PROTOCOLS[0].date}</span>
+              <span className="text-ink-soft/70">•</span>
+              <span className="text-ink-soft/70">{NEWS_PROTOCOLS[0].date}</span>
             </div>
-            <h4 className="text-xs font-bold text-gray-900 dark:text-white mt-0.5 leading-snug">
+            <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5 leading-snug">
               {NEWS_PROTOCOLS[0].title}
             </h4>
-            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+            <p className="text-[11px] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
               {NEWS_PROTOCOLS[0].summary}
             </p>
           </div>
-          <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 self-center" />
+          <ChevronRight className="w-4 h-4 text-ink-soft/70 shrink-0 self-center" />
         </div>
       </div>
 
@@ -753,7 +753,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
             type="button"
             onClick={handleDismissBanner}
             title="Închide pentru 7 zile"
-            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1"
+            className="absolute top-3 right-3 text-ink-soft/70 hover:text-ink-soft dark:hover:text-gray-200 p-1"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -772,7 +772,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </button>
           <button
             onClick={handleDismissSosFab}
-            className="w-7 h-7 rounded-full bg-white dark:bg-darkbg-surface text-gray-500 shadow border border-gray-200 flex items-center justify-center text-xs"
+            className="w-7 h-7 rounded-full bg-white dark:bg-darkbg-surface text-ink-soft shadow border border-warmborder flex items-center justify-center text-xs"
             title="Închide SOS"
           >
             <X className="w-3.5 h-3.5" />
@@ -797,7 +797,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPhotoModal(false)}
-                className="p-1 rounded-full text-ink-soft hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors cursor-pointer"
+                className="p-1 rounded-full text-ink-soft hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -835,7 +835,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPhotoModal(false)}
-                className="w-full py-2 rounded-xl text-xs text-ink-soft dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-darkbg-card transition-colors"
+                className="w-full py-2 rounded-xl text-xs text-ink-soft dark:text-gray-400 hover:bg-cream-deep dark:hover:bg-darkbg-card transition-colors"
               >
                 Închide
               </button>
