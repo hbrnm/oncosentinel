@@ -75,16 +75,14 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   // Memento zilnic în calendarul telefonului
   const reminderTime = profile.daily_reminder_time || '08:00';
   const [reminderError, setReminderError] = useState(false);
-  // Ora pentru care a fost pus memento-ul; dacă ora pastilei se schimbă, cardul complet revine
+  // Ora pentru care a fost pus memento-ul; dacă ora pastilei se schimbă, cardul revine
   const [reminderSetFor, setReminderSetFor] = useState(() => {
     try { return localStorage.getItem(REMINDER_SET_KEY); } catch { return null; }
   });
-  const [reminderExpanded, setReminderExpanded] = useState(false);
-  const reminderCollapsed = reminderSetFor === reminderTime && !reminderExpanded;
+  const reminderSet = reminderSetFor === reminderTime;
   const markReminderSet = () => {
     try { localStorage.setItem(REMINDER_SET_KEY, reminderTime); } catch { /* doar afișarea; cardul rămâne deschis */ }
     setReminderSetFor(reminderTime);
-    setReminderExpanded(false);
   };
   const firstDoseDate = [...takenDates, ...missedDates].sort()[0];
 
@@ -269,29 +267,8 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         treatmentLine={`${[profile.medication_name || 'Tamoxifen', profile.medication_dose].filter(Boolean).join(' ')}${profile.tamoxifen_start_date ? ` din ${formatDateRo(profile.tamoxifen_start_date)}` : ''}`}
       />
 
-      {/* Memento zilnic în calendarul telefonului (fără server); după ce e pus, se strânge într-un rând */}
-      {reminderCollapsed ? (
-      <section aria-labelledby="reminder-title" className="organic-card rounded-3xl px-5 py-4 flex items-center gap-3">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
-            <h2 id="reminder-title" className="micro-label">Memento zilnic</h2>
-          </div>
-          <p className="text-[13px] text-ink dark:text-gray-200 font-medium mt-1 flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-sage-deep dark:text-sage-300 shrink-0" strokeWidth={2.5} aria-hidden="true" />
-            Memento pus pentru {reminderTime}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setReminderExpanded(true)}
-          className="tap-scale shrink-0 inline-flex items-center gap-0.5 text-sage-deep dark:text-sage-300 text-[12px] font-semibold hover:underline"
-        >
-          Pune din nou
-          <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
-        </button>
-      </section>
-      ) : (
+      {/* Memento zilnic în calendarul telefonului (fără server); după ce e pus, cardul dispare */}
+      {!reminderSet && (
       <section aria-labelledby="reminder-title" className="organic-card rounded-3xl p-5">
         <div className="flex items-center gap-2 mb-2">
           <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
