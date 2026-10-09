@@ -123,15 +123,102 @@ export const NEWS_PROTOCOLS: NewsProtocol[] = [
     date: 'Iunie 2026',
     summary: 'O analiză a trei studii arată că 5 mg pe zi a redus riscul unui nou cancer de sân la femeile după menopauză. Doza potrivită ți-o stabilește medicul.',
     content: `### Ce s-a studiat
+
 Cercetătorii au analizat împreună datele a 1.545 de femei din trei studii. Femeile aveau DCIS, carcinom microinvaziv sau leziuni cu risc crescut, cu receptori de estrogen pozitivi sau necunoscuți. Unele au primit tamoxifen în doză mică (5 mg pe zi sau 10 mg o dată la două zile, timp de 2–5 ani), altele placebo sau niciun tratament. Au fost urmărite în medie 9,4 ani.
 
 ### Ce s-a găsit
+
 * **După menopauză:** doza mică a redus cam la jumătate riscul unui nou cancer de sân (40 din 335 de femei, față de 93 din 401).
 * **Înainte de menopauză:** beneficiul a fost mai puțin clar, mai ales pentru sânul operat.
 
 ### Ce înseamnă pentru tine
+
 Doza potrivită pentru tine o stabilește medicul oncolog. Dacă tolerezi greu tratamentul, îl poți întreba dacă doza mică ar fi o variantă. Nu schimba niciodată singură doza.
 
 *Sursa: Gandini și colab., Journal of Clinical Oncology, 2026; 44:2121–2129 (DOI 10.1200/JCO-26-00841), prezentat la ASCO 2026.*`
+  },
+  {
+    id: 'n2',
+    title: 'O pastilă fără hormoni pentru bufeuri, testată la femeile care iau tamoxifen',
+    date: 'Martie 2026',
+    summary: 'Un studiu mare arată că elinzanetantul reduce bufeurile și transpirațiile nocturne date de tratamentul hormonal, inclusiv de tamoxifen. Medicul tău îți poate spune dacă ți se potrivește.',
+    content: `### Ce s-a studiat
+
+Studiul OASIS-4 a inclus 474 de femei cu cancer de sân sau cu risc crescut, care luau tratament hormonal și aveau bufeuri supărătoare. 265 dintre ele luau tamoxifen. O parte au primit elinzanetant, un medicament fără hormoni, iar celelalte placebo.
+
+### Ce s-a găsit
+
+* Bufeurile moderate și severe au scăzut mai mult cu elinzanetant decât cu placebo: în medie cu aproximativ 3,5 episoade pe zi mai puține după 4 săptămâni.
+* S-au îmbunătățit și somnul și calitatea vieții.
+* Efectul a fost la fel la femeile care luau tamoxifen ca la celelalte (analiză prezentată la Conferința europeană de cancer mamar, martie 2026).
+* Durerile de cap și oboseala au fost mai frecvente cu medicamentul.
+
+### Ce înseamnă pentru tine
+
+În noiembrie 2025, Uniunea Europeană a aprobat elinzanetantul și pentru bufeurile date de tratamentul hormonal pentru cancerul de sân. Dacă bufeurile te deranjează, spune-i medicului: există mai multe variante, cu sau fără medicamente. Nu întrerupe tamoxifenul din cauza bufeurilor fără să vorbești cu el.
+
+*Surse: Cardoso și colab., New England Journal of Medicine, 2025 (studiul OASIS-4, prezentat la ASCO 2025); analiza pe tipuri de tratament, EBCC 2026, Barcelona; aprobarea Comisiei Europene, 19 noiembrie 2025.*`
+  },
+  {
+    id: 'n3',
+    title: 'Terapia prin discuții ajută la bufeuri și la somn',
+    date: '2012',
+    summary: 'Șase întâlniri de terapie cognitiv-comportamentală în grup au făcut bufeurile mai ușor de suportat pentru femeile după cancer de sân, iar efectul a durat luni de zile.',
+    content: `### Ce s-a studiat
+
+În studiul MENOS1, din Londra, 96 de femei cu bufeuri supărătoare după tratamentul pentru cancer de sân au fost împărțite în două grupuri: îngrijire obișnuită sau îngrijire obișnuită plus șase întâlniri săptămânale de terapie cognitiv-comportamentală în grup (exerciții de respirație, gestionarea stresului, obiceiuri de somn).
+
+### Ce s-a găsit
+
+* Cât de mult le deranjau bufeurile a scăzut, în medie, de la 6,5 la 3,5 pe o scală de la 1 la 10 în grupul cu terapie, față de 6,1 la 5,0 în celălalt grup.
+* Efectul s-a păstrat și după 6 luni.
+* S-au îmbunătățit și dispoziția, somnul și calitatea vieții.
+
+### Ce înseamnă pentru tine
+
+Ajutorul pentru bufeuri nu înseamnă doar medicamente. Poți întreba medicul sau un psiholog despre terapia cognitiv-comportamentală. Exercițiile de respirație din aplicație sunt un început bun, dar nu înlocuiesc terapia.
+
+*Sursa: Mann și colab., The Lancet Oncology, 2012; 13:309–318 (studiul MENOS1).*`
+  },
+  {
+    id: 'n4',
+    title: 'Mișcarea pe care ți-o alegi singură contează',
+    date: 'Aprilie 2026',
+    summary: 'Un studiu din 2026 arată că femeile care au făcut mai multă mișcare după cancerul de sân au trăit mai mult, chiar și cu creșteri mici de activitate, oricare a fost tipul de mișcare.',
+    content: `### Ce s-a studiat
+
+Cercetătorii au analizat datele a 959 de femei cu cancer de sân invaziv în stadiile I–III, din California, urmărite timp de 8 ani. Au comparat ce s-ar fi întâmplat dacă femeile ar fi urmat un program de mișcare față de doar sfaturi de sănătate. Fiecare femeie își alegea singură tipul de mișcare.
+
+### Ce s-a găsit
+
+* Riscul de deces în 8 ani a fost estimat la 15,8% cu programul de mișcare, față de 23,7% fără el.
+* Și creșterile mai mici de activitate au fost legate de rezultate mai bune.
+
+### Ce înseamnă pentru tine
+
+Nu trebuie să fie sală sau alergare: plimbările, dansul, înotul sau grădinăritul contează. Studiul e observațional, adică arată o legătură, nu o dovadă, iar autorii cer un studiu clinic care să o confirme. Întreabă medicul ce fel de mișcare ți se potrivește acum.
+
+*Sursa: Jayasekera și colab., JAMA Network Open, 2026; 9(4):e265177 (DOI 10.1001/jamanetworkopen.2026.5177).*`
+  },
+  {
+    id: 'n5',
+    title: 'Tot mai puține decese prin cancer de sân',
+    date: '2026',
+    summary: 'În Statele Unite, rata deceselor prin cancer de sân a scăzut cu 44% din 1989 încoace, datorită depistării mai devreme și tratamentelor mai bune.',
+    content: `### Ce arată datele
+
+Societatea Americană de Cancer urmărește de zeci de ani evoluția cancerului de sân. Rata deceselor a scăzut cu 44% față de 1989. Organizația pune scăderea pe seama depistării prin screening, a informării mai bune și a tratamentelor mai eficiente.
+
+### Ce înseamnă pentru tine
+
+Cifrele sunt din Statele Unite și privesc toate formele de cancer de sân, nu doar DCIS. Arată însă că tratamentele de azi, inclusiv cel hormonal, sunt rezultatul a zeci de ani de cercetare care funcționează. Controalele regulate fac parte din acest progres.
+
+*Sursa: American Cancer Society, Key Statistics for Breast Cancer, actualizat în 2026 (cancer.org).*`
   }
 ];
+
+/** Vestea bună a zilei: o noutate pe zi, prin rotație, schimbată la miezul nopții (ora telefonului). */
+export function getNewsOfTheDay(date: Date = new Date()): NewsProtocol {
+  const day = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000);
+  return NEWS_PROTOCOLS[day % NEWS_PROTOCOLS.length];
+}

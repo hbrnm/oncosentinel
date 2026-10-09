@@ -4,7 +4,7 @@ import {
   Sparkles, Calendar, Heart, Check, ArrowRight, X, PhoneCall, ChevronRight, BookOpen, HeartHandshake, CalendarHeart, ShieldCheck, Pill
 } from 'lucide-react';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
-import { CLINICAL_GUIDES, NEWS_PROTOCOLS } from '../data/guides';
+import { CLINICAL_GUIDES, getNewsOfTheDay } from '../data/guides';
 import { BotanicalBranch, LeafSprig, PillIcon } from './Botanical';
 import { QuickActions } from './QuickActions';
 import { controlSupportText } from '../data/comfort';
@@ -34,6 +34,8 @@ interface DashboardTabProps {
   /** Starea aleasă aici se salvează ca nota de azi din Jurnal (treapta 1–5) */
   onSaveMood?: (level: number) => void;
   onNavigateToTab?: (tab: 'today' | 'treatment' | 'timeline' | 'journal' | 'guide' | 'profile') => void;
+  /** Deschide în Ghid noutatea cu acest id */
+  onOpenNews?: (id: string) => void;
 }
 
 export type MoodLevel = 'foarte_bine' | 'bine' | 'neutru' | 'rau' | 'foarte_rau';
@@ -52,9 +54,11 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
   onOpenDataSafety,
   onAddPills,
   onSaveMood,
-  onNavigateToTab
+  onNavigateToTab,
+  onOpenNews
 }) => {
   const now = new Date();
+  const newsOfTheDay = getNewsOfTheDay(now);
   const currentHour = now.getHours();
 
   const getLocalDateString = (d: Date) => {
@@ -718,9 +722,9 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           <ChevronRight className="w-4 h-4 text-ink-soft shrink-0 self-center" />
         </div>
 
-        {/* Card 2 Noutăți: from NEWS_PROTOCOLS */}
+        {/* Card 2: Vestea bună a zilei, o noutate pe zi din NEWS_PROTOCOLS */}
         <div
-          {...clickable(() => onNavigateToTab?.('guide'))}
+          {...clickable(() => onOpenNews ? onOpenNews(newsOfTheDay.id) : onNavigateToTab?.('guide'))}
           className="cursor-pointer bg-white dark:bg-darkbg-surface p-4 rounded-3xl border border-sage-100 dark:border-darkbg-border shadow-xs hover:border-sage-300 transition-all flex items-start gap-3"
         >
           <div className="w-12 h-12 rounded-2xl bg-sage-soft dark:bg-darkbg-card text-sage-800 dark:text-sage-300 flex items-center justify-center shrink-0">
@@ -728,15 +732,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 text-[0.625rem] font-bold uppercase">
-              <span className="micro-label text-sage-deep">NOUTĂȚI</span>
+              <span className="micro-label text-sage-deep">VESTEA BUNĂ A ZILEI</span>
               <span className="text-ink-soft">•</span>
-              <span className="text-ink-soft">{NEWS_PROTOCOLS[0].date}</span>
+              <span className="text-ink-soft">{newsOfTheDay.date}</span>
             </div>
             <h4 className="text-xs font-bold text-ink dark:text-white mt-0.5 leading-snug">
-              {NEWS_PROTOCOLS[0].title}
+              {newsOfTheDay.title}
             </h4>
             <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 mt-1 line-clamp-2">
-              {NEWS_PROTOCOLS[0].summary}
+              {newsOfTheDay.summary}
             </p>
           </div>
           <ChevronRight className="w-4 h-4 text-ink-soft shrink-0 self-center" />

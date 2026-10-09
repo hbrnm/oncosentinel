@@ -14,8 +14,9 @@ describe('Conținutul medical rescris', () => {
     expect(g1.content).not.toMatch(/40–50%|80% dintre paciente|obligatoriu|excelentă/);
   });
 
-  it('Noutăți: doar studiul despre doza mică, cu sursă și fără exagerări', () => {
-    expect(NEWS_PROTOCOLS.map(n => n.id)).toEqual(['n1']);
+  it('Noutăți: doar cele aprobate (docs/noutati-texte.md), fiecare cu sursă', () => {
+    expect(NEWS_PROTOCOLS.map(n => n.id)).toEqual(['n1', 'n2', 'n3', 'n4', 'n5']);
+    NEWS_PROTOCOLS.forEach(n => expect(n.content).toMatch(/\*Surs[ae]: /));
     expect(NEWS_PROTOCOLS[0].content).toMatch(/\*Sursa: Gandini/);
     expect(NEWS_PROTOCOLS[0].content).toMatch(/După menopauză/);
     expect(NEWS_PROTOCOLS[0].summary).not.toMatch(/extrem de eficiente/);
