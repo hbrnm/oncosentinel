@@ -159,23 +159,29 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                   <CheckCircle2 className="w-3.5 h-3.5" />
                 </div>
 
-                <div 
-                  onClick={() => setExpandedMilestone(isExpanded ? null : m.id)}
-                  className="cursor-pointer bg-cream/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border hover:border-sage-200 transition-all"
+                <div
+                  className="bg-cream/70 dark:bg-darkbg-card p-3.5 rounded-2xl border border-warmborder dark:border-darkbg-border hover:border-sage-200 transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${badge.color}`}>
                       {badge.label}
                     </span>
-                    <span className="text-[11px] text-ink-soft/70 flex items-center gap-1">
+                    <span className="text-[11px] text-ink-soft flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {new Date(m.event_date).toLocaleDateString('ro-RO', { month: 'short', year: 'numeric' })}
                     </span>
                   </div>
 
-                  <h4 className="text-xs font-bold text-ink dark:text-white mt-1.5 flex items-center justify-between">
-                    <span>{m.title}</span>
-                    {isExpanded ? <ChevronUp className="w-4 h-4 text-ink-soft/70" /> : <ChevronDown className="w-4 h-4 text-ink-soft/70" />}
+                  <h4 className="text-xs font-bold text-ink dark:text-white mt-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedMilestone(isExpanded ? null : m.id)}
+                      aria-expanded={isExpanded}
+                      className="w-full text-left flex items-center justify-between cursor-pointer"
+                    >
+                      <span>{m.title}</span>
+                      {isExpanded ? <ChevronUp className="w-4 h-4 text-ink-soft" aria-hidden="true" /> : <ChevronDown className="w-4 h-4 text-ink-soft" aria-hidden="true" />}
+                    </button>
                   </h4>
 
                   <p className="text-xs text-ink-soft dark:text-gray-300 mt-1 leading-relaxed">
@@ -305,7 +311,7 @@ export const TimelineTab: React.FC<TimelineTabProps> = ({
                           onDeleteDocument(doc.id);
                         }
                       }}
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-ink-soft/70 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                      className="w-7 h-7 rounded-lg flex items-center justify-center text-ink-soft hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
                       title="Șterge documentul din dosar"
                     >
                       <Trash2 className="w-4 h-4" />

@@ -103,7 +103,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               Nume și prenume:
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+              <User className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={fullName}
@@ -120,7 +120,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               Adresa ta de e-mail:
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 value={email}
@@ -213,7 +213,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 Ora administrării:
               </label>
               <div className="relative">
-                <Clock className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Clock className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="time"
                   value={reminderTime}
@@ -229,7 +229,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 Stoc pastile în cutie:
               </label>
               <div className="relative">
-                <Pill className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Pill className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="number"
                   min="0"
@@ -251,7 +251,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               Data de începere a Tamoxifenului:
             </label>
             <div className="relative">
-              <Calendar className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Calendar className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="date"
                 value={startDate}
@@ -267,7 +267,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               E-mail medic oncolog (pentru rapoarte):
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-ink-soft/70 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Mail className="w-4 h-4 text-ink-soft absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 value={oncologistEmail}

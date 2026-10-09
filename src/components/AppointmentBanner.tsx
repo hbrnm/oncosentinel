@@ -1,5 +1,6 @@
 import React from 'react';
 import { CalendarHeart, X, MapPin, Clock } from 'lucide-react';
+import { clickable } from '../lib/clickable';
 
 interface AppointmentItem {
   id: string;
@@ -59,11 +60,11 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
         className="tap-scale absolute top-3 right-3 w-7 h-7 rounded-full bg-white/60 dark:bg-darkbg-card/60 flex items-center justify-center hover:bg-white transition-colors cursor-pointer"
         aria-label="Închide"
       >
-        <X className="w-3.5 h-3.5 text-blush-deep" />
+        <X className="w-3.5 h-3.5 text-petal-700" />
       </button>
 
       <div
-        onClick={onClick}
+        {...(onClick ? clickable(onClick) : {})}
         className="flex items-start gap-3.5 pr-6 cursor-pointer"
       >
         <span className="shrink-0 w-11 h-11 rounded-2xl bg-white/70 dark:bg-darkbg-card/70 flex items-center justify-center shadow-xs">
@@ -71,7 +72,7 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[11px] font-semibold text-blush-deep capitalize">
+            <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-darkbg-card/80 text-[11px] font-semibold text-petal-700 capitalize">
               {label}
             </span>
           </div>
@@ -100,7 +101,7 @@ export const AppointmentBanner: React.FC<AppointmentBannerProps> = ({
             )}
           </div>
 
-          <p className="text-[11px] text-blush-deep font-medium mt-2">
+          <p className="text-[11px] text-petal-700 font-medium mt-2">
             Apasă pentru detalii și întrebări pentru medic →
           </p>
         </div>
