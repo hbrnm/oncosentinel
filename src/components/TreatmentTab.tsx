@@ -9,6 +9,8 @@ import { useBackToClose } from '../lib/backNavigation';
 import { OtherMedicines } from './OtherMedicines';
 import { stockLine, safeStock } from '../lib/pillStock';
 
+const REMINDER_SET_KEY = 'oncosentinel_reminder_set_time';
+
 interface TreatmentTabProps {
   profile: PatientProfile;
   doses: DoseLog[];
@@ -73,6 +75,17 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
   // Memento zilnic în calendarul telefonului
   const reminderTime = profile.daily_reminder_time || '08:00';
   const [reminderError, setReminderError] = useState(false);
+  // Ora pentru care a fost pus memento-ul; dacă ora pastilei se schimbă, cardul complet revine
+  const [reminderSetFor, setReminderSetFor] = useState(() => {
+    try { return localStorage.getItem(REMINDER_SET_KEY); } catch { return null; }
+  });
+  const [reminderExpanded, setReminderExpanded] = useState(false);
+  const reminderCollapsed = reminderSetFor === reminderTime && !reminderExpanded;
+  const markReminderSet = () => {
+    try { localStorage.setItem(REMINDER_SET_KEY, reminderTime); } catch { /* doar afișarea; cardul rămâne deschis */ }
+    setReminderSetFor(reminderTime);
+    setReminderExpanded(false);
+  };
   const firstDoseDate = [...takenDates, ...missedDates].sort()[0];
 
   // Controalele viitoare din „Controale medicale”, marcate și în calendar
@@ -256,7 +269,29 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
         treatmentLine={`${[profile.medication_name || 'Tamoxifen', profile.medication_dose].filter(Boolean).join(' ')}${profile.tamoxifen_start_date ? ` din ${formatDateRo(profile.tamoxifen_start_date)}` : ''}`}
       />
 
-      {/* Memento zilnic în calendarul telefonului (fără server) */}
+      {/* Memento zilnic în calendarul telefonului (fără server); după ce e pus, se strânge într-un rând */}
+      {reminderCollapsed ? (
+      <section aria-labelledby="reminder-title" className="organic-card rounded-3xl px-5 py-4 flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
+            <h2 id="reminder-title" className="micro-label">Memento zilnic</h2>
+          </div>
+          <p className="text-[13px] text-ink dark:text-gray-200 font-medium mt-1 flex items-center gap-1.5">
+            <Check className="w-3.5 h-3.5 text-sage-deep dark:text-sage-300 shrink-0" strokeWidth={2.5} aria-hidden="true" />
+            Memento pus pentru {reminderTime}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setReminderExpanded(true)}
+          className="tap-scale shrink-0 inline-flex items-center gap-0.5 text-sage-deep dark:text-sage-300 text-[12px] font-semibold hover:underline"
+        >
+          Pune din nou
+          <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
+        </button>
+      </section>
+      ) : (
       <section aria-labelledby="reminder-title" className="organic-card rounded-3xl p-5">
         <div className="flex items-center gap-2 mb-2">
           <BellRing className="w-4 h-4 text-sage-deep dark:text-sage-300" aria-hidden="true" />
@@ -270,6 +305,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
             href={googleCalendarUrl(reminderTime)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={markReminderSet}
             className="tap-scale py-2.5 px-3 rounded-2xl bg-sage-deep text-white text-[13px] font-semibold text-center"
           >
             Google Calendar
@@ -277,7 +313,11 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           </a>
           <button
             type="button"
-            onClick={() => setReminderError(!downloadReminderIcs(reminderTime))}
+            onClick={() => {
+              const ok = downloadReminderIcs(reminderTime);
+              setReminderError(!ok);
+              if (ok) markReminderSet();
+            }}
             className="tap-scale py-2.5 px-3 rounded-2xl bg-white dark:bg-darkbg-card border border-warmborder dark:border-darkbg-border text-[13px] font-semibold text-ink dark:text-gray-100"
           >
             Alt calendar (iPhone, Samsung…)
@@ -292,6 +332,7 @@ export const TreatmentTab: React.FC<TreatmentTabProps> = ({
           Dacă schimbi ora, adaugă din nou memento-ul și șterge-l pe cel vechi din calendar.
         </p>
       </section>
+      )}
 
       {/* Card Aderență pe Luna Curentă */}
       <div className="organic-card rounded-3xl p-5">
