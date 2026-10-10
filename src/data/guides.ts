@@ -113,6 +113,110 @@ Ghidul european ESMO recomandă vizite mai dese în primii ani (la 3–6 luni), 
 > Notează datele în aplicație: îți arată câte zile mai sunt și te ajută să pregătești întrebările pentru medic.
 
 *Surse: NICE NG101, „Early and locally advanced breast cancer: diagnosis and management” (2018, actualizat); ESMO, „Early breast cancer: Clinical Practice Guideline” (Annals of Oncology, 2024); NCCN și ASTRO, prin ACR Appropriateness Criteria pentru DCIS (2025).*`
+  },
+  {
+    id: 'g4',
+    tag: 'STIL DE VIAȚĂ & ALIMENTAȚIE',
+    title: 'Ce mănânci după diagnostic',
+    summary: 'Ce spun ghidurile despre mese, greutate, soia, alcool și suplimente.',
+    category: 'stil_viata',
+    content: `### Pe scurt
+
+Nu există o dietă care să vindece sau să împiedice revenirea cancerului de sân. Ghidurile recomandă același fel de a mânca ce ajută sănătatea în general.
+
+### Un fel de a mânca ce ajută
+
+* multe legume, fructe, cereale integrale și leguminoase (fasole, linte, năut);
+* mai puțină carne roșie și cât mai puține mezeluri, cereale rafinate și băuturi îndulcite;
+* mai multe fibre: femeile care mănâncă mai multe fibre după cancerul de sân au evoluții mai bune. Nu e sigur că adăugarea lor schimbă evoluția, dar ghidul sugerează să încerci.
+
+### Greutatea
+
+Dacă nu ești subponderală, ghidul sugerează să eviți să iei în greutate în timpul și după tratament. Nu e sigur că o dietă de slăbit schimbă evoluția, așa că vorbește întâi cu medicul.
+
+### Soia
+
+Dacă mănânci deja alimente din soia (tofu, lapte de soia), nu e nevoie să renunți la ele. Nici nu e nevoie să începi să mănânci soia ca să te protejezi: dovezile nu susțin asta.
+
+Pastilele și pulberile cu extract de soia sau izoflavone nu sunt mâncare. Nu le lua fără să întrebi medicul.
+
+### Alcoolul
+
+Alcoolul este o cauză dovedită a mai multor tipuri de cancer. De aceea, ghidul ACS recomandă evitarea lui și după cancer, ca să scadă riscul unui cancer nou.
+
+### Suplimentele
+
+* Ghidurile cer prudență cu suplimentele, în timpul și după tratament.
+* Vitamina D: femeile cu un nivel mai bun de vitamina D au evoluții mai bune, dar suplimentele nu au arătat niciun beneficiu în studii.
+* Unele suplimente pot interacționa cu tamoxifenul. Vezi „Medicamente” în Ghiduri și întreabă medicul sau farmacistul înainte să iei ceva.
+
+### Înainte de schimbări mari
+
+Vorbește cu echipa medicală înainte să-ți schimbi mult alimentația. Un dietetician te poate ajuta să găsești ce ți se potrivește.
+
+*Sursa: World Cancer Research Fund International, „Diet, nutrition, physical activity and body weight for people living with and beyond breast cancer”, 2024; Rock CL și colab., „American Cancer Society nutrition and physical activity guideline for cancer survivors”, CA Cancer J Clin 2022; 72:230–262.*`
+  },
+  {
+    id: 'g5',
+    tag: 'STIL DE VIAȚĂ & MIȘCARE',
+    title: 'Mișcarea și exercițiile cu greutăți',
+    summary: 'Cât, cum începi în siguranță și ce trebuie știut despre braț.',
+    category: 'stil_viata',
+    content: `### De ce contează
+
+Exercițiile sunt în general sigure după cancer, iar ghidurile spun să eviți statul nemișcată. În studii, mișcarea regulată a redus oboseala, anxietatea și tristețea și a ajutat la puterea de zi cu zi.
+
+### Cât
+
+* Ținta pentru sănătate: 150–300 de minute pe săptămână de mișcare moderată (de exemplu mers alert) sau 75–150 de minute de mișcare intensă. La asta se adaugă exerciții pentru mușchi în cel puțin 2 zile pe săptămână.
+* Dacă azi nu poți atât, fă cât poți. Fiecare plimbare contează.
+* Din studii: împotriva oboselii a ajutat mișcarea moderată de 3 ori pe săptămână, timp de cel puțin 12 săptămâni. Pentru somn a ajutat mersul pe jos de 3–4 ori pe săptămână, câte 30–40 de minute.
+
+### Exercițiile cu greutăți
+
+Un program pentru mușchii mari, de 2–3 ori pe săptămână, e sigur dacă începi ușor și crești încet, cu un specialist în exercițiu fizic alături (de exemplu un kinetoterapeut).
+
+Dacă ai operat ganglionii de la axilă sau ai deja brațul umflat, primele ședințe fă-le cu un specialist. Încă nu se știe dacă e sigur să începi singură, fără îndrumare.
+
+### Brațul (limfedemul)
+
+* Multă vreme li s-a spus femeilor să-și cruțe brațul. Studiile arată că exercițiile de forță supravegheate, crescute treptat, sunt sigure. Mersul, bicicleta și alte exerciții de rezistență par și ele sigure.
+* Manșonul compresiv în timpul exercițiilor: nu există dovezi clare nici pentru, nici împotrivă, așa că alegerea e a ta.
+* Dacă brațul se umflă, devine greu sau te doare, spune medicului.
+
+### Când întrebi medicul înainte
+
+* Dacă ai o boală de inimă sau altă boală cronică, întreabă medicul înainte să începi un program nou.
+* Dacă apare o durere nouă de os, care nu trece, oprește exercițiile și spune medicului.
+
+*Sursa: Campbell KL și colab., „Exercise Guidelines for Cancer Survivors: Consensus Statement from International Multidisciplinary Roundtable”, Med Sci Sports Exerc 2019; 51(11):2375–2390; Rock CL și colab., ghidul American Cancer Society pentru supraviețuitori, CA Cancer J Clin 2022; 72:230–262.*`
+  },
+  {
+    id: 'g6',
+    tag: 'EMOȚIONAL',
+    title: 'Meditația și yoga',
+    summary: 'Ce arată studiile pentru neliniște și starea de spirit și cum poți începe.',
+    category: 'emotional',
+    content: `### Ce arată studiile
+
+În 2023, un ghid al Society for Integrative Oncology și al ASCO a analizat metodele complementare pentru anxietate și depresie la adulții cu cancer. Cele mai solide dovezi le-au avut:
+
+* **programele de mindfulness** (atenție conștientă), pentru neliniște și tristețe, în timpul și după tratament;
+* **yoga**, mai ales la femeile cu cancer de sân, tot pentru neliniște și tristețe, în timpul și după tratament.
+
+Hipnoza și tehnicile de relaxare sunt și ele opțiuni pentru neliniște.
+
+### Ce nu fac
+
+Nu înlocuiesc tratamentul și nici ajutorul unui psiholog. Dacă tristețea sau neliniștea nu trec ori îți e greu să-ți duci ziua, spune medicului. Poți deschide și „Ajutor” din aplicație.
+
+### Cum poți începe
+
+* un curs de mindfulness cu un instructor, în grup sau online;
+* yoga blândă, cu un instructor căruia îi spui de operație și de tratament; dacă ai operat ganglionii de la axilă, citește și ghidul despre mișcare;
+* pentru câteva minute de liniște, în aplicație ai „Respirație lentă” și „5-4-3-2-1”. Nu sunt cursurile din studii, dar le ai mereu la îndemână.
+
+*Sursa: Carlson LE și colab., „Integrative Oncology Care of Symptoms of Anxiety and Depression in Adults With Cancer: Society for Integrative Oncology–ASCO Guideline”, J Clin Oncol 2023; 41(28):4562–4591.*`
   }
 ];
 

@@ -31,6 +31,16 @@ describe('Conținutul medical rescris', () => {
     expect(g3.content).not.toMatch(/ecografie transvaginală anuală/);
   });
 
+  it('ghidurile despre alimentație, mișcare, meditație și yoga au surse și nu promit vindecare', () => {
+    const byId = (id: string) => CLINICAL_GUIDES.find(g => g.id === id)!;
+    expect(byId('g4').content).toMatch(/\*Sursa: World Cancer Research Fund International/);
+    expect(byId('g5').content).toMatch(/\*Sursa: Campbell KL/);
+    expect(byId('g6').content).toMatch(/\*Sursa: Carlson LE/);
+    // Fără alimente „anti-cancer”, fără doze de suplimente, fără să înlocuiască tratamentul
+    expect(byId('g4').content).not.toMatch(/antitumoral|anti-cancer|detox|\d+\s*(UI|mg)/i);
+    expect(byId('g6').content).toMatch(/Nu înlocuiesc tratamentul/);
+  });
+
   it('rețetele sunt idei de mese, fără promisiuni terapeutice sau surse neverificate', () => {
     const all = JSON.stringify(RECIPES);
     expect(RECIPES.find(r => r.title.includes('Salvie'))).toBeUndefined();
