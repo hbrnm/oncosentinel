@@ -39,6 +39,9 @@ describe('Conținutul medical rescris', () => {
     // Fără alimente „anti-cancer”, fără doze de suplimente, fără să înlocuiască tratamentul
     expect(byId('g4').content).not.toMatch(/antitumoral|anti-cancer|detox|\d+\s*(UI|mg)/i);
     expect(byId('g6').content).toMatch(/Nu înlocuiesc tratamentul/);
+    // SIO–ASCO 2023 integral: hipnoza doar la investigații și proceduri, relaxarea doar în tratamentul activ
+    expect(byId('g6').content).not.toMatch(/Hipnoza și tehnicile de relaxare sunt și ele opțiuni/);
+    expect(byId('g6').content).toMatch(/anii cu tamoxifen drept „după tratament”/);
   });
 
   it('rețetele sunt idei de mese, fără promisiuni terapeutice sau surse neverificate', () => {
