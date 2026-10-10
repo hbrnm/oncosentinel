@@ -16,6 +16,6 @@ Ce verifici (regulile complete sunt în `CLAUDE.md`):
 - **Conținut medical:** nicio doză, interacțiune sau recomandare clinică nouă fără sursă dată de proprietar; simptomele severe trimit spre medic/112.
 - **UI:** culori prin tokenii din `src/index.css` / `tailwind.config.js`, nu valori noi hardcodate; status = text (+ icon), nu doar culoare; fără overflow la 390px.
 - **Conținut:** română cu diacritice corecte (ș/ț cu virgulă); erorile spun ce s-a întâmplat și ce poate face utilizatoarea.
-- **Teste:** comportamentul nou are test în `src/test/`; niciun `.skip`/`.only`; nimic nu atinge producția.
+- **Teste:** comportamentul nou are test în `src/test/`; niciun `.skip`/`.only`; testele nu depind de data de azi, de rețea sau de ordinea rulării; nimic nu atinge producția.
 
 Nu modifici nimic. Raportul (maximum 40 de rânduri): pentru fiecare problemă: gravitate (blocant / de reparat / minor), `fișier:linie`, ce e greșit și ce s-ar întâmpla, în 1–2 rânduri. La final: „Nimic blocant” sau lista blocantelor. Nu raporta ce e în regulă.
