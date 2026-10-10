@@ -16,12 +16,13 @@ Orice decizie care îi revine proprietarului (produs, texte, conținut medical, 
 
 - **Structură:** `src/App.tsx` (taburile aplicației), `src/components/` (taburi și modale), `src/lib/` (Supabase, PDF, notificări, backup, interacțiuni), `src/data/` (ghiduri, rețete, citate), `src/types/index.ts`.
 - **Node 22+.**
-- **Teste:** Vitest + Testing Library (jsdom), în `src/test/`. Orice comportament nou sau bug reparat vine cu test. Înainte de push: `npm test` și `npm run build`.
+- **Teste:** Vitest + Testing Library (jsdom), în `src/test/`. Orice comportament nou sau bug reparat vine cu test. Testele nu depind de data de azi, de rețea sau de ordinea rulării; data se fixează în test. La începutul fiecărei sesiuni: `npm test` pe `main`; dacă pică, întâi un PR separat de reparare. Înainte de push: `npm test` și `npm run build`.
 - **Supabase:** migrațiile sunt fișiere noi în `supabase/migrations/` (`AAAAMMZZ_nume.sql`). Nimic nu se rulează direct pe producție fără acordul proprietarului. Clientul (`src/lib/supabase.ts`) poate fi `null` când lipsesc variabilele: codul trebuie să funcționeze și local (localStorage).
 - **Securitate și date de sănătate:** în `src/` doar `VITE_SUPABASE_URL` + anon key; nicio cheie secretă. Datele pacientei (profil, simptome, jurnal, documente) se citesc și se scriu doar pentru utilizatorul autentificat (RLS); nimic public nou în Storage.
 - **Conținut medical:** nu inventa doze, interacțiuni, simptome sau recomandări clinice. Dacă lipsește o informație, scrie „DE COMPLETAT: …” și întreabă proprietarul. Simptomele severe trimit mereu spre medic sau 112.
 - **UI:** culorile prin tokenii din `src/index.css` / `tailwind.config.js` (sage, petal, peach…) și sistemul din `base44/01_DESIGN_SYSTEM.md`, nu valori noi hardcodate; status prin text (+ icon), nu doar culoare; fără overflow la 390px.
 - **Texte:** română cu ș/ț cu virgulă; ton cald, clar; erorile spun ce s-a întâmplat și ce poate face utilizatoarea.
+- **Convenții:** ramuri `claude/nume-scurt`; commit-uri cu prefix (`feat:`, `fix:`, `test:`, `docs:`, `chore:`); descrierea PR-ului spune ce s-a schimbat și dovada: comanda rulată și rezultatul (ex. „`npm test`: 274/274 trec”).
 
 ## 3. Lucrul cu subagenți — orchestrator + agenți
 
@@ -42,7 +43,7 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 
 **Cum deleg:** sarcina pentru agent conține tot ce îi trebuie (agentul pornește fără contextul conversației): ce să facă, fișierele exacte, fișierul-model, ce să NU atingă, cum arată „gata”. Agenții independenți (fără fișiere comune) pot rula în paralel. Ce întoarce un agent se verifică înainte de folosire: orchestratorul citește diff-ul și rulează testele. O greșeală a agentului o repară orchestratorul sau o retrimite cu instrucțiuni mai clare.
 
-**Lucrările mari** (mai multe etape sau sesiuni): fișier de sarcină în `.tasks/NNN-nume.md` după `.tasks/README.md`, cu planul pe etape și un rezumat după fiecare etapă (ce s-a făcut, commit, ce urmează). La reluarea după pierderea contextului se citește întâi fișierul de sarcină.
+**Lucrările mari** (mai multe etape sau sesiuni): fișier de sarcină în `.tasks/NNN-nume.md` după `.tasks/README.md`, cu planul pe etape și un rezumat după fiecare etapă (ce s-a făcut, commit, ce urmează). După fiecare etapă, fișierul se actualizează (cu dovada verificării) și intră în commit + push: containerul cloud se șterge, iar sesiunea nouă vede doar ce e pe GitHub. La reluarea după pierderea contextului se citește întâi fișierul de sarcină.
 
 **Economie (decizia proprietarei, 2026-10-08):**
 - un PR pe etapă, din `main`, integrat imediat ce e verde; fără PR-uri puse unul peste altul;
