@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { useReadableText } from './pdfText';
-import { plural, doctorSummary, periodDays, controlDateLabel, localDay } from './summary';
+import { plural, doctorSummary, periodDays, controlDateLabel, localDay, symptomTrend, trendHasData, weekLabel, TrendWeek } from './summary';
 import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { loadMedicines, medicineLabel } from './myMedicines';
 
@@ -146,8 +146,64 @@ export function generateOncologyReport(
     }
   });
 
-  // 5. Safety & Red Flags Assessment
   let finalY = ((doc as any).lastAutoTable?.finalY || 160) + 10;
+
+  // 4. Evoluția în ultimele 3 luni: aceleași trei grafice ca în Jurnal, mereu pe 13 săptămâni;
+  // fără simptome notate în cel puțin două săptămâni, secțiunea lipsește
+  const weeks = symptomTrend(symptoms);
+  const hasTrend = trendHasData(weeks);
+  if (hasTrend) {
+    if (finalY + 52 > 266) {
+      doc.addPage();
+      finalY = 20;
+    }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('4. EVOLUȚIA ÎN ULTIMELE 3 LUNI (PE SĂPTĂMÂNI)', 14, finalY);
+    doc.line(14, finalY + 2, 196, finalY + 2);
+
+    const charts: { key: keyof Pick<TrendWeek, 'flashes' | 'joint' | 'sleep'>; label: string; max: number }[] = [
+      { key: 'flashes', label: 'Bufeuri: câte ai notat pe săptămână', max: Math.max(1, ...weeks.map(w => w.flashes ?? 0)) },
+      { key: 'joint', label: 'Dureri articulare: media notelor, de la 0 la 5', max: 5 },
+      { key: 'sleep', label: 'Somn: media notelor, de la 1 la 5 (5 = foarte bine)', max: 5 }
+    ];
+    const width = 56;
+    const height = 22;
+    const base = finalY + 37;
+    charts.forEach((chart, c) => {
+      const left = 14 + c * (width + 7);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...textColor);
+      doc.text(doc.splitTextToSize(chart.label, width), left, finalY + 8);
+      doc.setDrawColor(200, 215, 205);
+      doc.line(left, base, left + width, base);
+      const slot = width / weeks.length;
+      const values = weeks.map(w => w[chart.key]);
+      const last = values.reduce<number>((l, v, i) => (v !== null ? i : l), -1);
+      values.forEach((v, i) => {
+        if (v === null) return;
+        const h = Math.max((v / chart.max) * height, v > 0 ? 0.6 : 0);
+        const x = left + i * slot + slot * 0.2;
+        doc.setFillColor(122, 154, 139); // sage-500
+        if (h > 0) doc.rect(x, base - h, slot * 0.6, h, 'F');
+        if (i === last) {
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(7);
+          doc.text(v.toLocaleString('ro-RO'), x + slot * 0.3, base - h - 1.5, { align: 'center' });
+        }
+      });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6.5);
+      doc.setTextColor(120, 120, 120);
+      doc.text(weekLabel(weeks[0]), left, base + 4);
+      doc.text(weekLabel(weeks[weeks.length - 1]), left + width, base + 4, { align: 'right' });
+    });
+    doc.setTextColor(...textColor);
+    finalY = base + 14;
+  }
+
+  // 5. Safety & Red Flags Assessment
   doc.setFontSize(9);
   const medicines = loadMedicines();
   const medicineLines: string[] = medicines.length > 0
@@ -162,7 +218,7 @@ export function generateOncologyReport(
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.text('4. SEMNALE DE ALARMĂ ȘI ALTE MEDICAMENTE', 14, finalY);
+  doc.text(`${hasTrend ? 5 : 4}. SEMNALE DE ALARMĂ ȘI ALTE MEDICAMENTE`, 14, finalY);
   doc.line(14, finalY + 2, 196, finalY + 2);
 
   doc.setFont('helvetica', 'normal');

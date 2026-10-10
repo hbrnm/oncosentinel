@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { generateOncologyReport } from '../lib/pdfGenerator';
 import { DEFAULT_PROFILE } from '../lib/supabase';
-import { DoseLog } from '../types';
+import { DoseLog, SymptomLog } from '../types';
 
 const texts: string[] = [];
 
@@ -79,5 +79,36 @@ describe('Raportul PDF pentru medic', () => {
 
     expect(report()).not.toMatch(/Negativ|Neraportat|inhibitori CYP2D6|Ghid Integrativ/);
     expect(report()).toMatch(/nu înregistreaza semnale de alarma/);
+  });
+});
+
+describe('Raportul PDF: evoluția în ultimele 3 luni', () => {
+  beforeEach(() => {
+    texts.length = 0;
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-08T12:00:00'));
+  });
+
+  afterEach(() => vi.useRealTimers());
+
+  const sym = (iso: string, extra: Partial<SymptomLog>): SymptomLog =>
+    ({ id: iso, logged_at: `${iso}T12:00:00`, kind: 'symptoms', ...extra } as SymptomLog);
+
+  it('cu simptome în două săptămâni, are secțiunea cu graficele și semnalele de alarmă devin 5', () => {
+    generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-01-01' }, [], [
+      sym('2026-10-07', { hot_flashes_count: 4, joint_pain_level: 2, sleep_quality: 3 }),
+      sym('2026-09-20', { hot_flashes_count: 1, sleep_quality: 4 })
+    ]);
+
+    // Textul din PDF e scris fără ș, ț, ă (pdfText.ts)
+    expect(report()).toContain('4. EVOLUTIA ÎN ULTIMELE 3 LUNI (PE SAPTAMÂNI)');
+    expect(report()).toContain('5. SEMNALE DE ALARMA SI ALTE MEDICAMENTE');
+  });
+
+  it('fără destule date, secțiunea lipsește', () => {
+    generateOncologyReport({ ...DEFAULT_PROFILE, tamoxifen_start_date: '2026-01-01' }, [], []);
+
+    expect(report()).not.toContain('EVOLUTIA');
+    expect(report()).toContain('4. SEMNALE DE ALARMA SI ALTE MEDICAMENTE');
   });
 });
