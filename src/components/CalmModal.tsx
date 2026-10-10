@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Wind, Heart } from 'lucide-react';
+import { WhatHelped } from './WhatHelped';
 
 export type CalmStep = 'welcome' | 'check';
 
@@ -54,6 +55,7 @@ export const CalmModal: React.FC<CalmModalProps> = ({ step, onClose, onBreathe, 
             >
               <Wind className="w-4 h-4" /> Respiră cu mine
             </button>
+            <WhatHelped hideWhenEmpty />
             <button type="button" onClick={onNeedHelp} className="mt-3 text-xs font-semibold text-sage-deep dark:text-sage-300 underline">
               Am nevoie de ajutor acum
             </button>
