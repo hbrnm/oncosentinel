@@ -14,6 +14,7 @@ vi.mock('jspdf', () => ({
       get: (_target, prop) => {
         if (prop in overrides) return overrides[prop];
         if (prop === 'text') return (t: string) => { texts.push(t); };
+        if (prop === 'splitTextToSize') return (t: string) => [t];
         if (prop === 'lastAutoTable') return { finalY: 120 };
         return () => undefined;
       }
@@ -103,6 +104,10 @@ describe('Raportul PDF: evoluția în ultimele 3 luni', () => {
     // Textul din PDF e scris fără ș, ț, ă (pdfText.ts)
     expect(report()).toContain('4. EVOLUTIA ÎN ULTIMELE 3 LUNI (PE SAPTAMÂNI)');
     expect(report()).toContain('5. SEMNALE DE ALARMA SI ALTE MEDICAMENTE');
+    // Etichetele din PDF sunt pentru medic (decizia proprietarei, 2026-10-10)
+    expect(report()).toContain('Bufeuri: câte a notat pacienta pe saptamâna');
+    expect(report()).toContain('Somn: media notelor, 1–5 (5 = foarte bine)');
+    expect(report()).not.toContain('ai notat');
   });
 
   it('fără destule date, secțiunea lipsește', () => {
