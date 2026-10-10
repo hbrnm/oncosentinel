@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import React from 'react';
 import App from '../App';
 import { JournalTab } from '../components/JournalTab';
@@ -31,7 +31,7 @@ describe('Ce te-a ajutat altă dată', () => {
 
     fireEvent.click(screen.getByText('Adaugă ceva'));
     fireEvent.change(screen.getByPlaceholderText('De exemplu: s-o sun pe sora mea'), { target: { value: '  O plimbare scurtă  ' } });
-    fireEvent.click(screen.getByText('Salvează'));
+    fireEvent.click(within(screen.getByRole('region', { name: 'Ce te-a ajutat altă dată' })).getByText('Salvează'));
 
     expect(screen.getByText('O plimbare scurtă')).toBeInTheDocument();
     expect(screen.getByText('Am păstrat. Ți-l arăt când ai o zi grea.')).toBeInTheDocument();
