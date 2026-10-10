@@ -63,6 +63,47 @@ Dacă nu ai simptome, ecografia transvaginală de rutină nu e recomandată, dec
 *Surse: prospectul Tamoxifen Sandoz aprobat în România (ANMDMR, revizuit în martie 2025); Rezumatul caracteristicilor produsului pentru tamoxifen (secțiunea 4.5); Macmillan Cancer Support și Breast Cancer Now, paginile despre tamoxifen; ACOG Committee Opinion nr. 601, „Tamoxifen and Uterine Cancer” (2014); Wapnir și colab., Journal of the National Cancer Institute, 2011 (NSABP B-17 și B-24).*`
   },
   {
+    id: 'g7',
+    tag: 'GHIDURI & INFORMAȚII',
+    title: 'Primele 30 de zile cu tamoxifen',
+    summary: 'Ce poate apărea la început, ce te ajută și când vorbești cu medicul.',
+    category: 'tratament',
+    content: `### E firesc să-ți fie teamă
+
+Multe femei spun că cel mai greu a fost înainte de prima pastilă, citind lista de efecte. Lista arată tot ce poate apărea, nu ce vei avea tu. Unele efecte scad pe măsură ce corpul se obișnuiește.
+
+### Ce poate apărea la început
+
+* Bufeuri și transpirații: pot deveni mai rare în timp (vezi ghidul despre bufeuri).
+* Oboseală: îți împarte ziua cu pauze; mișcarea ajută (vezi ghidul despre mișcare).
+* Dispoziție schimbătoare: te poți simți tristă sau abătută.
+* Sângerare vaginală la început. Dacă ține mai mult de câteva zile sau ești după menopauză, spune medicului. Ciclul poate deveni neregulat, mai slab sau se poate opri; contracepția rămâne necesară.
+* Dureri de mușchi sau articulații, crampe: spune medicului, poate recomanda ceva.
+
+### Dispoziția
+
+Poate ajuta să vorbești cu cei apropiați. Dacă tristețea sau stările schimbătoare țin mai mult de câteva săptămâni, spune medicului sau farmacistului. Notarea dispoziției în aplicație te ajută să vezi cum evoluează.
+
+### Ce te ajută în primele săptămâni
+
+* Pastila la aceeași oră în fiecare zi; marcheaz-o în Tratament.
+* Notează în jurnal ce simți și când. La control vei avea date, nu doar amintiri.
+* Cere rețeta nouă înainte să termini pastilele.
+
+### Dacă îți e greu
+
+Nu opri tamoxifenul singură. Spune medicului ce simți: adesea există ce se poate face.
+
+### Când suni la 112 sau la medic
+
+* Semnele importante sunt în ghidul „Tamoxifen: ce face și cum îl iei”.
+* Anunță imediat medicul sau mergi la urgențe dacă ai o erupție care se întinde, bășici sau piele care se cojește, ori răni pe buze sau în gură.
+
+> Fii răbdătoare cu tine: începutul e partea cea mai grea.
+
+*Sursa: Macmillan Cancer Support, pagina „Tamoxifen” (accesată în octombrie 2026).*`
+  },
+  {
     id: 'g2',
     tag: 'STIL DE VIAȚĂ & CONFORT',
     title: 'Bufeurile și transpirațiile de noapte',
