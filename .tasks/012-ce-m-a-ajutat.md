@@ -1,0 +1,33 @@
+# 012 — Ce te-a ajutat altă dată
+
+**Stare:** în lucru (PR)
+**Ramura:** claude/ce-m-a-ajutat, din `main`
+
+## Scop
+O listă scrisă de pacientă cu lucrurile care au ajutat-o într-o zi grea (un om, un loc, o melodie), arătată când are nevoie. Fără conținut medical.
+
+Deciziile proprietarei (2026-10-10):
+- apare în Jurnal, după salvare, la „Greu” și „Obosită” (în date: „Foarte rău”, „Rău”) și în „Am nevoie de liniște acum”, pe primul ecran, sub „Respiră cu mine”;
+- se păstrează doar pe dispozitiv (localStorage `oncosentinel_what_helped`, protejată de PIN ca restul) și intră în copia de siguranță; fără Supabase;
+- textele aprobate: „Ce te-a ajutat altă dată”; „Ce te ajută într-o zi grea? Un om, un loc, o melodie. Scrie-le aici și ți le arăt când ai nevoie.”; „Adaugă ceva”; „De exemplu: s-o sun pe sora mea”; „Salvează” / „Anulează”; „Șterge „…”” (pentru cititorul de ecran); „Am păstrat. Ți-l arăt când ai o zi grea.”
+
+## În afara scopului
+Sincronizare în cont, editare din Profil, sugestii scrise de noi.
+
+## Etape
+| # | Etapa | Stare | Commit |
+|---|---|---|---|
+| 1 | Lista în Jurnal și în fereastra de liniște, copia de siguranță | gata | ramura claude/ce-m-a-ajutat |
+
+## Rezumat pe etape
+### Etapa 1 (2026-10-10)
+- `src/lib/whatHelped.ts`, `src/components/WhatHelped.tsx`; folosit în `JournalTab.tsx` (mood ≤ 2) și `CalmModal.tsx`; `backupService.ts` (`what_helped`).
+- Formulat de Claude după decizii: în fereastra de liniște lista apare doar dacă are ceva în ea (fără invitația de a scrie, într-un moment de criză); un rând are cel mult 120 de caractere.
+- Test nou `ce-m-a-ajutat.test.tsx`. `npm test` (293/293) și `npm run build` trec.
+- Mutat din copia locală în clonul git; commit pe ramura `claude/ce-m-a-ajutat`.
+
+## Cum verific la final
+`npm test` trece; în aplicație, la 390px: Jurnal → „Greu” → Salvează → apare lista; „Am nevoie de liniște acum” o arată după ce are ceva în ea.
+
+## Următorul pas
+Verificare, PR, integrare.

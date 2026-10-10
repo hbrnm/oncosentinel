@@ -9,6 +9,7 @@ import { formatDateRo } from './TreatmentTab';
 import { journalResponseFor } from '../data/comfort';
 import { weekSummary } from '../lib/summary';
 import { TrendChart } from './TrendChart';
+import { WhatHelped } from './WhatHelped';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
 const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
@@ -335,6 +336,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
               </div>
             </div>
           )}
+          {response && response.mood <= 2 && <WhatHelped />}
         </div>
 
         {/* Detailed Form Toggle */}
