@@ -10,6 +10,8 @@ import { journalResponseFor } from '../data/comfort';
 import { weekSummary } from '../lib/summary';
 import { TrendChart } from './TrendChart';
 import { WhatHelped } from './WhatHelped';
+import { MovementCard } from './MovementCard';
+import { loadMovement, saveMovementDay } from '../lib/movement';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
 const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
@@ -44,6 +46,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   onOpenHelp
 }) => {
   const [mood, setMood] = useState<number | null>(null);
+  const [movement, setMovement] = useState(loadMovement);
   const [note, setNote] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
   // Mesajul cald de după salvare (aprobat, docs/etapa1-texte.md)
@@ -274,7 +277,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
             <h2 id="week-title" className="font-serif text-lg text-ink dark:text-white">Săptămâna ta</h2>
           </div>
           <ul className="space-y-1.5">
-            {weekSummary(symptoms).map((line) => (
+            {weekSummary(symptoms, new Date(), movement).map((line) => (
               <li key={line} className="text-[0.8125rem] text-ink dark:text-gray-200 leading-relaxed">{line}</li>
             ))}
           </ul>
@@ -338,6 +341,11 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           )}
           {response && response.mood <= 2 && <WhatHelped />}
         </div>
+
+        <MovementCard
+          savedMinutes={movement[localDay(new Date())]}
+          onSave={(minutes) => setMovement(saveMovementDay(localDay(new Date()), minutes))}
+        />
 
         {/* Detailed Form Toggle */}
         <div className="bg-white dark:bg-darkbg-surface rounded-3xl p-5 border border-sage-100 dark:border-darkbg-border shadow-xs">

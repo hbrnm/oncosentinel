@@ -82,13 +82,17 @@ const logsIn = (symptoms: SymptomLog[], days: string[]) => {
 const average = (values: number[]) => values.reduce((a, b) => a + b, 0) / values.length;
 
 // „Săptămâna ta”: ultimele 7 zile, comparate cu cele 7 dinainte
-export const weekSummary = (symptoms: SymptomLog[], today = new Date()): string[] => {
+export const weekSummary = (symptoms: SymptomLog[], today = new Date(), movement: Record<string, number> = {}): string[] => {
   const thisWeek = logsIn(symptoms, lastDays(7, 0, '', today));
   const lastWeek = logsIn(symptoms, lastDays(7, 7, '', today));
   const lines: string[] = [];
 
+  // Minutele de mișcare (planul 014): doar totalul, fără țintă
+  const moved = lastDays(7, 0, '', today).reduce((sum, day) => sum + (movement[day] || 0), 0);
+  const movedLine = `Te-ai mișcat ${plural(moved, 'minut', 'minute')} în ultimele 7 zile.`;
+
   const daysNoted = new Set(thisWeek.map(s => localDay(new Date(s.logged_at)))).size;
-  if (daysNoted === 0) return ['Săptămâna asta nu ai notat încă. Jurnalul te așteaptă, când vrei.'];
+  if (daysNoted === 0) return moved > 0 ? [movedLine] : ['Săptămâna asta nu ai notat încă. Jurnalul te așteaptă, când vrei.'];
   lines.push(daysNoted === 1 ? 'Ai notat într-o zi din ultimele 7.' : `Ai notat în ${daysNoted} din ultimele 7 zile.`);
 
   const moods = thisWeek.map(s => s.mood_state).filter((m): m is string => Boolean(m));
@@ -116,6 +120,8 @@ export const weekSummary = (symptoms: SymptomLog[], today = new Date()): string[
     if (flashesNow < flashesBefore) lines.push('Ai notat mai puține bufeuri decât săptămâna trecută.');
     else if (flashesNow > flashesBefore) lines.push('Ai notat mai multe bufeuri decât săptămâna trecută. Ghidul despre bufeuri te poate ajuta.');
   }
+
+  if (moved > 0) lines.push(movedLine);
 
   return lines;
 };

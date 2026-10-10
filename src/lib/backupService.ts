@@ -1,6 +1,7 @@
 import { vault } from './vault';
 import { markBackupDone } from './backupReminder';
 import { WHAT_HELPED_KEY } from './whatHelped';
+import { MOVEMENT_KEY } from './movement';
 
 export const backupService = {
   exportCompleteBackup() {
@@ -23,7 +24,8 @@ export const backupService = {
       other_medicines: localStorage.getItem('navimed_other_medicines'),
       doctor_name: localStorage.getItem('navimed_doctor_name'),
       victories_seen: localStorage.getItem('oncosentinel_victories_seen'),
-      what_helped: localStorage.getItem(WHAT_HELPED_KEY)
+      what_helped: localStorage.getItem(WHAT_HELPED_KEY),
+      movement: localStorage.getItem(MOVEMENT_KEY)
     };
 
     const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -103,6 +105,9 @@ export const backupService = {
       }
       if (data.what_helped) {
         try { JSON.parse(data.what_helped); localStorage.setItem(WHAT_HELPED_KEY, data.what_helped); } catch (_) {}
+      }
+      if (data.movement) {
+        try { JSON.parse(data.movement); localStorage.setItem(MOVEMENT_KEY, data.movement); } catch (_) {}
       }
 
       // Datele restaurate au deja o copie: cea din care au venit
