@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import App from '../App';
+import { getNewsOfTheDay } from '../data/guides';
 
 describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
   it('renders all sections faithfully according to Base44 export', () => {
@@ -52,7 +53,8 @@ describe('Base44 Dashboard Layout Alignment (Astăzi)', () => {
 
     // 7. Clinical Guide & News Cards
     expect(screen.getByText(/Tamoxifen: ce face și cum îl iei/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tamoxifen în doză mică după DCIS/i)).toBeInTheDocument();
+    // „Vestea bună a zilei” se schimbă după dată: căutăm noutatea zilei, nu una fixă
+    expect(screen.getByText(getNewsOfTheDay().title)).toBeInTheDocument();
 
     // 8. Inspiration Banner
     expect(screen.getByText(/Nu ești doar un pacient/i)).toBeInTheDocument();
