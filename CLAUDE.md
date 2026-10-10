@@ -39,6 +39,8 @@ Sesiunea principală e **orchestratorul**: înțelege cererea, planifică, ia de
 
 **Integrarea PR-urilor:** proprietara a aprobat ca orchestratorul să deschidă și să integreze singur PR-urile utile, fără revizuirea ei, după ce trec `npm test`, `npm run build`, agentul `verificare` și verificările din GitHub. Textele noi și conținutul medical se aprobă în continuare prin chestionar înainte de PR; SQL-ul pe Supabase de producție tot cu acordul ei.
 
+**Skill-uri externe (mattpocock-skills):** se folosesc doar `diagnosing-bugs` (bug-uri greu de prins), `tdd` (test-first) și `writing-for-agents` (când se editează CLAUDE.md sau `.claude/agents/`). Review-ul rămâne la agentul `verificare`, nu la skill-ul `code-review`; planurile rămân în `.tasks/`, nu în `to-spec`/`to-tickets`/`triage`; fără `research` sau alți agenți de fundal porniți de skill-uri (decizia proprietarei, 2026-10-10).
+
 **Când nu deleg:** modificări mici sau legate între ele, unde explicația pentru agent ar fi mai lungă decât lucrul în sine.
 
 **Cum deleg:** sarcina pentru agent conține tot ce îi trebuie (agentul pornește fără contextul conversației): ce să facă, fișierele exacte, fișierul-model, ce să NU atingă, cum arată „gata”. Agenții independenți (fără fișiere comune) pot rula în paralel. Ce întoarce un agent se verifică înainte de folosire: orchestratorul citește diff-ul și rulează testele. O greșeală a agentului o repară orchestratorul sau o retrimite cu instrucțiuni mai clare.
