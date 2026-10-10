@@ -17,6 +17,9 @@ const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la int
 const localDay = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
+// Până la această zi, formularul salva somn 3 din oficiu: în istoric, 3 apare doar la notele de după
+const SLEEP_CHOSEN_SINCE = '2026-10-11';
+
 interface JournalTabProps {
   profile: PatientProfile;
   symptoms: SymptomLog[];
@@ -607,7 +610,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                                 Cefalee: {e.headache}/5
                               </span>
                             )}
-                            {e.sleep_quality !== undefined && e.sleep_quality !== 3 && (
+                            {e.sleep_quality !== undefined && (e.sleep_quality !== 3 || localDay(new Date(e.logged_at)) >= SLEEP_CHOSEN_SINCE) && (
                               <span className="text-[0.5625rem] font-medium bg-cream-deep text-ink dark:bg-stone-800 dark:text-stone-300 px-2 py-0.5 rounded-md border border-warmborder dark:border-stone-700">
                                 Somn: {e.sleep_quality}/5
                               </span>

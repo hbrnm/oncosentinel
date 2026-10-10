@@ -53,3 +53,28 @@ describe('Jurnal: somnul nenotat', () => {
     expect(screen.getByText('Scor 4/5')).toBeInTheDocument();
   });
 });
+
+describe('Istoric: somnul 3 apare doar la notele noi', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-13T12:00:00'));
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('ascunde 3 la notele de dinainte de 11 octombrie (era pus din oficiu), îl arată la cele noi', () => {
+    storageService.saveSymptomLogs([
+      { id: 'nou', logged_at: '2026-10-12T12:00:00', kind: 'symptoms', sleep_quality: 3 },
+      { id: 'limita-dupa', logged_at: '2026-10-11T00:01:00', kind: 'symptoms', sleep_quality: 3 },
+      { id: 'limita-inainte', logged_at: '2026-10-10T23:59:00', kind: 'symptoms', sleep_quality: 3 },
+      { id: 'vechi-3', logged_at: '2026-10-05T12:00:00', kind: 'symptoms', sleep_quality: 3 },
+      { id: 'vechi-2', logged_at: '2026-10-04T12:00:00', kind: 'symptoms', sleep_quality: 2 }
+    ]);
+    localStorage.setItem('oncosentinel_onboarded', 'true');
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: 'Jurnal' }));
+
+    expect(screen.getAllByText('Somn: 3/5')).toHaveLength(2);
+    expect(screen.getByText('Somn: 2/5')).toBeInTheDocument();
+  });
+});
