@@ -8,6 +8,7 @@ import { PatientProfile, DoseLog, SymptomLog } from '../types';
 import { formatDateRo } from './TreatmentTab';
 import { journalResponseFor } from '../data/comfort';
 import { weekSummary } from '../lib/summary';
+import { TrendChart } from './TrendChart';
 
 // Generatoarele PDF (jsPDF) se încarcă doar la cerere, nu la pornirea aplicației
 const PDF_LOAD_ERROR = 'Nu am putut pregăti PDF-ul. Verifică conexiunea la internet și încearcă din nou.';
@@ -274,6 +275,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
           </ul>
           <p className="text-[0.6875rem] text-ink-soft dark:text-gray-400 italic mt-3">Rezumatul vine doar din ce ai notat tu.</p>
         </section>
+
+        <TrendChart symptoms={symptoms} />
 
         {/* Mood Card */}
         <div className="bg-blush dark:bg-petal-950/30 rounded-[28px] p-5 relative overflow-hidden border border-petal-100 dark:border-petal-900/30">

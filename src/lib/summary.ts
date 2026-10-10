@@ -175,3 +175,44 @@ export const nextVictory = (doses: DoseLog[], symptoms: SymptomLog[], seen: stri
   if (!next) return null;
   return { id: next.id, text: next.text, reachedIds: reached.filter(v => v.kind === next.kind).map(v => v.id) };
 };
+
+// „Ultimele 3 luni”: 13 săptămâni (cea mai veche prima), doar din intrările cu simptome;
+// o valoare lipsește (null) când în săptămâna aceea nu s-a notat
+export interface TrendWeek { start: string; end: string; flashes: number | null; joint: number | null; sleep: number | null }
+
+export const TREND_WEEKS = 13;
+
+export const symptomTrend = (symptoms: SymptomLog[], today = new Date()): TrendWeek[] => {
+  const symptomLogs = symptoms.filter(s => s.kind !== 'note');
+  const weeks: TrendWeek[] = [];
+  for (let i = TREND_WEEKS - 1; i >= 0; i--) {
+    const days = lastDays(7, i * 7, '', today);
+    const logs = logsIn(symptomLogs, days);
+    const values = (pick: (s: SymptomLog) => number | undefined, min: number) =>
+      logs.map(pick).filter((v): v is number => typeof v === 'number' && v >= min);
+    const flashes = values(s => s.hot_flashes_count, 0);
+    const joint = values(s => s.joint_pain_level, 0);
+    const sleep = values(s => s.sleep_quality, 1);
+    weeks.push({
+      start: days[0],
+      end: days[days.length - 1],
+      flashes: flashes.length > 0 ? flashes.reduce((a, b) => a + b, 0) : null,
+      joint: joint.length > 0 ? Math.round(average(joint) * 10) / 10 : null,
+      sleep: sleep.length > 0 ? Math.round(average(sleep) * 10) / 10 : null
+    });
+  }
+  return weeks;
+};
+
+// Graficul apare după simptome notate în cel puțin două săptămâni
+export const trendHasData = (weeks: TrendWeek[]) =>
+  weeks.filter(w => w.flashes !== null || w.joint !== null || w.sleep !== null).length >= 2;
+
+// „6–12 oct.”, sau „29 sept. – 5 oct.” peste luni
+export const weekLabel = (w: TrendWeek) => {
+  const toDate = (iso: string) => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
+  const start = toDate(w.start);
+  const end = toDate(w.end);
+  const short = (d: Date) => d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' });
+  return start.getMonth() === end.getMonth() ? `${start.getDate()}–${short(end)}` : `${short(start)} – ${short(end)}`;
+};
