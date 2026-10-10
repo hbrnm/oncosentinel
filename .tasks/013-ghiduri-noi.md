@@ -1,6 +1,6 @@
 # 013 — Ghiduri noi: alimentație, mișcare, meditație și yoga
 
-**Stare:** în lucru (PR)
+**Stare:** gata (PR #66)
 **Ramura:** claude/ghiduri-noi, din `main`
 
 ## Scop
@@ -17,16 +17,16 @@ Meditație ghidată, jurnal de mișcare, programe de exerciții cu greutăți sa
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 1 | Documentare din surse, texte, aprobare, ghidurile în aplicație | gata | ramura claude/ghiduri-noi |
+| 1 | Documentare din surse, texte, aprobare, ghidurile în aplicație | gata | PR #66 |
 
 ## Rezumat pe etape
 ### Etapa 1 (2026-10-10)
 - Surse: WCRF International 2024 (supraviețuitoare de cancer de sân, rezumat executiv); ACS 2022 (Rock și colab., PDF integral); ACSM 2019 (Campbell și colab., PMC8576825); SIO–ASCO 2023 (Carlson și colab., JCO 41(28):4562–4591, citit prin rezumatul ONS și PubMed; tabelul ASCO nu s-a putut deschide din rețea).
 - `src/data/guides.ts`: g4, g5, g6 (g6 are categoria `emotional`, care exista deja în tip, dar nu era folosită). Test nou în `medical-content.test.ts`.
-- `npm test` (294/294) și `npm run build` trec.
+- `npm test` (294/294) și `npm run build` trec; agentul `verificare`: nimic blocant; Vercel verde.
 
 ## Cum verific la final
 Ghiduri: apar 6 carduri; fiecare dintre g4–g6 se deschide și își arată sursa.
 
 ## Următorul pas
-Verificare, PR, integrare.
+Planul 013 e încheiat. De văzut după testarea cu pacientele: meditație ghidată sau minute de mișcare în Jurnal (decizia proprietarei: doar text deocamdată).
