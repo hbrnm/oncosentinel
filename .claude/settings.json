@@ -14,5 +14,12 @@
   },
   "env": {
     "PONYTAIL_DEFAULT_MODE": "lite"
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(!.env.example)"
+    ]
   }
 }

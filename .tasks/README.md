@@ -13,6 +13,9 @@ Pentru lucrările mari (mai multe etape sau sesiuni). Câte un fișier `NNN-nume
 ## Scop
 Ce vrea proprietarul, în 2–3 rânduri. Deciziile lui, cu data.
 
+## În afara scopului
+Ce nu se atinge în această lucrare.
+
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
@@ -21,6 +24,9 @@ Ce vrea proprietarul, în 2–3 rânduri. Deciziile lui, cu data.
 ## Rezumat pe etape
 ### Etapa 1 (data)
 Ce s-a făcut, ce s-a verificat (`npm test` și `npm run build`, CI), ce a rămas deschis.
+
+## Cum verific la final
+Testul sau pasul care dovedește că lucrarea e gata.
 
 ## Următorul pas
 Un singur rând, concret.
