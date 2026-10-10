@@ -204,7 +204,9 @@ Dacă ai operat ganglionii de la axilă sau ai deja brațul umflat, primele șed
 * **programele de mindfulness** (atenție conștientă), pentru neliniște și tristețe, în timpul și după tratament;
 * **yoga**, mai ales la femeile cu cancer de sân, tot pentru neliniște și tristețe, în timpul și după tratament.
 
-Hipnoza și tehnicile de relaxare sunt și ele opțiuni pentru neliniște.
+Ghidul socotește anii cu tamoxifen drept „după tratament”. Pentru această perioadă, la cancerul de sân, au ajutat și tai chi sau qigong și acupunctura, dar dovezile sunt mai slabe.
+
+Pentru neliniștea din jurul investigațiilor (de exemplu o biopsie) poate ajuta hipnoza, cu un specialist. Tehnicile de relaxare au ajutat în timpul tratamentului activ (operație, chimioterapie, radioterapie).
 
 ### Ce nu fac
 

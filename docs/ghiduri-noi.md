@@ -79,7 +79,9 @@ Dacă ai operat ganglionii de la axilă sau ai deja brațul umflat, primele șed
 * **programele de mindfulness** (atenție conștientă), pentru neliniște și tristețe, în timpul și după tratament;
 * **yoga**, mai ales la femeile cu cancer de sân, tot pentru neliniște și tristețe, în timpul și după tratament.
 
-Hipnoza și tehnicile de relaxare sunt și ele opțiuni pentru neliniște. [SIO–ASCO 2023]
+Ghidul socotește anii cu tamoxifen drept „după tratament”. Pentru această perioadă, la cancerul de sân, au ajutat și tai chi sau qigong și acupunctura, dar dovezile sunt mai slabe. [SIO–ASCO 2023, recomandările 2.3, 2.4, 4.3]
+
+Pentru neliniștea din jurul investigațiilor (de exemplu o biopsie) poate ajuta hipnoza, cu un specialist. Tehnicile de relaxare au ajutat în timpul tratamentului activ (operație, chimioterapie, radioterapie). [SIO–ASCO 2023, recomandările 1.3, 1.4]
 
 ### Ce nu fac
 Nu înlocuiesc tratamentul și nici ajutorul unui psiholog. Dacă tristețea sau neliniștea nu trec ori îți e greu să-ți duci ziua, spune medicului. Poți deschide și „Ajutor” din aplicație.
@@ -95,5 +97,5 @@ Nu înlocuiesc tratamentul și nici ajutorul unui psiholog. Dacă tristețea sau
 
 ## Note de lucru (nu intră în aplicație)
 - ACS 2022 a fost citit din PDF-ul integral (Tabelul 1 și secțiunea despre cancerul de sân). WCRF 2024, din rezumatul executiv. ACSM 2019, din versiunea PMC (secțiunile 2.3.3, 2.3.5, 2.4.2, 4.1 și Tabelul 5).
-- SIO–ASCO 2023 a fost citit prin rezumatul ONS (ianuarie 2024) și prin înregistrarea PubMed. Tabelul ASCO nu s-a putut deschide din rețeaua mediului.
+- SIO–ASCO 2023, citit integral pe ascopubs.org prin browserul proprietarei (2026-10-10). Pe baza lui s-a corectat fraza despre hipnoză și relaxare, preluată inițial greșit din rezumatul ONS (aprobat de proprietară).
 - Neincluse, pentru că lipsesc din surse: cifre exacte pentru greutăți, alimente „anti-cancer”, posturi de yoga.
