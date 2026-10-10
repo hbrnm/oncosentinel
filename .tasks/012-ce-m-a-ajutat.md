@@ -1,6 +1,6 @@
 # 012 — Ce te-a ajutat altă dată
 
-**Stare:** în lucru (PR)
+**Stare:** gata (PR #64)
 **Ramura:** claude/ce-m-a-ajutat, din `main`
 
 ## Scop
@@ -17,7 +17,7 @@ Sincronizare în cont, editare din Profil, sugestii scrise de noi.
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
-| 1 | Lista în Jurnal și în fereastra de liniște, copia de siguranță | gata | ramura claude/ce-m-a-ajutat |
+| 1 | Lista în Jurnal și în fereastra de liniște, copia de siguranță | gata | PR #64 |
 
 ## Rezumat pe etape
 ### Etapa 1 (2026-10-10)
@@ -25,11 +25,12 @@ Sincronizare în cont, editare din Profil, sugestii scrise de noi.
 - Formulat de Claude după decizii: în fereastra de liniște lista apare doar dacă are ceva în ea (fără invitația de a scrie, într-un moment de criză); un rând are cel mult 120 de caractere.
 - Test nou `ce-m-a-ajutat.test.tsx`. `npm test` (293/293) și `npm run build` trec.
 - Mutat din copia locală în clonul git.
+- PR #64 integrat după `npm test` (293/293), `npm run build` și Vercel.
 - Agentul `verificare`: nimic blocant; reparate butonul „Șterge” (32 px), scroll pe listă (max-h-40) și testul de backup care restaurează `window.location`. Lăsate: confirmarea `role="status"` inserată după salvare (ca mesajul Jurnalului; o regiune mereu prezentă strică testele care caută un singur status), importul care nu verifică tipul listei (`loadWhatHelped` filtrează la citire).
-- Verificarea la 390px: în previzualizarea Vercel (Playwright nu e instalat).
+- Verificarea la 390px: nefăcută (Playwright nu e instalat); de văzut pe telefon, în aplicația publicată.
 
 ## Cum verific la final
 `npm test` trece; în aplicație, la 390px: Jurnal → „Greu” → Salvează → apare lista; „Am nevoie de liniște acum” o arată după ce are ceva în ea.
 
 ## Următorul pas
-Verificare, PR, integrare.
+Planul 012 e încheiat; de verificat pe telefon la 390px. Lucrul următor: doar la cererea proprietarei.
