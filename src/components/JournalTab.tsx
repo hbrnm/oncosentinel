@@ -60,7 +60,8 @@ export const JournalTab: React.FC<JournalTabProps> = ({
   const [nauseaLevel, setNauseaLevel] = useState<number>(0);
   const [brainFog, setBrainFog] = useState<number>(0);
   const [headache, setHeadache] = useState<number>(0);
-  const [sleepQuality, setSleepQuality] = useState<number>(3);
+  // Somnul pornește nenotat: se salvează doar dacă pacienta îl alege (decizia proprietarei, 2026-10-10)
+  const [sleepQuality, setSleepQuality] = useState<number | undefined>(undefined);
 
   const todayStr = localDay(new Date());
   // Nota (stare + gânduri) și simptomele se salvează separat, câte una pe zi;
@@ -172,7 +173,7 @@ export const JournalTab: React.FC<JournalTabProps> = ({
       hot_flashes_intensity: hotFlashesIntensity,
       night_sweats: nightSweats,
       fatigue_level: fatigueLevel,
-      sleep_quality: sleepQuality,
+      ...(sleepQuality !== undefined && { sleep_quality: sleepQuality }),
       joint_pain_level: jointPainLevel,
       joint_pain_areas: selectedJointAreas,
       mucosal_dryness: mucosalDryness,
@@ -456,9 +457,10 @@ export const JournalTab: React.FC<JournalTabProps> = ({
                 <div>
                   <div className="flex justify-between text-xs font-bold text-ink dark:text-gray-200 mb-2">
                     <span>Calitatea Somnului de azi-noapte</span>
-                    <span>Scor {sleepQuality}/5</span>
+                    <span>Scor {sleepQuality ?? '–'}/5</span>
                   </div>
-                  <input type="range" min="1" max="5" value={sleepQuality} onChange={(e) => setSleepQuality(parseInt(e.target.value))} className="w-full accent-blue-400 cursor-pointer" />
+                  {/* Nenotat: cursorul stă la mijloc, estompat; o atingere chiar pe mijloc alege 3 */}
+                  <input type="range" min="1" max="5" aria-label="Calitatea somnului" aria-valuetext={sleepQuality === undefined ? 'nenotat' : undefined} value={sleepQuality ?? 3} onChange={(e) => setSleepQuality(parseInt(e.target.value))} onClick={(e) => setSleepQuality(parseInt(e.currentTarget.value))} className={`w-full accent-blue-400 cursor-pointer ${sleepQuality === undefined ? 'opacity-40' : ''}`} />
                 </div>
 
               </div>

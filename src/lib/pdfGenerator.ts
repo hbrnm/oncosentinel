@@ -163,9 +163,9 @@ export function generateOncologyReport(
     doc.line(14, finalY + 2, 196, finalY + 2);
 
     const charts: { key: keyof Pick<TrendWeek, 'flashes' | 'joint' | 'sleep'>; label: string; max: number }[] = [
-      { key: 'flashes', label: 'Bufeuri: câte ai notat pe săptămână', max: Math.max(1, ...weeks.map(w => w.flashes ?? 0)) },
-      { key: 'joint', label: 'Dureri articulare: media notelor, de la 0 la 5', max: 5 },
-      { key: 'sleep', label: 'Somn: media notelor, de la 1 la 5 (5 = foarte bine)', max: 5 }
+      { key: 'flashes', label: 'Bufeuri: câte a notat pacienta pe săptămână', max: Math.max(1, ...weeks.map(w => w.flashes ?? 0)) },
+      { key: 'joint', label: 'Dureri articulare: media notelor, 0–5', max: 5 },
+      { key: 'sleep', label: 'Somn: media notelor, 1–5 (5 = foarte bine)', max: 5 }
     ];
     const width = 56;
     const height = 22;
