@@ -34,7 +34,7 @@ export const WhatHelped: React.FC<{ hideWhenEmpty?: boolean }> = ({ hideWhenEmpt
           Ce te ajută într-o zi grea? Un om, un loc, o melodie. Scrie-le aici și ți le arăt când ai nevoie.
         </p>
       ) : (
-        <ul className="mt-1.5 space-y-1">
+        <ul className="mt-1.5 space-y-1 max-h-40 overflow-y-auto">
           {items.map((item, i) => (
             <li key={`${i}-${item}`} className="flex items-start gap-2 text-[0.8125rem] text-ink dark:text-gray-100">
               <span aria-hidden="true" className="mt-0.5">•</span>
@@ -43,7 +43,7 @@ export const WhatHelped: React.FC<{ hideWhenEmpty?: boolean }> = ({ hideWhenEmpt
                 type="button"
                 onClick={() => { update(items.filter((_, j) => j !== i)); setSaved(false); }}
                 aria-label={`Șterge „${item}”`}
-                className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
+                className="shrink-0 w-8 h-8 -my-1.5 rounded-full flex items-center justify-center text-ink-soft hover:text-ink dark:hover:text-white"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

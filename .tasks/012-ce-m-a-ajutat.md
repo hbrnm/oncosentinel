@@ -24,7 +24,9 @@ Sincronizare în cont, editare din Profil, sugestii scrise de noi.
 - `src/lib/whatHelped.ts`, `src/components/WhatHelped.tsx`; folosit în `JournalTab.tsx` (mood ≤ 2) și `CalmModal.tsx`; `backupService.ts` (`what_helped`).
 - Formulat de Claude după decizii: în fereastra de liniște lista apare doar dacă are ceva în ea (fără invitația de a scrie, într-un moment de criză); un rând are cel mult 120 de caractere.
 - Test nou `ce-m-a-ajutat.test.tsx`. `npm test` (293/293) și `npm run build` trec.
-- Mutat din copia locală în clonul git; commit pe ramura `claude/ce-m-a-ajutat`.
+- Mutat din copia locală în clonul git.
+- Agentul `verificare`: nimic blocant; reparate butonul „Șterge” (32 px), scroll pe listă (max-h-40) și testul de backup care restaurează `window.location`. Lăsate: confirmarea `role="status"` inserată după salvare (ca mesajul Jurnalului; o regiune mereu prezentă strică testele care caută un singur status), importul care nu verifică tipul listei (`loadWhatHelped` filtrează la citire).
+- Verificarea la 390px: în previzualizarea Vercel (Playwright nu e instalat).
 
 ## Cum verific la final
 `npm test` trece; în aplicație, la 390px: Jurnal → „Greu” → Salvează → apare lista; „Am nevoie de liniște acum” o arată după ce are ceva în ea.

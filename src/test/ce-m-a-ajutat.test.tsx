@@ -67,15 +67,22 @@ describe('Ce te-a ajutat altă dată', () => {
 
   it('copia de siguranță păstrează lista', async () => {
     localStorage.setItem(WHAT_HELPED_KEY, JSON.stringify(['Ceai și o pătură']));
+    const original = { location: window.location, create: URL.createObjectURL, revoke: URL.revokeObjectURL };
     Object.defineProperty(window, 'location', { value: { ...window.location, reload: vi.fn() }, configurable: true });
     let blob: Blob | undefined;
     URL.createObjectURL = vi.fn((b: Blob) => { blob = b; return 'blob:x'; });
     URL.revokeObjectURL = vi.fn();
-    backupService.exportCompleteBackup();
-    const text = await blob!.text();
-    localStorage.clear();
-    await backupService.importBackupFromFile(new File([text], 'copie.json'));
-    expect(loadWhatHelped()).toEqual(['Ceai și o pătură']);
+    try {
+      backupService.exportCompleteBackup();
+      const text = await blob!.text();
+      localStorage.clear();
+      await backupService.importBackupFromFile(new File([text], 'copie.json'));
+      expect(loadWhatHelped()).toEqual(['Ceai și o pătură']);
+    } finally {
+      Object.defineProperty(window, 'location', { value: original.location, configurable: true });
+      URL.createObjectURL = original.create;
+      URL.revokeObjectURL = original.revoke;
+    }
   });
 
   it('o listă stricată nu blochează ecranul', () => {
