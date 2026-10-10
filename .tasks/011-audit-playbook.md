@@ -1,7 +1,7 @@
 # 011 — Audit playbook Claude Code
 
-**Stare:** în lucru (etapa 3: implementare)
-**Ramura:** nouă, din `main`, la începutul etapei 3
+**Stare:** gata (după integrarea PR-ului)
+**Ramura:** `claude/sarcina-011-etapa-3`
 
 ## Scop
 Proprietara vrea un proces de lucru reutilizabil, cu mai puține erori și modificări inutile, costuri mai mici și context păstrat între sesiuni. Pornim de la `docs/playbook-claude-code.md`. Nu se rescrie de la zero: se păstrează structura (9 secțiuni) și principiile și se adaugă doar modificările aprobate. Mediul ei: Claude Code pe web (sesiuni cloud).
@@ -43,8 +43,8 @@ Sursele oficiale sunt în raport (secțiunea „Surse”). Formulările se verif
 |---|---|---|---|
 | 1 | Audit fără modificări | gata | — |
 | 2 | Raport și aprobare | gata | — |
-| 3 | Implementare în `docs/playbook-claude-code.md` | de făcut | |
-| 4 | Validare (agentul `verificare` pe diff: corectitudine tehnică, coerență, contradicții, complexitate) + rezumat al diferențelor pentru proprietară | de făcut | |
+| 3 | Implementare în `docs/playbook-claude-code.md` | gata | vezi PR |
+| 4 | Validare (agentul `verificare` pe diff: corectitudine tehnică, coerență, contradicții, complexitate) + rezumat al diferențelor pentru proprietară | gata | vezi PR |
 
 ## Cum verific la final
 - Fiecare dintre cele 14 modificări apare în playbook (bifă pe tabelul de mai sus).
@@ -56,5 +56,11 @@ Sursele oficiale sunt în raport (secțiunea „Surse”). Formulările se verif
 ### Etapele 1–2 (2026-10-10)
 Audit pe 9 domenii, comparat cu 10 pagini din documentația oficială Claude Code. 15 recomandări (6 obligatorii); 14 aprobate. Raportul e în Claude Docs (link mai sus). Nimic schimbat în repo în afară de acest fișier.
 
+### Etapa 3 (2026-10-10)
+Toate cele 14 modificări sunt în `docs/playbook-claude-code.md`. Formulările verificate din nou în paginile oficiale (memory, permissions, settings, cloud-environments, claude-code-on-the-web, best-practices, sub-agents). Pasul 0: `npx vitest run` pe `main`: 47 fișiere, 274/274 teste trec. Textul: 2193 → 2929 de cuvinte (+34%), 259 → 308 rânduri; tot 9 secțiuni. Pentru coerență: rândul `.tasks/README.md` din §2 trimite acum la șablonul din §8; nota de la început spune că `docs/` e sursa, nu documentul din Claude Docs. Deschis: `.tasks/README.md` din OncoSentinel nu are încă secțiunile noi din șablon (decizie separată).
+
+### Etapa 4 (2026-10-10)
+Agentul `verificare`: toate cele 14 modificări sunt prezente, 9 secțiuni, fără ş/ţ cu sedilă, „Nimic blocant”. O ambiguitate reparată: „Pasul 0 al fiecărei sesiuni” (§3) devine „La începutul fiecărei sesiuni”, ca să nu se confunde cu Pasul 0 din §2. Observații respinse: „aceiași pași” e corect (pas, masculin); `Read(./.env)` rămâne în forma aprobată; afirmațiile despre cloud au fost verificate în documentația oficială.
+
 ## Următorul pas
-Sesiune nouă: „Continuă sarcina 011 din `.tasks/011-audit-playbook.md`, etapa 3.”
+Opțional, decizie separată: secțiunile noi din șablon (`În afara scopului`, `Cum verific la final`) și în `.tasks/README.md` din OncoSentinel.

@@ -1,6 +1,6 @@
 # Playbook: cum lucrez cu Claude Code pe un proiect nou
 
-Actualizat: 10 octombrie 2026. Versiunea editabilă: [Claude Docs](https://claude.ai/code/artifact/486580f4-9285-4869-8440-26a904887e2f).
+Actualizat: 10 octombrie 2026. Versiunea editabilă din [Claude Docs](https://claude.ai/code/artifact/486580f4-9285-4869-8440-26a904887e2f) poate rămâne în urmă; sursa e acest fișier.
 
 ## 1. Ideea pe scurt
 
@@ -22,6 +22,14 @@ Cele patru principii, valabile oriunde:
 | Agenții | Fac sarcini precise (caută, testează, execută după model, verifică diff-ul) și raportează scurt |
 | Repo-ul | Ține regulile (`CLAUDE.md`), agenții (`.claude/agents/`), planurile (`.tasks/`, `docs/`) |
 
+Trei lucruri despre agenți, care explică regulile de mai jos:
+
+- **`description` e scurtă și spune *când* se folosește agentul**; detaliile stau în corpul fișierului. Descrierile ocupă context în fiecare sesiune.
+- **Agenții nu pot pune întrebări.** De aceea deciziile și chestionarele rămân la orchestrator.
+- **Raportul agentului intră în conversația principală.** De aici limitele de 30–40 de rânduri.
+
+Claude Code are și un agent încorporat, `Explore` (doar citire, rapid). Într-un proiect mic se poate porni fără `explorare`.
+
 ## 2. Pasul 0 — pregătirea unui proiect nou
 
 O singură sesiune de pregătire, înainte de orice funcționalitate, îți dă tot sistemul. Ce trebuie să existe în repo:
@@ -30,10 +38,14 @@ O singură sesiune de pregătire, înainte de orice funcționalitate, îți dă 
 | --- | --- | --- |
 | `CLAUDE.md` | Regulile proiectului: principii, structură, teste, securitate, ton, cine decide ce | `/init` generează o primă variantă; apoi o completezi cu secțiunile din șablonul de mai jos |
 | `.claude/agents/*.md` | Cei patru agenți: `explorare`, `testare`, `executie`, `verificare` | Copiezi fișierele din OncoSentinel și schimbi numele proiectului, căile și comenzile |
-| `.tasks/README.md` | Șablonul pentru lucrările mari, ca să poți relua după o pauză | Copiezi fișierul din OncoSentinel |
+| `.tasks/README.md` | Șablonul pentru lucrările mari, ca să poți relua după o pauză | Copiezi șablonul din secțiunea 8 |
 | `docs/` | Planuri, texte aprobate, conținut de specialitate | Se umple pe parcurs |
 | Teste + build | Plasa de siguranță: nimic nu intră fără ele | Cere-i lui Claude: „Configurează testele și scrie primul test” |
 | Verificare automată pe GitHub | Previzualizare Vercel (sau CI) pe fiecare PR | Conectezi repo-ul la Vercel o dată, din site-ul lor |
+| `.claude/settings.json` | Reguli de permisiuni impuse, nu doar cerute: Claude nu poate citi fișierele cu chei | `"permissions": {"deny": ["Read(./.env)", "Read(./.env.*)"]}`, plus alte fișiere secrete ale proiectului |
+| Mediul cloud | Ce primește fiecare sesiune la pornire | În setările mediului: un *setup script* (ex. `npm ci`, ca testele să ruleze imediat), nivelul de rețea, variabilele (fără chei secrete, vezi secțiunea 5) |
+
+În cloud ajung doar setările din repo: `~/.claude/settings.json` și `.claude/settings.local.json` rămân pe calculatorul tău. Ce trebuie să se aplice în sesiuni stă în `.claude/settings.json`, iar acesta se citește doar într-o sesiune cu un singur repo.
 
 Ce adaptezi la noul proiect, în `CLAUDE.md`:
 
@@ -43,11 +55,15 @@ Ce adaptezi la noul proiect, în `CLAUDE.md`:
 - **Stilul vizual** (tokenii de culoare, lățimea minimă a ecranului) și **tonul textelor**.
 - **Ce rămâne la tine** (secțiunea 4) și **ce nu se deleagă** (secțiunea 5).
 
+Ce **nu** intră în `CLAUDE.md`: ce află Claude citind codul (descrieri fișier cu fișier, convenții standard) și procedurile lungi sau rare (acelea merg într-un skill). Fișierul rămâne sub 200 de rânduri; unul umflat face ca regulile importante să fie ignorate. Pentru fiecare regulă, întreabă: „Dacă o șterg, greșește Claude?” Dacă nu, o scoți.
+
+**Hooks și skills: doar când e nevoie.** Un *hook* (script rulat automat) doar pentru ce trebuie să se întâmple de fiecare dată, fără excepție, și doar după ce regula din `CLAUDE.md` a fost încălcată în practică. Un *skill* când lipești din nou aceleași instrucțiuni sau când o secțiune din `CLAUDE.md` a devenit o procedură. În rest, nimic.
+
 Cererea de pornire, de dat lui Claude într-o sesiune nouă: „Vreau să lucrăm în acest proiect ca în OncoSentinel. Citește playbook-ul (`docs/playbook-claude-code.md` din OncoSentinel), apoi propune-mi `CLAUDE.md`, agenții și `.tasks/README.md` adaptate proiectului, cu întrebările ca chestionar.”
 
 ## 3. Ciclul unei etape
 
-Fiecare etapă trece prin aceiași opt pași; tu intervii doar la început și la chestionar. Dacă testele pică sau verificarea găsește o problemă blocantă, se întoarce la cod, nu merge mai departe.
+Fiecare etapă trece prin aceiași opt pași (planul se sare la schimbările foarte mici, vezi mai jos); tu intervii doar la început și la chestionar. Dacă testele pică sau verificarea găsește o problemă blocantă, se întoarce la cod, nu merge mai departe.
 
 ```mermaid
 flowchart LR
@@ -63,6 +79,13 @@ flowchart LR
 ```
 
 Pașii 1 și 3 sunt ai tăi; restul îi face Claude sau un agent. După pasul 8, următoarea etapă începe din fișierul de sarcină, de preferat într-o sesiune nouă.
+
+Patru reguli care țin ciclul curat:
+
+- **La începutul fiecărei sesiuni:** testele pe `main`. Dacă pică, întâi un PR separat de reparare, ca etapa nouă să nu pornească peste o eroare veche.
+- **Planul doar când e nevoie.** Dacă schimbarea se poate descrie într-o propoziție, fără plan. Pentru schimbări în mai multe fișiere sau cu abordare nesigură, modul plan: Claude citește și propune, fără să modifice nimic (în cloud îl alegi din meniul de mod al sesiunii).
+- **Dovada, nu „am verificat”.** Rezumatul etapei și descrierea PR-ului conțin comanda rulată și rezultatul (ex. „`npm test`: 274/274 trec”).
+- **Fișierul de sarcină: commit + push după fiecare etapă.** În cloud, containerul se șterge după o perioadă de inactivitate, iar sesiunea nouă vede doar ce e pe GitHub.
 
 ## 4. Rolul tău de proprietară
 
@@ -91,6 +114,8 @@ Nu trebuie să scrii cod; trebuie să spui clar ce vrei și să alegi bine din v
 
 Regula de bază: tot ce atinge producția sau datele oamenilor rămâne la orchestrator și, unde e cazul, cere acordul tău explicit.
 
+**Important:** `CLAUDE.md` e un sfat pe care Claude îl urmează, nu un blocaj. Ce nu trebuie să se întâmple niciodată se pune în permisiuni (regula pentru `.env` din Pasul 0) sau într-un hook. Limită: regula pentru `.env` nu oprește un script (Python, Node) care deschide singur fișierul; pentru asta există *sandbox*-ul.
+
 **Rămân la orchestrator, niciodată la agenți:**
 
 - deciziile tale (chestionarele) și conținutul de specialitate;
@@ -103,6 +128,7 @@ Regula de bază: tot ce atinge producția sau datele oamenilor rămâne la orche
 **Reguli pentru date și chei**, de copiat în orice `CLAUDE.md`:
 
 - în codul aplicației intră doar cheile publice (de exemplu URL-ul Supabase și anon key); cheile secrete stau în setările serviciului, nu în repo;
+- variabilele unui mediu cloud le poate citi oricine folosește mediul: acolo nu se pun chei secrete de producție (de exemplu Supabase `service_role`); dacă o sesiune chiar are nevoie de o cheie de API, se folosește un *network secret* (Pro/Max), pe care Claude nu îl vede;
 - datele personale se citesc și se scriu doar pentru utilizatorul autentificat;
 - datele sensibile nu ajung în loguri, în adrese URL sau la servicii externe;
 - schimbările de bază de date se fac prin fișiere de migrație noi, păstrate în repo, nu „de mână”.
@@ -123,6 +149,12 @@ Regulile din OncoSentinel (decizia ta din 8 octombrie 2026) merg la fel de bine 
 | Fără urmărirea PR-ului și fără verificări programate | Vercel termină sub un minut, deci se așteaptă direct rezultatul |
 | Observațiile mici dintr-o rundă de testare, într-un singur PR | Mai puține cicluri de verificare |
 | Modificările mici le face orchestratorul singur | Când explicația pentru agent ar fi mai lungă decât lucrul în sine |
+
+**În cloud:**
+
+- „Sesiune nouă” înseamnă o sesiune nouă din bara laterală; `/clear` nu există în cloud.
+- Dacă o sesiune se lungește, `/compact` cu o instrucțiune: „`/compact păstrează fișierele schimbate și rezultatul testelor`”.
+- După două corectări eșuate pe aceeași problemă, sesiune nouă cu o cerere mai bună.
 
 În alt proiect, păstrează regulile și schimbă doar ce ține de unelte (de exemplu, dacă CI-ul durează 15 minute, nu mai merge „așteaptă direct”).
 
@@ -161,7 +193,7 @@ Se învață făcând, în pași mici, pe un proiect care chiar te interesează.
 
 Trei fișiere fac tot sistemul. Completează ce e între `<…>`.
 
-**`CLAUDE.md` minimal**
+**`CLAUDE.md` minimal** (sub 200 de rânduri; doar ce Claude nu poate afla din cod)
 
 ```markdown
 # CLAUDE.md
@@ -180,7 +212,12 @@ cea recomandată prima, marcată „(Recomandat)”.
 ## 2. Proiect
 - Structură: <dosare și ce conțin>.
 - Teste: <comanda>. Orice comportament nou vine cu test.
+  Testele nu depind de data de azi, de rețea sau de ordinea
+  rulării; data se fixează în test.
   Înainte de push: <comanda de test> și <comanda de build>.
+- Convenții: ramuri <claude/nume-scurt>; commit-uri cu prefix
+  (`feat:`, `fix:`, `test:`, `docs:`); PR-ul spune ce s-a schimbat
+  și dovada verificării.
 - Date și securitate: <ce e sensibil; cine are voie să citească ce>.
   Nicio cheie secretă în cod.
 - Conținut de specialitate: nu inventa <doze / clauze / cifre>;
@@ -222,6 +259,9 @@ Ceilalți trei agenți (`explorare` pe Haiku, `testare` și `executie` pe Sonnet
 ## Scop
 Ce vrea proprietara, în 2–3 rânduri. Deciziile ei, cu data.
 
+## În afara scopului
+Ce nu se atinge în această lucrare.
+
 ## Etape
 | # | Etapa | Stare | Commit |
 |---|---|---|---|
@@ -229,11 +269,17 @@ Ce vrea proprietara, în 2–3 rânduri. Deciziile ei, cu data.
 
 ## Rezumat pe etape
 ### Etapa 1 (data)
-Ce s-a făcut, ce s-a verificat, ce a rămas deschis.
+Ce s-a făcut, dovada verificării (comanda și rezultatul),
+ce a rămas deschis.
+
+## Cum verific la final
+Testul sau pasul care dovedește că lucrarea e gata.
 
 ## Următorul pas
 Un singur rând, concret.
 ```
+
+După fiecare etapă, fișierul se actualizează și se face commit + push (secțiunea 3).
 
 ## 9. Greșeli frecvente și lista finală
 
@@ -245,14 +291,17 @@ Un singur rând, concret.
 | Reguli spuse doar în chat | Tot ce trebuie reținut intră în `CLAUDE.md`; chatul se uită |
 | „Merge, nu mai testez” | Fără test și build verzi, nu se integrează |
 | Conținut de specialitate lăsat la Claude | „DE COMPLETAT” și sursa o dai tu |
-| Cheie secretă lipită în chat sau în cod | Se pune doar în setările serviciului (Vercel, Supabase) |
+| Cheie secretă lipită în chat, în cod sau în variabilele mediului cloud | Se pune doar în setările serviciului (Vercel, Supabase) sau ca *network secret* |
 | Agenți pentru tot | Modificările mici le face orchestratorul direct |
+| Teste care depind de data de azi, de rețea sau de ordinea rulării | Data se fixează în test; altfel `main` se înroșește într-o zi oarecare și blochează toate PR-urile (OncoSentinel, PR #54) |
 
 **Lista de verificare pentru un proiect nou:**
 
 - [ ] `CLAUDE.md` cu principiile, structura, comenzile, datele sensibile, conținutul de specialitate, UI și tonul
 - [ ] Cei patru agenți în `.claude/agents/`, adaptați
 - [ ] `.tasks/README.md` cu șablonul
+- [ ] `.claude/settings.json` cu regula `deny` pentru `.env`
+- [ ] Mediul cloud cu setup script, fără chei secrete în variabile
 - [ ] Teste și build care trec pe `main`
 - [ ] Verificare automată pe PR (Vercel sau CI)
 - [ ] Cheile secrete în setările serviciilor, nu în repo
