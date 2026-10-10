@@ -82,7 +82,7 @@ Pașii 1 și 3 sunt ai tăi; restul îi face Claude sau un agent. După pasul 8,
 
 Patru reguli care țin ciclul curat:
 
-- **Pasul 0 al fiecărei sesiuni:** testele pe `main`. Dacă pică, întâi un PR separat de reparare, ca etapa nouă să nu pornească peste o eroare veche.
+- **La începutul fiecărei sesiuni:** testele pe `main`. Dacă pică, întâi un PR separat de reparare, ca etapa nouă să nu pornească peste o eroare veche.
 - **Planul doar când e nevoie.** Dacă schimbarea se poate descrie într-o propoziție, fără plan. Pentru schimbări în mai multe fișiere sau cu abordare nesigură, modul plan: Claude citește și propune, fără să modifice nimic (în cloud îl alegi din meniul de mod al sesiunii).
 - **Dovada, nu „am verificat”.** Rezumatul etapei și descrierea PR-ului conțin comanda rulată și rezultatul (ex. „`npm test`: 274/274 trec”).
 - **Fișierul de sarcină: commit + push după fiecare etapă.** În cloud, containerul se șterge după o perioadă de inactivitate, iar sesiunea nouă vede doar ce e pe GitHub.
