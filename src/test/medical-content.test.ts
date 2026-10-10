@@ -44,6 +44,16 @@ describe('Conținutul medical rescris', () => {
     expect(byId('g6').content).toMatch(/anii cu tamoxifen drept „după tratament”/);
   });
 
+  it('ghidul pentru primele 30 de zile urmează imediat după ghidul despre tamoxifen, are sursă și trimite la medic', () => {
+    expect(CLINICAL_GUIDES[1].id).toBe('g7');
+    const g7 = CLINICAL_GUIDES[1];
+    expect(g7.title).toBe('Primele 30 de zile cu tamoxifen');
+    expect(g7.content).toMatch(/\*Sursa: Macmillan Cancer Support/);
+    expect(g7.content).toMatch(/Nu opri tamoxifenul singură/);
+    expect(g7.content).toMatch(/112/);
+    expect(g7.content).not.toMatch(/\d+\s*mg/);
+  });
+
   it('rețetele sunt idei de mese, fără promisiuni terapeutice sau surse neverificate', () => {
     const all = JSON.stringify(RECIPES);
     expect(RECIPES.find(r => r.title.includes('Salvie'))).toBeUndefined();
